@@ -39,9 +39,10 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto float-right">
                     <li class="navbar-item"><a href="options.php"><img src="/open-iconic/svg/cog.svg" alt="Settings"></a></li>
-                    <li class="navbar-item"><img src="/open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" onclick="toggleFullscreen()" id="fullscreen-button"></li>
+                    <li class="navbar-item"><img src="/open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" 
+                            onclick="toggleFullscreenButton()" id="fullscreen-button"></li>
                 </ul>
             </div>
         </nav>
