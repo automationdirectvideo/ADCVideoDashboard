@@ -14,6 +14,13 @@ const videoContainer = document.getElementById("video-container");
 
 const defaultChannel = "automationdirect";
 
+// Form submit and change channel
+channelForm.addEventListener("submit", e => {
+  e.preventDefault;
+  const channel = channelInput.value;
+  getChannel(channel);
+});
+
 // Load auth2 library
 function handleClientLoad() {
   gapi.load("client:auth2", initClient);
