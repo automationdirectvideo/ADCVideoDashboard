@@ -2,7 +2,7 @@ window.onload = function () {
   document.getElementById('fullscreen-button')
       .addEventListener("click", function () { toggleFullscreen(); });
 }
-var doc = document.documentElement;
+const doc = document.documentElement;
 var fullscreenStatus = "closed";
 
 function openFullscreen() {
@@ -32,7 +32,7 @@ function closeFullscreen() {
 }
 
 function toggleFullscreen() {
-  var fullscreenButton = document.getElementById('fullscreen-button');
+  const fullscreenButton = document.getElementById('fullscreen-button');
   if (fullscreenStatus == "opened") {
     closeFullscreen();
     fullscreenButton.src="open-iconic/svg/fullscreen-enter.svg";
