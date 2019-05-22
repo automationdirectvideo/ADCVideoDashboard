@@ -13,23 +13,19 @@ const channelInput = document.getElementById("channel-input");
 const videoContainer = document.getElementById("video-container");
 
 const defaultChannel = "AutomationDirect.com";
-console.log("End of consts");
 
 // Load auth2 library
 function handleClientLoad() {
-  console.log("handleClientLoad()");
   gapi.load("client:auth2", initClient);
 }
 
 // Init API client library and set up sign in listeners
 function initClient() {
-  console.log("initClient()");
   gapi.client.init({
     discoveryDocs: DISCOVERY_DOCS,
     clientId: CLIENT_ID,
     scope: SCOPES
   }).then(() => {
-    console.log("In 'then' of initClient()");
     // Listen for sign in state changes
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
     // Handle initial sign in state
@@ -37,12 +33,10 @@ function initClient() {
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
   });
-  console.log("End of initClient()");
 }
 
 // Update UI sign in state changes
 function updateSigninStatus(isSignedIn) {
-  console.log("updateSigninStatus()");
   if (isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
@@ -59,18 +53,15 @@ function updateSigninStatus(isSignedIn) {
 
 // Handle login
 function handleAuthClick() {
-  console.log("handleAuthClick");
   gapi.auth2.getAuthInstance().signIn();
 }
 
 // Handle logout
 function handleSignoutClick() {
-  console.log("handleSignoutClick()");
   gapi.auth2.getAuthInstance().signOut();
 }
 
 // Get channel from API
 function getChannel(channel) {
-  console.log("getChannel()");
   console.log(channel);
 }
