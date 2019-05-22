@@ -12,6 +12,14 @@
     <script src="js/bootstrap.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="js/fullscreen.js"></script>
+    <!-- TODO: redo this style block -->
+    <style>
+      #content, 
+      #authorize-button, 
+      #signout-button {
+        display: none;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -31,10 +39,22 @@
         </ul>
       </div>
     </nav>
-    <div class="site-wrapper-container">
-      <div class="site-wrapper">
-        <div class="site-wrapper-inner">
-
+    <div class="container">
+      <p>Log In With Google</p>
+      <button class="btn btn-primary" id="authorize-button">Log In</button>
+      <button class="btn btn-primary" id="signout-button">Sign Out</button>
+      <br>
+      <div id="content">
+        <div class="row">
+          <div class="col-6">
+            <form id="channel-form">
+              <div class="input-group col-6">
+                <input type="text" id="channel-input" placeholder="Enter Channel Name">
+                <input type="submit" class="btn btn-info" value="Get Channel Data">
+              </div>
+            </form>
+          </div>
+          <div id="channel-data" class="col-6"></div>
         </div>
       </div>
     </div>
@@ -49,5 +69,11 @@
         </div>
       </div>
     </div>
+    <!--TODO: Move this script tag -->
+    <script src="js/main.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
   </body>
 </html>
