@@ -7,9 +7,8 @@
     <meta name="theme-color" content="#FF0000">
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap" rel="stylesheet">
     <title>ADC YouTube Dashboard</title>
-    <base href="<?php echo $filePath ?>">
     <link href="css/bootstrap.css" rel="stylesheet"/>
-    <link href="css/style.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
     <script src="js/bootstrap.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="js/fullscreen.js"></script>
@@ -21,20 +20,20 @@
         Automation Direct YouTube Dashboard
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto float-right">
-          <li class="navbar-item"><a href="options.html"><img src="open-iconic/svg/cog.svg" alt="Settings"></a></li>
-          <li class="navbar-item"><img src="open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" 
-                  onclick="toggleFullscreenButton()" id="fullscreen-button"></li>
+          <li class="navbar-item"><a href="options.html"><img src="open-iconic/svg/cog.svg" alt="Settings" style="width:32px;height:32px"></a></li>
+          <li class="navbar-item"><img src="open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" style="width:32px;height32px" 
+              id="fullscreen-button"></li>
         </ul>
       </div>
     </nav>
     <div class="container">
-      <button><a href="https://www.youtube.com/automationdirect"><img src="imgs/yt_icon_rgb.png" alt="YouTube Play Button Logo"> Visit Channel</a></button>
-      <button><a href="https://www.automationdirect.com/adc/home/home"><img src="imgs/white_adc_logo.png" alt="ADC Logo"> Visit AutomationDirect.com</a></button>
+      <button class="btn btn-light"><a href="https://www.youtube.com/automationdirect"><img src="imgs/yt_icon_rgb.png" alt="YouTube Play Button Logo" style="width:50px"> Visit Channel</a></button>
+      <button class="btn btn-light"><a href="https://www.automationdirect.com/adc/home/home"><img src="imgs/white_adc_logo.png" alt="ADC Logo" style="width:50px"> Visit AutomationDirect.com</a></button>
     </div>
   </body>
 </html>
