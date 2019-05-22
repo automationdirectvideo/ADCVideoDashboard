@@ -28,10 +28,12 @@ function closeFullscreen() {
 }
 
 function toggleFullscreen() {
+    var fullscreenButton = document.getElementById('fullscreen-button');
     if (fullscreenStatus == "opened") {
         closeFullscreen();
+        fullscreenButton.src="/open-iconic/svg/fullscreen-enter.svg";
     } else {
         openFullscreen();
+        fullscreenButton.src="/open-iconic/svg/fullscreen-exit.svg";
     }
-    return fullscreenStatus;
 }

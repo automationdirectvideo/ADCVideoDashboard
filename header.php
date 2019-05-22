@@ -16,17 +16,6 @@
         <script src="js/bootstrap.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
         <script src="js/fullscreen.js"></script>
-        <script>
-            function toggleFullscreenButton() {
-                var fullscreenStatus = toggleFullscreen();
-                var fullscreenButton = document.getElementById('fullscreen-button');
-                if (fullscreenStatus == "opened") {
-                    fullscreenButton.src="/open-iconic/svg/fullscreen-exit.svg";
-                } else {
-                    fullscreenButton.src="/open-iconic/svg/fullscreen-enter.svg";
-                }
-            }
-        </script>
     </head>
     <body>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
