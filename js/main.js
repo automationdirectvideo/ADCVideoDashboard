@@ -140,3 +140,17 @@ function handleSubscribersGained(response) {
     console.log("Response from Analytics API received");
   }
 }
+
+// Request impressions in the last numDays days from Analytics API
+function requestImpressionsForLast(numDays) {
+  var todayDate = getTodaysDate();
+  var startDate = getDateFromDaysAgo(numDays);
+  var request = {
+    "endDate": todayDate,
+    "ids": "channel==MINE",
+    "metrics": "cardImpressions,cardTeaserImpressions,annotationsImpressions",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, handleImpressionsForLast);
+}
+
