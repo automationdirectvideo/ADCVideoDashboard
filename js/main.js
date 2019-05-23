@@ -104,11 +104,12 @@ function handleVideoPlaylist(response) {
 
 // Request basic video stats from Analytics API
 function requestBasicVideoStats() {
+  var todayDate = getTodaysDate();
   const request = {
-    "endDate": "2018-05-01",
+    "endDate": todayDate,
     "ids": "channel==MINE",
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
-    "startDate": "2017-01-01"
+    "startDate": joinDate
   };
   callAnalyticsAPI(request, handleBasicVideoStats);
 }
