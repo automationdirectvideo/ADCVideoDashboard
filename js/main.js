@@ -137,8 +137,6 @@ function requestSubscribersGained() {
 function requestSubscribersGained(numDays) {
   var todayDate = getTodaysDate();
   var startDate = getDateFromDaysAgo(numDays);
-  console.log("Sub", "Today's Date: " + todayDate);
-  console.log("Sub", "Start Date: " + startDate);
   var request = {
     "endDate": todayDate,
     "ids": "channel==MINE",
@@ -164,8 +162,6 @@ function requestImpressionsForLast() {
 function requestImpressionsForLast(numDays) {
   var todayDate = getTodaysDate();
   var startDate = getDateFromDaysAgo(numDays);
-  console.log("Imp", "Today's Date: " + todayDate);
-  console.log("Imp", "Start Date: " + startDate);
   var request = {
     "endDate": todayDate,
     "ids": "channel==MINE",
@@ -176,7 +172,7 @@ function requestImpressionsForLast(numDays) {
 }
 
 //Handles impressions response from Analytics API
-function handleImpressionsForLast() {
+function handleImpressionsForLast(response) {
   if (response) {
     console.log("Response from Analytics API received");
   }
