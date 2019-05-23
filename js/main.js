@@ -116,39 +116,26 @@ function requestBasicVideoStats() {
 // Handles basic video stats response from Analytics API
 function handleBasicVideoStats(response) {
   if (response) {
-    console.log("Response received");
+    console.log("Response from Analytics API received");
   }
 }
 
-// Calls the Analytics API with a request and returns response to callback
-function callAnalyticsAPI(request, callback) {
-  gapi.client.youtubeAnalytics.reports.query(request)
-    .then(response => {
-      console.log("Response", response);
-      callback(response);
-    })
-    .catch(err => {
-      console.error("Analytics API call error", err);
-    });
+// Request # of subcribers gained in the last numDays days from Analytics API
+function requestSubscribersGained(numDays) {
+  var todayDate = getTodaysDate();
+  var startDate = getDateFromDaysAgo(numDays);
+  var request = {
+    "endDate": todayDate,
+    "ids": "channel==MINE",
+    "metrics": "subscribersGained,subscribersLost",
+    "startDate": startDate
+  }
+  callAnalyticsAPI(request, handleSubscribersGained);
 }
 
-// Calls the Data API for channels with a request and returns response to callback
-function callDataAPIChannels(request, callback) {
-  gapi.client.youtube.channels.list(request)
-    .then(response => {
-      console.log("Response", response);
-      callback(response);
-    })
-    .catch(err => {
-      console.error("Data API call error", err);
-    });
-}
-
-// Calls the Data API for playlists with a request and returns response to callback
-function callDataAPIPlaylists(request, callback) {
-  gapi.client.youtube.playlistItems.list(request)
-    .then(response => {
-      console.log("Response", response);
-      callback(response);
-    });
+// Handles subscribers gained response from Analytics API
+function handleSubscribersGained(response) {
+  if (response) {
+    console.log("Response from Analytics API received");
+  }
 }
