@@ -1,3 +1,11 @@
+// Get date from numDaysAgo from today in the form YYYY-MM-DD
+function getDateFromDaysAgo(numDaysAgo) {
+  var today = new Date();
+  var priorDate = new Date().setDate(today.getDate() - numDaysAgo);
+  priorDate = new Date(priorDate);
+  return getYouTubeDateFormat(priorDate);
+}
+
 // Get date from first day of current month in the form YYYY-MM-DD
 function getFirstDayOfMonth() {
   var today = new Date();
