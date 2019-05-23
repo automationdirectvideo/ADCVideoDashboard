@@ -157,7 +157,11 @@ function getBasicVideoStats() {
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
     "startDate": "2017-01-01"
   };
-  console.log("callAnalyticsAPI reponse", callAnalyticsAPI(request));
+  callAnalyticsAPI(request, handleBasicVideoStats);
+}
+
+// Handles response from API
+function handleBasicVideoStats(response) {
   if (response) {
     console.log("Response received", response);
   } else {
@@ -166,12 +170,12 @@ function getBasicVideoStats() {
 }
 
 // Calls the Analytics API with a request and returns the response
-function callAnalyticsAPI(request) {
+function callAnalyticsAPI(request, callback) {
   gapi.client.youtubeAnalytics.reports.query(request)
   .then(response => {
     console.log("Response", response);
     console.log("Stringify", JSON.stringify(response));
-    return JSON.stringify(response);
+    callback(JSON.stringify(response));
   })
   .catch(err => {
     console.error("Analytics API call error", err);
