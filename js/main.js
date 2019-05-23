@@ -19,7 +19,7 @@ const defaultChannel = "automationdirect";
 channelForm.addEventListener("submit", e => {
   e.preventDefault();
   const channel = channelInput.value;
-  getChannel(channel);
+  getChannelInfo(channel);
 });
 
 // Load auth2 library
@@ -50,7 +50,7 @@ function updateSigninStatus(isSignedIn) {
     signoutButton.style.display = "block";
     content.style.display = "block";
     videoContainer.style.display = "flex";
-    getChannel(defaultChannel);
+    getChannelInfo(defaultChannel);
     requestBasicVideoStats();
   } else {
     authorizeButton.style.display = "block";
@@ -77,16 +77,19 @@ function showChannelData(data) {
 
 }
 
-// Get channel from API
-function getChannel(channel) {
+// Request channel info from Data API channels list
+function getChannelInfo(channel) {
   var request = {
     part: "snippet,contentDetails,statistics",
     forUsername: channel
   };
-  gapi.client.youtube.channels.list(request)
-  .then(response => {
-    console.log("Response", response);
-    const channel = response.result.items[0];
+  callDataAPI(request, handleChannelInfo);
+}
+
+// Handles channel info response from Data API
+function handleChannelInfo(response) {
+  response = JSON.parse(response);
+  const channel = response.result.items[0];
 
     const output = `
       <ul class="list-group">
@@ -104,10 +107,6 @@ function getChannel(channel) {
 
     const playlistId = channel.contentDetails.relatedPlaylists.uploads;
     requestVideoPlaylist(playlistId);
-  })
-  .catch(err => {
-    console.error("Data API call error", err);
-  });
 }
 
 // Add commas to number
@@ -160,14 +159,14 @@ function requestBasicVideoStats() {
   callAnalyticsAPI(request, handleBasicVideoStats);
 }
 
-// Handles basic video stats response from API
+// Handles basic video stats response from Analytics API
 function handleBasicVideoStats(response) {
   if (response) {
     console.log("Response received");
   }
 }
 
-// Calls the Analytics API with a request and returns the response
+// Calls the Analytics API with a request and returns response to callback
 function callAnalyticsAPI(request, callback) {
   gapi.client.youtubeAnalytics.reports.query(request)
   .then(response => {
@@ -177,5 +176,17 @@ function callAnalyticsAPI(request, callback) {
   })
   .catch(err => {
     console.error("Analytics API call error", err);
+  });
+}
+
+// Calls the Data API with a request and returns response to callback
+function callDataAPI(request, callback) {
+  gapi.client.youtube.channels.list(request)
+  .then(response => {
+    console.log("Response", response);
+    callback(JSON.stringify(response));
+  })
+  .catch(err => {
+    console.error("Data API call error", err);
   });
 }
