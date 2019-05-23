@@ -106,7 +106,7 @@ function getChannel(channel) {
     requestVideoPlaylist(playlistId);
   })
   .catch(err => {
-    console.error("Data API Call error", err);
+    console.error("Data API call error", err);
   });
 }
 
@@ -167,6 +167,6 @@ function callAnalyticsAPI(request) {
     console.log("Response", response);
   })
   .catch(err => {
-    console.error("Execute error", err);
+    console.error("Analytics API call error", err);
   });
 }
