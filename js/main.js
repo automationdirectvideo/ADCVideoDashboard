@@ -181,7 +181,6 @@ function callAnalyticsAPI(request, callback) {
 
 // Calls the Data API with a request and returns response to callback
 function callDataAPI(request, callback) {
-  console.log("Request", request);
   gapi.client.youtube.channels.list(request)
   .then(response => {
     console.log("Response", response);
