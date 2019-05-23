@@ -123,7 +123,7 @@ function requestVideoPlaylist(playlistId) {
     console.log(response);
     const playListItems = response.result.items;
     if (playListItems) {
-      let output = `<h4 class="align-content-center">Latest Videos</h4>`;
+      let output = `<br><h4 class="text-center">Latest Videos</h4>`;
 
       // Loop though videos and append output
       playListItems.forEach(item => {
@@ -131,7 +131,7 @@ function requestVideoPlaylist(playlistId) {
 
         output += `
           <div class="col-3">
-          <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
           </div>
         `;
       });
