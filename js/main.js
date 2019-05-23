@@ -162,7 +162,7 @@ function requestImpressionsForLast(numDays) {
 }
 
 //Handles impressions response from Analytics API
-function handlesImpressionsForLast() {
+function handleImpressionsForLast() {
   if (response) {
     console.log("Response from Analytics API received");
   }
