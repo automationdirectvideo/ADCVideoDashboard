@@ -34,8 +34,8 @@ function callDataAPIPlaylists(request, callback) {
 // Tests calls to the API
 function testAPICalls() {
   requestBasicVideoStats();
-  requestSubscribersGained(30);
-  requestImpressionsForLast(30);
+  requestSubscribersGained(joinDate, getTodaysDate());
+  requestImpressionsForLast(joinDate, getTodaysDate());
 }
 
 // Display channel data
