@@ -3,14 +3,25 @@ body {
     height: 100%;
 }
 
+.main-wrapper {
+  min-height: 100%;
+}
+
+.main {
+  overflow: auto;
+  padding-bottom: 90px; /* This needs to be > footer height */
+}
+
 footer {
   border-top: 1px solid gray;
   bottom: 0;
+  clear: both;
   height: 80px;
   left: 0;
+  margin-top: -80px;
   padding-top: 10px;
   padding-bottom: 10px;
-  position: absolute;
+  position: relative;
   width: 100%;
 }
 

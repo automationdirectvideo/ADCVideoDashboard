@@ -23,41 +23,43 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a href ="index.html" class="navbar-brand">
-          <img src="imgs/yt_icon_rgb.png" style="width:42px" class="d-inline-block align-top" alt="">
-          AutomationDirect.com YouTube Dashboard
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ml-auto">
-            <li class="navbar-item mr-2"><a href="options.html"><img src="open-iconic/svg/cog.svg" alt="Settings" style="width:32px;height:32px"></a></li>
-            <li class="navbar-item"><img src="open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" style="cursor:pointer;width:32px;height:32px" 
-                id="fullscreen-button"></li>
-          </ul>
-        </div>
-      </nav>
-      <div class="container">
-        <p>Log In With Google</p>
-        <button class="btn btn-primary" id="authorize-button">Log In</button>
-        <button class="btn btn-primary" id="signout-button">Sign Out</button>
-        <br>
-        <div id="content">
-          <div class="row mb-4">
-            <div class="col-6">
-              <form id="channel-form">
-                <div class="input-group col-6">
-                  <input type="text" id="channel-input" placeholder="Enter Channel Name">
-                  <input type="submit" class="btn btn-info" value="Get Channel Data">
-                </div>
-              </form>
-            </div>
-            <div id="channel-data" class="col-6"></div>
+      <div class="main">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a href ="index.html" class="navbar-brand">
+            <img src="imgs/yt_icon_rgb.png" style="width:42px" class="d-inline-block align-top" alt="">
+            AutomationDirect.com YouTube Dashboard
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="navbar-item mr-2"><a href="options.html"><img src="open-iconic/svg/cog.svg" alt="Settings" style="width:32px;height:32px"></a></li>
+              <li class="navbar-item"><img src="open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" style="cursor:pointer;width:32px;height:32px" 
+                  id="fullscreen-button"></li>
+            </ul>
           </div>
-          <div class="row" id="video-container"></div>
+        </nav>
+        <div class="container">
+          <p>Log In With Google</p>
+          <button class="btn btn-primary" id="authorize-button">Log In</button>
+          <button class="btn btn-primary" id="signout-button">Sign Out</button>
+          <br>
+          <div id="content">
+            <div class="row mb-4">
+              <div class="col-6">
+                <form id="channel-form">
+                  <div class="input-group col-6">
+                    <input type="text" id="channel-input" placeholder="Enter Channel Name">
+                    <input type="submit" class="btn btn-info" value="Get Channel Data">
+                  </div>
+                </form>
+              </div>
+              <div id="channel-data" class="col-6"></div>
+            </div>
+            <div class="row" id="video-container"></div>
+          </div>
         </div>
       </div>
     </div>
