@@ -108,11 +108,6 @@ function handleChannelInfo(response) {
   requestVideoPlaylist(playlistId);
 }
 
-// Add commas to number
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 function requestVideoPlaylist(playlistId) {
   const request = {
     playlistId: playlistId,
