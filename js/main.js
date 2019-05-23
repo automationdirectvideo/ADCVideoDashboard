@@ -159,9 +159,9 @@ function getBasicVideoStats() {
   };
   var response = callAnalyticsAPI(request);
   if (response) {
-    console.log("Response received");
+    console.log("Response received", response);
   } else {
-    console.log("Response was not received");
+    console.log("Response was not received", response);
   }
 }
 
@@ -170,7 +170,7 @@ function callAnalyticsAPI(request) {
   gapi.client.youtubeAnalytics.reports.query(request)
   .then(response => {
     console.log("Response", response);
-    return response;
+    return JSON.stringify(response);
   })
   .catch(err => {
     console.error("Analytics API call error", err);
