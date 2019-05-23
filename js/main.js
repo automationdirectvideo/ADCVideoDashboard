@@ -137,14 +137,19 @@ function requestSubscribersGained() {
 function requestSubscribersGained(numDays) {
   var todayDate = getTodaysDate();
   var startDate = getDateFromDaysAgo(numDays);
+  requestSubscribersGained(startDate, todayDate);
+}
+
+// Request # of subscribers gained from startDate to endDate
+function requestSubscribersGained(startDate, endDate) {
   var request = {
-    "endDate": todayDate,
+    "endDate": endDate,
     "ids": "channel==MINE",
     "metrics": "subscribersGained,subscribersLost",
     "startDate": startDate
   }  
   callAnalyticsAPI(request, handleSubscribersGained);
-}  
+}
 
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
@@ -162,8 +167,13 @@ function requestImpressionsForLast() {
 function requestImpressionsForLast(numDays) {
   var todayDate = getTodaysDate();
   var startDate = getDateFromDaysAgo(numDays);
+  requestImpressionsForLast(startDate, todayDate);
+}
+
+//Request impressions from startDate to endDate from Analytics API
+function requestImpressionsForLast(startDate, endDate) {
   var request = {
-    "endDate": todayDate,
+    "endDate": endDate,
     "ids": "channel==MINE",
     "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions",
     "startDate": startDate
