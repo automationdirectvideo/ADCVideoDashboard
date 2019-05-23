@@ -48,7 +48,7 @@ function updateSigninStatus(isSignedIn) {
     authorizeButton.style.display = "none";
     signoutButton.style.display = "block";
     content.style.display = "block";
-    videoContainer.style.display = "block";
+    videoContainer.style.display = "flex";
     getChannel(defaultChannel);
   } else {
     authorizeButton.style.display = "block";
@@ -115,7 +115,7 @@ function requestVideoPlaylist(playlistId) {
   const requestOptions = {
     playlistId: playlistId,
     part: "snippet",
-    maxResults: 10
+    maxResults: 12
   };
 
   const request = gapi.client.youtube.playlistItems.list(requestOptions);
@@ -123,7 +123,7 @@ function requestVideoPlaylist(playlistId) {
     console.log(response);
     const playListItems = response.result.items;
     if (playListItems) {
-      let output = `<br><h4 class="text-center">Latest Videos</h4>`;
+      let output = `<br><h4 class="text-center col-12">Latest Videos</h4>`;
 
       // Loop though videos and append output
       playListItems.forEach(item => {
