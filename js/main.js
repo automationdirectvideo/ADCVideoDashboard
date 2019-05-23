@@ -115,7 +115,7 @@ function numberWithCommas(x) {
 }
 
 function requestVideoPlaylist(playlistId) {
-  const requestOptions = {
+  const request = {
     playlistId: playlistId,
     part: "snippet",
     maxResults: 12
