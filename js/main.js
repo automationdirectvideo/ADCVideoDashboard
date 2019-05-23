@@ -51,7 +51,7 @@ function updateSigninStatus(isSignedIn) {
     content.style.display = "block";
     videoContainer.style.display = "flex";
     getChannel(defaultChannel);
-    getBasicVideoStats();
+    requestBasicVideoStats();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
@@ -149,30 +149,22 @@ function requestVideoPlaylist(playlistId) {
   });
 }
 
-// Get basic video stats from Analytics API
-function getBasicVideoStats() {
+// Request basic video stats from Analytics API
+function requestBasicVideoStats() {
   const request = {
     "endDate": "2018-05-01",
     "ids": "channel==MINE",
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
     "startDate": "2017-01-01"
   };
-  var response = callAnalyticsAPI(request, callbackAPIResponse);
-  if (response) {
-    console.log("Response received", response);
-  } else {
-    console.log("Response was not received", response);
-  }
+  callAnalyticsAPI(request, handleBasicVideoStats);
 }
 
-// Handles response from API
-function callbackAPIResponse(response) {
+// Handles basic video stats response from API
+function handleBasicVideoStats(response) {
   if (response) {
-    console.log("Response received in cAPIR", response);
-  } else {
-    console.log("Response was not received in cAPIR", response);
+    console.log("Response received");
   }
-  return response;
 }
 
 // Calls the Analytics API with a request and returns the response
