@@ -85,7 +85,7 @@ function getChannel(channel) {
       forUsername: channel
   })
   .then(response => {
-    console.log(response);
+    console.log("Response", response);
     const channel = response.result.items[0];
 
     const output = `
@@ -105,7 +105,9 @@ function getChannel(channel) {
     const playlistId = channel.contentDetails.relatedPlaylists.uploads;
     requestVideoPlaylist(playlistId);
   })
-  .catch(err => alert("No Channel By That Name"));
+  .catch(err => {
+    console.error("Data API Call error", err);
+  });
 }
 
 // Add commas to number
@@ -122,7 +124,7 @@ function requestVideoPlaylist(playlistId) {
 
   const request = gapi.client.youtube.playlistItems.list(requestOptions);
   request.execute(response => {
-    console.log(response);
+    console.log("Response",response);
     const playListItems = response.result.items;
     if (playListItems) {
       let output = `<h4 class="text-center col-12">Latest Videos</h4>`;
@@ -162,7 +164,9 @@ function getBasicVideoStats() {
 function callAnalyticsAPI(request) {
   gapi.client.youtubeAnalytics.reports.query(request)
   .then(response => {
-    console.log(response);
+    console.log("Response", response);
   })
-  .catch(err => alert("An error occured while fetching the basic video stats"));
+  .catch(err => {
+    console.error("Execute error", err);
+  });
 }
