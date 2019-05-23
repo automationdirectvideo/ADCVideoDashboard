@@ -1,3 +1,8 @@
+// Get today's date in the form YYYY-MM-DD
+function getTodaysDate() {
+  return getYouTubeDateFormat(new Date());
+}    
+
 // Get a date in the form YYYY-MM-DD
 function getYouTubeDateFormat(date) {
   var dd = String(date.getDate()).padStart(2, "0");
