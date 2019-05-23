@@ -50,6 +50,7 @@ function updateSigninStatus(isSignedIn) {
     content.style.display = "block";
     videoContainer.style.display = "flex";
     getChannel(defaultChannel);
+    getBasicVideoStats();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";
@@ -143,4 +144,18 @@ function requestVideoPlaylist(playlistId) {
       videoContainer.innerHTML = "No Uploaded Videos";
     }
   });
+}
+
+// Get basic video stats from Analytics API
+function getBasicVideoStats() {
+  gapi.client.youtubeAnalytics.reports.query({
+      "endDate": "2018-05-01",
+      "ids": "channel==MINE",
+      "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
+      "startDate": "2017-01-01"
+  })
+  .then(response => {
+    console.log(response);
+  })
+  .catch(err => alert("An error occured while fetching the basic video stats"));
 }
