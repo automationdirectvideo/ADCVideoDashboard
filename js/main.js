@@ -169,7 +169,7 @@ function requestImpressionsForLast(numDays) {
   var request = {
     "endDate": todayDate,
     "ids": "channel==MINE",
-    "metrics": "cardImpressions,cardTeaserImpressions,annotationsImpressions",
+    "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions",
     "startDate": startDate
   };
   callAnalyticsAPI(request, handleImpressionsForLast);
