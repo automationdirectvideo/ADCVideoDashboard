@@ -88,7 +88,6 @@ function getChannelInfo(channel) {
 
 // Handles channel info response from Data API
 function handleChannelInfo(response) {
-  response = JSON.parse(response);
   const channel = response.result.items[0];
 
     const output = `
@@ -170,8 +169,7 @@ function callAnalyticsAPI(request, callback) {
   gapi.client.youtubeAnalytics.reports.query(request)
   .then(response => {
     console.log("Response", response);
-    console.log("Stringify", JSON.stringify(response));
-    callback(JSON.stringify(response));
+    callback(response);
   })
   .catch(err => {
     console.error("Analytics API call error", err);
@@ -183,7 +181,7 @@ function callDataAPIChannels(request, callback) {
   gapi.client.youtube.channels.list(request)
   .then(response => {
     console.log("Response", response);
-    callback(JSON.stringify(response));
+    callback(response);
   })
   .catch(err => {
     console.error("Data API call error", err);
