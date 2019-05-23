@@ -149,12 +149,13 @@ function requestVideoPlaylist(playlistId) {
 
 // Get basic video stats from Analytics API
 function getBasicVideoStats() {
-  gapi.client.youtubeAnalytics.reports.query({
-      "endDate": "2018-05-01",
-      "ids": "channel==MINE",
-      "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
-      "startDate": "2017-01-01"
-  })
+  const request = {
+    "endDate": "2018-05-01",
+    "ids": "channel==MINE",
+    "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
+    "startDate": "2017-01-01"
+  };
+  gapi.client.youtubeAnalytics.reports.query(request)
   .then(response => {
     console.log(response);
   })
