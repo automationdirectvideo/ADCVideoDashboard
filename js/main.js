@@ -157,16 +157,22 @@ function getBasicVideoStats() {
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
     "startDate": "2017-01-01"
   };
-  callAnalyticsAPI(request, handleBasicVideoStats);
-}
-
-// Handles response from API
-function handleBasicVideoStats(response) {
+  var response = callAnalyticsAPI(request, callbackAPIResponse);
   if (response) {
     console.log("Response received", response);
   } else {
     console.log("Response was not received", response);
   }
+}
+
+// Handles response from API
+function callbackAPIResponse(response) {
+  if (response) {
+    console.log("Response received in cAPIR", response);
+  } else {
+    console.log("Response was not received in cAPIR", response);
+  }
+  return response;
 }
 
 // Calls the Analytics API with a request and returns the response
