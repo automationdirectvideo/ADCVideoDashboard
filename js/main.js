@@ -16,7 +16,7 @@ const defaultChannel = "automationdirect";
 
 // Form submit and change channel
 channelForm.addEventListener("submit", e => {
-  e.preventDefault;
+  e.preventDefault();
   const channel = channelInput.value;
   getChannel(channel);
 });
