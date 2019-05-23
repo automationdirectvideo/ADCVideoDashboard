@@ -14,6 +14,8 @@ const channelInput = document.getElementById("channel-input");
 const videoContainer = document.getElementById("video-container");
 
 const defaultChannel = "automationdirect";
+// Must be in the form YYYY-MM-DD
+const joinDate = "2008-04-11";
 
 // Form submit and change channel
 channelForm.addEventListener("submit", e => {
