@@ -1,7 +1,8 @@
 // Options
 const CLIENT_ID = "440646774290-ism1om8j8hnp1js8tsc9603ogo6uvhco.apps.googleusercontent.com";
 const DISCOVERY_DOCS = [
-  'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
+  'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest',
+  'https://youtubeanalytics.googleapis.com/$discovery/rest?version=v2'
 ];
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly';
 
