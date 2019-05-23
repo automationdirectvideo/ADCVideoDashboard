@@ -90,22 +90,22 @@ function getChannelInfo(channel) {
 function handleChannelInfo(response) {
   const channel = response.result.items[0];
 
-    const output = `
-      <ul class="list-group">
-        <li class="list-group-item">Title: ${channel.snippet.title}</li>
-        <li class="list-group-item">ID: ${channel.id}</li>
-        <li class="list-group-item">Subscribers: ${numberWithCommas(channel.statistics.subscriberCount)}</li>
-        <li class="list-group-item">Views: ${numberWithCommas(channel.statistics.viewCount)}</li>
-        <li class="list-group-item">Videos: ${numberWithCommas(channel.statistics.videoCount)}</li>
-      </ul>
-      <p>${channel.snippet.description}</p>
-      <hr>
-      <a class="btn btn-dark" target="_blank" href="https://youtube.com/${channel.snippet.customUrl}">Visit Channel</a>
-    `;
-    showChannelData(output);
+  const output = `
+    <ul class="list-group">
+      <li class="list-group-item">Title: ${channel.snippet.title}</li>
+      <li class="list-group-item">ID: ${channel.id}</li>
+      <li class="list-group-item">Subscribers: ${numberWithCommas(channel.statistics.subscriberCount)}</li>
+      <li class="list-group-item">Views: ${numberWithCommas(channel.statistics.viewCount)}</li>
+      <li class="list-group-item">Videos: ${numberWithCommas(channel.statistics.videoCount)}</li>
+    </ul>
+    <p>${channel.snippet.description}</p>
+    <hr>
+    <a class="btn btn-dark" target="_blank" href="https://youtube.com/${channel.snippet.customUrl}">Visit Channel</a>
+  `;
+  showChannelData(output);
 
-    const playlistId = channel.contentDetails.relatedPlaylists.uploads;
-    requestVideoPlaylist(playlistId);
+  const playlistId = channel.contentDetails.relatedPlaylists.uploads;
+  requestVideoPlaylist(playlistId);
 }
 
 // Add commas to number
@@ -167,32 +167,32 @@ function handleBasicVideoStats(response) {
 // Calls the Analytics API with a request and returns response to callback
 function callAnalyticsAPI(request, callback) {
   gapi.client.youtubeAnalytics.reports.query(request)
-  .then(response => {
-    console.log("Response", response);
-    callback(response);
-  })
-  .catch(err => {
-    console.error("Analytics API call error", err);
-  });
+    .then(response => {
+      console.log("Response", response);
+      callback(response);
+    })
+    .catch(err => {
+      console.error("Analytics API call error", err);
+    });
 }
 
 // Calls the Data API for channels with a request and returns response to callback
 function callDataAPIChannels(request, callback) {
   gapi.client.youtube.channels.list(request)
-  .then(response => {
-    console.log("Response", response);
-    callback(response);
-  })
-  .catch(err => {
-    console.error("Data API call error", err);
-  });
+    .then(response => {
+      console.log("Response", response);
+      callback(response);
+    })
+    .catch(err => {
+      console.error("Data API call error", err);
+    });
 }
 
 // Calls the Data API for playlists with a request and returns response to callback
 function callDataAPIPlaylists(request, callback) {
   gapi.client.youtube.playlistItems.list(request)
-  .then(response => {
-    console.log("Response", response);
-    callback(response);
-  });
+    .then(response => {
+      console.log("Response", response);
+      callback(response);
+    });
 }
