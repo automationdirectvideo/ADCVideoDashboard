@@ -3,7 +3,7 @@ const CLIENT_ID = "440646774290-ism1om8j8hnp1js8tsc9603ogo6uvhco.apps.googleuser
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest'
 ];
-const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly,https://www.googleapis.com/auth/youtube.readonly,https://www.googleapis.com/auth/yt-analytics.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly,https://www.googleapis.com/auth/yt-analytics.readonly';
 
 const authorizeButton = document.getElementById("authorize-button");
 const signoutButton = document.getElementById("signout-button");
