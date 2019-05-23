@@ -83,7 +83,7 @@ function getChannelInfo(channel) {
     part: "snippet,contentDetails,statistics",
     forUsername: channel
   };
-  callDataAPI(request, handleChannelInfo);
+  callDataAPIChannels(request, handleChannelInfo);
 }
 
 // Handles channel info response from Data API
@@ -120,32 +120,31 @@ function requestVideoPlaylist(playlistId) {
     part: "snippet",
     maxResults: 12
   };
+  callDataAPIPlaylists(request, handleVideoPlaylist);
+}
 
-  const request = gapi.client.youtube.playlistItems.list(requestOptions);
-  request.execute(response => {
-    console.log("Response",response);
-    const playListItems = response.result.items;
-    if (playListItems) {
-      let output = `<h4 class="text-center col-12">Latest Videos</h4>`;
+function handleVideoPlaylist(response) {
+  const playListItems = response.result.items;
+  if (playListItems) {
+    let output = `<h4 class="text-center col-12">Latest Videos</h4>`;
 
-      // Loop though videos and append output
-      playListItems.forEach(item => {
-        const videoId = item.snippet.resourceId.videoId;
+    // Loop though videos and append output
+    playListItems.forEach(item => {
+      const videoId = item.snippet.resourceId.videoId;
 
-        output += `
-          <div class="col-3">
-          <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
-          </div>
-        `;
-      });
+      output += `
+        <div class="col-3">
+        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
+        </div>
+      `;
+    });
 
-      // Output videos
-      videoContainer.innerHTML = output;
+    // Output videos
+    videoContainer.innerHTML = output;
 
-    } else {
-      videoContainer.innerHTML = "No Uploaded Videos";
-    }
-  });
+  } else {
+    videoContainer.innerHTML = "No Uploaded Videos";
+  }
 }
 
 // Request basic video stats from Analytics API
@@ -179,8 +178,8 @@ function callAnalyticsAPI(request, callback) {
   });
 }
 
-// Calls the Data API with a request and returns response to callback
-function callDataAPI(request, callback) {
+// Calls the Data API for channels with a request and returns response to callback
+function callDataAPIChannels(request, callback) {
   gapi.client.youtube.channels.list(request)
   .then(response => {
     console.log("Response", response);
@@ -188,5 +187,14 @@ function callDataAPI(request, callback) {
   })
   .catch(err => {
     console.error("Data API call error", err);
+  });
+}
+
+// Calls the Data API for playlists with a request and returns response to callback
+function callDataAPIPlaylists(request, callback) {
+  gapi.client.youtube.playlistItems.list(requestOptions)
+  .then(response => {
+    console.log("Response",response);
+    callback(response);
   });
 }
