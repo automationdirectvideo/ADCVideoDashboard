@@ -53,7 +53,7 @@ function updateSigninStatus(isSignedIn) {
     content.style.display = "block";
     videoContainer.style.display = "flex";
     getChannelInfo(defaultChannel);
-    requestBasicVideoStats();
+    testAPICalls();
   } else {
     authorizeButton.style.display = "block";
     signoutButton.style.display = "none";

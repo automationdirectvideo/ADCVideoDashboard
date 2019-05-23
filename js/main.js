@@ -31,6 +31,13 @@ function callDataAPIPlaylists(request, callback) {
     });
 }
 
+// Tests calls to the API
+function testAPICalls() {
+  requestBasicVideoStats();
+  requestSubscribersGained();
+  requestImpressionsForLast();
+}
+
 // Display channel data
 function showChannelData(data) {
   const channelData = document.getElementById("channel-data");
