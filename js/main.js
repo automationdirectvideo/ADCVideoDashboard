@@ -34,8 +34,8 @@ function callDataAPIPlaylists(request, callback) {
 // Tests calls to the API
 function testAPICalls() {
   requestBasicVideoStats();
-  requestSubscribersGained();
-  requestImpressionsForLast();
+  requestSubscribersGained(30);
+  requestImpressionsForLast(30);
 }
 
 // Display channel data
@@ -128,6 +128,11 @@ function handleBasicVideoStats(response) {
   }
 }
 
+// Request # of subscribers gained in the last defaultNumDays days from Analytics API
+function requestSubscribersGained() {
+  requestSubscribersGained(defaultNumDays);
+}
+
 // Request # of subcribers gained in the last numDays days from Analytics API
 function requestSubscribersGained(numDays) {
   var todayDate = getTodaysDate();
@@ -139,15 +144,20 @@ function requestSubscribersGained(numDays) {
     "ids": "channel==MINE",
     "metrics": "subscribersGained,subscribersLost",
     "startDate": startDate
-  }
+  }  
   callAnalyticsAPI(request, handleSubscribersGained);
-}
+}  
 
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
   if (response) {
     console.log("Response from Analytics API received");
   }
+}
+
+// Request impressions in the last defaultNumDays days from Analytics API
+function requestImpressionsForLast() {
+  requestImpressionsForLast(defaultNumDays);
 }
 
 // Request impressions in the last numDays days from Analytics API
