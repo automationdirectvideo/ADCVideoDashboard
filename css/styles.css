@@ -1,6 +1,8 @@
+html, body {
+  height: 100%;
+} 
 body {
     font-family: 'Roboto', 'Noto Sans', sans-serif;
-    height: 100%;
 }
 
 .main-wrapper {
