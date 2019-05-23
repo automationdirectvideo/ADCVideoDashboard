@@ -1,5 +1,23 @@
 body {
     font-family: 'Roboto', 'Noto Sans', sans-serif;
+    height: 100%;
+}
+
+footer {
+  border-top: 1px solid gray;
+  bottom: 0;
+  height: 80px;
+  left: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  position: absolute;
+  width: 100%;
+}
+
+@media screen and (max-width: 1000px) {
+  footer {
+    display: none;
+  }
 }
 
 .yt-red {
