@@ -33,8 +33,9 @@ function callDataAPIPlaylists(request, callback) {
 
 // Tests calls to the API
 function testAPICalls() {
-  requestBasicVideoStats();
-  requestSubscribersGained(joinDate, getTodaysDate());
+  var todayDate = getTodaysDate();
+  requestBasicVideoStats(joinDate, todayDate);
+  requestSubscribersGained(joinDate, todayDate);
   requestImpressionsForLast("2019-04-01", "2019-04-30");
 }
 

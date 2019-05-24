@@ -24,7 +24,7 @@ function handleChannelInfo(response) {
   showChannelData(output);
 
   // const playlistId = channel.contentDetails.relatedPlaylists.uploads;
-  // requestVideoPlaylist(playlistId);
+  // requestVideoPlaylist(playlistId, 12);
 }
 
 // Handles impressions response from Analytics API
