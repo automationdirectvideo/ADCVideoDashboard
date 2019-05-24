@@ -7,11 +7,8 @@ const DISCOVERY_DOCS = [
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly';
 
 const authorizeButton = document.getElementById("authorize-button");
-const signoutButton = document.getElementById("signout-button");
+const loginBox = document.getElementById("login-box");
 const content = document.getElementById("content");
-const channelForm = document.getElementById("channel-form");
-const channelInput = document.getElementById("channel-input");
-const videoContainer = document.getElementById("video-container");
 
 const defaultChannel = "automationdirect";
 // Must be in the form YYYY-MM-DD
@@ -19,14 +16,6 @@ const joinDate = "2008-04-11";
 const defaultNumDays = 30;
 const uploadsPlaylistId = "UUR5c2ZGLZY2FFbxZuSxzzJg";
 var numVideosProcessed = 0;
-
-
-// Form submit and change channel
-channelForm.addEventListener("submit", e => {
-  e.preventDefault();
-  const channel = channelInput.value;
-  requestChannelInfo(channel);
-});
 
 // Load auth2 library
 function handleClientLoad() {
@@ -45,24 +34,19 @@ function initClient() {
     // Handle initial sign in state
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.onclick = handleAuthClick;
-    signoutButton.onclick = handleSignoutClick;
   });
 }
 
 // Update UI sign in state changes
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    authorizeButton.style.display = "none";
-    signoutButton.style.display = "block";
+    loginBox.style.display = "none";
     content.style.display = "block";
-    videoContainer.style.display = "flex";
     requestChannelInfo(defaultChannel);
     testAPICalls();
   } else {
-    authorizeButton.style.display = "block";
-    signoutButton.style.display = "none";
+    loginBox.style.display = "block";
     content.style.display = "none";
-    videoContainer.style.display = "none";
   }
 }
 
@@ -72,6 +56,6 @@ function handleAuthClick() {
 }
 
 // Handle logout
-function handleSignoutClick() {
+function handleSignout() {
   gapi.auth2.getAuthInstance().signOut();
 }

@@ -14,9 +14,7 @@
     <script src="js/fullscreen.js"></script>
     <!-- TODO: redo this style block -->
     <style>
-      #content, 
-      #authorize-button, 
-      #signout-button {
+      #login-box {
         display: none;
       }
     </style>
@@ -42,23 +40,14 @@
           </div>
         </nav>
         <div class="container">
-          <p>Log In With Google</p>
-          <button class="btn btn-primary" id="authorize-button">Log In</button>
-          <button class="btn btn-primary" id="signout-button">Sign Out</button>
-          <br>
-          <div id="content">
-            <div class="row mb-4">
-              <div class="col-6">
-                <form id="channel-form">
-                  <div class="input-group col-6">
-                    <input type="text" id="channel-input" placeholder="Enter Channel Name">
-                    <input type="submit" class="btn btn-info" value="Get Channel Data">
-                  </div>
-                </form>
-              </div>
-              <div id="channel-data" class="col-6"></div>
-            </div>
-            <div class="row" id="video-container"></div>
+          <div id="login-box">
+            <p>Log In With Google</p>
+            <button class="btn btn-primary" id="authorize-button">Log In</button>
+            <br>
+          </div>
+          <div id="content text-center">
+            <h4>Content Box</h4>
+          </div>
           </div>
         </div>
       </div>
