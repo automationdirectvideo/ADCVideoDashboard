@@ -41,8 +41,6 @@ function handleMostWatchedVideos(response) {
     var videos = response.result.rows;
     videos.forEach(video => {
       const videoId = video[0];
-      console.log("VideoId: ", video[0]);
-      console.log("Stringified VideoId: ", JSON.stringify(videoId));
       requestVideoViewsByTrafficSource(getDateFromDaysAgo(30), getTodaysDate(),
           videoId);
     });
@@ -85,7 +83,7 @@ function handleVideoPlaylist(response) {
 function handleVideoViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleVideoViewsByTrafficSource");
-    if (numVideosProcessed) {
+    if (!numVideosProcessed) {
       var numVideosProcessed = 0;
     }
     numVideosProcessed++;
