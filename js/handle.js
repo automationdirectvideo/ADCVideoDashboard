@@ -40,7 +40,9 @@ function handleMostWatchedVideos(response) {
     console.log("Response received", "handleMostWatchedVideos");
     var videos = response.result.rows;
     videos.forEach(video => {
-      const videoId = video[0][0];
+      const videoId = JSON.stringify(video[0][0]);
+      console.log("VideoId: ", video[0][0]);
+      console.log("Stringified VideoId: ", videoId);
       requestVideoViewsByTrafficSource(getDateFromDaysAgo(30), getTodaysDate(),
           videoId);
     });

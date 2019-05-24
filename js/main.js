@@ -41,7 +41,7 @@ function testAPICalls() {
   // requestImpressions("2019-04-01", "2019-04-30");
   requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
   // requestSubscribersGained(joinDate, todayDate);
-  // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
+  requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   requestViewsByTrafficSource(joinDate, todayDate);
 }
