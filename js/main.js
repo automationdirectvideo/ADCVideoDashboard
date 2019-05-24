@@ -37,8 +37,10 @@ function callDataAPIPlaylists(request, source, callback) {
 function testAPICalls() {
   var todayDate = getTodaysDate();
   requestBasicVideoStats(joinDate, todayDate);
-  requestSubscribersGained(joinDate, todayDate);
   requestImpressions("2019-04-01", "2019-04-30");
+  requestSubscribersGained(joinDate, todayDate);
+  requestViewsByDeviceType(joinDate, todayDate);
+  requestViewsByTrafficSource(joinDate, todayDate);
 }
 
 // Display channel data

@@ -61,3 +61,18 @@ function requestViewsByDeviceType(startDate, endDate) {
   }  
   callAnalyticsAPI(request, "ViewsByDeviceType: ", handleViewsByDeviceType);
 }
+
+// Request views and estimatedMinutesWatched by traffic source from startDate to
+// endDate
+function requestViewsByTrafficSource(startDate, endDate) {
+  var request = {
+    "endDate": endDate,
+    "dimensions": "insightTrafficSourceType",
+    "ids": "channel==MINE",
+    "metrics": "views,estimatedMinutesWatched",
+    "sort": "-views",
+    "startDate": startDate
+  }  
+  callAnalyticsAPI(request, "ViewsByTrafficSource: ",
+      handleViewsByTrafficSource);
+}
