@@ -36,11 +36,13 @@ function callDataAPIPlaylists(request, source, callback) {
 // Tests calls to the API
 function testAPICalls() {
   var todayDate = getTodaysDate();
-  requestBasicVideoStats(joinDate, todayDate);
-  requestImpressions("2019-04-01", "2019-04-30");
-  requestMostWatchedVideos(getDateFromDaysAgo(30), todayDate, 30);
-  requestSubscribersGained(joinDate, todayDate);
-  requestViewsByDeviceType(joinDate, todayDate);
+  var thirtyDaysAgo = getDateFromDaysAgo(30);
+  // requestBasicVideoStats(joinDate, todayDate);
+  // requestImpressions("2019-04-01", "2019-04-30");
+  requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
+  // requestSubscribersGained(joinDate, todayDate);
+  requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
+  // requestViewsByDeviceType(joinDate, todayDate);
   requestViewsByTrafficSource(joinDate, todayDate);
 }
 

@@ -50,7 +50,7 @@ function requestSubscribersGained(startDate, endDate) {
     "ids": "channel==MINE",
     "metrics": "subscribersGained,subscribersLost",
     "startDate": startDate
-  }  
+  };
   callAnalyticsAPI(request, "SubscribersGained: ", handleSubscribersGained);
 }
 
@@ -64,6 +64,22 @@ function requestVideoPlaylist(playlistId, numVideos) {
   callDataAPIPlaylists(request, "VideoPlaylist: ", handleVideoPlaylist);
 }
 
+function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
+  videoId = "video==" + videoId;
+  const request = {
+    "dimensions": "insightTrafficSourceType",
+    "endDate": endDate,
+    "filters": videoId,
+    "ids": "channel==MINE",
+    "maxResults": 10,
+    "metrics": "views",
+    "sort": "-views",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "VideoViewsByTrafficSource: ",
+      handleVideoViewsByTrafficSource);
+}
+
 // Request views and estimatedMinutesWatched by device from startDate to endDate 
 function requestViewsByDeviceType(startDate, endDate) {
   var request = {
@@ -73,7 +89,7 @@ function requestViewsByDeviceType(startDate, endDate) {
     "metrics": "views,estimatedMinutesWatched",
     "sort": "-views",
     "startDate": startDate
-  }  
+  };
   callAnalyticsAPI(request, "ViewsByDeviceType: ", handleViewsByDeviceType);
 }
 
@@ -87,7 +103,7 @@ function requestViewsByTrafficSource(startDate, endDate) {
     "metrics": "views,estimatedMinutesWatched",
     "sort": "-views",
     "startDate": startDate
-  }  
+  };
   callAnalyticsAPI(request, "ViewsByTrafficSource: ",
       handleViewsByTrafficSource);
 }

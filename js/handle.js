@@ -73,6 +73,13 @@ function handleVideoPlaylist(response) {
   }
 }
 
+// Handles video views by traffic source response from Analytics API
+function handleVideoViewsByTrafficSource(response) {
+  if (response) {
+    console.log("Response received", "handleVideoViewsByTrafficSource");
+  }
+}
+
 // Handles views by device type response from Analytics API
 function handleViewsByDeviceType(response) {
   if (response) {
