@@ -65,6 +65,7 @@ function requestSubscribersGained(startDate, endDate) {
   callAnalyticsAPI(request, handleSubscribersGained);
 }
 
+// Request first 12 videos from a playlist from Data API
 function requestVideoPlaylist(playlistId) {
   const request = {
     playlistId: playlistId,
