@@ -38,6 +38,12 @@ function handleImpressions(response) {
 function handleMostWatchedVideos(response) {
   if (response) {
     console.log("Response received", "handleMostWatchedVideos");
+    var videos = response.result.rows;
+    videos.forEach(video => {
+      const videoId = video[0][0];
+      requestVideoViewsByTrafficSource(getDateFromDaysAgo(30), getTodaysDate(),
+          videoId);
+    });
   }
 }
 
@@ -77,6 +83,18 @@ function handleVideoPlaylist(response) {
 function handleVideoViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleVideoViewsByTrafficSource");
+    if (numVideosProcessed) {
+      var numVideosProcessed = 0;
+    }
+    numVideosProcessed++;
+    // Get traffic source info from response
+    // Sum organic views
+    // Add to mostViewedVideos
+    if (numVideosProcessed == 25) {
+      numVideosProcessed = 0;
+      console.log("25 videos processed!");
+      // Call function to organize and display top 10 organic videos
+    }
   }
 }
 
