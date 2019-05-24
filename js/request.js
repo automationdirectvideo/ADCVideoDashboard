@@ -6,7 +6,7 @@ function requestBasicVideoStats(startDate, endDate) {
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration,audienceWatchRatio",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, handleBasicVideoStats);
+  callAnalyticsAPI(request, "BasicVideoStats", handleBasicVideoStats);
 }
 
 // Request channel info from Data API channels list
@@ -15,7 +15,7 @@ function requestChannelInfo(channel) {
     part: "snippet,contentDetails,statistics",
     forUsername: channel
   };
-  callDataAPIChannels(request, handleChannelInfo);
+  callDataAPIChannels(request, "ChannelInfo: ", handleChannelInfo);
 }
 
 //Request impressions from startDate to endDate from Analytics API
@@ -26,7 +26,7 @@ function requestImpressions(startDate, endDate) {
     "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions,cardClickRate,cardTeaserClickRate,annotationClickableImpressions,annotationClickThroughRate",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "Impressions", handleImpressions);
+  callAnalyticsAPI(request, "Impressions: ", handleImpressions);
 }
 
 // Request # of subscribers gained from startDate to endDate
@@ -37,7 +37,7 @@ function requestSubscribersGained(startDate, endDate) {
     "metrics": "subscribersGained,subscribersLost",
     "startDate": startDate
   }  
-  callAnalyticsAPI(request, handleSubscribersGained);
+  callAnalyticsAPI(request, "SubscribersGained: ", handleSubscribersGained);
 }
 
 // Request first numVideos videos from a playlist from Data API
@@ -47,7 +47,7 @@ function requestVideoPlaylist(playlistId, numVideos) {
     part: "snippet",
     maxResults: numVideos
   };
-  callDataAPIPlaylists(request, handleVideoPlaylist);
+  callDataAPIPlaylists(request, "VideoPlaylist: ", handleVideoPlaylist);
 }
 
 // Request views and estimatedMinutesWatched by device from startDate to endDate 
@@ -59,5 +59,5 @@ function requestViewsByDeviceType(startDate, endDate) {
     "metrics": "views,estimatedMinutesWatched",
     "startDate": startDate
   }  
-  callAnalyticsAPI(request, handleViewsByDeviceType);
+  callAnalyticsAPI(request, "ViewsByDeviceType: ", handleViewsByDeviceType);
 }

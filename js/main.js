@@ -1,8 +1,8 @@
 // Calls the Analytics API with a request and returns response to callback
-function callAnalyticsAPI(request, callback) {
+function callAnalyticsAPI(request, source, callback) {
   gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
-      console.log("Response", response);
+      console.log(source, response);
       callback(response);
     })
     .catch(err => {
@@ -12,10 +12,10 @@ function callAnalyticsAPI(request, callback) {
 
 // Calls the Data API for channels with a request and returns response to 
 // callback
-function callDataAPIChannels(request, callback) {
+function callDataAPIChannels(request, source, callback) {
   gapi.client.youtube.channels.list(request)
     .then(response => {
-      console.log("Response", response);
+      console.log(source, response);
       callback(response);
     })
     .catch(err => {
@@ -25,10 +25,10 @@ function callDataAPIChannels(request, callback) {
 
 // Calls the Data API for playlists with a request and returns response to 
 // callback
-function callDataAPIPlaylists(request, callback) {
+function callDataAPIPlaylists(request, source, callback) {
   gapi.client.youtube.playlistItems.list(request)
     .then(response => {
-      console.log("Response", response);
+      console.log(source, response);
       callback(response);
     });
 }
