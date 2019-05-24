@@ -83,13 +83,11 @@ function handleVideoPlaylist(response) {
 function handleVideoViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleVideoViewsByTrafficSource");
-    if (!numVideosProcessed) {
-      var numVideosProcessed = 0;
-    }
     numVideosProcessed++;
     // Get traffic source info from response
     // Sum organic views
     // Add to mostViewedVideos
+    console.log("Number of Videos Processed: " + numVideosProcessed);
     if (numVideosProcessed == 25) {
       numVideosProcessed = 0;
       console.log("25 videos processed!");
