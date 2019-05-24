@@ -29,6 +29,20 @@ function requestImpressions(startDate, endDate) {
   callAnalyticsAPI(request, "Impressions: ", handleImpressions);
 }
 
+// Requests the numVideos most watched videos from startDate to endDate
+function requestMostWatchedVideos(startDate, endDate, numVideos) {
+  var request = {
+    "endDate": endDate,
+    "dimensions": "video",
+    "ids": "channel==MINE",
+    "maxResults": numVideos,
+    "metrics": "views",
+    "sort": "-views",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos);
+}
+
 // Request # of subscribers gained from startDate to endDate
 function requestSubscribersGained(startDate, endDate) {
   var request = {

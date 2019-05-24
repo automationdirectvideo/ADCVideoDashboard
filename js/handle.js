@@ -34,6 +34,13 @@ function handleImpressions(response) {
   }
 }
 
+// Handles most watched videos response from Analytics API
+function handleMostWatchedVideos(response) {
+  if (response) {
+    console.log("Response received", "handleMostWatchedVideos");
+  }
+}
+
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
   if (response) {

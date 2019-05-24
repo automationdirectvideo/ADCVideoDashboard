@@ -38,6 +38,7 @@ function testAPICalls() {
   var todayDate = getTodaysDate();
   requestBasicVideoStats(joinDate, todayDate);
   requestImpressions("2019-04-01", "2019-04-30");
+  requestMostWatchedVideos(getDateFromDaysAgo(30), todayDate);
   requestSubscribersGained(joinDate, todayDate);
   requestViewsByDeviceType(joinDate, todayDate);
   requestViewsByTrafficSource(joinDate, todayDate);
