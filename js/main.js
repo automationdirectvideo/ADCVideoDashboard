@@ -72,8 +72,8 @@ function handleChannelInfo(response) {
   `;
   showChannelData(output);
 
-  const playlistId = channel.contentDetails.relatedPlaylists.uploads;
-  requestVideoPlaylist(playlistId);
+  // const playlistId = channel.contentDetails.relatedPlaylists.uploads;
+  // requestVideoPlaylist(playlistId);
 }
 
 function requestVideoPlaylist(playlistId) {
