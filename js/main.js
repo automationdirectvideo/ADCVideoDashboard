@@ -10,7 +10,8 @@ function callAnalyticsAPI(request, callback) {
     });
 }
 
-// Calls the Data API for channels with a request and returns response to callback
+// Calls the Data API for channels with a request and returns response to 
+// callback
 function callDataAPIChannels(request, callback) {
   gapi.client.youtube.channels.list(request)
     .then(response => {
@@ -22,7 +23,8 @@ function callDataAPIChannels(request, callback) {
     });
 }
 
-// Calls the Data API for playlists with a request and returns response to callback
+// Calls the Data API for playlists with a request and returns response to 
+// callback
 function callDataAPIPlaylists(request, callback) {
   gapi.client.youtube.playlistItems.list(request)
     .then(response => {
