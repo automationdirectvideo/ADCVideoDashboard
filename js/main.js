@@ -175,7 +175,7 @@ function requestImpressionsForLast(startDate, endDate) {
   var request = {
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions",
+    "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions,cardClickRate,cardTeaserClickRate,annotationClickableImpressions,annotationClickThroughRate",
     "startDate": startDate
   };
   callAnalyticsAPI(request, handleImpressionsForLast);
