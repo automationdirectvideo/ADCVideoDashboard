@@ -66,3 +66,8 @@ function handleVideoPlaylist(response) {
   }
 }
 
+function handleViewsByDeviceType(response) {
+  if (response) {
+    console.log("Response received", "handleViewsByDeviceType");
+  }
+}

@@ -50,3 +50,14 @@ function requestVideoPlaylist(playlistId, numVideos) {
   callDataAPIPlaylists(request, handleVideoPlaylist);
 }
 
+// Request views and estimatedMinutesWatched by device from startDate to endDate 
+function requestViewsByDeviceType(startDate, endDate) {
+  var request = {
+    "endDate": endDate,
+    "dimensions": "deviceType",
+    "ids": "channel==MINE",
+    "metrics": "views,estimatedMinutesWatched",
+    "startDate": startDate
+  }  
+  callAnalyticsAPI(request, handleViewsByDeviceType);
+}
