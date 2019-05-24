@@ -23,7 +23,7 @@ const defaultNumDays = 30;
 channelForm.addEventListener("submit", e => {
   e.preventDefault();
   const channel = channelInput.value;
-  getChannelInfo(channel);
+  requestChannelInfo(channel);
 });
 
 // Load auth2 library
@@ -54,7 +54,7 @@ function updateSigninStatus(isSignedIn) {
     signoutButton.style.display = "block";
     content.style.display = "block";
     videoContainer.style.display = "flex";
-    getChannelInfo(defaultChannel);
+    requestChannelInfo(defaultChannel);
     testAPICalls();
   } else {
     authorizeButton.style.display = "block";
