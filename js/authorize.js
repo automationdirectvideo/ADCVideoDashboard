@@ -17,6 +17,7 @@ const defaultChannel = "automationdirect";
 // Must be in the form YYYY-MM-DD
 const joinDate = "2008-04-11";
 const defaultNumDays = 30;
+const uploadsPlaylistId = "UUR5c2ZGLZY2FFbxZuSxzzJg";
 
 
 // Form submit and change channel
