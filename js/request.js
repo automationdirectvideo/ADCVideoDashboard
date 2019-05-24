@@ -3,7 +3,7 @@ function requestBasicVideoStats(startDate, endDate) {
   const request = {
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration",
+    "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration,audienceWatchRatio",
     "startDate": startDate
   };
   callAnalyticsAPI(request, handleBasicVideoStats);
