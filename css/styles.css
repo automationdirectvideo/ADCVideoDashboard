@@ -39,3 +39,66 @@ footer {
 .yt-black {
     color: #282828;
 }
+
+.outer-shell {
+  border: solid black 1px;
+  height: 75vh;
+  width: 100%;
+}
+
+.stat-container {
+  border:solid black 1px;
+  height: 100%;
+}
+
+.row-1 {
+  max-height: 8.333333%;
+}
+
+.row-2 {
+  max-height: 16.666667%;
+}
+
+.row-3 {
+  max-height: 25%;
+}
+
+.row-4 {
+  max-height: 33.333333%;
+}
+
+.row-5 {
+  max-height: 41.666667%;
+}
+
+.row-6 {
+  max-height: 50%;
+}
+
+.row-7 {
+  max-height: 58.333333%;
+}
+
+.row-8 {
+  max-height: 66.666667%;
+}
+
+.row-9 {
+  max-height: 75%;
+}
+
+.row-10 {
+  max-height: 83.333333%;
+}
+
+.row-11 {
+  max-height: 91.666667%;
+}
+
+.row-12 {
+  max-height: 100%;
+}
+
+.shell-row {
+  height: calc(100% - 1rem)
+}
