@@ -57,6 +57,7 @@ function requestViewsByDeviceType(startDate, endDate) {
     "dimensions": "deviceType",
     "ids": "channel==MINE",
     "metrics": "views,estimatedMinutesWatched",
+    "sort": "-views",
     "startDate": startDate
   }  
   callAnalyticsAPI(request, "ViewsByDeviceType: ", handleViewsByDeviceType);
