@@ -1,7 +1,7 @@
 // Handles basic video stats response from Analytics API
 function handleBasicVideoStats(response) {
   if (response) {
-    console.log("Response from Analytics API received");
+    console.log("Response received", "handleBasicVideoStats");
   }
 }
 
@@ -30,14 +30,14 @@ function handleChannelInfo(response) {
 // Handles impressions response from Analytics API
 function handleImpressionsForLast(response) {
   if (response) {
-    console.log("Response from Analytics API received");
+    console.log("Response received", "handleImpressionsForLast");
   }
 }
 
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
   if (response) {
-    console.log("Response from Analytics API received");
+    console.log("Response received", "handleSubscribersGained");
   }
 }
 
