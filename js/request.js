@@ -32,8 +32,8 @@ function requestImpressions(startDate, endDate) {
 // Requests the numVideos most watched videos from startDate to endDate
 function requestMostWatchedVideos(startDate, endDate, numVideos) {
   var request = {
-    "endDate": endDate,
     "dimensions": "video",
+    "endDate": endDate,
     "ids": "channel==MINE",
     "maxResults": numVideos,
     "metrics": "views",
@@ -67,8 +67,8 @@ function requestVideoPlaylist(playlistId, numVideos) {
 // Request views and estimatedMinutesWatched by device from startDate to endDate 
 function requestViewsByDeviceType(startDate, endDate) {
   var request = {
-    "endDate": endDate,
     "dimensions": "deviceType",
+    "endDate": endDate,
     "ids": "channel==MINE",
     "metrics": "views,estimatedMinutesWatched",
     "sort": "-views",
@@ -81,8 +81,8 @@ function requestViewsByDeviceType(startDate, endDate) {
 // endDate
 function requestViewsByTrafficSource(startDate, endDate) {
   var request = {
-    "endDate": endDate,
     "dimensions": "insightTrafficSourceType",
+    "endDate": endDate,
     "ids": "channel==MINE",
     "metrics": "views,estimatedMinutesWatched",
     "sort": "-views",
