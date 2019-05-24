@@ -28,9 +28,9 @@ function handleChannelInfo(response) {
 }
 
 // Handles impressions response from Analytics API
-function handleImpressionsForLast(response) {
+function handleImpressions(response) {
   if (response) {
-    console.log("Response received", "handleImpressionsForLast");
+    console.log("Response received", "handleImpressions");
   }
 }
 

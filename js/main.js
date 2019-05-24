@@ -38,7 +38,7 @@ function testAPICalls() {
   var todayDate = getTodaysDate();
   requestBasicVideoStats(joinDate, todayDate);
   requestSubscribersGained(joinDate, todayDate);
-  requestImpressionsForLast("2019-04-01", "2019-04-30");
+  requestImpressions("2019-04-01", "2019-04-30");
 }
 
 // Display channel data

@@ -19,14 +19,14 @@ function requestChannelInfo(channel) {
 }
 
 //Request impressions from startDate to endDate from Analytics API
-function requestImpressionsForLast(startDate, endDate) {
+function requestImpressions(startDate, endDate) {
   var request = {
     "endDate": endDate,
     "ids": "channel==MINE",
     "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions,cardClickRate,cardTeaserClickRate,annotationClickableImpressions,annotationClickThroughRate",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, handleImpressionsForLast);
+  callAnalyticsAPI(request, "Impressions", handleImpressions);
 }
 
 // Request # of subscribers gained from startDate to endDate
