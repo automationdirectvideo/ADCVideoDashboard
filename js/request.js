@@ -65,11 +65,11 @@ function requestVideoPlaylist(playlistId, numVideos) {
 }
 
 function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
-  videoId = "video==" + videoId;
+  var stringVideoId = "video==" + videoId;
   const request = {
     "dimensions": "insightTrafficSourceType",
     "endDate": endDate,
-    "filters": videoId,
+    "filters": stringVideoId,
     "ids": "channel==MINE",
     "maxResults": 10,
     "metrics": "views",
