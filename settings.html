@@ -33,7 +33,7 @@
             </ul>
           </div>
         </nav>
-        <div class="container my-2">
+        <div class="container my-2" style="padding-left:10rem;padding-right:10rem;">
           <div class="row">
             <div class="col-2">
               <a href="index.html" class="btn btn-light "><img class="mb-1" src="open-iconic/svg/chevron-left.svg" alt="Left Arrow" style="color:white;width:1em;height:1em;"> Back</a>
@@ -43,14 +43,62 @@
             </div>
           </div>
           <br>
-          <h4>General</h4>
-          <ul class="list-group">
-            <li class="list-group-item">Dashboard Cycle Speed</li>
-            <li class="list-group-item">Change Theme of All Dashboards</li>
-            <li class="list-group-item">Enable/Disable All Dashboards</li>
-            <li class="list-group-item">Show/Hide Footer</li>
-            <li class="list-group-item">Reset Settings to Default</li>
-          </ul>
+          <h4 class="mb-3">General</h4>
+          <div class="row justify-content-between">
+            <div class="col-8">
+              <strong>Dashboard Cycle Speed</strong>
+              <p>How often the dashboard changes in seconds</p>
+            </div>
+            <div class="col-3 text-right">
+              <div class="input-group">
+                <input type="text" class="form-control" value="10" placeholder="Cycle speed" aria-label="Cycle speed">
+                <div class="input-group-append">
+                  <span class="input-group-text">seconds</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-8">
+              <strong>Theme</strong>
+              <p>Changes theme of all dashboards</p>
+            </div>
+            <div class="col-4 text-right">
+              <div class="btn-group" role="group" aria-label="Enable/Disable Dashboards">
+                <button class="btn btn-light">Light</button>
+                <button class="btn btn-dark">Dark</button>
+              </div>
+            </div>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-8">
+              <strong>Enable/Disable All Dashboards</strong>
+              <p>Changes the status of all dashboards</p>
+            </div>
+            <div class="col-4 text-right">
+              <button class="btn btn-primary">Enable All</button>
+              <button class="btn btn-primary">Disable All</button>
+            </div>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-8">
+              <strong>Footer</strong>
+              <p>Show or hide the links in the footer</p>
+            </div>
+            <div class="col-4 text-right">
+              <button class="btn btn-primary d-none" id="show-footer-btn">Show</button>
+              <button class="btn btn-secondary" id="hide-footer-btn">Hide</button>
+            </div>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-8">
+              <strong>Reset Settings</strong>
+              <p>Reset to default settings</p>
+            </div>
+            <div class="col-4 text-right">
+              <button class="btn btn-danger">Reset to Default</button>
+            </div>
+          </div>
           <br>
           <h4>Dashboards</h4>
           <ul class="list-group">
