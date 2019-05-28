@@ -40,15 +40,31 @@ footer {
     color: #282828;
 }
 
+#login-box {
+  display: none;
+}
+
 .outer-shell {
   border: solid black 1px;
   height: 75vh;
+  padding: 0.5rem;
   width: 100%;
 }
 
 .stat-container {
-  border:solid black 1px;
+  border: solid black 1px;
   height: 100%;
+}
+
+.stat-content {
+  vertical-align: center;
+  height: 100%;
+  padding: auto;
+}
+
+.row-1, .row-2, .row-3, .row-4, .row-5, .row-6, .row-7, .row-8, .row-9, .row-10,
+.row-11, .row-12 {
+  padding: 0.5rem;
 }
 
 .row-1 {
@@ -100,5 +116,13 @@ footer {
 }
 
 .shell-row {
-  height: calc(100% - 1rem)
+  height: 100%;
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.inner-row {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px;
 }
