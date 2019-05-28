@@ -23,7 +23,7 @@ function requestImpressions(startDate, endDate) {
   var request = {
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions,cardClickRate,cardTeaserClickRate,annotationClickableImpressions,annotationClickThroughRate",
+    "metrics": "cardImpressions,cardTeaserImpressions,annotationImpressions,adImpressions,cardClickRate,cardTeaserClickRate,annotationClickableImpressions,annotationClickThroughRate",
     "startDate": startDate
   };
   callAnalyticsAPI(request, "Impressions: ", handleImpressions);
