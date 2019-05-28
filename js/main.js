@@ -38,12 +38,12 @@ function testAPICalls() {
   var todayDate = getTodaysDate();
   var thirtyDaysAgo = getDateFromDaysAgo(30);
   // requestBasicVideoStats(joinDate, todayDate);
-  // requestImpressions("2019-04-01", "2019-04-30");
-  requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
+  requestImpressions("2019-04-01", "2019-04-30");
+  // requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
   // requestSubscribersGained(joinDate, todayDate);
-  requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
+  // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
-  requestViewsByTrafficSource(joinDate, todayDate);
+  // requestViewsByTrafficSource(joinDate, todayDate);
 }
 
 // Display channel data
