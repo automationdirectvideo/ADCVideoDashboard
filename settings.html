@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF0000">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>ADC YouTube Dashboard</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/fullscreen.js"></script>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="main">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a href ="index.html" class="navbar-brand">
+            <img src="imgs/yt_icon_rgb.png" style="width:42px" class="d-inline-block align-top" alt="">
+            AutomationDirect.com YouTube Dashboard
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+              <li class="navbar-item mr-2"><a href="index.html"><img src="open-iconic/svg/home.svg" alt="Home" style="width:32px;height:32px"></a></li>
+              <li class="navbar-item"><img src="open-iconic/svg/fullscreen-enter.svg" alt="Toggle Fullscreen" style="cursor:pointer;width:32px;height:32px" id="fullscreen-button"></li>
+            </ul>
+          </div>
+        </nav>
+        <div class="container my-2">
+          <div class="row">
+            <div class="col-2">
+              <a href="index.html" class="btn btn-light "><img class="mb-1" src="open-iconic/svg/chevron-left.svg" alt="Left Arrow" style="color:white;width:1em;height:1em;"> Back</a>
+            </div>
+            <div class="col-8 text-center">
+              <h3>Settings</h3>
+            </div>
+          </div>
+          <br>
+          <h4>General</h4>
+          <ul class="list-group">
+            <li class="list-group-item">Dashboard Cycle Speed</li>
+            <li class="list-group-item">Change Theme of All Dashboards</li>
+            <li class="list-group-item">Enable/Disable All Dashboards</li>
+            <li class="list-group-item">Show/Hide Footer</li>
+            <li class="list-group-item">Reset Settings to Default</li>
+          </ul>
+          <br>
+          <h4>Dashboards</h4>
+          <ul class="list-group">
+            <li class="list-group-item">Dashboard 1</li>
+            <li class="list-group-item">Dashboard 2</li>
+            <li class="list-group-item">Dashboard 3</li>
+            <li class="list-group-item">Dashboard 4</li>
+          </ul>
+          <br>
+          <div class="row justify-content-center">
+            <div class="col-3 text-center">
+              <a href="index.html" class="btn btn-danger" id="cancel-button">Cancel</a>
+            </div>
+            <div class="col-3 text-center">
+              <a href="index.html" class="btn btn-success" id="save-button">Save Changes</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="ml-auto my-auto col-6 text-center">
+            <a class="btn btn-light btn-lg" style="border-color:#282828" href="https://www.youtube.com/automationdirect"><img src="imgs/yt_icon_rgb.png" alt="YouTube Play Button Logo" style="height:30px"> Visit Channel</a>
+          </div>
+          <div class="mr-auto my-auto col-6 text-center">
+            <a class="btn btn-light btn-lg" style="border-color:#282828" href="https://www.automationdirect.com/adc/home/home"><img src="imgs/adc_logo_fullcolor_transparent.png" alt="ADC Logo" style="height:35px"> Visit AutomationDirect.com</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!--TODO: Move these script tags? -->
+    <script src="js/authorize.js"></script>
+    <script src="js/handle.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/request.js"></script>
+    <script src="js/utility.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>
