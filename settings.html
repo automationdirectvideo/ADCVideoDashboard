@@ -12,6 +12,7 @@
     <link href="open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="http://SortableJS.github.io/Sortable/Sortable.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/fullscreen.js"></script>
   </head>
@@ -65,10 +66,8 @@
               <p>Changes theme of all dashboards</p>
             </div>
             <div class="col-4 text-right">
-              <div class="btn-group" role="group" aria-label="Enable/Disable Dashboards">
-                <button class="btn btn-light">Light</button>
-                <button class="btn btn-dark">Dark</button>
-              </div>
+              <button class="btn btn-light">Light</button>
+              <button class="btn btn-dark">Dark</button>
             </div>
           </div>
           <div class="row justify-content-between">
@@ -77,8 +76,8 @@
               <p>Changes the status of all dashboards</p>
             </div>
             <div class="col-4 text-right">
-              <button class="btn btn-primary">Enable All</button>
-              <button class="btn btn-primary">Disable All</button>
+              <button class="btn btn-secondary">Enable All</button>
+              <button class="btn btn-secondary">Disable All</button>
             </div>
           </div>
           <div class="row justify-content-between">
@@ -101,12 +100,138 @@
             </div>
           </div>
           <br>
-          <h4>Dashboards</h4>
-          <ul class="list-group">
-            <li class="list-group-item">Dashboard 1</li>
-            <li class="list-group-item">Dashboard 2</li>
-            <li class="list-group-item">Dashboard 3</li>
-            <li class="list-group-item">Dashboard 4</li>
+          <h4 class="mb-3">Dashboards</h4>
+          <h5>Enabled</h5>
+          <p class="d-none" id="no-enabled-text">There are no enabled dashboards</p>
+          <ul class="list-group mb-3" id="dashboards">
+            <li class="list-group-item">
+              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
+              <span>&nbsp;&nbsp;Platform Dashboard</span>
+              <a class="text-dark" href="#platform-info" data-toggle="collapse">
+                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
+              </a>
+              <div class="collapse mt-2" id="platform-info">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Enable/Disable Dashboard</strong>
+                      <p>Shows or hides this dashboard on the home screen</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-secondary" id="platform-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="platform-disable-btn">Disable</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-8">
+                        <strong>Theme</strong>
+                        <p>Changes theme of this dashboard</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <button class="btn btn-light" id="platform-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="platform-dark-btn">Dark</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
+              <span>&nbsp;&nbsp;Top Ten Dashboard</span>
+              <a class="text-dark" href="#top-ten-info" data-toggle="collapse">
+                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
+              </a>
+              <div class="collapse mt-2" id="top-ten-info">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Enable/Disable Dashboard</strong>
+                      <p>Shows or hides this dashboard on the home screen</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-secondary" id="top-ten-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="top-ten-disable-btn">Disable</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-8">
+                        <strong>Theme</strong>
+                        <p>Changes theme of this dashboard</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <button class="btn btn-light" id="top-ten-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="top-ten-dark-btn">Dark</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
+              <span>&nbsp;&nbsp;Views Dashboard</span>
+              <a class="text-dark" href="#views-info" data-toggle="collapse">
+                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
+              </a>
+              <div class="collapse mt-2" id="views-info">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Enable/Disable Dashboard</strong>
+                      <p>Shows or hides this dashboard on the home screen</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-secondary" id="views-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="views-disable-btn">Disable</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-8">
+                        <strong>Theme</strong>
+                        <p>Changes theme of this dashboard</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <button class="btn btn-light" id="views-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="views-dark-btn">Dark</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </li>
+            <li class="list-group-item">
+              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
+              <span>&nbsp;&nbsp;SEO Dashboard</span>
+              <a class="text-dark" href="#seo-info" data-toggle="collapse">
+                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
+              </a>
+              <div class="collapse mt-2" id="seo-info">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Enable/Disable Dashboard</strong>
+                      <p>Shows or hides this dashboard on the home screen</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-secondary" id="seo-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="seo-disable-btn">Disable</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-8">
+                        <strong>Theme</strong>
+                        <p>Changes theme of this dashboard</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <button class="btn btn-light" id="seo-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="seo-dark-btn">Dark</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+          <h5>Disabled</h5>
+          <p id="no-disabled-text">There are no disabled dashboards</p>
+          <ul class="list-group mb-3 d-none" id="disabled-dashboards">
           </ul>
           <br>
           <div class="row justify-content-center">
@@ -133,6 +258,14 @@
       </div>
     </footer>
     <!--TODO: Move these script tags? -->
+    <script>
+        // Simple list
+        Sortable.create(dashboards, {
+          animation: 150,
+          ghostClass: 'grey-background',
+          handle: ".drag-handle"
+        });
+    </script>
     <script src="js/authorize.js"></script>
     <script src="js/handle.js"></script>
     <script src="js/main.js"></script>

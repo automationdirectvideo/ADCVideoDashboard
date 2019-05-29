@@ -126,3 +126,13 @@ footer {
   margin-right: 0px;
   padding: 0px;
 }
+
+/* Settings page */
+.drag-handle {
+  cursor: grab;
+  cursor: -webkit-grabbing;
+}
+
+.grey-background {
+  background-color: lightgrey;
+}
