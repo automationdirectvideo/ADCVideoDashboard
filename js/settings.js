@@ -38,9 +38,7 @@ showFooterButton.addEventListener("click", function() {
 
 hideFooterButton.addEventListener("click", function() {
   setFooterDisplay("hide");
-  hideFooterButton.classList.add("d-none");
-  showFooterButton.classList.remove("d-none");
-  document.getElementsByTagName("footer")[0].classList.add("d-none");
+  hideFooter();
 });
 
 resetButton.addEventListener("click", function() {
@@ -69,7 +67,7 @@ console.log("Current Settings (String): ", JSON.stringify(currentSettings));
 
 // Tests
 console.log("Window Location: ", window.location.pathname);
-
+loadSettings();
 
 
 function resetSettings() {
@@ -128,6 +126,15 @@ function setAllDashboardThemes(theme) {
   }
 }
 
-function loadSettings() {
+function hideFooter() {
+  hideFooterButton.classList.add("d-none");
+  showFooterButton.classList.remove("d-none");
+  document.getElementsByTagName("footer")[0].classList.add("d-none");
+}
 
+function loadSettings() {
+  cycleSpeedInput.value = currentSettings.cycleSpeed;
+  if (currentSettings.footer == "hide") {
+    hideFooter();
+  }
 }
