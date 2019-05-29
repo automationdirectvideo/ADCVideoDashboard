@@ -48,7 +48,7 @@ resetButton.addEventListener("click", function() {
 });
 
 saveButton.addEventListener("click", function() {
-  setCycleSpeed(cycleSpeedInput.value);
+  setCycleSpeed(parseInt(cycleSpeedInput.value, 10));
   // Get order of dashboards
   saveNewSettings();
   window.location = "index.html";
