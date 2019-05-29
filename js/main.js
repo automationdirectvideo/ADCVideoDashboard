@@ -1,3 +1,40 @@
+const defaultSettings = 
+{
+  "cycleSpeed": 10,
+  "footer": "show",
+  "dashboards": [
+    {
+      "name": "platform",
+      "index": 0,
+      "theme": "light"
+    },
+    {
+      "name": "top-ten",
+      "index": 1,
+      "theme": "light"
+      
+    },
+    {
+      "name": "views",
+      "index": 2,
+      "theme": "light"
+      
+    },
+    {
+      "name": "seo",
+      "index": 3,
+      "theme": "light"
+      
+    }
+  ]
+};
+
+if (!localStorage.getItem("settings")) {
+  localStorage.setItem("settings", JSON.stringify(defaultSettings));
+}
+currentSettings = JSON.parse(localStorage.getItem("settings"));
+
+
 // Calls the Analytics API with a request and returns response to callback
 function callAnalyticsAPI(request, source, callback) {
   gapi.client.youtubeAnalytics.reports.query(request)

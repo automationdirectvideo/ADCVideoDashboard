@@ -1,38 +1,4 @@
-const defaultSettings = 
-{
-  "cycleSpeed": 10,
-  "footer": "show",
-  "dashboards": [
-    {
-      "name": "platform",
-      "index": 0,
-      "theme": "light"
-    },
-    {
-      "name": "top-ten",
-      "index": 1,
-      "theme": "light"
-      
-    },
-    {
-      "name": "views",
-      "index": 2,
-      "theme": "light"
-      
-    },
-    {
-      "name": "seo",
-      "index": 3,
-      "theme": "light"
-      
-    }
-  ]
-};
 const supportedThemes = ["light", "dark"];
-if (!localStorage.getItem("settings")) {
-  localStorage.setItem("settings", JSON.stringify(defaultSettings));
-}
-currentSettings = JSON.parse(localStorage.getItem("settings"));
 
 // Get buttons & textbox
 const cycleSpeedInput = document.getElementById("cycle-speed-input");
@@ -85,6 +51,7 @@ saveButton.addEventListener("click", function() {
   setCycleSpeed(cycleSpeedInput.value);
   // Get order of dashboards
   saveNewSettings();
+  window.location = "index.html";
 });
 
 
@@ -101,7 +68,7 @@ console.log("Current Settings (String): ", JSON.stringify(currentSettings));
 
 
 // Tests
-
+console.log("Window Location: ", window.location.pathname);
 
 
 
@@ -159,4 +126,8 @@ function setAllDashboardThemes(theme) {
   } else {
     console.error("Type Error: ", "Parameter theme is not a supported value");
   }
+}
+
+function loadSettings() {
+
 }
