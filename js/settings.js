@@ -34,15 +34,58 @@ if (!localStorage.getItem("settings")) {
 }
 currentSettings = JSON.parse(localStorage.getItem("settings"));
 
-// Get buttons
+// Get buttons & textbox
+const cycleSpeedInput = document.getElementById("cycle-speed-input");
 const allLightThemeButton = document.getElementById("all-light-btn");
 const allDarkThemeButton = document.getElementById("all-dark-btn");
 const enableAllButton = document.getElementById("enable-all-btn");
 const disableAllButton = document.getElementById("disable-all-btn");
 const showFooterButton = document.getElementById("show-footer-btn");
 const hideFooterButton = document.getElementById("hide-footer-btn");
-const resetButton = document.getElementById("reset-btn");
+const resetButton = document.getElementById("confirm-reset-btn");
 const saveButton = document.getElementById("save-btn");
+
+
+// Create button press event listeners
+allLightThemeButton.addEventListener("click", function() {
+  setAllDashboardThemes("light");
+});
+
+allDarkThemeButton.addEventListener("click", function() {
+  setAllDashboardThemes("dark");
+});
+
+enableAllButton.addEventListener("click", function() {
+  //
+});
+
+disableAllButton.addEventListener("click", function() {
+  //
+});
+
+showFooterButton.addEventListener("click", function() {
+  setFooterDisplay("show");
+  showFooterButton.classList.add("d-none");
+  hideFooterButton.classList.remove("d-none");
+  document.getElementsByTagName("footer")[0].classList.remove("d-none");
+});
+
+hideFooterButton.addEventListener("click", function() {
+  setFooterDisplay("hide");
+  hideFooterButton.classList.add("d-none");
+  showFooterButton.classList.remove("d-none");
+  document.getElementsByTagName("footer")[0].classList.add("d-none");
+});
+
+resetButton.addEventListener("click", function() {
+  resetSettings();
+});
+
+saveButton.addEventListener("click", function() {
+  setCycleSpeed(cycleSpeedInput.value);
+  // Get order of dashboards
+  saveNewSettings();
+});
 
 
 // Displays current settings

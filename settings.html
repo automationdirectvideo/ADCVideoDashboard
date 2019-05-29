@@ -18,7 +18,7 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <div class="main">
+      <div class="main" id="main-container">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <a href ="index.html" class="navbar-brand">
             <img src="imgs/yt_icon_rgb.png" style="width:42px" class="d-inline-block align-top" alt="">
@@ -53,7 +53,7 @@
             </div>
             <div class="col-3 text-right">
               <div class="input-group">
-                <input type="text" class="form-control" value="10" placeholder="Cycle speed" aria-label="Cycle speed">
+                <input id="cycle-speed-input" type="text" class="form-control" value="10" placeholder="Cycle speed" aria-label="Cycle speed">
                 <div class="input-group-append">
                   <span class="input-group-text">seconds</span>
                 </div>
@@ -96,7 +96,7 @@
               <p>Reset to default settings</p>
             </div>
             <div class="col-4 text-right">
-              <button class="btn btn-danger" id="reset-btn">Reset to Default</button>
+              <button class="btn btn-danger" id="reset-btn" data-toggle="modal" data-target="#resetModal">Reset to Default</button>
             </div>
           </div>
           <br>
