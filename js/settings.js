@@ -11,6 +11,9 @@ const hideFooterButton = document.getElementById("hide-footer-btn");
 const resetButton = document.getElementById("confirm-reset-btn");
 const saveButton = document.getElementById("save-btn");
 
+var disabledDashboardsList = document.getElementById("disabledDashboards");
+var enabledDashboardsList = document.getElementById("enabledDashboards");
+
 
 // Create button press event listeners
 allLightThemeButton.addEventListener("click", function() {
@@ -43,13 +46,16 @@ hideFooterButton.addEventListener("click", function() {
 
 resetButton.addEventListener("click", function() {
   resetSettings();
+  location.reload();
 });
 
 saveButton.addEventListener("click", function() {
   setCycleSpeed(parseInt(cycleSpeedInput.value, 10));
-  // Get order of dashboards
+  setDashboardOrderandThemes();
   saveNewSettings();
-  window.location = "index.html";
+  // TODO: replace location.reload with window.location
+  // window.location = "index.html";
+  location.reload();
 });
 
 
@@ -126,6 +132,19 @@ function setAllDashboardThemes(theme) {
   }
 }
 
+function setDashboardOrderandThemes() {
+  var enabledOrder = enabledSortable.toArray();
+  var numEnabled = 0;
+  for (var i = 0; i < currentSettings.dashboards.length; i++) {
+    var dashboard = currentSettings.dashboards[i];
+    dashboard.index = enabledOrder.indexOf(dashboard.name);
+    if (dashboard.index >= 0) {
+      numEnabled++;
+    }
+  }
+  currentSettings.numEnabled = numEnabled;
+}
+
 function hideFooter() {
   hideFooterButton.classList.add("d-none");
   showFooterButton.classList.remove("d-none");
@@ -137,4 +156,72 @@ function loadSettings() {
   if (currentSettings.footer == "hide") {
     hideFooter();
   }
+  var enabledOrder = new Array(currentSettings.numEnabled);
+  var disabledOrder = new Array();
+  for (var i = 0; i < currentSettings.dashboards.length; i++) {
+    var dashboard = currentSettings.dashboards[i];
+    if (dashboard.index >= 0) {
+      enabledOrder.splice(dashboard.index, 1, dashboard.name);
+    } else {
+      disabledOrder.push(dashboard.name);
+    }
+  }
+  for (var i = 0; i < enabledOrder.length; i++) {
+    var dashboardItem = document.getElementById(enabledOrder[i]);
+    dashboardItem.remove();
+    enabledDashboardsList.appendChild(dashboardItem);
+  }
+  for (var i = 0; i < disabledOrder.length; i++) {
+    var dashboardItem = document.getElementById(disabledOrder[i]);
+    dashboardItem.remove();
+    disabledDashboardsList.appendChild(dashboardItem);
+  }
+  updateDashboardText();
+}
+
+
+
+var enabledSortable = Sortable.create(enabledDashboards, {
+  animation: 150,
+  ghostClass: 'grey-background',
+  group: "dashboards",
+  handle: ".drag-handle",
+  onAdd: function(e) {
+    var enableButton = document.getElementById(e.item.id + "-enable-btn");
+    var disableButton = document.getElementById(e.item.id + "-disable-btn");
+    enableButton.disabled = true;
+    disableButton.disabled = false;
+  },
+  onChange: function() {
+    updateDashboardText();
+  }
+});
+
+var disabledSortable = Sortable.create(disabledDashboards, {
+  animation: 150,
+  ghostClass: 'grey-background',
+  group: "dashboards",
+  handle: ".drag-handle",
+  onAdd: function(e) {
+    var enableButton = document.getElementById(e.item.id + "-enable-btn");
+    var disableButton = document.getElementById(e.item.id + "-disable-btn");
+    enableButton.disabled = false;
+    disableButton.disabled = true;
+  },
+  onChange: function() {
+    updateDashboardText();
+  }
+});
+
+function updateDashboardText() {
+  if (disabledDashboardsList.children.length > 0) {
+      document.getElementById("no-disabled-text").classList.add("d-none");
+    } else {
+      document.getElementById("no-disabled-text").classList.remove("d-none");
+    }
+    if (enabledDashboardsList.children.length > 0) {
+      document.getElementById("no-enabled-text").classList.add("d-none");
+    } else {
+      document.getElementById("no-enabled-text").classList.remove("d-none");
+    }
 }
