@@ -1,7 +1,6 @@
 const defaultSettings = 
 {
   "cycleSpeed": 10,
-  "footer": "show",
   "dashboards": [
     {
       "name": "platform",
@@ -26,7 +25,9 @@ const defaultSettings =
       "theme": "light"
       
     }
-  ]
+  ],
+  "footer": "show",
+  "numEnabled": 4
 };
 
 if (!localStorage.getItem("settings")) {
