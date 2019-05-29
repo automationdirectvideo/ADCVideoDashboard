@@ -34,6 +34,16 @@ if (!localStorage.getItem("settings")) {
 }
 currentSettings = JSON.parse(localStorage.getItem("settings"));
 
+// Get buttons
+const allLightThemeButton = document.getElementById("all-light-btn");
+const allDarkThemeButton = document.getElementById("all-dark-btn");
+const enableAllButton = document.getElementById("enable-all-btn");
+const disableAllButton = document.getElementById("disable-all-btn");
+const showFooterButton = document.getElementById("show-footer-btn");
+const hideFooterButton = document.getElementById("hide-footer-btn");
+const resetButton = document.getElementById("reset-btn");
+const saveButton = document.getElementById("save-btn");
+
 
 // Displays current settings
 console.log("Cycle Speed: ", currentSettings.cycleSpeed);
