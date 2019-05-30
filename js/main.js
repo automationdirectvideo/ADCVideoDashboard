@@ -61,6 +61,10 @@ function carouselPrev() {
   $(".carousel").carousel("prev");
 }
 
+function goToCarouselItem(index) {
+  $(".carousel").carousel(index);
+}
+
 // Get current settings
 if (!localStorage.getItem("settings")) {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
@@ -92,3 +96,16 @@ for (var i = 0; i < enabledOrder.length; i++) {
   dashboardItem.remove();
   dashboardCarouselInner.appendChild(dashboardItem);
 }
+
+document.addEventListener("keydown", function (e) {
+  console.log("Keypress: ", e.key);
+  if (e.key == "ArrowLeft") {
+    carouselPrev();
+  } else if (e.key == "ArrowRight") {
+    carouselNext();
+  } else if (!isNaN(e.key)) {
+    if (e.key <= currentSettings.numEnabled && e.key != 0) {
+      goToCarouselItem(parseInt(e.key) - 1);
+    }
+  }
+});
