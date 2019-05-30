@@ -36,3 +36,35 @@ function getYouTubeDateFormat(date) {
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+const defaultSettings = 
+{
+  "cycleSpeed": 10,
+  "dashboards": [
+    {
+      "name": "platform",
+      "index": 0,
+      "theme": "light"
+    },
+    {
+      "name": "top-ten",
+      "index": 1,
+      "theme": "light"
+      
+    },
+    {
+      "name": "views",
+      "index": 2,
+      "theme": "light"
+      
+    },
+    {
+      "name": "seo",
+      "index": 3,
+      "theme": "light"
+      
+    }
+  ],
+  "footer": "show",
+  "numEnabled": 4
+};
