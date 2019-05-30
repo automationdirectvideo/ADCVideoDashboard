@@ -42,7 +42,7 @@
           </div>
           <div class="text-center" id="content">
             <div class="carousel slide" id="dashboard-carousel" data-ride="carousel">
-              <div class="carousel-inner" id="dashboard-carousel-inner">
+              <div class="carousel-inner">
               </div>
             </div>
             <div class="d-none" id="dashboard-holder">
@@ -267,10 +267,14 @@
                   </div>
                 </div>
               </div>
+              <span class="oi oi-media-record indicator" data-target="#dashboard-carousel" data-slide-to="" id="indicator"></span>
             </div>
             <div class="row justify-content-center">
-              <img onclick="carouselPrev()" class="col-1" src="open-iconic/svg/chevron-left.svg" style="height:20px;width:auto;" alt="Left Arrow">
-              <img onclick="carouselNext()" class="col-1" src="open-iconic/svg/chevron-right.svg" style="height:20px;width:auto;" alt="Right Arrow">
+              <div class="col-8">
+                <span class="oi oi-chevron-left mr-5" onclick="carouselPrev()" style="font-size:20px;" title="Left Arrow" aria-hidden="true"></span>
+                <div class="indicator-list"></div>
+                <span class="oi oi-chevron-right ml-5" onclick="carouselNext()" style="font-size:20px;" title="Right Arrow" aria-hidden="true"></span>
+              </div>
             </div>
           </div>
         </div>

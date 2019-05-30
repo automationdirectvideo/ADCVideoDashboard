@@ -73,8 +73,9 @@ var currentSettings = JSON.parse(localStorage.getItem("settings"));
 console.log("Current Settings: ", currentSettings);
 
 // Initialize carousel
-var dashboardCarouselInner = 
-    document.getElementById("dashboard-carousel-inner");
+var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+var indicatorList = 
+    document.getElementsByClassName("indicator-list")[0];
 const cycleSpeed = currentSettings.cycleSpeed * 1000;
 $(".carousel").carousel({
   interval: cycleSpeed
@@ -90,11 +91,17 @@ for (var i = 0; i < currentSettings.dashboards.length; i++) {
 }
 for (var i = 0; i < enabledOrder.length; i++) {
   var dashboardItem = document.getElementById(enabledOrder[i]);
+  var indicator = document.getElementById("indicator").cloneNode();
+  console.log(indicator);
   if (i == 0) {
     dashboardItem.classList.add("active");
+    indicator.classList.add("active");
   }
+  indicator.id = "indicator-" + i;
+  indicator.setAttribute("data-slide-to", i);
   dashboardItem.remove();
-  dashboardCarouselInner.appendChild(dashboardItem);
+  carouselInner.appendChild(dashboardItem);
+  indicatorList.appendChild(indicator);
 }
 
 document.addEventListener("keydown", function (e) {
@@ -107,3 +114,11 @@ document.addEventListener("keydown", function (e) {
     goToCarouselItem(parseInt(e.key) - 1);
   }
 });
+
+$(".carousel").on("slide.bs.carousel", function (e) {
+  console.log(e.to);
+  var startIndicator = document.getElementById("indicator-" + e.from);
+  var endIndicator = document.getElementById("indicator-" + e.to);
+  startIndicator.classList.remove("active");
+  endIndicator.classList.add("active");
+})
