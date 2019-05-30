@@ -1,11 +1,22 @@
+/**
+ * Resets the settings back to the default settings
+ */
 function resetSettings() {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
 }
 
+/**
+ * Saves current settings to HTML local storage
+ */
 function saveNewSettings() {
   localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
 
+/**
+ * Records cycle speed to current settings
+ *
+ * @param {number} speed cycle speed in seconds
+ */
 function recordCycleSpeed(speed) {
   if (Number.isInteger(speed)) {
     currentSettings.cycleSpeed = speed;
@@ -14,7 +25,12 @@ function recordCycleSpeed(speed) {
   }
 }
 
-function setFooterDisplay(display) {
+/**
+ * Records whether the footer is shown or hidden to current settings
+ *
+ * @param {string} display the display status of the footer
+ */
+function recordFooterDisplay(display) {
   if (display == "show" || display == "hide") {
     currentSettings.footer = display;
   } else {
@@ -22,6 +38,12 @@ function setFooterDisplay(display) {
   }
 }
 
+/**
+ * Moves the dashboards in the startList to the bottom of the targetList
+ *
+ * @param {HTMLUListElement} startList starting unordered list of dashboards
+ * @param {HTMLUListElement} targetList target unorderd list of dashboards
+ */
 function moveDashboards(startList, targetList) {
   while (startList.children.length > 0) {
     var dashboard = startList.children[0];
@@ -30,27 +52,11 @@ function moveDashboards(startList, targetList) {
   }
 }
 
-function setDashboardTheme(name, theme) {
-  if (supportedThemes.includes(theme)) {
-    var dashboards = currentSettings.dashboards;
-    var i = 0;
-    var dashboardFound
-    while (i < dashboards.length && !dashboardFound) {
-      if (dashboards[i].name == name) {
-        dashboards[i].theme = theme;
-        dashboardFound = true;
-      }
-      i++;
-    }
-    if (!dashboardFound) {
-      console.error("Range Error: ",
-          "No such dashboard found with name " + name);
-    }
-  } else {
-    console.error("Type Error: ", "Parameter theme is not a supported value");
-  }
-}
-
+/**
+ * Sets the theme of all the dashboards to the parameter given
+ *
+ * @param {string} theme theme to change all the dashboards to
+ */
 function setAllDashboardThemes(theme) {
   if (supportedThemes.includes(theme)) {
     var dashboards = currentSettings.dashboards;
@@ -73,6 +79,11 @@ function setAllDashboardThemes(theme) {
   }
 }
 
+
+/**
+ * Records the order of enabled dashboards, which dashboards are disabled, and 
+ * themes of all dashboards
+ */
 function recordDashboardOrderandThemes() {
   var enabledOrder = enabledSortable.toArray();
   var numEnabled = 0;
@@ -90,18 +101,27 @@ function recordDashboardOrderandThemes() {
   currentSettings.numEnabled = numEnabled;
 }
 
+/**
+ * Hides footer and toggles display of show and hide footer buttons
+ */
 function hideFooter() {
   hideFooterButton.classList.add("d-none");
   showFooterButton.classList.remove("d-none");
   document.getElementsByTagName("footer")[0].classList.add("d-none");
 }
 
+/**
+ * Shows footer and toggles display of show and hide footer buttons
+ */
 function showFooter() {
   showFooterButton.classList.add("d-none");
   hideFooterButton.classList.remove("d-none");
   document.getElementsByTagName("footer")[0].classList.remove("d-none");
 }
 
+/**
+ * Reads the current settings and updates the page to match the current settings
+ */
 function loadSettings() {
   cycleSpeedInput.value = currentSettings.cycleSpeed;
   if (currentSettings.footer == "hide") {
@@ -133,23 +153,26 @@ function loadSettings() {
   updateDashboardText();
 }
 
+/**
+ * Displays text in the enabled and disabled dashboards list if they are empty
+ */
 function updateDashboardText() {
   if (disabledDashboardsList.children.length > 0) {
-      document.getElementById("no-disabled-text").classList.add("d-none");
-    } else {
-      document.getElementById("no-disabled-text").classList.remove("d-none");
-    }
-    if (enabledDashboardsList.children.length > 0) {
-      document.getElementById("no-enabled-text").classList.add("d-none");
-    } else {
-      document.getElementById("no-enabled-text").classList.remove("d-none");
-    }
+    document.getElementById("no-disabled-text").classList.add("d-none");
+  } else {
+    document.getElementById("no-disabled-text").classList.remove("d-none");
+  }
+  if (enabledDashboardsList.children.length > 0) {
+    document.getElementById("no-enabled-text").classList.add("d-none");
+  } else {
+    document.getElementById("no-enabled-text").classList.remove("d-none");
+  }
 }
 
 
 const supportedThemes = ["light", "dark"];
 
-// Get buttons & textbox
+// Get buttons, input text, and dashboard lists
 const cycleSpeedInput = document.getElementById("cycle-speed-input");
 const allLightThemeButton = document.getElementById("all-light-btn");
 const allDarkThemeButton = document.getElementById("all-dark-btn");
@@ -165,40 +188,40 @@ var enabledDashboardsList = document.getElementById("enabledDashboards");
 
 
 // Create button press event listeners
-allLightThemeButton.addEventListener("click", function() {
+allLightThemeButton.addEventListener("click", function () {
   setAllDashboardThemes("light");
 });
 
-allDarkThemeButton.addEventListener("click", function() {
+allDarkThemeButton.addEventListener("click", function () {
   setAllDashboardThemes("dark");
 });
 
-enableAllButton.addEventListener("click", function() {
+enableAllButton.addEventListener("click", function () {
   moveDashboards(disabledDashboardsList, enabledDashboardsList);
   updateDashboardText();
 });
 
-disableAllButton.addEventListener("click", function() {
+disableAllButton.addEventListener("click", function () {
   moveDashboards(enabledDashboardsList, disabledDashboardsList);
   updateDashboardText();
 });
 
-showFooterButton.addEventListener("click", function() {
-  setFooterDisplay("show");
+showFooterButton.addEventListener("click", function () {
+  recordFooterDisplay("show");
   showFooter();
 });
 
-hideFooterButton.addEventListener("click", function() {
-  setFooterDisplay("hide");
+hideFooterButton.addEventListener("click", function () {
+  recordFooterDisplay("hide");
   hideFooter();
 });
 
-resetButton.addEventListener("click", function() {
+resetButton.addEventListener("click", function () {
   resetSettings();
   location.reload();
 });
 
-saveButton.addEventListener("click", function() {
+saveButton.addEventListener("click", function () {
   recordCycleSpeed(parseInt(cycleSpeedInput.value, 10));
   recordDashboardOrderandThemes();
   saveNewSettings();
@@ -207,8 +230,9 @@ saveButton.addEventListener("click", function() {
   location.reload();
 });
 
+// Create button press event listeners for buttons in each dashboard
 for (var i = 0; i < currentSettings.dashboards.length; i++) {
-  (function() {
+  (function () {
     var dashboardName = currentSettings.dashboards[i].name;
     let dashboard = document.getElementById(dashboardName);
     let enableButton = document.getElementById(dashboardName + "-enable-btn");
@@ -244,27 +268,26 @@ for (var i = 0; i < currentSettings.dashboards.length; i++) {
       badge.className = "badge badge-pill badge-theme badge-dark";
     });
   }());
-} 
+}
 
 
-// Displays current settings
-console.log("Current Settings (String): ", JSON.stringify(currentSettings));
-
+// Displays & loads current settings
+console.log("Current Settings: ", currentSettings);
 loadSettings();
 
-
+// Create sortable lists
 var enabledSortable = Sortable.create(enabledDashboards, {
   animation: 150,
   ghostClass: 'grey-background',
   group: "dashboards",
   handle: ".drag-handle",
-  onAdd: function(e) {
+  onAdd: function (e) {
     var enableButton = document.getElementById(e.item.id + "-enable-btn");
     var disableButton = document.getElementById(e.item.id + "-disable-btn");
     enableButton.disabled = true;
     disableButton.disabled = false;
   },
-  onChange: function() {
+  onChange: function () {
     updateDashboardText();
   }
 });
@@ -274,13 +297,13 @@ var disabledSortable = Sortable.create(disabledDashboards, {
   ghostClass: 'grey-background',
   group: "dashboards",
   handle: ".drag-handle",
-  onAdd: function(e) {
+  onAdd: function (e) {
     var enableButton = document.getElementById(e.item.id + "-enable-btn");
     var disableButton = document.getElementById(e.item.id + "-disable-btn");
     enableButton.disabled = false;
     disableButton.disabled = true;
   },
-  onChange: function() {
+  onChange: function () {
     updateDashboardText();
   }
 });
