@@ -52,3 +52,35 @@ function showChannelData(data) {
   channelData.innerHTML = data;
 
 }
+
+// Get current settings
+if (!localStorage.getItem("settings")) {
+  localStorage.setItem("settings", JSON.stringify(defaultSettings));
+}
+var currentSettings = JSON.parse(localStorage.getItem("settings"));
+console.log("Current Settings: ", currentSettings);
+
+// Initialize carousel
+var dashboardCarouselInner = 
+    document.getElementById("dashboard-carousel-inner");
+const cycleSpeed = currentSettings.cycleSpeed * 1000;
+$(".carousel").carousel({
+  interval: cycleSpeed
+});
+
+// Set order of dashboards
+var enabledOrder = new Array(currentSettings.numEnabled);
+for (var i = 0; i < currentSettings.dashboards.length; i++) {
+  var dashboard = currentSettings.dashboards[i];
+  if (dashboard.index >= 0) {
+    enabledOrder.splice(dashboard.index, 1, dashboard.name);
+  }
+}
+for (var i = 0; i < enabledOrder.length; i++) {
+  var dashboardItem = document.getElementById(enabledOrder[i]);
+  if (i == 0) {
+    dashboardItem.classList.add("active");
+  }
+  dashboardItem.remove();
+  dashboardCarouselInner.appendChild(dashboardItem);
+}
