@@ -136,3 +136,9 @@ footer {
 .grey-background {
   background-color: lightgrey;
 }
+
+.badge-theme {
+  border: 1px solid black;
+  font-size: 85%;
+  margin-left: 0.75rem;
+}

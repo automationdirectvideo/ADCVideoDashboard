@@ -25,18 +25,18 @@ allDarkThemeButton.addEventListener("click", function() {
 });
 
 enableAllButton.addEventListener("click", function() {
-  //
+  moveDashboards(disabledDashboardsList, enabledDashboardsList);
+  updateDashboardText();
 });
 
 disableAllButton.addEventListener("click", function() {
-  //
+  moveDashboards(enabledDashboardsList, disabledDashboardsList);
+  updateDashboardText();
 });
 
 showFooterButton.addEventListener("click", function() {
   setFooterDisplay("show");
-  showFooterButton.classList.add("d-none");
-  hideFooterButton.classList.remove("d-none");
-  document.getElementsByTagName("footer")[0].classList.remove("d-none");
+  showFooter();
 });
 
 hideFooterButton.addEventListener("click", function() {
@@ -50,13 +50,52 @@ resetButton.addEventListener("click", function() {
 });
 
 saveButton.addEventListener("click", function() {
-  setCycleSpeed(parseInt(cycleSpeedInput.value, 10));
-  setDashboardOrderandThemes();
+  recordCycleSpeed(parseInt(cycleSpeedInput.value, 10));
+  recordDashboardOrderandThemes();
   saveNewSettings();
   // TODO: replace location.reload with window.location
   // window.location = "index.html";
   location.reload();
 });
+
+for (var i = 0; i < currentSettings.dashboards.length; i++) {
+  (function() {
+    var dashboardName = currentSettings.dashboards[i].name;
+    let dashboard = document.getElementById(dashboardName);
+    let enableButton = document.getElementById(dashboardName + "-enable-btn");
+    let disableButton = document.getElementById(dashboardName + "-disable-btn");
+    let lightButton = document.getElementById(dashboardName + "-light-btn");
+    let darkButton = document.getElementById(dashboardName + "-dark-btn");
+    enableButton.addEventListener("click", function () {
+      enableButton.disabled = true;
+      disableButton.disabled = false;
+      dashboard.remove();
+      enabledDashboardsList.appendChild(dashboard);
+      updateDashboardText();
+    });
+    disableButton.addEventListener("click", function () {
+      disableButton.disabled = true;
+      enableButton.disabled = false;
+      dashboard.remove();
+      disabledDashboardsList.appendChild(dashboard);
+      updateDashboardText();
+    });
+    lightButton.addEventListener("click", function () {
+      lightButton.disabled = true;
+      darkButton.disabled = false;
+      let badge = document.getElementById(dashboardName + "-badge");
+      badge.innerHTML = "Light";
+      badge.className = "badge badge-pill badge-theme badge-light";
+    });
+    darkButton.addEventListener("click", function () {
+      darkButton.disabled = true;
+      lightButton.disabled = false;
+      let badge = document.getElementById(dashboardName + "-badge");
+      badge.innerHTML = "Dark";
+      badge.className = "badge badge-pill badge-theme badge-dark";
+    });
+  }());
+} 
 
 
 // Displays current settings
@@ -84,7 +123,7 @@ function saveNewSettings() {
   localStorage.setItem("settings", JSON.stringify(currentSettings));
 }
 
-function setCycleSpeed(speed) {
+function recordCycleSpeed(speed) {
   if (Number.isInteger(speed)) {
     currentSettings.cycleSpeed = speed;
   } else {
@@ -97,6 +136,14 @@ function setFooterDisplay(display) {
     currentSettings.footer = display;
   } else {
     console.error("Type Error: ", "Parameter display is not a supported value");
+  }
+}
+
+function moveDashboards(startList, targetList) {
+  while (startList.children.length > 0) {
+    var dashboard = startList.children[0];
+    dashboard.remove();
+    targetList.appendChild(dashboard);
   }
 }
 
@@ -125,22 +172,29 @@ function setAllDashboardThemes(theme) {
   if (supportedThemes.includes(theme)) {
     var dashboards = currentSettings.dashboards;
     for (var i = 0; i < dashboards.length; i++) {
-        dashboards[i].theme = theme;
+      var badge = document.getElementById(dashboards[i].name + "-badge");
+      badge.innerHTML = capitalizeFirstLetter(theme);
+      badge.classList = "badge badge-pill badge-theme badge-" + theme;
+      dashboards[i].theme = theme;
     }
   } else {
     console.error("Type Error: ", "Parameter theme is not a supported value");
   }
 }
 
-function setDashboardOrderandThemes() {
+function recordDashboardOrderandThemes() {
   var enabledOrder = enabledSortable.toArray();
   var numEnabled = 0;
   for (var i = 0; i < currentSettings.dashboards.length; i++) {
     var dashboard = currentSettings.dashboards[i];
+    // Order
     dashboard.index = enabledOrder.indexOf(dashboard.name);
     if (dashboard.index >= 0) {
       numEnabled++;
     }
+    // Themes
+    var badge = document.getElementById(dashboard.name + "-badge");
+    dashboard.theme = badge.innerHTML.toLowerCase();
   }
   currentSettings.numEnabled = numEnabled;
 }
@@ -149,6 +203,12 @@ function hideFooter() {
   hideFooterButton.classList.add("d-none");
   showFooterButton.classList.remove("d-none");
   document.getElementsByTagName("footer")[0].classList.add("d-none");
+}
+
+function showFooter() {
+  showFooterButton.classList.add("d-none");
+  hideFooterButton.classList.remove("d-none");
+  document.getElementsByTagName("footer")[0].classList.remove("d-none");
 }
 
 function loadSettings() {
@@ -165,6 +225,9 @@ function loadSettings() {
     } else {
       disabledOrder.push(dashboard.name);
     }
+    var badge = document.getElementById(dashboard.name + "-badge");
+    badge.innerHTML = capitalizeFirstLetter(dashboard.theme);
+    badge.classList.add("badge-" + dashboard.theme);
   }
   for (var i = 0; i < enabledOrder.length; i++) {
     var dashboardItem = document.getElementById(enabledOrder[i]);
@@ -177,6 +240,8 @@ function loadSettings() {
     disabledDashboardsList.appendChild(dashboardItem);
   }
   updateDashboardText();
+
+
 }
 
 

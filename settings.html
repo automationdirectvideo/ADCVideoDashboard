@@ -15,6 +15,7 @@
     <script src="https://SortableJS.github.io/Sortable/Sortable.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/fullscreen.js"></script>
+    <script src="js/utility.js"></script>
   </head>
   <body>
     <div class="main-wrapper">
@@ -107,6 +108,7 @@
             <li class="list-group-item" data-id="platform" id="platform">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
               <span>&nbsp;&nbsp;Platform Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="platform-badge"></span>
               <a class="text-dark" href="#platform-info" data-toggle="collapse">
                 <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
               </a>
@@ -138,6 +140,7 @@
             <li class="list-group-item" data-id="top-ten" id="top-ten">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
               <span>&nbsp;&nbsp;Top Ten Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="top-ten-badge"></span>
               <a class="text-dark" href="#top-ten-info" data-toggle="collapse">
                 <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
               </a>
@@ -169,6 +172,7 @@
             <li class="list-group-item" data-id="views" id="views">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
               <span>&nbsp;&nbsp;Views Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="views-badge"></span>
               <a class="text-dark" href="#views-info" data-toggle="collapse">
                 <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
               </a>
@@ -200,6 +204,7 @@
             <li class="list-group-item" data-id="seo" id="seo">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
               <span>&nbsp;&nbsp;SEO Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="seo-badge"></span>
               <a class="text-dark" href="#seo-info" data-toggle="collapse">
                 <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
               </a>
@@ -283,7 +288,6 @@
     <script src="js/main.js"></script>
     <script src="js/request.js"></script>
     <script src="js/settings.js"></script>
-    <script src="js/utility.js"></script>
     <script async defer src="https://apis.google.com/js/api.js"
         onload="this.onload=function(){};handleClientLoad()"
         onreadystatechange="if (this.readyState === 'complete') this.onload()">
