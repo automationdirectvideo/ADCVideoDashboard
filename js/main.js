@@ -108,7 +108,6 @@ for (var i = 0; i < currentSettings.dashboards.length; i++) {
 for (var i = 0; i < enabledOrder.length; i++) {
   var dashboardItem = document.getElementById(enabledOrder[i]);
   var indicator = document.getElementById("indicator").cloneNode();
-  console.log(indicator);
   if (i == 0) {
     dashboardItem.classList.add("active");
     indicator.classList.add("active");
@@ -121,7 +120,6 @@ for (var i = 0; i < enabledOrder.length; i++) {
 }
 
 document.addEventListener("keydown", function (e) {
-  console.log("Keypress: ", e.key);
   if (e.key == "ArrowLeft") {
     carouselPrev();
   } else if (e.key == "ArrowRight") {
@@ -132,7 +130,6 @@ document.addEventListener("keydown", function (e) {
 });
 
 $(".carousel").on("slide.bs.carousel", function (e) {
-  console.log(e.to);
   var startIndicator = document.getElementById("indicator-" + e.from);
   var endIndicator = document.getElementById("indicator-" + e.to);
   startIndicator.classList.remove("active");
