@@ -1,120 +1,3 @@
-const supportedThemes = ["light", "dark"];
-
-// Get buttons & textbox
-const cycleSpeedInput = document.getElementById("cycle-speed-input");
-const allLightThemeButton = document.getElementById("all-light-btn");
-const allDarkThemeButton = document.getElementById("all-dark-btn");
-const enableAllButton = document.getElementById("enable-all-btn");
-const disableAllButton = document.getElementById("disable-all-btn");
-const showFooterButton = document.getElementById("show-footer-btn");
-const hideFooterButton = document.getElementById("hide-footer-btn");
-const resetButton = document.getElementById("confirm-reset-btn");
-const saveButton = document.getElementById("save-btn");
-
-var disabledDashboardsList = document.getElementById("disabledDashboards");
-var enabledDashboardsList = document.getElementById("enabledDashboards");
-
-
-// Create button press event listeners
-allLightThemeButton.addEventListener("click", function() {
-  setAllDashboardThemes("light");
-});
-
-allDarkThemeButton.addEventListener("click", function() {
-  setAllDashboardThemes("dark");
-});
-
-enableAllButton.addEventListener("click", function() {
-  moveDashboards(disabledDashboardsList, enabledDashboardsList);
-  updateDashboardText();
-});
-
-disableAllButton.addEventListener("click", function() {
-  moveDashboards(enabledDashboardsList, disabledDashboardsList);
-  updateDashboardText();
-});
-
-showFooterButton.addEventListener("click", function() {
-  setFooterDisplay("show");
-  showFooter();
-});
-
-hideFooterButton.addEventListener("click", function() {
-  setFooterDisplay("hide");
-  hideFooter();
-});
-
-resetButton.addEventListener("click", function() {
-  resetSettings();
-  location.reload();
-});
-
-saveButton.addEventListener("click", function() {
-  recordCycleSpeed(parseInt(cycleSpeedInput.value, 10));
-  recordDashboardOrderandThemes();
-  saveNewSettings();
-  // TODO: replace location.reload with window.location
-  // window.location = "index.html";
-  location.reload();
-});
-
-for (var i = 0; i < currentSettings.dashboards.length; i++) {
-  (function() {
-    var dashboardName = currentSettings.dashboards[i].name;
-    let dashboard = document.getElementById(dashboardName);
-    let enableButton = document.getElementById(dashboardName + "-enable-btn");
-    let disableButton = document.getElementById(dashboardName + "-disable-btn");
-    let lightButton = document.getElementById(dashboardName + "-light-btn");
-    let darkButton = document.getElementById(dashboardName + "-dark-btn");
-    enableButton.addEventListener("click", function () {
-      enableButton.disabled = true;
-      disableButton.disabled = false;
-      dashboard.remove();
-      enabledDashboardsList.appendChild(dashboard);
-      updateDashboardText();
-    });
-    disableButton.addEventListener("click", function () {
-      disableButton.disabled = true;
-      enableButton.disabled = false;
-      dashboard.remove();
-      disabledDashboardsList.appendChild(dashboard);
-      updateDashboardText();
-    });
-    lightButton.addEventListener("click", function () {
-      lightButton.disabled = true;
-      darkButton.disabled = false;
-      let badge = document.getElementById(dashboardName + "-badge");
-      badge.innerHTML = "Light";
-      badge.className = "badge badge-pill badge-theme badge-light";
-    });
-    darkButton.addEventListener("click", function () {
-      darkButton.disabled = true;
-      lightButton.disabled = false;
-      let badge = document.getElementById(dashboardName + "-badge");
-      badge.innerHTML = "Dark";
-      badge.className = "badge badge-pill badge-theme badge-dark";
-    });
-  }());
-} 
-
-
-// Displays current settings
-console.log("Cycle Speed: ", currentSettings.cycleSpeed);
-console.log("Footer: ", currentSettings.footer);
-for (var i = 0; i < currentSettings.dashboards.length; i++) {
-  const dashboard = currentSettings.dashboards[i];
-  console.log("Dashboard Name: " + dashboard.name + "\n\tIndex: " + dashboard.index + "\n\tTheme: " + dashboard.theme);
-}
-console.log("Current Settings: ", currentSettings);
-console.log("Current Settings (String): ", JSON.stringify(currentSettings));
-
-
-
-// Tests
-console.log("Window Location: ", window.location.pathname);
-loadSettings();
-
-
 function resetSettings() {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
 }
@@ -240,10 +123,126 @@ function loadSettings() {
     disabledDashboardsList.appendChild(dashboardItem);
   }
   updateDashboardText();
-
-
 }
 
+function updateDashboardText() {
+  if (disabledDashboardsList.children.length > 0) {
+      document.getElementById("no-disabled-text").classList.add("d-none");
+    } else {
+      document.getElementById("no-disabled-text").classList.remove("d-none");
+    }
+    if (enabledDashboardsList.children.length > 0) {
+      document.getElementById("no-enabled-text").classList.add("d-none");
+    } else {
+      document.getElementById("no-enabled-text").classList.remove("d-none");
+    }
+}
+
+
+const supportedThemes = ["light", "dark"];
+
+// Get buttons & textbox
+const cycleSpeedInput = document.getElementById("cycle-speed-input");
+const allLightThemeButton = document.getElementById("all-light-btn");
+const allDarkThemeButton = document.getElementById("all-dark-btn");
+const enableAllButton = document.getElementById("enable-all-btn");
+const disableAllButton = document.getElementById("disable-all-btn");
+const showFooterButton = document.getElementById("show-footer-btn");
+const hideFooterButton = document.getElementById("hide-footer-btn");
+const resetButton = document.getElementById("confirm-reset-btn");
+const saveButton = document.getElementById("save-btn");
+
+var disabledDashboardsList = document.getElementById("disabledDashboards");
+var enabledDashboardsList = document.getElementById("enabledDashboards");
+
+
+// Create button press event listeners
+allLightThemeButton.addEventListener("click", function() {
+  setAllDashboardThemes("light");
+});
+
+allDarkThemeButton.addEventListener("click", function() {
+  setAllDashboardThemes("dark");
+});
+
+enableAllButton.addEventListener("click", function() {
+  moveDashboards(disabledDashboardsList, enabledDashboardsList);
+  updateDashboardText();
+});
+
+disableAllButton.addEventListener("click", function() {
+  moveDashboards(enabledDashboardsList, disabledDashboardsList);
+  updateDashboardText();
+});
+
+showFooterButton.addEventListener("click", function() {
+  setFooterDisplay("show");
+  showFooter();
+});
+
+hideFooterButton.addEventListener("click", function() {
+  setFooterDisplay("hide");
+  hideFooter();
+});
+
+resetButton.addEventListener("click", function() {
+  resetSettings();
+  location.reload();
+});
+
+saveButton.addEventListener("click", function() {
+  recordCycleSpeed(parseInt(cycleSpeedInput.value, 10));
+  recordDashboardOrderandThemes();
+  saveNewSettings();
+  // TODO: replace location.reload with window.location
+  // window.location = "index.html";
+  location.reload();
+});
+
+for (var i = 0; i < currentSettings.dashboards.length; i++) {
+  (function() {
+    var dashboardName = currentSettings.dashboards[i].name;
+    let dashboard = document.getElementById(dashboardName);
+    let enableButton = document.getElementById(dashboardName + "-enable-btn");
+    let disableButton = document.getElementById(dashboardName + "-disable-btn");
+    let lightButton = document.getElementById(dashboardName + "-light-btn");
+    let darkButton = document.getElementById(dashboardName + "-dark-btn");
+    enableButton.addEventListener("click", function () {
+      enableButton.disabled = true;
+      disableButton.disabled = false;
+      dashboard.remove();
+      enabledDashboardsList.appendChild(dashboard);
+      updateDashboardText();
+    });
+    disableButton.addEventListener("click", function () {
+      disableButton.disabled = true;
+      enableButton.disabled = false;
+      dashboard.remove();
+      disabledDashboardsList.appendChild(dashboard);
+      updateDashboardText();
+    });
+    lightButton.addEventListener("click", function () {
+      lightButton.disabled = true;
+      darkButton.disabled = false;
+      let badge = document.getElementById(dashboardName + "-badge");
+      badge.innerHTML = "Light";
+      badge.className = "badge badge-pill badge-theme badge-light";
+    });
+    darkButton.addEventListener("click", function () {
+      darkButton.disabled = true;
+      lightButton.disabled = false;
+      let badge = document.getElementById(dashboardName + "-badge");
+      badge.innerHTML = "Dark";
+      badge.className = "badge badge-pill badge-theme badge-dark";
+    });
+  }());
+} 
+
+
+// Displays current settings
+console.log("Current Settings (String): ", JSON.stringify(currentSettings));
+
+loadSettings();
 
 
 var enabledSortable = Sortable.create(enabledDashboards, {
@@ -277,16 +276,3 @@ var disabledSortable = Sortable.create(disabledDashboards, {
     updateDashboardText();
   }
 });
-
-function updateDashboardText() {
-  if (disabledDashboardsList.children.length > 0) {
-      document.getElementById("no-disabled-text").classList.add("d-none");
-    } else {
-      document.getElementById("no-disabled-text").classList.remove("d-none");
-    }
-    if (enabledDashboardsList.children.length > 0) {
-      document.getElementById("no-enabled-text").classList.add("d-none");
-    } else {
-      document.getElementById("no-enabled-text").classList.remove("d-none");
-    }
-}
