@@ -225,9 +225,7 @@ saveButton.addEventListener("click", function () {
   recordCycleSpeed(parseInt(cycleSpeedInput.value, 10));
   recordDashboardOrderandThemes();
   saveNewSettings();
-  // TODO: replace location.reload with window.location
-  // window.location = "index.html";
-  location.reload();
+  window.location = "index.html";
 });
 
 // Create button press event listeners for buttons in each dashboard
