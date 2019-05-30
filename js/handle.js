@@ -104,9 +104,14 @@ function handleVideoSnippet(response) {
   if (response) {
     console.log("Response received", "handleVideoSnippet");
     let title = document.getElementById("top-video-1-title");
-    title.innerHTML = response.result.items[0].snippet.title;
-    let publishDate = document.getElementById("top-video-1-publish-date");
-    publishDate.innerHTML = response.result.items[0].snippet.publishedAt;
+    title.innerHTML = "Title: " + response.result.items[0].snippet.title;
+
+    let publishDateText = document.getElementById("top-video-1-publish-date");
+    let publishDate = response.result.items[0].snippet.publishedAt;
+    let dateArr = publishDate.split("-");
+    let publishDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
+    publishDateText.innerHTML = "Publish Date: " + publishDate;
+
     let tags = document.getElementById("top-video-1-tags");
     tags.innerHTML = "See Console";
     console.log("Tags: ", response.result.items[0].snippet.tags);
@@ -118,25 +123,25 @@ function handleVideoStats(response) {
     console.log("Response received", "handleVideoStats");
     let stats = response.result.rows[0];
     let views = document.getElementById("top-video-1-views");
-    views.innerHTML = stats[1];
+    views.innerHTML = numberWithCommas(stats[1]);
     let subsGained = document.getElementById("top-video-1-subs-gained");
-    subsGained.innerHTML = stats[7];
+    subsGained.innerHTML = numberWithCommas(stats[7]);
     let subsLost = document.getElementById("top-video-1-subs-lost");
-    subsLost.innerHTML = stats[8];
+    subsLost.innerHTML = numberWithCommas(stats[8]);
     let subsNet = document.getElementById("top-video-1-subs-net");
-    subsNet.innerHTML = stats[7] - stats[8];
+    subsNet.innerHTML = numberWithCommas(stats[7] - stats[8]);
     let likes = document.getElementById("top-video-1-likes");
-    likes.innerHTML = stats[3];
+    likes.innerHTML = numberWithCommas(stats[3]);
     let dislikes = document.getElementById("top-video-1-dislikes");
-    dislikes.innerHTML = stats[4];
+    dislikes.innerHTML = numberWithCommas(stats[4]);
     let comments = document.getElementById("top-video-1-comments");
-    comments.innerHTML = stats[2];
+    comments.innerHTML = numberWithCommas(stats[2]);
     let avgViewDuration =
         document.getElementById("top-video-1-avg-view-duration");
-    avgViewDuration.innerHTML = stats[6];
+    avgViewDuration.innerHTML = numberWithCommas(stats[6]);
     let estimatedMinutesWatched =
-        document.getElementById("top-video-1-mintues-watched");
-    estimatedMinutesWatched.innerHTML = stats[5];
+        document.getElementById("top-video-1-minutes-watched");
+    estimatedMinutesWatched.innerHTML = numberWithCommas(stats[5]);
   }
 }
 
