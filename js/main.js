@@ -53,6 +53,14 @@ function showChannelData(data) {
 
 }
 
+function carouselNext() {
+  $(".carousel").carousel("next");
+}
+
+function carouselPrev() {
+  $(".carousel").carousel("prev");
+}
+
 // Get current settings
 if (!localStorage.getItem("settings")) {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
