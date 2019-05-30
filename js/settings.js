@@ -221,7 +221,7 @@ hideFooterButton.addEventListener("click", function () {
 
 resetButton.addEventListener("click", function () {
   resetSettings();
-  location.reload();
+  window.location = "index.html";
 });
 
 saveButton.addEventListener("click", function () {
