@@ -19,6 +19,9 @@ function saveNewSettings() {
  */
 function recordCycleSpeed(speed) {
   if (Number.isInteger(speed)) {
+    if (speed < 0) {
+      speed = 0;
+    }
     currentSettings.cycleSpeed = speed;
   } else {
     console.error("Type Error: ", "Parameter speed is not an integer");
