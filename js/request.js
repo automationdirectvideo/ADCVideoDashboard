@@ -64,6 +64,55 @@ function requestVideoPlaylist(playlistId, numVideos) {
   callDataAPIPlaylists(request, "VideoPlaylist: ", handleVideoPlaylist);
 }
 
+function requestVideoRetention(startDate, endDate, videoId) {
+  var filters = "video==" + videoId + ";audienceType==ORGANIC";
+  const request = {
+    "dimensions": "insightTrafficSourceDetail",
+    "endDate": endDate,
+    "filters": filters,
+    "ids": "channel==MINE",
+    "metrics": "audienceWatchRatio,relativeRetentionPerformance",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "VideoRetention: ", handleVideoRetention);
+}
+
+function requestVideoSearchTerms(startDate, endDate, videoId) {
+  var filters = "video==" + videoId + ";insightTrafficSourceType==YT_SEARCH";
+  const request = {
+    "dimensions": "video",
+    "endDate": endDate,
+    "filters": filters,
+    "ids": "channel==MINE",
+    "maxResults": 10,
+    "metrics": "views",
+    "sort": "-views",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "VideoSearchTerms: ", handleVideoSearchTerms);
+}
+
+function requestVideoSnippet(videoId) {
+  var request = {
+    part: "snippet,contentDetails,statistics",
+    id: videoId
+  };
+  callDataAPIChannels(request, "VideoSnippet: ", handleVideoSnippet);
+}
+
+function requestVideoStats(startDate, endDate, videoId) {
+  var stringVideoId = "video==" + videoId;
+  const request = {
+    "dimensions": "video",
+    "endDate": endDate,
+    "filters": stringVideoId,
+    "ids": "channel==MINE",
+    "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration,subscribersGained,subscribersLost",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "VideoStats: ", handleVideoStats);
+}
+
 function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
   var stringVideoId = "video==" + videoId;
   const request = {

@@ -79,6 +79,30 @@ function handleVideoPlaylist(response) {
   }
 }
 
+function handleVideoRetention(response) {
+  if (response) {
+    console.log("Response received", "handleVideoRetention");
+  }
+}
+
+function handleVideoSearchTerms(response) {
+  if (response) {
+    console.log("Response received", "handleVideoSearchTerms");
+  }
+}
+
+function handleVideoSnippet(response) {
+  if (response) {
+    console.log("Response received", "handleVideoSnippet");
+  }
+}
+
+function handleVideoStats(response) {
+  if (response) {
+    console.log("Response received", "handleVideoStats");
+  }
+}
+
 // Handles video views by traffic source response from Analytics API
 function handleVideoViewsByTrafficSource(response) {
   if (response) {
