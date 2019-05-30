@@ -67,7 +67,7 @@ function requestVideoPlaylist(playlistId, numVideos) {
 function requestVideoRetention(startDate, endDate, videoId) {
   var filters = "video==" + videoId + ";audienceType==ORGANIC";
   const request = {
-    "dimensions": "insightTrafficSourceDetail",
+    "dimensions": "elapsedVideoTimeRatio",
     "endDate": endDate,
     "filters": filters,
     "ids": "channel==MINE",
@@ -80,7 +80,7 @@ function requestVideoRetention(startDate, endDate, videoId) {
 function requestVideoSearchTerms(startDate, endDate, videoId) {
   var filters = "video==" + videoId + ";insightTrafficSourceType==YT_SEARCH";
   const request = {
-    "dimensions": "video",
+    "dimensions": "insightTrafficSourceDetail",
     "endDate": endDate,
     "filters": filters,
     "ids": "channel==MINE",
