@@ -85,24 +85,58 @@ function handleVideoPlaylist(response) {
 function handleVideoRetention(response) {
   if (response) {
     console.log("Response received", "handleVideoRetention");
+    let percentWatched = document.getElementById("top-video-1-percent-watched");
+    percentWatched.innerHTML = "See Console";
+    console.log("Percent Watched: ", response.result.rows);
   }
 }
 
 function handleVideoSearchTerms(response) {
   if (response) {
     console.log("Response received", "handleVideoSearchTerms");
+    let searchTerms = document.getElementById("top-video-1-search-terms");
+    searchTerms.innerHTML = "See Console";
+    console.log("Top Search Terms: ", response.result.rows);
   }
 }
 
 function handleVideoSnippet(response) {
   if (response) {
     console.log("Response received", "handleVideoSnippet");
+    let title = document.getElementById("top-video-1-title");
+    title.innerHTML = response.result.items[0].snippet.title;
+    let publishDate = document.getElementById("top-video-1-publish-date");
+    publishDate.innerHTML = response.result.items[0].snippet.publishedAt;
+    let tags = document.getElementById("top-video-1-tags");
+    tags.innerHTML = "See Console";
+    console.log("Tags: ", response.result.items[0].snippet.tags);
   }
 }
 
 function handleVideoStats(response) {
   if (response) {
     console.log("Response received", "handleVideoStats");
+    let stats = response.result.rows[0];
+    let views = document.getElementById("top-video-1-views");
+    views.innerHTML = stats[1];
+    let subsGained = document.getElementById("top-video-1-subs-gained");
+    subsGained.innerHTML = stats[7];
+    let subsLost = document.getElementById("top-video-1-subs-lost");
+    subsLost.innerHTML = stats[8];
+    let subsNet = document.getElementById("top-video-1-subs-net");
+    subsNet.innerHTML = stats[7] - stats[8];
+    let likes = document.getElementById("top-video-1-likes");
+    likes.innerHTML = stats[3];
+    let dislikes = document.getElementById("top-video-1-dislikes");
+    dislikes.innerHTML = stats[4];
+    let comments = document.getElementById("top-video-1-comments");
+    comments.innerHTML = stats[2];
+    let avgViewDuration =
+        document.getElementById("top-video-1-avg-view-duration");
+    avgViewDuration.innerHTML = stats[6];
+    let estimatedMinutesWatched =
+        document.getElementById("top-video-1-mintues-watched");
+    estimatedMinutesWatched.innerHTML = stats[5];
   }
 }
 

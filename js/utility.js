@@ -63,6 +63,12 @@ const defaultSettings =
       "index": 3,
       "theme": "light"
       
+    },
+    {
+      "name": "top-video-1",
+      "index": 4,
+      "theme": "light"
+      
     }
   ],
   "footer": "show",
