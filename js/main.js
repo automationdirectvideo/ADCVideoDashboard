@@ -104,8 +104,6 @@ document.addEventListener("keydown", function (e) {
   } else if (e.key == "ArrowRight") {
     carouselNext();
   } else if (!isNaN(e.key)) {
-    if (e.key <= currentSettings.numEnabled && e.key != 0) {
-      goToCarouselItem(parseInt(e.key) - 1);
-    }
+    goToCarouselItem(parseInt(e.key) - 1);
   }
 });
