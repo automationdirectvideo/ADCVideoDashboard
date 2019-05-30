@@ -109,7 +109,7 @@ function handleVideoSnippet(response) {
     let publishDateText = document.getElementById("top-video-1-publish-date");
     let publishDate = response.result.items[0].snippet.publishedAt;
     let dateArr = publishDate.split("-");
-    let publishDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
+    publishDate = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
     publishDateText.innerHTML = "Publish Date: " + publishDate;
 
     let tags = document.getElementById("top-video-1-tags");
