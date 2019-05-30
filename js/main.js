@@ -33,6 +33,18 @@ function callDataAPIPlaylists(request, source, callback) {
     });
 }
 
+// Calls the Data API for videos with a request and returns response to callback
+function callDataAPIVideos(request, source, callback) {
+  gapi.client.youtube.videos.list(request)
+    .then(response => {
+      console.log(source, response);
+      callback(response);
+    })
+    .catch(err => {
+      console.error("Data API call error", err);
+    });
+}
+
 // Tests calls to the API
 function testAPICalls() {
   var todayDate = getTodaysDate();

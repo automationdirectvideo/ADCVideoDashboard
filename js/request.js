@@ -94,10 +94,10 @@ function requestVideoSearchTerms(startDate, endDate, videoId) {
 
 function requestVideoSnippet(videoId) {
   var request = {
-    part: "snippet,contentDetails,statistics",
-    id: videoId
+    "part": "snippet,contentDetails,statistics",
+    "id": videoId
   };
-  callDataAPIChannels(request, "VideoSnippet: ", handleVideoSnippet);
+  callDataAPIVideos(request, "VideoSnippet: ", handleVideoSnippet);
 }
 
 function requestVideoStats(startDate, endDate, videoId) {

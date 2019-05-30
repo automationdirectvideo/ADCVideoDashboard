@@ -7,21 +7,24 @@ function handleBasicVideoStats(response) {
 
 // Handles channel info response from Data API
 function handleChannelInfo(response) {
-  const channel = response.result.items[0];
+  if (response) {
+    console.log("Response received", "handleChannelInfo");
+  }
+  // const channel = response.result.items[0];
 
-  const output = `
-    <ul class="list-group">
-      <li class="list-group-item">Title: ${channel.snippet.title}</li>
-      <li class="list-group-item">ID: ${channel.id}</li>
-      <li class="list-group-item">Subscribers: ${numberWithCommas(channel.statistics.subscriberCount)}</li>
-      <li class="list-group-item">Views: ${numberWithCommas(channel.statistics.viewCount)}</li>
-      <li class="list-group-item">Videos: ${numberWithCommas(channel.statistics.videoCount)}</li>
-    </ul>
-    <p>${channel.snippet.description}</p>
-    <hr>
-    <a class="btn btn-dark" target="_blank" href="https://youtube.com/${channel.snippet.customUrl}">Visit Channel</a>
-  `;
-  showChannelData(output);
+  // const output = `
+  //   <ul class="list-group">
+  //     <li class="list-group-item">Title: ${channel.snippet.title}</li>
+  //     <li class="list-group-item">ID: ${channel.id}</li>
+  //     <li class="list-group-item">Subscribers: ${numberWithCommas(channel.statistics.subscriberCount)}</li>
+  //     <li class="list-group-item">Views: ${numberWithCommas(channel.statistics.viewCount)}</li>
+  //     <li class="list-group-item">Videos: ${numberWithCommas(channel.statistics.videoCount)}</li>
+  //   </ul>
+  //   <p>${channel.snippet.description}</p>
+  //   <hr>
+  //   <a class="btn btn-dark" target="_blank" href="https://youtube.com/${channel.snippet.customUrl}">Visit Channel</a>
+  // `;
+  // showChannelData(output);
 
   // const playlistId = channel.contentDetails.relatedPlaylists.uploads;
   // requestVideoPlaylist(playlistId, 12);
@@ -107,16 +110,16 @@ function handleVideoStats(response) {
 function handleVideoViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleVideoViewsByTrafficSource");
-    numVideosProcessed++;
-    // Get traffic source info from response
-    // Sum organic views
-    // Add to mostViewedVideos
-    console.log("Number of Videos Processed: " + numVideosProcessed);
-    if (numVideosProcessed == 25) {
-      numVideosProcessed = 0;
-      console.log("25 videos processed!");
-      // Call function to organize and display top 10 organic videos
-    }
+    // numVideosProcessed++;
+    // // Get traffic source info from response
+    // // Sum organic views
+    // // Add to mostViewedVideos
+    // console.log("Number of Videos Processed: " + numVideosProcessed);
+    // if (numVideosProcessed == 25) {
+    //   numVideosProcessed = 0;
+    //   console.log("25 videos processed!");
+    //   // Call function to organize and display top 10 organic videos
+    // }
   }
 }
 
