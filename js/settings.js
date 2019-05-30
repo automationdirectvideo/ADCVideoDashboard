@@ -172,7 +172,7 @@ function updateDashboardText() {
   }
 }
 
-
+var currentSettings = JSON.parse(localStorage.getItem("settings"));
 const supportedThemes = ["light", "dark"];
 
 // Get buttons, input text, and dashboard lists
