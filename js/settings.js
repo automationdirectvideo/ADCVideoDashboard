@@ -58,7 +58,15 @@ function setAllDashboardThemes(theme) {
       var badge = document.getElementById(dashboards[i].name + "-badge");
       badge.innerHTML = capitalizeFirstLetter(theme);
       badge.classList = "badge badge-pill badge-theme badge-" + theme;
-      dashboards[i].theme = theme;
+      for (var j = 0; j < supportedThemes.length; j++) {
+        var themeButton = document.getElementById(dashboards[i].name + "-" + 
+            supportedThemes[j] + "-btn");
+        if (supportedThemes[j] == theme) {
+          themeButton.disabled = true;
+        } else {
+          themeButton.disabled = false;
+        }
+      }
     }
   } else {
     console.error("Type Error: ", "Parameter theme is not a supported value");
