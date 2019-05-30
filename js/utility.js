@@ -1,3 +1,8 @@
+// Capitalize the first letter of a string
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 // Get date from numDaysAgo from today in the form YYYY-MM-DD
 function getDateFromDaysAgo(numDaysAgo) {
   var today = new Date();
