@@ -94,7 +94,7 @@ function handleVideoRetention(response) {
 function handleVideoSearchTerms(response) {
   if (response) {
     console.log("Response received", "handleVideoSearchTerms");
-    let output = "<ol>";
+    let output = `<ol class="text-left">`;
     let searchTerms = response.result.rows;
     for (var i = 0; i < 5; i++) {
       output += "<li>" + searchTerms[i][0] + " - " + searchTerms[i][1] + "</li>";
@@ -120,7 +120,7 @@ function handleVideoSnippet(response) {
     publishDate = month + "/" + day + "/" + year;
     publishDateText.innerHTML = "Publish Date: " + publishDate;
 
-    let output = "<ol>";
+    let output = `<ol class="text-left">`;
     let tags = response.result.items[0].snippet.tags;
     for (var i = 0; i < 5; i++) {
       output += "<li>" + tags[i] + "</li>";
