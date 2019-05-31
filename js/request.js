@@ -158,8 +158,8 @@ function requestViewsByTrafficSource(startDate, endDate) {
 
 // Makes requests data for top video dashboard
 function topVideoCalls(startDate, endDate, videoId) {
+  var videoDuration;
   requestVideoSearchTerms(startDate, endDate, videoId);
   requestVideoSnippet(videoId);
   requestVideoStats(startDate, endDate, videoId);
-  requestVideoRetention(startDate, endDate, videoId);
 }

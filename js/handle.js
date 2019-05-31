@@ -50,9 +50,9 @@ function handleVideoPlaylist(response) {
 function handleVideoRetention(response) {
   if (response) {
     console.log("Response received", "handleVideoRetention");
-    let percentWatched = document.getElementById("top-video-1-percent-watched");
-    percentWatched.innerHTML = "See Console";
-    console.log("Percent Watched: ", response.result.rows);
+    // let percentWatched = document.getElementById("top-video-1-percent-watched");
+    // percentWatched.innerHTML = "See Console";
+    // console.log("Percent Watched: ", response.result.rows);
   }
 }
 
@@ -76,6 +76,11 @@ function handleVideoSnippet(response) {
     console.log("Response received", "handleVideoSnippet");
     let title = document.getElementById("top-video-1-title");
     title.innerHTML = "Title: " + response.result.items[0].snippet.title;
+    duration = response.result.items[0].contentDetails.duration;
+    duration = duration.replace("PT","").replace("H",":").replace("M",":").replace("S","");
+    durationArr = duration.split(":");
+    videoDuration = duration[0] * 3600 + duration[1] * 60 + duration[2];
+    console.log("Set Video Duration: " + videoDuration);
 
     let publishDateText = document.getElementById("top-video-1-publish-date");
     let publishDate = response.result.items[0].snippet.publishedAt;
@@ -106,12 +111,6 @@ function handleVideoStats(response) {
     let views = document.getElementById("top-video-1-views");
     views.innerHTML = numberWithCommas(stats[1]);
 
-    let subsGained = document.getElementById("top-video-1-subs-gained");
-    subsGained.innerHTML = numberWithCommas(stats[7]);
-
-    let subsLost = document.getElementById("top-video-1-subs-lost");
-    subsLost.innerHTML = numberWithCommas(stats[8]);
-
     let subsNet = document.getElementById("top-video-1-subs-net");
     subsNet.innerHTML = numberWithCommas(stats[7] - stats[8]);
 
@@ -126,7 +125,15 @@ function handleVideoStats(response) {
 
     let avgViewDuration =
         document.getElementById("top-video-1-avg-view-duration");
-    avgViewDuration.innerHTML = numberWithCommas(stats[6]);
+    let avd = stats[6];
+    let avdMinutes = Math.floor(avd / 60);
+    let avdSeconds = ('00' + avd % 60).substr(-2);
+    avgViewDuration.innerHTML = avdMinutes + ":" + avdSeconds;
+    console.log("Get Video Duration: " + videoDuration);
+    let avp = Math.round(avd / videoDuration * 1000) / 10;
+    let avgViewPercentage =
+        document.getElementById("top-video-1-avg-view-percentage");
+    avgViewPercentage.innerHTML = "(" + avp + ")%";
 
     let estimatedMinutesWatched =
         document.getElementById("top-video-1-minutes-watched");

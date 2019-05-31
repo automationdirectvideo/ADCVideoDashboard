@@ -60,6 +60,7 @@ footer {
   background-color: white;
   border: solid black 1px;
   border-radius: 0.25rem;
+  padding: 5px;
 }
 
 .stat-content {
