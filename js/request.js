@@ -155,3 +155,11 @@ function requestViewsByTrafficSource(startDate, endDate) {
   callAnalyticsAPI(request, "ViewsByTrafficSource: ",
       handleViewsByTrafficSource);
 }
+
+// Makes requests data for top video dashboard
+function topVideoCalls(startDate, endDate, videoId) {
+  requestVideoSearchTerms(startDate, endDate, videoId);
+  requestVideoSnippet(videoId);
+  requestVideoStats(startDate, endDate, videoId);
+  requestVideoRetention(startDate, endDate, videoId);
+}

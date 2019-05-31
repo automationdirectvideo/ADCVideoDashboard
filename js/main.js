@@ -53,11 +53,8 @@ function testAPICalls() {
   // requestImpressions("2019-04-01", "2019-04-30");
   // requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
   // requestSubscribersGained(joinDate, todayDate);
-  requestVideoSearchTerms(joinDate, todayDate, "mXcDYoz1iMo");
-  requestVideoSnippet("mXcDYoz1iMo");
-  requestVideoStats(joinDate, todayDate, "mXcDYoz1iMo");
-  requestVideoRetention(joinDate, todayDate, "mXcDYoz1iMo");
-  requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
+  topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
+  // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);
   requestVideoPlaylist(uploadsPlaylistId, 50);
