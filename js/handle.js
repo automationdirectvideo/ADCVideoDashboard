@@ -10,24 +10,6 @@ function handleChannelInfo(response) {
   if (response) {
     console.log("Response received", "handleChannelInfo");
   }
-  // const channel = response.result.items[0];
-
-  // const output = `
-  //   <ul class="list-group">
-  //     <li class="list-group-item">Title: ${channel.snippet.title}</li>
-  //     <li class="list-group-item">ID: ${channel.id}</li>
-  //     <li class="list-group-item">Subscribers: ${numberWithCommas(channel.statistics.subscriberCount)}</li>
-  //     <li class="list-group-item">Views: ${numberWithCommas(channel.statistics.viewCount)}</li>
-  //     <li class="list-group-item">Videos: ${numberWithCommas(channel.statistics.videoCount)}</li>
-  //   </ul>
-  //   <p>${channel.snippet.description}</p>
-  //   <hr>
-  //   <a class="btn btn-dark" target="_blank" href="https://youtube.com/${channel.snippet.customUrl}">Visit Channel</a>
-  // `;
-  // showChannelData(output);
-
-  // const playlistId = channel.contentDetails.relatedPlaylists.uploads;
-  // requestVideoPlaylist(playlistId, 12);
 }
 
 // Handles impressions response from Analytics API
@@ -59,26 +41,9 @@ function handleSubscribersGained(response) {
 
 // Handles video playlist response from Analytics API
 function handleVideoPlaylist(response) {
-  const playListItems = response.result.items;
-  if (playListItems) {
-    let output = `<h4 class="text-center col-12">Latest Videos</h4>`;
-
-    // Loop though videos and append output
-    playListItems.forEach(item => {
-      const videoId = item.snippet.resourceId.videoId;
-
-      output += `
-        <div class="col-3">
-        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; encrypted-media;" allowfullscreen></iframe>
-        </div>
-      `;
-    });
-
-    // Output videos
-    videoContainer.innerHTML = output;
-
-  } else {
-    videoContainer.innerHTML = "No Uploaded Videos";
+  const playlistItems = response.result.items;
+  if (playlistItems) {
+    console.log("Response received", "handleVideoPlaylist");
   }
 }
 
@@ -120,14 +85,15 @@ function handleVideoSnippet(response) {
     publishDate = month + "/" + day + "/" + year;
     publishDateText.innerHTML = "Publish Date: " + publishDate;
 
-    let output = `<ol class="text-left">`;
-    let tags = response.result.items[0].snippet.tags;
-    for (var i = 0; i < 5; i++) {
-      output += "<li>" + tags[i] + "</li>";
-    }
-    output += "</ol>";
-    let tagsList = document.getElementById("top-video-1-tags");
-    tagsList.innerHTML = output;
+    /*  Outputing tags  */
+    // let output = `<ol class="text-left">`;
+    // let tags = response.result.items[0].snippet.tags;
+    // for (var i = 0; i < 5; i++) {
+    //   output += "<li>" + tags[i] + "</li>";
+    // }
+    // output += "</ol>";
+    // let tagsList = document.getElementById("top-video-1-tags");
+    // tagsList.innerHTML = output;
     console.log("Tags: ", tags);
   }
 }
@@ -136,23 +102,32 @@ function handleVideoStats(response) {
   if (response) {
     console.log("Response received", "handleVideoStats");
     let stats = response.result.rows[0];
+
     let views = document.getElementById("top-video-1-views");
     views.innerHTML = numberWithCommas(stats[1]);
+
     let subsGained = document.getElementById("top-video-1-subs-gained");
     subsGained.innerHTML = numberWithCommas(stats[7]);
+
     let subsLost = document.getElementById("top-video-1-subs-lost");
     subsLost.innerHTML = numberWithCommas(stats[8]);
+
     let subsNet = document.getElementById("top-video-1-subs-net");
     subsNet.innerHTML = numberWithCommas(stats[7] - stats[8]);
+
     let likes = document.getElementById("top-video-1-likes");
     likes.innerHTML = numberWithCommas(stats[3]);
+
     let dislikes = document.getElementById("top-video-1-dislikes");
     dislikes.innerHTML = numberWithCommas(stats[4]);
+
     let comments = document.getElementById("top-video-1-comments");
     comments.innerHTML = numberWithCommas(stats[2]);
+
     let avgViewDuration =
         document.getElementById("top-video-1-avg-view-duration");
     avgViewDuration.innerHTML = numberWithCommas(stats[6]);
+
     let estimatedMinutesWatched =
         document.getElementById("top-video-1-minutes-watched");
     estimatedMinutesWatched.innerHTML = numberWithCommas(stats[5]);
