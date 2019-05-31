@@ -10,13 +10,6 @@ const authorizeButton = document.getElementById("authorize-button");
 const loginBox = document.getElementById("login-box");
 const content = document.getElementById("content");
 
-const defaultChannel = "automationdirect";
-// Must be in the form YYYY-MM-DD
-const joinDate = "2008-04-11";
-const defaultNumDays = 30;
-const uploadsPlaylistId = "UUR5c2ZGLZY2FFbxZuSxzzJg";
-var numVideosProcessed = 0;
-
 // Load auth2 library
 function handleClientLoad() {
   gapi.load("client:auth2", initClient);
