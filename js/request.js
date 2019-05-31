@@ -58,8 +58,7 @@ function requestSubscribersGained(startDate, endDate) {
 function requestVideoPlaylist(playlistId, numVideos) {
   const request = {
     playlistId: playlistId,
-    part: "snippet",
-    maxResults: numVideos
+    part: "snippet"
   };
   callDataAPIPlaylists(request, "VideoPlaylist: ", handleVideoPlaylist);
 }
