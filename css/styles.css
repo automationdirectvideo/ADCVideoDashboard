@@ -45,6 +45,7 @@ footer {
 }
 
 .outer-shell {
+  background-color: snow;
   border: solid black 1px;
   height: 75vh;
   padding: 0.5rem;
@@ -52,8 +53,13 @@ footer {
 }
 
 .stat-container {
-  border: solid black 1px;
   height: 100%;
+}
+
+.stat-container, .grid-item {
+  background-color: white;
+  border: solid black 1px;
+  border-radius: 0.25rem;
 }
 
 .stat-content {
@@ -186,6 +192,5 @@ footer {
 }
 
 .grid-item {
-  border: 1px solid black;
   overflow: hidden;
 }
