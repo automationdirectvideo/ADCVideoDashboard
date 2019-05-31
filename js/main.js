@@ -136,3 +136,12 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
 })
+
+var uploadThumbnails = "";
+for (var i = 0; i < uploadIds.length; i++) {
+  uploadThumbnails += `<img class="thumbnail" src="https://i.ytimg.com/vi/${uploadIds[i]}/default.jpg" alt="thumbnail">`;
+}
+var thumbnailContainer = document.getElementById("thumbnail-container");
+thumbnailContainer.innerHTML = uploadThumbnails;
+
+new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);

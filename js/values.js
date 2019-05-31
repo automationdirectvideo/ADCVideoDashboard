@@ -14,20 +14,26 @@ const defaultSettings =
       
     },
     {
-      "name": "views",
+      "name": "thumbnails",
       "index": 2,
       "theme": "light"
       
     },
     {
-      "name": "seo",
+      "name": "views",
       "index": 3,
       "theme": "light"
       
     },
     {
-      "name": "top-video-1",
+      "name": "seo",
       "index": 4,
+      "theme": "light"
+      
+    },
+    {
+      "name": "top-video-1",
+      "index": 5,
       "theme": "light"
       
     }

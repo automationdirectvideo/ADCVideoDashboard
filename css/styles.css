@@ -146,6 +146,18 @@ footer {
   opacity: 1;
 }
 
+.thumbnail {
+  padding: 2px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.thumbnail-wrapper {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
 /* Settings page */
 .drag-handle {
   cursor: grab;
