@@ -94,9 +94,15 @@ function handleVideoRetention(response) {
 function handleVideoSearchTerms(response) {
   if (response) {
     console.log("Response received", "handleVideoSearchTerms");
-    let searchTerms = document.getElementById("top-video-1-search-terms");
-    searchTerms.innerHTML = "See Console";
-    console.log("Top Search Terms: ", response.result.rows);
+    let output = "<ol>";
+    let searchTerms = response.result.rows;
+    for (var i = 0; i < 5; i++) {
+      output += "<li>" + searchTerms[i][0] + " - " + searchTerms[i][1] + "</li>";
+    }
+    output += "</ol>";
+    let searchTermsList = document.getElementById("top-video-1-search-terms");
+    searchTermsList.innerHTML = output;
+    console.log("Top Search Terms: ", searchTerms);
   }
 }
 
@@ -114,9 +120,15 @@ function handleVideoSnippet(response) {
     publishDate = month + "/" + day + "/" + year;
     publishDateText.innerHTML = "Publish Date: " + publishDate;
 
-    let tags = document.getElementById("top-video-1-tags");
-    tags.innerHTML = "See Console";
-    console.log("Tags: ", response.result.items[0].snippet.tags);
+    let output = "<ol>";
+    let tags = response.result.items[0].snippet.tags;
+    for (var i = 0; i < 5; i++) {
+      output += "<li>" + tags[i] + "</li>";
+    }
+    output += "</ol>";
+    let tagsList = document.getElementById("top-video-1-tags");
+    tagsList.innerHTML = output;
+    console.log("Tags: ", tags);
   }
 }
 
