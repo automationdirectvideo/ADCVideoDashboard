@@ -35,6 +35,18 @@ function handleMostWatchedVideos(response) {
 function handleRealTimeStats(response) {
   if (response) {
     console.log("Response received", "handleRealTimeStats");
+    var rows = response.result.rows;
+    var headers = response.result.columnHeaders;
+    var realTimeStats = {};
+    if (!localStorage.getItem("realTimeStats")) {
+      for (var i = 0; i < rows.length; i++) {
+        realTimeStats[headers[i]] = rows[i];
+      }
+      realTimeStats["recorded"] = new Date().toString();
+      localStorage.setItem("realTimeStats", realTimeStats);
+    }
+    realTimeStats = localStorage.getItem("realTimeStats");
+    console.log("Real Time Stats: ", realTimeStats);
   }
 }
 
@@ -242,7 +254,7 @@ function handleVideoStats(response) {
     let avd = stats[6];
     avgViewDuration.innerHTML = secondsToDuration(avd);
     let videoDuration = document.getElementById("top-video-1-duration-seconds").innerHTML;
-    
+
     let avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
         document.getElementById("top-video-1-avg-view-percentage");

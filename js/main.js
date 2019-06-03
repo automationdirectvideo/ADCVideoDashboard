@@ -56,7 +56,7 @@ function testAPICalls() {
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
   requestRealTimeStats(joinDate, todayDate);
-  requestRealTimeStatsByDay(thirtyDaysAgo, todayDate);
+  requestRealTimeStatsByDay(getDateFromDaysAgo(32), todayDate);
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);
