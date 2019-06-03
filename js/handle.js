@@ -38,7 +38,8 @@ function handleRealTimeStats(response) {
     var rows = response.result.rows;
     var headers = response.result.columnHeaders;
 
-    localStorage.setItem("realTimeStatsResponse", JSON.stringify(response));
+    // TODO: Format response before assigning to local storage
+    //  localStorage.setItem("realTimeStatsResponse", JSON.stringify(response));
 
     // var realTimeStats = {};
     // if (!localStorage.getItem("realTimeStats")) {
@@ -56,7 +57,7 @@ function handleRealTimeStats(response) {
 function handleRealTimeStatsByDay(response) {
   if (response) {
     console.log("Response received", "handleRealTimeStatsByDay");
-    localStorage.setItem("realTimeStatsByDayResponse", JSON.stringify(response));
+    // localStorage.setItem("realTimeStatsByDayResponse", JSON.stringify(response));
   }
 }
 
