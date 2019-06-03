@@ -100,6 +100,10 @@ function handleVideoSnippet(response) {
     publishDate = month + "/" + day + "/" + year;
     publishDateText.innerHTML = "Publish Date: " + publishDate;
 
+    let thumbnail = document.getElementById("top-video-1-thumbnail");
+    let videoId = response.result.items[0].id;
+    thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/sddefault.jpg" alt="thumbnail">`;
+
     /*  Outputing tags  */
     // let output = `<ol class="text-left">`;
     // let tags = response.result.items[0].snippet.tags;

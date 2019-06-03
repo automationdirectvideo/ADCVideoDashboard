@@ -171,6 +171,11 @@ footer {
   width: 100%;
 }
 
+.top-video-thumbnail {
+  height: auto;
+  width: 100%;
+}
+
 /* Settings page */
 .drag-handle {
   cursor: grab;
