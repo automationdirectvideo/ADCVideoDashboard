@@ -127,7 +127,7 @@ function handleVideoStats(response) {
     let likeRatioElem = document.getElementById("top-video-1-like-ratio");
     let likes = document.getElementById("top-video-1-likes");
     let likeBar = document.getElementById("top-video-1-like-bar");
-    let likeRatio = decimalToPercent(stats([3]) / (stats[3] + stats[4]));
+    let likeRatio = decimalToPercent(stats[3] / (stats[3] + stats[4]));
     likeRatioElem.innerHTML = likeRatio + "%";
     likes.innerHTML = numberWithCommas(stats[3]);
     likeBar.style.width = likeRatio + "%";
