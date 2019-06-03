@@ -75,7 +75,7 @@ function handleVideoSnippet(response) {
   if (response) {
     console.log("Response received", "handleVideoSnippet");
     let title = document.getElementById("top-video-1-title");
-    title.innerHTML = "Title: " + response.result.items[0].snippet.title;
+    title.innerHTML = response.result.items[0].snippet.title;
     duration = response.result.items[0].contentDetails.duration;
     duration = duration.replace("PT","").replace("H",":").replace("M",":")
         .replace("S","");
@@ -98,7 +98,7 @@ function handleVideoSnippet(response) {
     let month = publishDate.slice(5, 7);
     let day = publishDate.slice(8, 10);
     publishDate = month + "/" + day + "/" + year;
-    publishDateText.innerHTML = "Publish Date: " + publishDate;
+    publishDateText.innerHTML = "Published: " + publishDate;
 
     let thumbnail = document.getElementById("top-video-1-thumbnail");
     let videoId = response.result.items[0].id;
