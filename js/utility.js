@@ -3,6 +3,7 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Converts a decimal to a percent with 1 decimal place
 function decimalToPercent(decimal) {
   return Math.round(decimal * 1000) / 10;
 }
@@ -39,4 +40,11 @@ function getYouTubeDateFormat(date) {
 // Add commas to number
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Converts seconds to duration in the form M:SS
+function secondsToDuration(seconds) {
+  let minutes = Math.floor(seconds / 60);
+  let durationSeconds = ('00' + seconds % 60).substr(-2);
+  return minutes + ":" + durationSeconds;
 }
