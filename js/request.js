@@ -50,7 +50,7 @@ function requestRealTimeStats(startDate, endDate) {
     "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MostWatchedVideos: ", handleRealTimeStats);
+  callAnalyticsAPI(request, "RealTimeStats: ", handleRealTimeStats);
 }
 
 function requestRealTimeStatsByDay(startDate, endDate) {
@@ -62,7 +62,7 @@ function requestRealTimeStatsByDay(startDate, endDate) {
     "sort": "-day",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MostWatchedVideos: ", handleRealTimeStatsByDay);
+  callAnalyticsAPI(request, "RealTimeStatsByDay: ", handleRealTimeStatsByDay);
 }
 
 // Request # of subscribers gained from startDate to endDate

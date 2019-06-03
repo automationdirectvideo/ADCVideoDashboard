@@ -62,8 +62,6 @@ function handleVideoDailyViews(response) {
       xValues.push(rows[i][0]);
       yValues.push(rows[i][1]);
     }
-    console.log("X: ", xValues);
-    console.log("Y: ", yValues);
 
     var data = [
       {
@@ -187,7 +185,6 @@ function handleVideoSnippet(response) {
         secondsToDuration(videoDuration);
     document.getElementById("top-video-1-duration-seconds").innerHTML = 
         videoDuration;
-    console.log("Set Video Duration: " + videoDuration);
 
     let publishDateText = document.getElementById("top-video-1-publish-date");
     let publishDate = response.result.items[0].snippet.publishedAt;
@@ -245,7 +242,7 @@ function handleVideoStats(response) {
     let avd = stats[6];
     avgViewDuration.innerHTML = secondsToDuration(avd);
     let videoDuration = document.getElementById("top-video-1-duration-seconds").innerHTML;
-    console.log("Get Video Duration: " + videoDuration);
+    
     let avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
         document.getElementById("top-video-1-avg-view-percentage");
