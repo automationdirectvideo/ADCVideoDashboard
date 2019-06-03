@@ -46,7 +46,7 @@ function handleRealTimeStats(response) {
       localStorage.setItem("realTimeStats", realTimeStats);
     }
     realTimeStats = localStorage.getItem("realTimeStats");
-    console.log("Real Time Stats: ", realTimeStats);
+    console.log("Real Time Stats: ", JSON.stringify(realTimeStats));
   }
 }
 
