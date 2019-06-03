@@ -39,6 +39,57 @@ function handleSubscribersGained(response) {
   }
 }
 
+function handleVideoDailyViews(response) {
+  if (response) {
+    console.log("Response received", "handleVideoDailyViews");
+    let rows = response.result.rows;
+    var xValues = [];
+    var yValues = [];
+
+    for (var i = 0; i < rows.length; i++) {
+      xValues.push(rows[i][0]);
+      yValues.push(rows[i][1]);
+    }
+    console.log("X: ", xValues);
+    console.log("Y: ", yValues);
+
+    var data = [
+      {
+        x: xValues,
+        y: yValues,
+        fill: 'tozeroy',
+        type: 'scatter',
+        marker: {
+          color: 'rgb(255,0,0)'
+        }
+      }
+    ];
+
+    var layout = {
+      font: {size: 16},
+      margin: {
+        b: 0,
+        t: 0,
+      },
+      xaxis: {
+        automargin: true,
+        tickangle: -90,
+        tickformat: '%-m/%d',
+        title: 'Day',
+        type: 'date'
+      },
+      yaxis: {
+        showline: true,
+        showticklabels: true,
+        automargin: true,
+        title: 'Views'
+      }
+    };
+
+    Plotly.newPlot('top-video-1-views-graph', data, layout, {staticPlot: true, responsive: true});
+  }
+}
+
 // Handles video playlist response from Analytics API
 function handleVideoPlaylist(response) {
   const playlistItems = response.result.items;

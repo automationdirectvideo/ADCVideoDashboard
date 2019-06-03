@@ -54,6 +54,20 @@ function requestSubscribersGained(startDate, endDate) {
   callAnalyticsAPI(request, "SubscribersGained: ", handleSubscribersGained);
 }
 
+function requestVideoDailyViews(startDate, endDate, videoId) {
+  var filters = "video==" + videoId;
+  const request = {
+    "dimensions": "day",
+    "endDate": endDate,
+    "filters": filters,
+    "ids": "channel==MINE",
+    "metrics": "views",
+    "sort": "day",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "VideoDailyViews: ", handleVideoDailyViews);
+}
+
 // Request first numVideos videos from a playlist from Data API
 function requestVideoPlaylist(playlistId, numVideos) {
   const request = {
