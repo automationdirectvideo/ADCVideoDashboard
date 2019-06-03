@@ -87,6 +87,11 @@ if (!localStorage.getItem("settings")) {
 var currentSettings = JSON.parse(localStorage.getItem("settings"));
 console.log("Current Settings: ", currentSettings);
 
+if (currentSettings.footer == "hide") {
+  document.getElementsByTagName("footer")[0].classList.add("d-none");
+  document.getElementById("main-container").style.paddingBottom = "0px";
+}
+
 // Initialize carousel
 var carouselInner = document.getElementsByClassName("carousel-inner")[0];
 var indicatorList = 
