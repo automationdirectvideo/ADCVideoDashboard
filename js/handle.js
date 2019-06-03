@@ -79,7 +79,8 @@ function handleVideoSnippet(response) {
     duration = response.result.items[0].contentDetails.duration;
     duration = duration.replace("PT","").replace("H",":").replace("M",":").replace("S","");
     durationArr = duration.split(":");
-    videoDuration = duration[0] * 3600 + duration[1] * 60 + duration[2];
+    let videoDuration = duration[0] * 3600 + duration[1] * 60 + duration[2];
+    document.getElementById("top-video-1-duration").innerHTML = videoDuration;
     console.log("Set Video Duration: " + videoDuration);
 
     let publishDateText = document.getElementById("top-video-1-publish-date");
@@ -129,11 +130,12 @@ function handleVideoStats(response) {
     let avdMinutes = Math.floor(avd / 60);
     let avdSeconds = ('00' + avd % 60).substr(-2);
     avgViewDuration.innerHTML = avdMinutes + ":" + avdSeconds;
+    let videoDuration = document.getElementById("top-video-1-duration").innerHTML;
     console.log("Get Video Duration: " + videoDuration);
     let avp = Math.round(avd / videoDuration * 1000) / 10;
     let avgViewPercentage =
         document.getElementById("top-video-1-avg-view-percentage");
-    avgViewPercentage.innerHTML = "(" + avp + ")%";
+    avgViewPercentage.innerHTML = " (" + avp + ")%";
 
     let estimatedMinutesWatched =
         document.getElementById("top-video-1-minutes-watched");
