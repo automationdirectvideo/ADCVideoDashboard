@@ -124,8 +124,14 @@ function handleVideoStats(response) {
     let subsNet = document.getElementById("top-video-1-subs-net");
     subsNet.innerHTML = numberWithCommas(stats[7] - stats[8]);
 
+    let likeRatioElem = document.getElementById("top-video-1-like-ratio");
     let likes = document.getElementById("top-video-1-likes");
+    let likeBar = document.getElementById("top-video-1-like-bar");
+    let likeRatio = decimalToPercent(stats([3]) / (stats[3] + stats[4]));
+    likeRatioElem.innerHTML = likeRatio + "%";
     likes.innerHTML = numberWithCommas(stats[3]);
+    likeBar.style.width = likeRatio + "%";
+    likeBar.setAttribute("aria-valuenow", likeRatio);
 
     let dislikes = document.getElementById("top-video-1-dislikes");
     dislikes.innerHTML = numberWithCommas(stats[4]);
@@ -141,10 +147,10 @@ function handleVideoStats(response) {
     avgViewDuration.innerHTML = avdMinutes + ":" + avdSeconds;
     let videoDuration = document.getElementById("top-video-1-duration").innerHTML;
     console.log("Get Video Duration: " + videoDuration);
-    let avp = Math.round(avd / videoDuration * 1000) / 10;
+    let avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
         document.getElementById("top-video-1-avg-view-percentage");
-    avgViewPercentage.innerHTML = " (" + avp + ")%";
+    avgViewPercentage.innerHTML = " (" + avp + "%)";
 
     let estimatedMinutesWatched =
         document.getElementById("top-video-1-minutes-watched");

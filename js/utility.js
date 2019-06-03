@@ -3,6 +3,10 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function decimalToPercent(decimal) {
+  return Math.round(decimal * 1000) / 10;
+}
+
 // Get date from numDaysAgo from today in the form YYYY-MM-DD
 function getDateFromDaysAgo(numDaysAgo) {
   var today = new Date();

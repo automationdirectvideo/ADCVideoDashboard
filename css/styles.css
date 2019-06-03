@@ -34,10 +34,16 @@ footer {
 }
 
 .yt-red {
-    color: #ff0000;
+  color: #ff0000;
 }
 .yt-black {
-    color: #282828;
+  color: #282828;
+}
+.bg-yt-red {
+  background-color: #ff0000;
+}
+.bg-yt-black {
+  background-color: #282828;
 }
 
 #login-box {
