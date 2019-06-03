@@ -55,10 +55,12 @@ function testAPICalls() {
   // requestSubscribersGained(joinDate, todayDate);
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
+  requestRealTimeStats(joinDate, todayDate);
+  requestRealTimeStatsByDay(thirtyDaysAgo, todayDate);
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);
-  requestVideoPlaylist(uploadsPlaylistId, 50);
+  // requestVideoPlaylist(uploadsPlaylistId, 50);
 }
 
 // Display channel data
