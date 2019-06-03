@@ -172,8 +172,9 @@ function requestViewsByTrafficSource(startDate, endDate) {
 
 // Makes requests data for top video dashboard
 function topVideoCalls(startDate, endDate, videoId) {
-  var videoDuration;
+  var thirtyDaysAgo = getDateFromDaysAgo(30);
   requestVideoSearchTerms(startDate, endDate, videoId);
+  requestVideoDailyViews(thirtyDaysAgo, endDate, videoId);
   requestVideoSnippet(videoId);
   requestVideoStats(startDate, endDate, videoId);
 }
