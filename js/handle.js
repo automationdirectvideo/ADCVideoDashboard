@@ -59,15 +59,46 @@ function handleVideoRetention(response) {
 function handleVideoSearchTerms(response) {
   if (response) {
     console.log("Response received", "handleVideoSearchTerms");
-    let output = `<ol class="text-left">`;
     let searchTerms = response.result.rows;
-    for (var i = 0; i < 5; i++) {
-      output += "<li>" + searchTerms[i][0] + " - " + searchTerms[i][1] + "</li>";
+    let xValues = [];
+    let yValues = [];
+    for (var i = 4; i >= 0; i--) {
+      xValues.push(searchTerms[i][1]);
+      yValues.push(searchTerms[i][0]);
     }
-    output += "</ol>";
-    let searchTermsList = document.getElementById("top-video-1-search-terms");
-    searchTermsList.innerHTML = output;
-    console.log("Top Search Terms: ", searchTerms);
+    var data = [
+      {
+        x: xValues,
+        y: yValues,
+        type: 'bar',
+        orientation: 'h',
+        text: xValues.map(String),
+        textposition: 'auto',
+        marker: {
+          color: 'rgb(255,0,0)'
+        }
+      }
+    ];
+    
+    var layout = {
+      font: {size: 16},
+      margin: {
+        b: 0,
+        t: 0,
+      },
+      xaxis: {
+        visible: false,
+        automargin: true
+      },
+      yaxis: {
+        showline: true,
+        showticklabels: true,
+        tickmode: 'linear',
+        automargin: true
+      }
+    };
+    
+    Plotly.newPlot('top-video-1-search-terms', data, layout, {staticPlot: true, responsive: true});
   }
 }
 
@@ -89,7 +120,10 @@ function handleVideoSnippet(response) {
     } else {
       videoDuration = duration;
     }
-    document.getElementById("top-video-1-duration").innerHTML = videoDuration;
+    document.getElementById("top-video-1-duration").innerHTML = "Duration: " +
+        secondsToDuration(videoDuration);
+    document.getElementById("top-video-1-duration-seconds").innerHTML = 
+        videoDuration;
     console.log("Set Video Duration: " + videoDuration);
 
     let publishDateText = document.getElementById("top-video-1-publish-date");
@@ -137,16 +171,17 @@ function handleVideoStats(response) {
     likeBar.style.width = likeRatio + "%";
     likeBar.setAttribute("aria-valuenow", likeRatio);
 
+    let dislikes = document.getElementById("top-video-1-dislikes");
+    dislikes.innerHTML = stats[4] + " Dislikes";
+
     let comments = document.getElementById("top-video-1-comments");
     comments.innerHTML = numberWithCommas(stats[2]);
 
     let avgViewDuration =
         document.getElementById("top-video-1-avg-view-duration");
     let avd = stats[6];
-    let avdMinutes = Math.floor(avd / 60);
-    let avdSeconds = ('00' + avd % 60).substr(-2);
-    avgViewDuration.innerHTML = avdMinutes + ":" + avdSeconds;
-    let videoDuration = document.getElementById("top-video-1-duration").innerHTML;
+    avgViewDuration.innerHTML = secondsToDuration(avd);
+    let videoDuration = document.getElementById("top-video-1-duration-seconds").innerHTML;
     console.log("Get Video Duration: " + videoDuration);
     let avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
