@@ -77,9 +77,18 @@ function handleVideoSnippet(response) {
     let title = document.getElementById("top-video-1-title");
     title.innerHTML = "Title: " + response.result.items[0].snippet.title;
     duration = response.result.items[0].contentDetails.duration;
-    duration = duration.replace("PT","").replace("H",":").replace("M",":").replace("S","");
+    duration = duration.replace("PT","").replace("H",":").replace("M",":")
+        .replace("S","");
     durationArr = duration.split(":");
-    let videoDuration = duration[0] * 3600 + duration[1] * 60 + duration[2];
+    let videoDuration;
+    if (durationArr.length == 3) {
+      videoDuration = Number(durationArr[0]) * 3600 + 
+          Number(durationArr[1]) * 60 + Number(durationArr[2]);
+    } else if (durationArr.length == 2) {
+      videoDuration = Number(durationArr[0]) * 60 + Number(durationArr[1]);
+    } else {
+      videoDuration = duration;
+    }
     document.getElementById("top-video-1-duration").innerHTML = videoDuration;
     console.log("Set Video Duration: " + videoDuration);
 
