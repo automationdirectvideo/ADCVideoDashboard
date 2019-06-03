@@ -150,3 +150,9 @@ var thumbnailContainer = document.getElementById("thumbnail-container");
 thumbnailContainer.innerHTML = uploadThumbnails;
 
 new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
+
+localStorage.setItem("dateStamp", new Date.toString());
+
+console.log("Date Stamp", localStorage.getItem("dateStamp"));
+console.log("Real Time Stats Response", localStorage.getItem("realTimeStatsResponse"));
+console.log("Real Time Stats By Day Response", localStorage.getItem("realTimeStatsByDayResponse"));
