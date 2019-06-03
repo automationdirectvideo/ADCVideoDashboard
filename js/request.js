@@ -43,6 +43,28 @@ function requestMostWatchedVideos(startDate, endDate, numVideos) {
   callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos);
 }
 
+function requestRealTimeStats(startDate, endDate) {
+  var request = {
+    "endDate": endDate,
+    "ids": "channel==MINE",
+    "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "MostWatchedVideos: ", handleRealTimeStats);
+}
+
+function requestRealTimeStatsByDay(startDate, endDate) {
+  var request = {
+    "dimensions": "day",
+    "endDate": endDate,
+    "ids": "channel==MINE",
+    "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
+    "sort": "-day",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "MostWatchedVideos: ", handleRealTimeStatsByDay);
+}
+
 // Request # of subscribers gained from startDate to endDate
 function requestSubscribersGained(startDate, endDate) {
   var request = {

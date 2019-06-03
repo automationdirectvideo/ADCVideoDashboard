@@ -32,6 +32,18 @@ function handleMostWatchedVideos(response) {
   }
 }
 
+function handleRealTimeStats(response) {
+  if (response) {
+    console.log("Response received", "handleRealTimeStats");
+  }
+}
+
+function handleRealTimeStatsByDay(response) {
+  if (response) {
+    console.log("Response received", "handleRealTimeStatsByDay");
+  }
+}
+
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
   if (response) {
