@@ -36,6 +36,9 @@ function handleRealTimeStats(response, message) {
   if (response) {
     console.log("Response received", "handleRealTimeStats");
 
+    if (!localStorage.getItem("realTimeStats")) {
+      localStorage.setItem("realTimeStats", JSON.stringify({}));
+    }
     let stats = JSON.parse(localStorage.getItem("realTimeStats"));
     
     let realTimeStats = {};

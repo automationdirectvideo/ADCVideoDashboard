@@ -62,7 +62,7 @@ function requestRealTimeStatsMonth() {
 }
 
 function requestRealTimeStatsToday() {
-  var date = getDateFromDaysAgo(4);
+  var date = getDateFromDaysAgo(3);
   requestRealTimeStats(date, date, "today");
 }
 
