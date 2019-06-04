@@ -160,83 +160,83 @@ if (enabledOrder.includes("real-time-stats")) {
 
 // Initialize real time stats in real time stats dashboard
 function loadRealTimeStats() {
-  if (!localStorage.getItem("realTimeStats")) {
-    localStorage.setItem("realTimeStats", JSON.stringify({}));
-  }
-  let stats = JSON.parse(localStorage.getItem("realTimeStats"));
-  console.log("Real Time Stats: ", stats);
-  
-  var secondsPerIncrement = {};
-  for (var key in stats.today) {
-    if (stats.today.hasOwnProperty(key) && key != "averageViewDuration") {
-      secondsPerIncrement[key] = Math.round(86400 / stats.today[key]);
-    }
-  }
-  
-  var recordDate = new Date(stats.date);
-  var now = new Date();
-  var diffInSeconds = Math.round((now - recordDate) / 1000);
-  
-  var viewsCumulative = document.getElementById("stat-views-cumulative");
-  var viewsMonth = document.getElementById("stat-views-month");
-  var minutesCumulative = document.getElementById("stat-minutes-cumulative");
-  var minutesMonth = document.getElementById("stat-minutes-month");
-  var commentsCumulative = document.getElementById("stat-comments-cumulative");
-  var commentsMonth = document.getElementById("stat-comments-month");
-  var likesCumulative = document.getElementById("stat-likes-cumulative");
-  var likesMonth = document.getElementById("stat-likes-month");
-  var subsCumulative = document.getElementById("stat-subs-cumulative");
-  var subsMonth = document.getElementById("stat-subs-month");
-  var avgDurationOdometer = document.getElementById("stat-avg-duration");
-  var avgPercentageOdometer = document.getElementById("stat-avg-percentage");
-  var odometerCategories = {
-    "views": [viewsCumulative, viewsMonth],
-    "estimatedMinutesWatched": [minutesCumulative, minutesMonth],
-    "netSubscribersGained": [subsCumulative, subsMonth],
-    "comments": [commentsCumulative, commentsMonth],
-    "likes": [likesCumulative, likesMonth],
-    "cumulative": {
-      "views": viewsCumulative,
-      "estimatedMinutesWatched": minutesCumulative,
-      "netSubscribersGained": subsCumulative,
-      "comments": commentsCumulative,
-      "likes": likesCumulative
-    },
-    "month": {
-      "views": viewsMonth,
-      "estimatedMinutesWatched": minutesMonth,
-      "netSubscribersGained": subsMonth,
-      "comments": commentsMonth,
-      "likes": likesMonth
-    }
-  };
-  
-  // Load data into odometers
-  ["cumulative", "month"].forEach(category => {
-    var odometers = odometerCategories[category];
-    for (var key in odometers) {
-      if (odometers.hasOwnProperty(key)) {
-        var odometer = odometers[key];
-        var value = stats[category][key];
-        value += Math.round(diffInSeconds / secondsPerIncrement[key]);
-        odometer.setAttribute("value", value);
-        odometer.innerHTML = value;
+  if (localStorage.getItem("realTimeStats")) {
+
+    let stats = JSON.parse(localStorage.getItem("realTimeStats"));
+    console.log("Real Time Stats: ", stats);
+    
+    var secondsPerIncrement = {};
+    for (var key in stats.today) {
+      if (stats.today.hasOwnProperty(key) && key != "averageViewDuration") {
+        secondsPerIncrement[key] = Math.round(86400 / stats.today[key]);
       }
     }
-  });
-  var avgDurationCumulative =
-      secondsToDuration(stats.cumulative.averageViewDuration);
-  avgDurationOdometer.innerHTML = avgDurationCumulative;
-  var avgPercentageCumulative =
-      decimalToPercent(stats.cumulative.averageViewDuration / 
-      averageVideoDuration);
-  avgPercentageOdometer.innerHTML = avgPercentageCumulative + "%";
-  
-  // Updating
-  if (localStorage.getItem("statsUpdating") == "false") {
-    var updateCount = diffInSeconds;
-    var updateStatsId = window.setInterval(updateStats, 1000);
-    localStorage.setItem("statsUpdating", "true");
+    
+    var recordDate = new Date(stats.date);
+    var now = new Date();
+    var diffInSeconds = Math.round((now - recordDate) / 1000);
+    
+    var viewsCumulative = document.getElementById("stat-views-cumulative");
+    var viewsMonth = document.getElementById("stat-views-month");
+    var minutesCumulative = document.getElementById("stat-minutes-cumulative");
+    var minutesMonth = document.getElementById("stat-minutes-month");
+    var commentsCumulative = document.getElementById("stat-comments-cumulative");
+    var commentsMonth = document.getElementById("stat-comments-month");
+    var likesCumulative = document.getElementById("stat-likes-cumulative");
+    var likesMonth = document.getElementById("stat-likes-month");
+    var subsCumulative = document.getElementById("stat-subs-cumulative");
+    var subsMonth = document.getElementById("stat-subs-month");
+    var avgDurationOdometer = document.getElementById("stat-avg-duration");
+    var avgPercentageOdometer = document.getElementById("stat-avg-percentage");
+    var odometerCategories = {
+      "views": [viewsCumulative, viewsMonth],
+      "estimatedMinutesWatched": [minutesCumulative, minutesMonth],
+      "netSubscribersGained": [subsCumulative, subsMonth],
+      "comments": [commentsCumulative, commentsMonth],
+      "likes": [likesCumulative, likesMonth],
+      "cumulative": {
+        "views": viewsCumulative,
+        "estimatedMinutesWatched": minutesCumulative,
+        "netSubscribersGained": subsCumulative,
+        "comments": commentsCumulative,
+        "likes": likesCumulative
+      },
+      "month": {
+        "views": viewsMonth,
+        "estimatedMinutesWatched": minutesMonth,
+        "netSubscribersGained": subsMonth,
+        "comments": commentsMonth,
+        "likes": likesMonth
+      }
+    };
+    
+    // Load data into odometers
+    ["cumulative", "month"].forEach(category => {
+      var odometers = odometerCategories[category];
+      for (var key in odometers) {
+        if (odometers.hasOwnProperty(key)) {
+          var odometer = odometers[key];
+          var value = stats[category][key];
+          value += Math.round(diffInSeconds / secondsPerIncrement[key]);
+          odometer.setAttribute("value", value);
+          odometer.innerHTML = value;
+        }
+      }
+    });
+    var avgDurationCumulative =
+        secondsToDuration(stats.cumulative.averageViewDuration);
+    avgDurationOdometer.innerHTML = avgDurationCumulative;
+    var avgPercentageCumulative =
+        decimalToPercent(stats.cumulative.averageViewDuration / 
+        averageVideoDuration);
+    avgPercentageOdometer.innerHTML = avgPercentageCumulative + "%";
+    
+    // Updating
+    if (localStorage.getItem("statsUpdating") == "false") {
+      var updateCount = diffInSeconds;
+      var updateStatsId = window.setInterval(updateStats, 1000);
+      localStorage.setItem("statsUpdating", "true");
+    }
   }
   
   // Update odometers in real time stats dashboard
