@@ -36,22 +36,25 @@ function handleRealTimeStats(response) {
   if (response) {
     console.log("Response received", "handleRealTimeStats");
 
-    // if (!localStorage.getItem("realTimeStats")) {
+    let stats = JSON.parse(localStorage.getItem("realTimeStats"));
+    var oldDate = new Date(stats.date);
+    var now = new Date();
+    var diffInSeconds = now - oldDate;
+    console.log(diffInSeconds);
+
+    if (!stats || diffInSeconds >= 86400000) {
       let realTimeStats = {};
       let headers = response.result.columnHeaders;
       let row = response.result.rows[0];
       for (let i = 0; i < row.length; i++) {
         realTimeStats[headers[i].name] = row[i];
-        console.log("RTS. Header: " + headers[i].name + " ; Item: " + row[i]);
       }
       realTimeStats.date = new Date().toString();
       localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
-  
-    // }
-    let stats = JSON.parse(localStorage.getItem("realTimeStats"));
+      stats = JSON.parse(localStorage.getItem("realTimeStats"));
+    }
 
     console.log("Real Time Stats: ", stats);
-    console.log("Real Time Stats Date: ", stats.date);
 
   }
 }
@@ -60,7 +63,13 @@ function handleRealTimeStatsByDay(response) {
   if (response) {
     console.log("Response received", "handleRealTimeStatsByDay");
 
-    // if (!localStorage.getItem("dailyStats")) {
+    let stats = JSON.parse(localStorage.getItem("dailyStats"));
+    var oldDate = new Date(stats.date);
+    var now = new Date();
+    var diffInSeconds = now - oldDate;
+    console.log(diffInSeconds);
+
+    if (!stats || diffInSeconds >= 86400000) {
       let dailyStats = {date: "", rows: []};
       let headers = response.result.columnHeaders;
       let rows = response.result.rows;
@@ -68,16 +77,14 @@ function handleRealTimeStatsByDay(response) {
         dailyStats.rows[row] = {};
         for (let item = 0; item < headers.length; item++) {
           dailyStats.rows[row][headers[item].name] = rows[row][item];
-          console.log("DS. Header: " + headers[item].name + " ; Item: " + rows[row][item]);
         }
       }
       dailyStats.date = new Date().toString();
       localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
-    // }
-    let stats = JSON.parse(localStorage.getItem("dailyStats"));
+      stats = JSON.parse(localStorage.getItem("dailyStats"));
+    }
 
     console.log("Daily Stats: ", stats);
-    console.log("Daily Stats Date: ", stats.date);
   }
 }
 
