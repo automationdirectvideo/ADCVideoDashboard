@@ -11,35 +11,35 @@ const defaultSettings =
       "name": "top-ten",
       "index": 1,
       "theme": "light"
-      
     },
     {
       "name": "thumbnails",
       "index": 2,
       "theme": "light"
-      
     },
     {
       "name": "views",
       "index": 3,
       "theme": "light"
-      
     },
     {
       "name": "seo",
       "index": 4,
       "theme": "light"
-      
+    },
+    {
+      "name": "real-time-stats",
+      "index": 5,
+      "theme": "light"
     },
     {
       "name": "top-video-1",
-      "index": 5,
+      "index": 6,
       "theme": "light"
-      
     }
   ],
   "footer": "show",
-  "numEnabled": 4
+  "numEnabled": 7
 };
 
 const defaultChannel = "automationdirect";

@@ -11,6 +11,8 @@
     <link href="css/bootstrap.css" rel="stylesheet"/>
     <link href="open-iconic/font/css/open-iconic-bootstrap.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/odometer-theme-default.css" />
+    <script src="js/odometer.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="js/bootstrap.js"></script>
@@ -330,6 +332,29 @@
                   </div>
                 </div>
               </div>
+              <div class="carousel-item" id="real-time-stats">
+                  <h3>Real Time Channel Stats Dashboard</h3>
+                  <h5>Watch These Key Channel Statistics Update in Real Time</h5>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/7/4;">
+                        <h3>Box 1</h3>
+                      </div>
+                      <div class="grid-item" style="grid-area: 1/4/7/7;">
+                        <h3>Box 2</h3>
+                      </div>
+                      <div class="grid-item" style="grid-area: 1/7/7/10;">
+                        <h3>Box 3</h3>
+                      </div>
+                      <div class="grid-item" style="grid-area: 1/10/7/13;">
+                        <h3>Box 4</h3>
+                      </div>
+                      <div class="grid-item" style="grid-area: 7/1/13/13;">
+                        <h3 class="odometer" value="21000" id="subscriber-count">21000</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               <span class="oi oi-media-record indicator" data-target="#dashboard-carousel" data-slide-to="" id="indicator"></span>
             </div>
             <div class="row justify-content-center">
