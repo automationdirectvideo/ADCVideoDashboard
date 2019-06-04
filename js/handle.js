@@ -36,7 +36,7 @@ function handleRealTimeStats(response) {
   if (response) {
     console.log("Response received", "handleRealTimeStats");
 
-    if (!localStorage.getItem("realTimeStats")) {
+    // if (!localStorage.getItem("realTimeStats")) {
       let realTimeStats = {};
       let headers = response.result.columnHeaders;
       let row = response.result.rows[0];
@@ -47,8 +47,8 @@ function handleRealTimeStats(response) {
       realTimeStats[date] = new Date().toString();
       localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
   
-    }
-    let realTimeStats = JSON.stringify(localStorage.getItem("realTimeStats"));
+    // }
+    realTimeStats = JSON.stringify(localStorage.getItem("realTimeStats"));
 
     console.log("Real Time Stats: ", realTimeStats.date);
 
@@ -59,7 +59,7 @@ function handleRealTimeStatsByDay(response) {
   if (response) {
     console.log("Response received", "handleRealTimeStatsByDay");
 
-    if (!localStorage.getItem("dailyStats")) {
+    // if (!localStorage.getItem("dailyStats")) {
       let dailyStats = {date: "", rows: []};
       let headers = response.result.columnHeaders;
       let rows = response.result.rows;
@@ -67,13 +67,13 @@ function handleRealTimeStatsByDay(response) {
         dailyStats.rows[row] = {};
         for (let item = 0; item < headers.length; item++) {
           dailyStats.rows[row][headers[item].name] = rows[row][item];
-          console.log("DS. Header: " + headers[item].name + " ; Item: " + rows[row][i]);
+          console.log("DS. Header: " + headers[item].name + " ; Item: " + rows[row][item]);
         }
       }
-      dailyStats[date] = new Date().toString();
+      dailyStats.date = new Date().toString();
       localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
-    }
-    let dailyStats = JSON.stringify(localStorage.getItem("dailyStats"));
+    // }
+    dailyStats = JSON.stringify(localStorage.getItem("dailyStats"));
 
     console.log("Daily Stats: ", dailyStats.date);
   }
