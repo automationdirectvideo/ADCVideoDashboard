@@ -47,6 +47,10 @@ function handleRealTimeStats(response, message) {
     for (let i = 0; i < row.length; i++) {
       realTimeStats[headers[i].name] = row[i];
     }
+    realTimeStats["netSubscribersGained"] = realTimeStats.subscribersGained - 
+    realTimeStats.subscribersLost;
+    delete realTimeStats.subscribersGained;
+    delete realTimeStats.subscribersLost;
     stats[message] = realTimeStats;
     stats["date"] = new Date().toString();
     localStorage.setItem("realTimeStats", JSON.stringify(stats));
