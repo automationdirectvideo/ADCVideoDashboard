@@ -160,9 +160,9 @@ if (enabledOrder.includes("real-time-stats")) {
 
 // Initialize real time stats in real time stats dashboard
 function loadRealTimeStats() {
-  if (localStorage.getItem("realTimeStats")) {
+  let stats = JSON.parse(localStorage.getItem("realTimeStats"));
+  if (stats.cumulative && stats.month && stats.today) {
 
-    let stats = JSON.parse(localStorage.getItem("realTimeStats"));
     console.log("Real Time Stats: ", stats);
     
     var secondsPerIncrement = {};
@@ -233,26 +233,25 @@ function loadRealTimeStats() {
     
     // Updating
     if (localStorage.getItem("statsUpdating") == "false") {
-      var updateCount = diffInSeconds;
       var updateStatsId = window.setInterval(updateStats, 1000);
       localStorage.setItem("statsUpdating", "true");
     }
   }
-  
-  // Update odometers in real time stats dashboard
-  function updateStats() {
-    updateCount++;
-    console.log("Update");
-    for (var key in secondsPerIncrement) {
-      if (secondsPerIncrement.hasOwnProperty(key)) {
-        if (updateCount % secondsPerIncrement[key] == 0) {
-          var odometers = odometerCategories[key];
-          odometers.forEach(odometer => {
-            var newValue = parseInt(odometer.getAttribute("value")) + 1;
-            odometer.innerHTML = newValue;
-            odometer.setAttribute("value", newValue);
-          });
-        }
+}
+
+// Update odometers in real time stats dashboard
+function updateStats() {
+  let updateCount = Math.floor((new Date() - stats.date) / 1000);
+  console.log("Update");
+  for (var key in secondsPerIncrement) {
+    if (secondsPerIncrement.hasOwnProperty(key)) {
+      if (updateCount % secondsPerIncrement[key] == 0) {
+        var odometers = odometerCategories[key];
+        odometers.forEach(odometer => {
+          var newValue = parseInt(odometer.getAttribute("value")) + 1;
+          odometer.innerHTML = newValue;
+          odometer.setAttribute("value", newValue);
+        });
       }
     }
   }
