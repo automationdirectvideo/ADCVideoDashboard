@@ -49,6 +49,9 @@ const defaultNumDays = 30;
 const uploadsPlaylistId = "UUR5c2ZGLZY2FFbxZuSxzzJg";
 var numVideosProcessed = 0;
 
+// Average video duration in seconds of the 926 public videos in uploadsIds
+const averageVideoDuration = 251.4;
+
 // 926 public videos as of 2019-05-31
 // Sorted from newest to oldest
 const uploadIds = [
