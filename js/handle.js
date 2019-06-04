@@ -45,7 +45,7 @@ function handleRealTimeStats(response, message) {
       realTimeStats[headers[i].name] = row[i];
     }
     stats[message] = realTimeStats;
-    stats[date] = new Date().toString();
+    stats["date"] = new Date().toString();
     localStorage.setItem("realTimeStats", JSON.stringify(stats));
     stats = JSON.parse(localStorage.getItem("realTimeStats"));
 
