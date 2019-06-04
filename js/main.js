@@ -1,9 +1,9 @@
 // Calls the Analytics API with a request and returns response to callback
-function callAnalyticsAPI(request, source, callback) {
+function callAnalyticsAPI(request, source, callback, message) {
   gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(source, response);
-      callback(response);
+      callback(response, message);
     })
     .catch(err => {
       console.error("Analytics API call error", err);
@@ -55,8 +55,7 @@ function testAPICalls() {
   // requestSubscribersGained(joinDate, todayDate);
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
-  requestRealTimeStats(joinDate, todayDate);
-  requestRealTimeStatsByDay(getDateFromDaysAgo(32), todayDate);
+  realTimeStatsCalls();
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);

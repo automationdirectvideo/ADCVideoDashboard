@@ -32,59 +32,25 @@ function handleMostWatchedVideos(response) {
   }
 }
 
-function handleRealTimeStats(response) {
+function handleRealTimeStats(response, message) {
   if (response) {
     console.log("Response received", "handleRealTimeStats");
 
     let stats = JSON.parse(localStorage.getItem("realTimeStats"));
-    var oldDate = new Date(stats.date);
-    var now = new Date();
-    var diffInSeconds = now - oldDate;
-    console.log(diffInSeconds);
-
-    if (!stats || diffInSeconds >= 86400000) {
-      let realTimeStats = {};
-      let headers = response.result.columnHeaders;
-      let row = response.result.rows[0];
-      for (let i = 0; i < row.length; i++) {
-        realTimeStats[headers[i].name] = row[i];
-      }
-      realTimeStats.date = new Date().toString();
-      localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
-      stats = JSON.parse(localStorage.getItem("realTimeStats"));
+    
+    let realTimeStats = {};
+    let headers = response.result.columnHeaders;
+    let row = response.result.rows[0];
+    for (let i = 0; i < row.length; i++) {
+      realTimeStats[headers[i].name] = row[i];
     }
+    stats[message] = realTimeStats;
+    stats[date] = new Date().toString();
+    localStorage.setItem("realTimeStats", JSON.stringify(stats));
+    stats = JSON.parse(localStorage.getItem("realTimeStats"));
 
     console.log("Real Time Stats: ", stats);
 
-  }
-}
-
-function handleRealTimeStatsByDay(response) {
-  if (response) {
-    console.log("Response received", "handleRealTimeStatsByDay");
-
-    let stats = JSON.parse(localStorage.getItem("dailyStats"));
-    var oldDate = new Date(stats.date);
-    var now = new Date();
-    var diffInSeconds = now - oldDate;
-    console.log(diffInSeconds);
-
-    if (!stats || diffInSeconds >= 86400000) {
-      let dailyStats = {date: "", rows: []};
-      let headers = response.result.columnHeaders;
-      let rows = response.result.rows;
-      for (let row = 0; row < rows.length; row++) {
-        dailyStats.rows[row] = {};
-        for (let item = 0; item < headers.length; item++) {
-          dailyStats.rows[row][headers[item].name] = rows[row][item];
-        }
-      }
-      dailyStats.date = new Date().toString();
-      localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
-      stats = JSON.parse(localStorage.getItem("dailyStats"));
-    }
-
-    console.log("Daily Stats: ", stats);
   }
 }
 

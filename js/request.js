@@ -43,26 +43,27 @@ function requestMostWatchedVideos(startDate, endDate, numVideos) {
   callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos);
 }
 
-function requestRealTimeStats(startDate, endDate) {
+function requestRealTimeStats(startDate, endDate, message) {
   var request = {
     "endDate": endDate,
     "ids": "channel==MINE",
     "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "RealTimeStats: ", handleRealTimeStats);
+  callAnalyticsAPI(request, "RealTimeStats: ", handleRealTimeStats, message);
 }
 
-function requestRealTimeStatsByDay(startDate, endDate) {
-  var request = {
-    "dimensions": "day",
-    "endDate": endDate,
-    "ids": "channel==MINE",
-    "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
-    "sort": "-day",
-    "startDate": startDate
-  };
-  callAnalyticsAPI(request, "RealTimeStatsByDay: ", handleRealTimeStatsByDay);
+function requestRealTimeStatsCumulative() {
+  requestRealTimeStats(joinDate, getDateFromDaysAgo(4), "cumulative");
+}
+
+function requestRealTimeStatsMonth() {
+  requestRealTimeStats(getDateFromDaysAgo(34), getDateFromDaysAgo(4), "month");
+}
+
+function requestRealTimeStatsToday() {
+  var date = getDateFromDaysAgo(4);
+  requestRealTimeStats(date, date, "today");
 }
 
 // Request # of subscribers gained from startDate to endDate
@@ -199,4 +200,11 @@ function topVideoCalls(startDate, endDate, videoId) {
   requestVideoDailyViews(thirtyDaysAgo, endDate, videoId);
   requestVideoSnippet(videoId);
   requestVideoStats(startDate, endDate, videoId);
+}
+
+// Requests data for real time stats dashboard
+function realTimeStatsCalls() {
+  requestRealTimeStatsCumulative();
+  requestRealTimeStatsMonth();
+  requestRealTimeStatsToday();
 }
