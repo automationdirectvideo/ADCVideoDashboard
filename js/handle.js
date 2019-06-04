@@ -48,7 +48,7 @@ function handleRealTimeStats(response) {
       localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
   
     // }
-    let stats = JSON.stringify(localStorage.getItem("realTimeStats"));
+    let stats = JSON.parse(localStorage.getItem("realTimeStats"));
 
     console.log("Real Time Stats: ", stats);
     console.log("Real Time Stats Date: ", stats.date);
@@ -74,7 +74,7 @@ function handleRealTimeStatsByDay(response) {
       dailyStats.date = new Date().toString();
       localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
     // }
-    let stats = JSON.stringify(localStorage.getItem("dailyStats"));
+    let stats = JSON.parse(localStorage.getItem("dailyStats"));
 
     console.log("Daily Stats: ", stats);
     console.log("Daily Stats Date: ", stats.date);
