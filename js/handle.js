@@ -42,14 +42,15 @@ function handleRealTimeStats(response) {
       let row = response.result.rows[0];
       for (let i = 0; i < row.length; i++) {
         realTimeStats[headers[i].name] = row[i];
+        console.log("RTS. Header: " + headers[i].name + " ; Item: " + row[i]);
       }
       realTimeStats[date] = new Date().toString();
       localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
   
     }
-    let realTimeStats = localStorage.getItem("realTimeStats");
+    let realTimeStats = JSON.stringify(localStorage.getItem("realTimeStats"));
 
-    console.log("Real Time Stats: ", realTimeStats);
+    console.log("Real Time Stats: ", realTimeStats.date);
 
   }
 }
@@ -59,21 +60,22 @@ function handleRealTimeStatsByDay(response) {
     console.log("Response received", "handleRealTimeStatsByDay");
 
     if (!localStorage.getItem("dailyStats")) {
-      let dailyStats = {rows: []};
+      let dailyStats = {date: "", rows: []};
       let headers = response.result.columnHeaders;
       let rows = response.result.rows;
       for (let row = 0; row < rows.length; row++) {
         dailyStats.rows[row] = {};
         for (let item = 0; item < headers.length; item++) {
           dailyStats.rows[row][headers[item].name] = rows[row][item];
+          console.log("DS. Header: " + headers[item].name + " ; Item: " + rows[row][i]);
         }
       }
       dailyStats[date] = new Date().toString();
       localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
     }
-    let dailyStats = localStorage.getItem("dailyStats");
+    let dailyStats = JSON.stringify(localStorage.getItem("dailyStats"));
 
-    console.log("Daily Stats: ", dailyStats);
+    console.log("Daily Stats: ", dailyStats.date);
   }
 }
 
@@ -240,7 +242,7 @@ function handleVideoSnippet(response) {
     // output += "</ol>";
     // let tagsList = document.getElementById("top-video-1-tags");
     // tagsList.innerHTML = output;
-    console.log("Tags: ", tags);
+    // console.log("Tags: ", tags);
   }
 }
 
