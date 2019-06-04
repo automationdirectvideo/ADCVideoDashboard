@@ -47,7 +47,7 @@ function requestRealTimeStats(startDate, endDate, message) {
   var request = {
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
+    "metrics": "views,comments,likes,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
   };
   callAnalyticsAPI(request, "RealTimeStats: ", handleRealTimeStats, message);
