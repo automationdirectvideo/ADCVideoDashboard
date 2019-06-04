@@ -44,13 +44,14 @@ function handleRealTimeStats(response) {
         realTimeStats[headers[i].name] = row[i];
         console.log("RTS. Header: " + headers[i].name + " ; Item: " + row[i]);
       }
-      realTimeStats[date] = new Date().toString();
+      realTimeStats.date = new Date().toString();
       localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
   
     // }
-    realTimeStats = JSON.stringify(localStorage.getItem("realTimeStats"));
+    let stats = JSON.stringify(localStorage.getItem("realTimeStats"));
 
-    console.log("Real Time Stats: ", realTimeStats.date);
+    console.log("Real Time Stats: ", stats);
+    console.log("Real Time Stats Date: ", stats.date);
 
   }
 }
@@ -73,9 +74,10 @@ function handleRealTimeStatsByDay(response) {
       dailyStats.date = new Date().toString();
       localStorage.setItem("dailyStats", JSON.stringify(dailyStats));
     // }
-    dailyStats = JSON.stringify(localStorage.getItem("dailyStats"));
+    let stats = JSON.stringify(localStorage.getItem("dailyStats"));
 
-    console.log("Daily Stats: ", dailyStats.date);
+    console.log("Daily Stats: ", stats);
+    console.log("Daily Stats Date: ", stats.date);
   }
 }
 
