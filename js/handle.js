@@ -57,7 +57,9 @@ function handleRealTimeStats(response, message) {
     stats = JSON.parse(localStorage.getItem("realTimeStats"));
 
     console.log("Real Time Stats: ", stats);
-
+    if (message == "today") {
+      loadRealTimeStats();
+    }
   }
 }
 
