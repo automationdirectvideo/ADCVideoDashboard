@@ -52,7 +52,9 @@ function handleRealTimeStats(response, message) {
     delete realTimeStats.subscribersGained;
     delete realTimeStats.subscribersLost;
     stats[message] = realTimeStats;
-    stats["date"] = new Date().toString();
+    let date = new Date();
+    date.setHours(4,0,0,0);
+    stats["date"] = date.toString();
     localStorage.setItem("realTimeStats", JSON.stringify(stats));
     stats = JSON.parse(localStorage.getItem("realTimeStats"));
 
