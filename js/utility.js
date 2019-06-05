@@ -37,6 +37,23 @@ function getYouTubeDateFormat(date) {
   return today;
 }      
 
+// Converts ISO-8601 duration to seconds (e.g. PT5M25S -> 325 seconds)
+function isoDurationToSeconds(duration) {
+  duration = duration.replace("PT","").replace("H",":").replace("M",":")
+      .replace("S","");
+  durationArr = duration.split(":");
+  let seconds;
+  if (durationArr.length == 3) {
+    seconds = Number(durationArr[0]) * 3600 + 
+        Number(durationArr[1]) * 60 + Number(durationArr[2]);
+  } else if (durationArr.length == 2) {
+    seconds = Number(durationArr[0]) * 60 + Number(durationArr[1]);
+  } else {
+    seconds = duration;
+  }
+  return seconds;
+}
+
 // Add commas to number
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
