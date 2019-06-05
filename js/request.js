@@ -130,7 +130,7 @@ function requestVideoSearchTerms(startDate, endDate, videoId) {
 
 function requestVideoSnippet(videoId) {
   var request = {
-    "part": "snippet,contentDetails,statistics",
+    "part": "snippet,contentDetails",
     "id": videoId
   };
   callDataAPIVideos(request, "VideoSnippet: ", handleVideoSnippet);
@@ -195,9 +195,8 @@ function requestViewsByTrafficSource(startDate, endDate) {
 
 // Makes requests data for top video dashboard
 function topVideoCalls(startDate, endDate, videoId) {
-  var thirtyDaysAgo = getDateFromDaysAgo(30);
   requestVideoSearchTerms(startDate, endDate, videoId);
-  requestVideoDailyViews(thirtyDaysAgo, endDate, videoId);
+  requestVideoDailyViews(getDateFromDaysAgo(32), endDate, videoId);
   requestVideoSnippet(videoId);
   requestVideoStats(startDate, endDate, videoId);
 }

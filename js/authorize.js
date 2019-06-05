@@ -35,7 +35,6 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     loginBox.style.display = "none";
     content.style.display = "block";
-    requestChannelInfo(defaultChannel);
     testAPICalls();
   } else {
     loginBox.style.display = "block";
