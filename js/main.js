@@ -237,22 +237,23 @@ function loadRealTimeStats() {
       localStorage.setItem("statsUpdating", "true");
     }
   }
-}
 
-// Update odometers in real time stats dashboard
-function updateStats() {
-  let updateCount = Math.floor((new Date() - stats.date) / 1000);
-  console.log("Update");
-  for (var key in secondsPerIncrement) {
-    if (secondsPerIncrement.hasOwnProperty(key)) {
-      if (updateCount % secondsPerIncrement[key] == 0) {
-        var odometers = odometerCategories[key];
-        odometers.forEach(odometer => {
-          var newValue = parseInt(odometer.getAttribute("value")) + 1;
-          odometer.innerHTML = newValue;
-          odometer.setAttribute("value", newValue);
-        });
+  // Update odometers in real time stats dashboard
+  function updateStats() {
+    let updateCount = Math.floor((new Date() - stats.date) / 1000);
+    console.log("Update");
+    for (var key in secondsPerIncrement) {
+      if (secondsPerIncrement.hasOwnProperty(key)) {
+        if (updateCount % secondsPerIncrement[key] == 0) {
+          var odometers = odometerCategories[key];
+          odometers.forEach(odometer => {
+            var newValue = parseInt(odometer.getAttribute("value")) + 1;
+            odometer.innerHTML = newValue;
+            odometer.setAttribute("value", newValue);
+          });
+        }
       }
     }
   }
+
 }
