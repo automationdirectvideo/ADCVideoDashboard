@@ -204,7 +204,7 @@ function topVideoCalls(startDate, endDate, videoId) {
 
 // Requests data for real time stats dashboard
 function realTimeStatsCalls() {
-  let stats = localStorage.getItem("realTimeStats");
+  let stats = JSON.parse(localStorage.getItem("realTimeStats"));
   if (!stats || (new Date() - new Date(stats.date)) >= 86400000) {
     requestRealTimeStatsCumulative();
     requestRealTimeStatsMonth();
