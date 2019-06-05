@@ -236,11 +236,12 @@ function loadRealTimeStats() {
       var updateStatsId = window.setInterval(updateStats, 1000);
       localStorage.setItem("statsUpdating", "true");
     }
+    console.log(secondsPerIncrement);
   }
 
   // Update odometers in real time stats dashboard
   function updateStats() {
-    let updateCount = Math.floor((new Date() - stats.date) / 1000);
+    let updateCount = Math.floor((new Date() - new Date(stats.date)) / 1000);
     console.log("Update");
     for (var key in secondsPerIncrement) {
       if (secondsPerIncrement.hasOwnProperty(key)) {
