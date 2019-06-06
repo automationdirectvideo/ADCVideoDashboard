@@ -6,7 +6,7 @@ const DISCOVERY_DOCS = [
   'https://youtubeanalytics.googleapis.com/$discovery/rest?version=v2',
   'https://content.googleapis.com/discovery/v1/apis/sheets/v4/rest'
 ];
-const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/spreadsheets.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/spreadsheets.readonly';
 
 const authorizeButton = document.getElementById("authorize-button");
 const loginBox = document.getElementById("login-box");
