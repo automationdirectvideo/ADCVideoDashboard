@@ -65,6 +65,12 @@ function handleRealTimeStats(response, message) {
   }
 }
 
+function handleSpreadsheetData(response) {
+  if (response) {
+    console.log("Response received", "handleSpreadsheetData");
+  }
+}
+
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
   if (response) {

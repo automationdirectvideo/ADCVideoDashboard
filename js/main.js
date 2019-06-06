@@ -45,6 +45,18 @@ function callDataAPIVideos(request, source, callback) {
     });
 }
 
+// Calls the Google Sheets API with a request and returns response to callback
+function callSheetsAPI(request, source, callback) {
+  gapi.client.sheets.spreadsheets.values.get(request)
+    .then(response => {
+      console.log(source, response);
+      callback(response, message);
+    })
+    .catch(err => {
+      console.error("Google Sheets API call error", err);
+    });
+}
+
 // Tests calls to the API
 function testAPICalls() {
   var todayDate = getTodaysDate();
@@ -56,6 +68,7 @@ function testAPICalls() {
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
   realTimeStatsCalls();
+  requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Sheet1");
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);

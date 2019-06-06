@@ -66,6 +66,14 @@ function requestRealTimeStatsToday() {
   requestRealTimeStats(date, date, "today");
 }
 
+function requestSpreadsheetData(spreadsheetId, range) {
+  var request = {
+    "spreadsheetId": spreadsheetId,
+    "range": range
+  };
+  callSheetsAPI(request, "SpreadsheetData: ", handleSpreadsheetData);
+}
+
 // Request # of subscribers gained from startDate to endDate
 function requestSubscribersGained(startDate, endDate) {
   var request = {
