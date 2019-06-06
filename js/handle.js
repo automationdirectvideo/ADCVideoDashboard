@@ -232,9 +232,10 @@ function handleVideoStatisticsOverall(response, settings) {
     let videoId = response.result.items[0].id;
     let videoStats = response.result.items[0].statistics;
     let durationStr = response.result.items[0].contentDetails.duration;
-    let duration = isoDurationToSeconds(durationStr);
+    let duration = parseInt(isoDurationToSeconds(durationStr));
     let viewCount = parseInt(videoStats.viewCount);
     let likeCount = parseInt(videoStats.likeCount);
+    console.log("Video Details:", videoId + ", " + duration + ", " + viewCount + ", " + likeCount);
     let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
     let categoriesByVideoId = JSON.parse(localStorage.getItem("categoriesByVideoId"));
     let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
@@ -243,16 +244,17 @@ function handleVideoStatisticsOverall(response, settings) {
     allVideoStats[videoId]["likes"] = likeCount;
     allVideoStats[videoId]["duration"] = duration;
     let categories = categoriesByVideoId[videoId];
+    console.log("Video Categories:", categories);
     for (let i = 0; i < categories.length; i++) {
       let categoryId = categories[i];
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
       let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
       let categoryNumVideos = parseInt(categoryTotals[categoryId]["numVideos"]);
+      console.log("CategoryDetails:", categoryId + ", " + categoryViews + ", " + categoryLikes + ", " + categoryDuration + ", " + categoryNumVideos);
       categoryTotals[categoryId]["views"] = categoryViews + viewCount;
       categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
       categoryTotals[categoryId]["duration"] = categoryDuration + duration;
-      categoryTotals[categoryId]["numVideos"] = categoryNumVideos + 1;
     }
     localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
 

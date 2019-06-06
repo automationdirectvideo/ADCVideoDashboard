@@ -240,8 +240,9 @@ function updateCategoriesData() {
           if (productCategoryIds[levelId] == undefined) {
             productCategoryIds[levelId] = levels[level].name;
             categoryTotals[levelId] = {
-              "views": 0,
+              "duration": 0,
               "likes": 0,
+              "views": 0,
               "numVideos": 0
             };
           }
