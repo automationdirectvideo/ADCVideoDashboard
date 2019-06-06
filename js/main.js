@@ -67,7 +67,6 @@ function testAPICalls() {
   // requestSubscribersGained(joinDate, todayDate);
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
-  realTimeStatsCalls();
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);
@@ -284,6 +283,8 @@ function updateCategoriesData() {
   console.log("Uploads: ", uploads);
 
   showUploadThumbnails();
+
+  getAllVideoStats(uploads);
 }
 
 function calcCategoryStats() {
