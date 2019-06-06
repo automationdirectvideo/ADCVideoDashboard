@@ -52,13 +52,10 @@ function handleRealTimeStats(response, message) {
     delete realTimeStats.subscribersGained;
     delete realTimeStats.subscribersLost;
     stats[message] = realTimeStats;
-    let date = new Date();
-    date.setHours(6,0,0,0);
-    stats["date"] = date.toString();
-    localStorage.setItem("realTimeStats", JSON.stringify(stats));
     stats = JSON.parse(localStorage.getItem("realTimeStats"));
 
     console.log("Real Time Stats: ", stats);
+    // message is either "cumulative", "month", or "today"
     if (message == "cumulative") {
       loadRealTimeStats();
     }
@@ -227,9 +224,47 @@ function handleVideoSnippet(response) {
   }
 }
 
-function handleVideoStats(response) {
+function handleVideoStatisticsOverall(response, settings) {
   if (response) {
-    console.log("Response received", "handleVideoStats");
+    console.log("Response received", "handleVideoStatisticsOverall");
+    let videoId = response.result.items[0].id;
+    let videoStats = response.result.items[0].statistics;
+    let durationStr = response.result.items[0].contentDetails.duration;
+    let duration = isoDurationToSeconds(durationStr);
+    let viewCount = parseInt(videoStats.viewCount);
+    let likeCount = parseInt(videoStats.likeCount);
+    let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+    allVideoStats[videoId] = {};
+    allVideoStats[videoId]["views"] = viewCount;
+    allVideoStats[videoId]["likes"] = likeCount;
+    allVideoStats[videoId]["duration"] = duration;
+    let categories = allVideoStats[videoId]["categories"];
+    for (var categoryId of categories) {
+      let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
+      let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
+      let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
+      let categoryNumVideos = parseInt(categoryTotals[categoryId]["numVideos"]);
+      categoryTotals[categoryId]["views"] = categoryViews + viewCount;
+      categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
+      categoryTotals[categoryId]["duration"] = categoryNumVideos + categoryDuration;
+      categoryTotals[categoryId]["numVideos"] = categoryNumVideos + 1;
+    }
+    localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+
+    let uploads = settings["uploads"];
+    let index = parseInt(settings["index"]);
+    if (index + 1 < uploads.length) {
+      settings["index"] = index + 1;
+      requestVideoStatisticsOverall(settings);
+    } else {
+      calcCategoryStats();
+    }
+  }
+}
+
+function handleVideoBasicStats(response) {
+  if (response) {
+    console.log("Response received", "handleVideoBasicStats");
     let stats = response.result.rows[0];
 
     let views = document.getElementById("top-video-1-views");

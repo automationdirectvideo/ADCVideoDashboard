@@ -144,7 +144,16 @@ function requestVideoSnippet(videoId) {
   callDataAPIVideos(request, "VideoSnippet: ", handleVideoSnippet);
 }
 
-function requestVideoStats(startDate, endDate, videoId) {
+function requestVideoStatisticsOverall(settings) {
+  var videoId = settings["uploads"][settings["index"]];
+  var request = {
+    "part": "statistics,contentDetails",
+    "id": videoId
+  };
+  callDataAPIVideos(request, "VideoSnippet: ", handleVideoStatisticsOverall, settings);
+}
+
+function requestVideoBasicStats(startDate, endDate, videoId) {
   var stringVideoId = "video==" + videoId;
   const request = {
     "dimensions": "video",
@@ -154,7 +163,7 @@ function requestVideoStats(startDate, endDate, videoId) {
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration,subscribersGained,subscribersLost",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoStats: ", handleVideoStats);
+  callAnalyticsAPI(request, "VideoBasicStats: ", handleVideoBasicStats);
 }
 
 function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
@@ -206,15 +215,24 @@ function topVideoCalls(startDate, endDate, videoId) {
   requestVideoSearchTerms(startDate, endDate, videoId);
   requestVideoDailyViews(getDateFromDaysAgo(32), endDate, videoId);
   requestVideoSnippet(videoId);
-  requestVideoStats(startDate, endDate, videoId);
+  requestVideoBasicStats(startDate, endDate, videoId);
 }
 
 // Requests data for real time stats dashboard
 function realTimeStatsCalls() {
-  let stats = JSON.parse(localStorage.getItem("realTimeStats"));
-  if (!stats || (new Date() - new Date(stats.date)) >= 86400000) {
-    requestRealTimeStatsCumulative();
-    requestRealTimeStatsMonth();
-    requestRealTimeStatsToday();
+  requestRealTimeStatsCumulative();
+  requestRealTimeStatsMonth();
+  requestRealTimeStatsToday();
+}
+
+function getAllVideoStats(uploads) {
+  var settings = {
+    "uploads": uploads,
+    "index": 0
+  };
+  let stats = JSON.parse(localStorage.getItem("allVideoStats"));
+  if (!stats) {
+    localStorage.setItem("allVideoStats", JSON.stringify({}));
   }
+  requestVideoStatisticsOverall(settings);
 }
