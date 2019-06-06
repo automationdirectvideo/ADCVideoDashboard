@@ -47,12 +47,12 @@ function handleRealTimeStats(response, message) {
     for (let i = 0; i < row.length; i++) {
       realTimeStats[headers[i].name] = row[i];
     }
-    realTimeStats["netSubscribersGained"] = realTimeStats.subscribersGained - 
-    realTimeStats.subscribersLost;
+    realTimeStats["netSubscribersGained"] = realTimeStats.subscribersGained -
+        realTimeStats.subscribersLost;
     delete realTimeStats.subscribersGained;
     delete realTimeStats.subscribersLost;
     stats[message] = realTimeStats;
-    stats = JSON.parse(localStorage.getItem("realTimeStats"));
+    localStorage.setItem("realTimeStats", JSON.stringify(stats));
 
     console.log("Real Time Stats: ", stats);
     // message is either "cumulative", "month", or "today"
@@ -65,7 +65,7 @@ function handleRealTimeStats(response, message) {
 function handleSpreadsheetData(response) {
   if (response) {
     console.log("Response received", "handleSpreadsheetData");
-    localStorage.setItem("categoriesSheet", JSON.stringify(response));
+    localStorage.setItem("categoriesSheet", JSON.stringify(response.result.values));
     updateCategoriesData();
   }
 }
