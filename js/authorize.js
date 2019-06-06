@@ -4,9 +4,9 @@ const CLIENT_ID = "440646774290-ism1om8j8hnp1js8tsc9603ogo6uvhco.apps.googleuser
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest',
   'https://youtubeanalytics.googleapis.com/$discovery/rest?version=v2',
-  'https://content.googleapis.com/discovery/v1/apis/sheets/v4/rest'
+  'https://sheets.googleapis.com/$discovery/rest?version=v4'
 ];
-const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.readonly https://www.googleapis.com/auth/spreadsheets https://www.googleapis.com/auth/spreadsheets.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly https://www.googleapis.com/auth/yt-analytics.readonly https://www.googleapis.com/auth/spreadsheets.readonly';
 
 const authorizeButton = document.getElementById("authorize-button");
 const loginBox = document.getElementById("login-box");
