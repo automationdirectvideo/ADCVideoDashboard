@@ -255,15 +255,17 @@ function updateCategoriesData() {
 
     // Add categories for the videoId to categoriesByVideoId
     if (categoriesByVideoId[videoId] == undefined) {
-      let categories = new Set();
+      let categories = [];
       for (var levelId of levelIds) {
-        categories.add(levelId);
+        categories.push(levelId);
       }
       categoriesByVideoId[videoId] = categories;
     } else {
       let categories = categoriesByVideoId[videoId];
       for (var levelId of levelIds) {
-        categories.add(levelId);
+        if (!categories.includes(levelId)) {
+          categories.push(levelId);
+        }
       }
       categoriesByVideoId[videoId] = categories;
     }

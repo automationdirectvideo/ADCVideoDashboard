@@ -236,12 +236,14 @@ function handleVideoStatisticsOverall(response, settings) {
     let viewCount = parseInt(videoStats.viewCount);
     let likeCount = parseInt(videoStats.likeCount);
     let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+    let categoryByVideoId = JSON.parse(localStorage.getItem("categoryByVideoId"));
     allVideoStats[videoId] = {};
     allVideoStats[videoId]["views"] = viewCount;
     allVideoStats[videoId]["likes"] = likeCount;
     allVideoStats[videoId]["duration"] = duration;
-    let categories = allVideoStats[videoId]["categories"];
-    for (var categoryId of categories) {
+    let categories = categoryByVideoId[videoId];
+    for (let i = 0; i < categories.length; i++) {
+      let categoryId = categories[i];
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
       let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
