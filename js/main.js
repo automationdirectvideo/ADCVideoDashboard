@@ -181,7 +181,7 @@ function loadRealTimeStats() {
     var secondsPerIncrement = {};
     for (var key in stats.today) {
       if (stats.today.hasOwnProperty(key) && key != "averageViewDuration") {
-        secondsPerIncrement[key] = Math.round(86400 / stats.today[key]);
+        secondsPerIncrement[key] = Math.round(43200 / stats.today[key]);
       }
     }
     
@@ -255,6 +255,9 @@ function loadRealTimeStats() {
   // Update odometers in real time stats dashboard
   function updateStats() {
     let updateCount = Math.floor((new Date() - new Date(stats.date)) / 1000);
+    if (updateCount >= 86400) {
+      realTimeStatsCalls();
+    }
     console.log("Update");
     for (var key in secondsPerIncrement) {
       if (secondsPerIncrement.hasOwnProperty(key)) {
