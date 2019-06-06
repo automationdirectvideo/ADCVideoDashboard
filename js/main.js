@@ -50,7 +50,7 @@ function callSheetsAPI(request, source, callback) {
   gapi.client.sheets.spreadsheets.values.get(request)
     .then(response => {
       console.log(source, response);
-      callback(response, message);
+      callback(response);
     })
     .catch(err => {
       console.error("Google Sheets API call error", err);
