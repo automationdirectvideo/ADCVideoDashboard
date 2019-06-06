@@ -65,6 +65,8 @@ function handleRealTimeStats(response, message) {
 function handleSpreadsheetData(response) {
   if (response) {
     console.log("Response received", "handleSpreadsheetData");
+    localStorage.setItem("categoriesSheet", JSON.stringify(response));
+    updateCategoriesData();
   }
 }
 

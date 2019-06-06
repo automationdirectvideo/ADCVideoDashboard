@@ -68,7 +68,6 @@ function testAPICalls() {
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
   realTimeStatsCalls();
-  requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Sheet1");
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);
@@ -87,8 +86,9 @@ function updateStats() {
   let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
   let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
   if (updateCount >= 86400) {
-    // realTimeStatsCalls();
-    updateCategoriesData();
+    realTimeStatsCalls();
+    requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Sheet1");
+    // updateCategoriesData();
     let date = new Date();
     date.setHours(6,0,0,0);
     localStorage.setItem("lastUpdatedOn", date.toString());
