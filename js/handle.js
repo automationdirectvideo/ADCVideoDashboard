@@ -311,16 +311,6 @@ function handleVideoBasicStats(response) {
 function handleVideoViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleVideoViewsByTrafficSource");
-    // numVideosProcessed++;
-    // // Get traffic source info from response
-    // // Sum organic views
-    // // Add to mostViewedVideos
-    // console.log("Number of Videos Processed: " + numVideosProcessed);
-    // if (numVideosProcessed == 25) {
-    //   numVideosProcessed = 0;
-    //   console.log("25 videos processed!");
-    //   // Call function to organize and display top 10 organic videos
-    // }
   }
 }
 

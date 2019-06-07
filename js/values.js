@@ -47,12 +47,8 @@ const defaultSettings =
   "numEnabled": 8
 };
 
-const defaultChannel = "automationdirect";
 // Must be in the form YYYY-MM-DD
 const joinDate = "2008-04-11";
-const defaultNumDays = 30;
-const uploadsPlaylistId = "UUR5c2ZGLZY2FFbxZuSxzzJg";
-var numVideosProcessed = 0;
 
 // Average video duration in seconds of the 926 public videos in uploadsIds
 const averageVideoDuration = 251.4;

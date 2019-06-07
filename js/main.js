@@ -95,7 +95,6 @@ function testAPICalls() {
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);
-  // requestVideoPlaylist(uploadsPlaylistId, 50);
 }
 
 function initializeUpdater() {
