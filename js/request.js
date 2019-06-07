@@ -250,7 +250,7 @@ function getAllVideoStats(uploads) {
   };
   let stats = JSON.parse(localStorage.getItem("allVideoStats"));
   if (!stats) {
-    localStorage.setItem("allVideoStats", JSON.stringify({}));
+    localStorage.setItem("allVideoStats", JSON.stringify([]));
   }
   requestVideoStatisticsOverall(settings);
 }

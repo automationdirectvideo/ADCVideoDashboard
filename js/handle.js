@@ -232,13 +232,14 @@ function handleVideoStatisticsOverall(response, settings) {
     let categoriesByVideoId = JSON.parse(localStorage.getItem("categoriesByVideoId"));
     let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
     let row = {
+      "videoId": videoId,
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
       "duration": duration,
       "comments": commentCount
     };
-    allVideoStats[videoId] = row;
+    allVideoStats.push(row);
     let categories = categoriesByVideoId[videoId];
     for (let i = 0; i < categories.length; i++) {
       let categoryId = categories[i];

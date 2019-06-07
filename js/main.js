@@ -350,14 +350,14 @@ function calcCategoryStats() {
     ["Video ID", "Views", "Duration (sec)", "Likes", "Dislikes", "Comments"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  for (var videoId in allVideoStats) {
+  for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
-    row.push(videoId);
-    row.push(allVideoStats[videoId]["views"]);
-    row.push(allVideoStats[videoId]["duration"]);
-    row.push(allVideoStats[videoId]["likes"]);
-    row.push(allVideoStats[videoId]["dislikes"]);
-    row.push(allVideoStats[videoId]["comments"]);
+    row.push(allVideoStats[i]["videoId"]);
+    row.push(allVideoStats[i]["views"]);
+    row.push(allVideoStats[i]["duration"]);
+    row.push(allVideoStats[i]["likes"]);
+    row.push(allVideoStats[i]["dislikes"]);
+    row.push(allVideoStats[i]["comments"]);
     videoValues.push(row);
   }
   var videoBody= {
@@ -443,7 +443,7 @@ function recordCategoryData() {
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
 }
 
-// Records video data from Google Sheet to localStorage.allVideoStast & .uploads
+// Records video data from Google Sheet to localStorage.allVideoStats & .uploads
 function recordVideoData() {
   let videoSheet = JSON.parse(localStorage.getItem("videoSheet"));
   let columns = {};
@@ -452,7 +452,7 @@ function recordVideoData() {
     columns[columnHeaders[i]] = i;
   }
   let uploads = [];
-  let allVideoStats = {};
+  let allVideoStats = [];
   for (var i = 1; i < videoSheet.length; i++) {
     ["Video ID", "Views", "Duration (sec)", "Likes", "Dislikes", "Comments"];
     let videoId = videoSheet[i][columns["Video ID"]];
@@ -462,13 +462,14 @@ function recordVideoData() {
     let dislikeCount = parseInt(videoSheet[i][columns["Dislikes"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
     let row = {
+      "videoId": videoId,
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
       "duration": duration,
       "comments": commentCount
     };
-    allVideoStats[videoId] = row;
+    allVideoStats.push(row);
     uploads.push(videoId);
   }
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
@@ -485,6 +486,22 @@ function carouselPrev() {
 
 function goToCarouselItem(index) {
   $(".carousel").carousel(index);
+}
+
+function sortVideosByViews() {
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  allVideoStats.sort(function(a, b) {
+    return parseInt(b["views"]) - parseInt(a["views"]);
+  });
+  console.log("Videos Sorted by Views: ", allVideoStats);
+}
+
+function sortVideosByLikes() {
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  allVideoStats.sort(function(a, b) {
+    return parseInt(b["likes"]) - parseInt(a["likes"]);
+  });
+  console.log("Videos Sorted by Views: ", allVideoStats);
 }
 
 // Get current settings
