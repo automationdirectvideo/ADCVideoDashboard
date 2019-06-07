@@ -45,12 +45,37 @@ function callDataAPIVideos(request, source, callback, message) {
     });
 }
 
-// Calls the Google Sheets API with a request and returns response to callback
-function callSheetsAPI(request, source, callback) {
+// Calls the Sheets API for getting values with a request and returns response
+// to callback
+function callSheetsAPIGet(request, source, callback) {
   gapi.client.sheets.spreadsheets.values.get(request)
     .then(response => {
       console.log(source, response);
       callback(response);
+    })
+    .catch(err => {
+      console.error("Google Sheets API call error", err);
+    });
+}
+
+// Calls the Sheets API for updating values with a request and returns response
+// to callback
+function callSheetsAPIUpdate(request, source, callback) {
+  gapi.client.sheets.spreadsheets.values.update(request)
+    .then(response => {
+      console.log(source, response);
+      callback(response);
+    })
+    .catch(err => {
+      console.error("Google Sheets API call error", err);
+    });
+}
+
+function callDriveAPIFiles(request, source, callback, message) {
+  gapi.client.drive.files.get(request)
+    .then(response => {
+      console.log(source, response);
+      callback(response, message);
     })
     .catch(err => {
       console.error("Google Sheets API call error", err);
@@ -67,6 +92,17 @@ function testAPICalls() {
   // requestSubscribersGained(joinDate, todayDate);
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
+  var values = [
+    ["Header 1", "Header 2", "Header 3"],
+    ["Item 1", "Item 2", "Item 3"],
+    ["Item 4", "Item 5", "Item 6"],
+  ];
+  var body = {
+    "values": values
+  };
+  requestUpdateSheetData("1x4gi9zk8YXAAqoBwbURV9DWSR6NdbJbLOGdPs2eWQUE", "Sheet1", body);
+  requestFileModifiedTime("1x4gi9zk8YXAAqoBwbURV9DWSR6NdbJbLOGdPs2eWQUE", "Video Stats");
+  requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Categories");
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);

@@ -339,3 +339,17 @@ function handleViewsByTrafficSource(response) {
     console.log("Response received", "handleViewsByTrafficSource");
   }
 }
+
+function handleUpdateSheetData(response) {
+  if (response) {
+    console.log("Response received", "handleUpdateSheetData");
+  }
+}
+
+function handleFileModifiedTime(response, message) {
+  if (response) {
+    console.log("Response received", "handleFileModifiedTime");
+    var date = new Date(response.modifiedTime);
+    console.log(message + " was last modified on " + date.toString());
+  }
+}

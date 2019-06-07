@@ -71,7 +71,7 @@ function requestSpreadsheetData(spreadsheetId, range) {
     "spreadsheetId": spreadsheetId,
     "range": range
   };
-  callSheetsAPI(request, "SpreadsheetData: ", handleSpreadsheetData);
+  callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData);
 }
 
 // Request # of subscribers gained from startDate to endDate
@@ -208,6 +208,24 @@ function requestViewsByTrafficSource(startDate, endDate) {
   };
   callAnalyticsAPI(request, "ViewsByTrafficSource: ",
       handleViewsByTrafficSource);
+}
+
+function requestUpdateSheetData(spreadsheetId, range, body) {
+  var request = {
+    "spreadsheetId": spreadsheetId,
+    "range": range,
+    "valueInputOption": "RAW",
+    "resource": body
+  };
+  callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData);
+}
+
+function requestFileModifiedTime(fileId, message) {
+  var request = {
+    "fileId": fileId,
+    "fields": "modifiedTime"
+  };
+  callDriveAPIFiles(request, "FileModifiedTime:", handleFileModifiedTime, message);
 }
 
 // Makes requests data for top video dashboard
