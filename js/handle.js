@@ -62,14 +62,6 @@ function handleRealTimeStats(response, message) {
   }
 }
 
-function handleSpreadsheetData(response) {
-  if (response) {
-    console.log("Response received", "handleSpreadsheetData");
-    localStorage.setItem("categoriesSheet", JSON.stringify(response.result.values));
-    updateCategoriesData();
-  }
-}
-
 // Handles subscribers gained response from Analytics API
 function handleSubscribersGained(response) {
   if (response) {
@@ -235,13 +227,19 @@ function handleVideoStatisticsOverall(response, settings) {
     let duration = parseInt(isoDurationToSeconds(durationStr));
     let viewCount = parseInt(videoStats.viewCount);
     let likeCount = parseInt(videoStats.likeCount);
+    let dislikeCount = parseInt(videoStats.dislikeCount);
+    let commentCount = parseInt(videoStats.commentCount);
     let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
     let categoriesByVideoId = JSON.parse(localStorage.getItem("categoriesByVideoId"));
     let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-    allVideoStats[videoId] = {};
-    allVideoStats[videoId]["views"] = viewCount;
-    allVideoStats[videoId]["likes"] = likeCount;
-    allVideoStats[videoId]["duration"] = duration;
+    let row = {
+      "views": viewCount,
+      "likes": likeCount,
+      "dislikes": dislikeCount,
+      "duration": duration,
+      "comments": commentCount
+    };
+    allVideoStats[videoId] = row;
     let categories = categoriesByVideoId[videoId];
     for (let i = 0; i < categories.length; i++) {
       let categoryId = categories[i];
@@ -340,6 +338,22 @@ function handleViewsByTrafficSource(response) {
   }
 }
 
+function handleSpreadsheetData(response, message) {
+  if (response) {
+    console.log("Response received", "handleSpreadsheetData");
+    if (message == "Videos By Category") {
+      localStorage.setItem("videosByCategorySheet", JSON.stringify(response.result.values));
+      getVideosByCategoryData();
+    } else if (message == "Video Stats") {
+      localStorage.setItem("videoSheet", JSON.stringify(response.result.values));
+      recordVideoData();
+    } else if (message == "Category Stats") {
+      localStorage.setItem("categoriesSheet", JSON.stringify(response.result.values));
+      recordCategoryData();
+    }
+  }
+}
+
 function handleUpdateSheetData(response) {
   if (response) {
     console.log("Response received", "handleUpdateSheetData");
@@ -349,7 +363,24 @@ function handleUpdateSheetData(response) {
 function handleFileModifiedTime(response, message) {
   if (response) {
     console.log("Response received", "handleFileModifiedTime");
-    var date = new Date(response.modifiedTime);
-    console.log(message + " was last modified on " + date.toString());
+    var modifiedTime = new Date(response.result.modifiedTime);
+    var lastUpdatedOn = new Date(localStorage.getItem("lastUpdatedOn"));
+    console.log(message + " was last modified on " + modifiedTime.toString());
+    if (lastUpdatedOn - modifiedTime < 0) {
+      if (message == "Videos By Category") {
+        requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Videos By Category");
+      } else {
+        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats");
+        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats");
+      }
+    } else {
+      if (message == "Videos By Category") {
+        requestFileModifiedTime("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video/Category Stats");
+      } else {
+        let date = new Date();
+        date.setHours(6, 0, 0, 0);
+        localStorage.setItem("lastUpdatedOn", date.toString());
+      }
+    }
   }
 }

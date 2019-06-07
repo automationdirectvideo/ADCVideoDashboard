@@ -66,14 +66,6 @@ function requestRealTimeStatsToday() {
   requestRealTimeStats(date, date, "today");
 }
 
-function requestSpreadsheetData(spreadsheetId, range) {
-  var request = {
-    "spreadsheetId": spreadsheetId,
-    "range": range
-  };
-  callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData);
-}
-
 // Request # of subscribers gained from startDate to endDate
 function requestSubscribersGained(startDate, endDate) {
   var request = {
@@ -208,6 +200,14 @@ function requestViewsByTrafficSource(startDate, endDate) {
   };
   callAnalyticsAPI(request, "ViewsByTrafficSource: ",
       handleViewsByTrafficSource);
+}
+
+function requestSpreadsheetData(spreadsheetId, range) {
+  var request = {
+    "spreadsheetId": spreadsheetId,
+    "range": range
+  };
+  callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData, range);
 }
 
 function requestUpdateSheetData(spreadsheetId, range, body) {
