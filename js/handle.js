@@ -144,7 +144,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     let searchTerms = response.result.rows;
     let xValues = [];
     let yValues = [];
-    let numTerms = Math.min(4, searchTerms.length);
+    let numTerms = Math.min(4, searchTerms.length - 1);
     for (var i = numTerms; i >= 0; i--) {
       xValues.push(searchTerms[i][1]);
       yValues.push(searchTerms[i][0]);
