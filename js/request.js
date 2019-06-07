@@ -18,6 +18,21 @@ function requestChannelInfo(channel) {
   callDataAPIChannels(request, "ChannelInfo: ", handleChannelInfo);
 }
 
+function requestChannelSearchTerms(startDate, endDate) {
+  const request = {
+    "dimensions": "insightTrafficSourceDetail",
+    "endDate": endDate,
+    "filters": "insightTrafficSourceType==YT_SEARCH",
+    "ids": "channel==MINE",
+    "maxResults": 10,
+    "metrics": "views",
+    "sort": "-views",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "ChannelSearchTerms: ", handleChannelSearchTerms);
+  
+}
+
 //Request impressions from startDate to endDate from Analytics API
 function requestImpressions(startDate, endDate) {
   var request = {

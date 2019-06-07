@@ -12,6 +12,58 @@ function handleChannelInfo(response) {
   }
 }
 
+function handleChannelSearchTerms(response) {
+  if (response) {
+    console.log("Response received", "handleChannelSearchTerms");
+    let searchTerms = response.result.rows;
+    let xValues = [];
+    let yValues = [];
+    let numTerms = Math.min(9, searchTerms.length - 1);
+    for (var i = numTerms; i >= 0; i--) {
+      xValues.push(searchTerms[i][1]);
+      yValues.push(searchTerms[i][0]);
+    }
+    var data = [
+      {
+        x: xValues,
+        y: yValues,
+        type: 'bar',
+        orientation: 'h',
+        text: xValues.map(String),
+        textposition: 'auto',
+        marker: {
+          color: 'rgb(255,0,0)'
+        }
+      }
+    ];
+    
+    var layout = {
+      font: {size: 16},
+      margin: {
+        b: 0,
+        t: 0,
+      },
+      xaxis: {
+        visible: false,
+        automargin: true
+      },
+      yaxis: {
+        showline: true,
+        showticklabels: true,
+        tickmode: 'linear',
+        automargin: true
+      }
+    };
+    
+    var config = {
+      staticPlot: true, 
+      responsive: true
+    };
+    
+    Plotly.newPlot('channel-search-terms', data, layout, config);
+  }
+}
+
 // Handles impressions response from Analytics API
 function handleImpressions(response) {
   if (response) {
