@@ -114,7 +114,12 @@ function handleVideoDailyViews(response) {
       }
     };
 
-    Plotly.newPlot('top-video-1-views-graph', data, layout, {staticPlot: true, responsive: true});
+    var config = {
+      staticPlot: true, 
+      responsive: true
+    };
+
+    Plotly.newPlot('top-video-1-views-graph', data, layout, config);
   }
 }
 
@@ -129,8 +134,6 @@ function handleVideoPlaylist(response) {
 function handleVideoRetention(response) {
   if (response) {
     console.log("Response received", "handleVideoRetention");
-    // let percentWatched = document.getElementById("top-video-1-percent-watched");
-    // percentWatched.innerHTML = "See Console";
     // console.log("Percent Watched: ", response.result.rows);
   }
 }
@@ -177,7 +180,12 @@ function handleVideoSearchTerms(response) {
       }
     };
     
-    Plotly.newPlot('top-video-1-search-terms', data, layout, {staticPlot: true, responsive: true});
+    var config = {
+      staticPlot: true, 
+      responsive: true
+    };
+    
+    Plotly.newPlot('top-video-1-search-terms', data, layout, config);
   }
 }
 
@@ -205,16 +213,7 @@ function handleVideoSnippet(response) {
     let videoId = response.result.items[0].id;
     thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/sddefault.jpg" alt="thumbnail">`;
 
-    /*  Outputing tags  */
-    // let output = `<ol class="text-left">`;
     // let tags = response.result.items[0].snippet.tags;
-    // for (var i = 0; i < 5; i++) {
-    //   output += "<li>" + tags[i] + "</li>";
-    // }
-    // output += "</ol>";
-    // let tagsList = document.getElementById("top-video-1-tags");
-    // tagsList.innerHTML = output;
-    // console.log("Tags: ", tags);
   }
 }
 
