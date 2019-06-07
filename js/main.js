@@ -439,8 +439,10 @@ function recordCategoryData() {
       "numVideos": numVideos,
       "views": views
     });
+    productCategoryIds[categoryId] = categoryName;
   }
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  localStorage.setItem("productCategoryIds", JSON.stringify(productCategoryIds));
 }
 
 // Records video data from Google Sheet to localStorage.allVideoStats & .uploads
@@ -454,7 +456,6 @@ function recordVideoData() {
   let uploads = [];
   let allVideoStats = [];
   for (var i = 1; i < videoSheet.length; i++) {
-    ["Video ID", "Views", "Duration (sec)", "Likes", "Dislikes", "Comments"];
     let videoId = videoSheet[i][columns["Video ID"]];
     let viewCount = parseInt(videoSheet[i][columns["Views"]]);
     let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
