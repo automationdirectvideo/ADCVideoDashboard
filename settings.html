@@ -106,6 +106,38 @@
           <h5>Enabled</h5>
           <p class="d-none" id="no-enabled-text">There are no enabled dashboards</p>
           <ul class="list-group mb-3" id="enabledDashboards">
+            <li class="list-group-item" data-id="real-time-stats" id="real-time-stats">
+              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
+              <span>&nbsp;&nbsp;Real Time Channel Stats Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="real-time-stats-badge"></span>
+              <a class="text-dark" href="#real-time-stats-info" data-toggle="collapse">
+                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
+              </a>
+              <div class="collapse mt-2" id="real-time-stats-info">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Enable/Disable Dashboard</strong>
+                      <p>Shows or hides this dashboard on the home screen</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-secondary" id="real-time-stats-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="real-time-stats-disable-btn">Disable</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                      <div class="col-8">
+                        <strong>Theme</strong>
+                        <p class="mb-0">Changes theme of this dashboard</p>
+                      </div>
+                      <div class="col-4 text-right">
+                        <button class="btn btn-light" id="real-time-stats-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="real-time-stats-dark-btn">Dark</button>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </li>
             <li class="list-group-item" data-id="platform" id="platform">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
               <span>&nbsp;&nbsp;Platform Dashboard</span>
@@ -133,38 +165,6 @@
                       <div class="col-4 text-right">
                         <button class="btn btn-light" id="platform-light-btn" disabled>Light</button>
                         <button class="btn btn-dark" id="platform-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-ten" id="top-ten">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Top Ten Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="top-ten-badge"></span>
-              <a class="text-dark" href="#top-ten-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-ten-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-ten-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-ten-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-ten-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-ten-dark-btn">Dark</button>
                       </div>
                     </div>
                 </div>
@@ -202,14 +202,14 @@
                 </div>
               </div>
             </li>
-            <li class="list-group-item" data-id="views" id="views">
+            <li class="list-group-item" data-id="product-categories" id="product-categories">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Views Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="views-badge"></span>
-              <a class="text-dark" href="#views-info" data-toggle="collapse">
+              <span>&nbsp;&nbsp;Product Categories Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="product-categories-badge"></span>
+              <a class="text-dark" href="#product-categories-info" data-toggle="collapse">
                 <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
               </a>
-              <div class="collapse mt-2" id="views-info">
+              <div class="collapse mt-2" id="product-categories-info">
                 <div class="card card-body">
                   <div class="row">
                     <div class="col-8">
@@ -217,8 +217,8 @@
                       <p>Shows or hides this dashboard on the home screen</p>
                     </div>
                     <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="views-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="views-disable-btn">Disable</button>
+                      <button class="btn btn-secondary" id="product-categories-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="product-categories-disable-btn">Disable</button>
                     </div>
                   </div>
                   <div class="row">
@@ -227,21 +227,21 @@
                         <p class="mb-0">Changes theme of this dashboard</p>
                       </div>
                       <div class="col-4 text-right">
-                        <button class="btn btn-light" id="views-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="views-dark-btn">Dark</button>
+                        <button class="btn btn-light" id="product-categories-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="product-categories-dark-btn">Dark</button>
                       </div>
                     </div>
                 </div>
               </div>
             </li>
-            <li class="list-group-item" data-id="seo" id="seo">
+            <li class="list-group-item" data-id="top-ten" id="top-ten">
               <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;SEO Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="seo-badge"></span>
-              <a class="text-dark" href="#seo-info" data-toggle="collapse">
+              <span>&nbsp;&nbsp;Top Ten Dashboard</span>
+              <span class="badge badge-pill badge-theme" id="top-ten-badge"></span>
+              <a class="text-dark" href="#top-ten-info" data-toggle="collapse">
                 <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
               </a>
-              <div class="collapse mt-2" id="seo-info">
+              <div class="collapse mt-2" id="top-ten-info">
                 <div class="card card-body">
                   <div class="row">
                     <div class="col-8">
@@ -249,8 +249,8 @@
                       <p>Shows or hides this dashboard on the home screen</p>
                     </div>
                     <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="seo-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="seo-disable-btn">Disable</button>
+                      <button class="btn btn-secondary" id="top-ten-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="top-ten-disable-btn">Disable</button>
                     </div>
                   </div>
                   <div class="row">
@@ -259,40 +259,8 @@
                         <p class="mb-0">Changes theme of this dashboard</p>
                       </div>
                       <div class="col-4 text-right">
-                        <button class="btn btn-light" id="seo-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="seo-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="real-time-stats" id="real-time-stats">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Real Time Channel Stats Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="real-time-stats-badge"></span>
-              <a class="text-dark" href="#real-time-stats-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="real-time-stats-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="real-time-stats-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="real-time-stats-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="real-time-stats-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="real-time-stats-dark-btn">Dark</button>
+                        <button class="btn btn-light" id="top-ten-light-btn" disabled>Light</button>
+                        <button class="btn btn-dark" id="top-ten-dark-btn">Dark</button>
                       </div>
                     </div>
                 </div>
@@ -325,38 +293,6 @@
                       <div class="col-4 text-right">
                         <button class="btn btn-light" id="top-video-1-light-btn" disabled>Light</button>
                         <button class="btn btn-dark" id="top-video-1-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="product-categories" id="product-categories">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Product Categories Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="product-categories-badge"></span>
-              <a class="text-dark" href="#product-categories-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:20px;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="product-categories-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="product-categories-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="product-categories-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="product-categories-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="product-categories-dark-btn">Dark</button>
                       </div>
                     </div>
                 </div>

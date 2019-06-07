@@ -3,12 +3,12 @@ const defaultSettings =
   "cycleSpeed": 10,
   "dashboards": [
     {
-      "name": "platform",
+      "name": "real-time-stats",
       "index": 0,
       "theme": "light"
     },
     {
-      "name": "top-ten",
+      "name": "platform",
       "index": 1,
       "theme": "light"
     },
@@ -18,33 +18,23 @@ const defaultSettings =
       "theme": "light"
     },
     {
-      "name": "views",
+      "name": "product-categories",
       "index": 3,
       "theme": "light"
     },
     {
-      "name": "seo",
+      "name": "top-ten",
       "index": 4,
       "theme": "light"
     },
     {
-      "name": "real-time-stats",
-      "index": 5,
-      "theme": "light"
-    },
-    {
       "name": "top-video-1",
-      "index": 6,
-      "theme": "light"
-    },
-    {
-      "name": "product-categories",
-      "index": 7,
+      "index": 5,
       "theme": "light"
     }
   ],
   "footer": "show",
-  "numEnabled": 8
+  "numEnabled": 6
 };
 
 // Must be in the form YYYY-MM-DD
