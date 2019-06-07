@@ -36,10 +36,25 @@ const defaultSettings =
       "name": "top-video-2",
       "index": 6,
       "theme": "light"
+    },
+    {
+      "name": "top-video-3",
+      "index": 7,
+      "theme": "light"
+    },
+    {
+      "name": "top-video-4",
+      "index": 8,
+      "theme": "light"
+    },
+    {
+      "name": "top-video-5",
+      "index": 9,
+      "theme": "light"
     }
   ],
   "footer": "show",
-  "numEnabled": 7
+  "numEnabled": 10
 };
 
 // Must be in the form YYYY-MM-DD
