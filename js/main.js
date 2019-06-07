@@ -509,6 +509,7 @@ function sortVideosByLikes() {
 
 function displayTopVideos() {
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  let todayDate = getTodaysDate();
   let advertisedVideos = [];
   let index = 0;
   let dashboardNum = 1;
