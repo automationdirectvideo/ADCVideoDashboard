@@ -69,7 +69,7 @@ function handleSubscribersGained(response) {
   }
 }
 
-function handleVideoDailyViews(response) {
+function handleVideoDailyViews(response, dashboardId) {
   if (response) {
     console.log("Response received", "handleVideoDailyViews");
     let rows = response.result.rows;
@@ -119,7 +119,7 @@ function handleVideoDailyViews(response) {
       responsive: true
     };
 
-    Plotly.newPlot('top-video-1-views-graph', data, layout, config);
+    Plotly.newPlot(dashboardId + '-views-graph', data, layout, config);
   }
 }
 
@@ -138,7 +138,7 @@ function handleVideoRetention(response) {
   }
 }
 
-function handleVideoSearchTerms(response) {
+function handleVideoSearchTerms(response, dashboardId) {
   if (response) {
     console.log("Response received", "handleVideoSearchTerms");
     let searchTerms = response.result.rows;
@@ -185,23 +185,23 @@ function handleVideoSearchTerms(response) {
       responsive: true
     };
     
-    Plotly.newPlot('top-video-1-search-terms', data, layout, config);
+    Plotly.newPlot(dashboardId + '-search-terms', data, layout, config);
   }
 }
 
-function handleVideoSnippet(response) {
+function handleVideoSnippet(response, dashboardId) {
   if (response) {
     console.log("Response received", "handleVideoSnippet");
-    let title = document.getElementById("top-video-1-title");
+    let title = document.getElementById(dashboardId + "-title");
     title.innerHTML = response.result.items[0].snippet.title;
     duration = response.result.items[0].contentDetails.duration;
     let videoDuration = isoDurationToSeconds(duration);
-    document.getElementById("top-video-1-duration").innerHTML = "Duration: " +
+    document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
         secondsToDuration(videoDuration);
-    document.getElementById("top-video-1-duration-seconds").innerHTML = 
+    document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
         videoDuration;
 
-    let publishDateText = document.getElementById("top-video-1-publish-date");
+    let publishDateText = document.getElementById(dashboardId + "-publish-date");
     let publishDate = response.result.items[0].snippet.publishedAt;
     let year = publishDate.slice(0, 4);
     let month = publishDate.slice(5, 7);
@@ -209,7 +209,7 @@ function handleVideoSnippet(response) {
     publishDate = month + "/" + day + "/" + year;
     publishDateText.innerHTML = "Published: " + publishDate;
 
-    let thumbnail = document.getElementById("top-video-1-thumbnail");
+    let thumbnail = document.getElementById(dashboardId + "-thumbnail");
     let videoId = response.result.items[0].id;
     thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/sddefault.jpg" alt="thumbnail">`;
 
@@ -263,45 +263,45 @@ function handleVideoStatisticsOverall(response, settings) {
   }
 }
 
-function handleVideoBasicStats(response) {
+function handleVideoBasicStats(response, dashboardId) {
   if (response) {
     console.log("Response received", "handleVideoBasicStats");
     let stats = response.result.rows[0];
 
-    let views = document.getElementById("top-video-1-views");
+    let views = document.getElementById(dashboardId + "-views");
     views.innerHTML = numberWithCommas(stats[1]);
 
-    let subsNet = document.getElementById("top-video-1-subs-net");
+    let subsNet = document.getElementById(dashboardId + "-subs-net");
     subsNet.innerHTML = numberWithCommas(stats[7] - stats[8]);
 
-    let likeRatioElem = document.getElementById("top-video-1-like-ratio");
-    let likes = document.getElementById("top-video-1-likes");
-    let likeBar = document.getElementById("top-video-1-like-bar");
+    let likeRatioElem = document.getElementById(dashboardId + "-like-ratio");
+    let likes = document.getElementById(dashboardId + "-likes");
+    let likeBar = document.getElementById(dashboardId + "-like-bar");
     let likeRatio = decimalToPercent(stats[3] / (stats[3] + stats[4]));
     likeRatioElem.innerHTML = likeRatio + "%";
     likes.innerHTML = numberWithCommas(stats[3]) + " Likes";
     likeBar.style.width = likeRatio + "%";
     likeBar.setAttribute("aria-valuenow", likeRatio);
 
-    let dislikes = document.getElementById("top-video-1-dislikes");
+    let dislikes = document.getElementById(dashboardId + "-dislikes");
     dislikes.innerHTML = stats[4] + " Dislikes";
 
-    let comments = document.getElementById("top-video-1-comments");
+    let comments = document.getElementById(dashboardId + "-comments");
     comments.innerHTML = numberWithCommas(stats[2]);
 
     let avgViewDuration =
-        document.getElementById("top-video-1-avg-view-duration");
+        document.getElementById(dashboardId + "-avg-view-duration");
     let avd = stats[6];
     avgViewDuration.innerHTML = secondsToDuration(avd);
-    let videoDuration = document.getElementById("top-video-1-duration-seconds").innerHTML;
+    let videoDuration = document.getElementById(dashboardId + "-duration-seconds").innerHTML;
 
     let avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
-        document.getElementById("top-video-1-avg-view-percentage");
+        document.getElementById(dashboardId + "-avg-view-percentage");
     avgViewPercentage.innerHTML = " (" + avp + "%)";
 
     let estimatedMinutesWatched =
-        document.getElementById("top-video-1-minutes-watched");
+        document.getElementById(dashboardId + "-minutes-watched");
     estimatedMinutesWatched.innerHTML = numberWithCommas(stats[5]);
   }
 }

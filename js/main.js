@@ -91,7 +91,8 @@ function testAPICalls() {
   // requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
   // requestSubscribersGained(joinDate, todayDate);
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
-  topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA");
+  topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA", "top-video-1");
+  topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo", "top-video-2");
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);

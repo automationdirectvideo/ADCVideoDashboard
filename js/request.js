@@ -77,7 +77,7 @@ function requestSubscribersGained(startDate, endDate) {
   callAnalyticsAPI(request, "SubscribersGained: ", handleSubscribersGained);
 }
 
-function requestVideoDailyViews(startDate, endDate, videoId) {
+function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
   var filters = "video==" + videoId;
   const request = {
     "dimensions": "day",
@@ -88,7 +88,7 @@ function requestVideoDailyViews(startDate, endDate, videoId) {
     "sort": "day",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoDailyViews: ", handleVideoDailyViews);
+  callAnalyticsAPI(request, "VideoDailyViews: ", handleVideoDailyViews, dashboardId);
 }
 
 // Request first numVideos videos from a playlist from Data API
@@ -113,7 +113,7 @@ function requestVideoRetention(startDate, endDate, videoId) {
   callAnalyticsAPI(request, "VideoRetention: ", handleVideoRetention);
 }
 
-function requestVideoSearchTerms(startDate, endDate, videoId) {
+function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
   var filters = "video==" + videoId + ";insightTrafficSourceType==YT_SEARCH";
   const request = {
     "dimensions": "insightTrafficSourceDetail",
@@ -125,15 +125,15 @@ function requestVideoSearchTerms(startDate, endDate, videoId) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoSearchTerms: ", handleVideoSearchTerms);
+  callAnalyticsAPI(request, "VideoSearchTerms: ", handleVideoSearchTerms, dashboardId);
 }
 
-function requestVideoSnippet(videoId) {
+function requestVideoSnippet(videoId, dashboardId) {
   var request = {
     "part": "snippet,contentDetails",
     "id": videoId
   };
-  callDataAPIVideos(request, "VideoSnippet: ", handleVideoSnippet);
+  callDataAPIVideos(request, "VideoSnippet: ", handleVideoSnippet, dashboardId);
 }
 
 function requestVideoStatisticsOverall(settings) {
@@ -145,7 +145,7 @@ function requestVideoStatisticsOverall(settings) {
   callDataAPIVideos(request, "VideoSnippet: ", handleVideoStatisticsOverall, settings);
 }
 
-function requestVideoBasicStats(startDate, endDate, videoId) {
+function requestVideoBasicStats(startDate, endDate, videoId, dashboardId) {
   var stringVideoId = "video==" + videoId;
   const request = {
     "dimensions": "video",
@@ -155,7 +155,7 @@ function requestVideoBasicStats(startDate, endDate, videoId) {
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration,subscribersGained,subscribersLost",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoBasicStats: ", handleVideoBasicStats);
+  callAnalyticsAPI(request, "VideoBasicStats: ", handleVideoBasicStats, dashboardId);
 }
 
 function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
@@ -229,11 +229,11 @@ function requestFileModifiedTime(fileId, message) {
 }
 
 // Makes requests data for top video dashboard
-function topVideoCalls(startDate, endDate, videoId) {
-  requestVideoSearchTerms(startDate, endDate, videoId);
-  requestVideoDailyViews(getDateFromDaysAgo(32), endDate, videoId);
-  requestVideoSnippet(videoId);
-  requestVideoBasicStats(startDate, endDate, videoId);
+function topVideoCalls(startDate, endDate, videoId, dashboardId) {
+  requestVideoSearchTerms(startDate, endDate, videoId, dashboardId);
+  requestVideoDailyViews(getDateFromDaysAgo(32), endDate, videoId, dashboardId);
+  requestVideoSnippet(videoId, dashboardId);
+  requestVideoBasicStats(startDate, endDate, videoId, dashboardId);
 }
 
 // Requests data for real time stats dashboard
