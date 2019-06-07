@@ -36,10 +36,15 @@ const defaultSettings =
       "name": "top-video-1",
       "index": 6,
       "theme": "light"
+    },
+    {
+      "name": "product-categories",
+      "index": 7,
+      "theme": "light"
     }
   ],
   "footer": "show",
-  "numEnabled": 7
+  "numEnabled": 8
 };
 
 const defaultChannel = "automationdirect";
