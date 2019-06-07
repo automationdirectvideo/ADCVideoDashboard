@@ -351,6 +351,9 @@ function handleSpreadsheetData(response, message) {
       localStorage.setItem("categoriesSheet", JSON.stringify(response.result.values));
       recordCategoryData();
     }
+    let date = new Date();
+    date.setHours(6, 0, 0, 0);
+    localStorage.setItem("lastUpdatedOn", date.toString());
   }
 }
 
@@ -366,21 +369,14 @@ function handleFileModifiedTime(response, message) {
     var modifiedTime = new Date(response.result.modifiedTime);
     var lastUpdatedOn = new Date(localStorage.getItem("lastUpdatedOn"));
     console.log(message + " was last modified on " + modifiedTime.toString());
-    if (lastUpdatedOn - modifiedTime < 0) {
-      if (message == "Videos By Category") {
+    if (message == "Videos By Category") {
+      if (lastUpdatedOn - modifiedTime < 0) {
         requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Videos By Category");
       } else {
         requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats");
         requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats");
       }
-    } else {
-      if (message == "Videos By Category") {
-        requestFileModifiedTime("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video/Category Stats");
-      } else {
-        let date = new Date();
-        date.setHours(6, 0, 0, 0);
-        localStorage.setItem("lastUpdatedOn", date.toString());
-      }
     }
+
   }
 }
