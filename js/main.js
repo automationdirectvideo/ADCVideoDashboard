@@ -495,6 +495,7 @@ function sortVideosByViews() {
     return parseInt(b["views"]) - parseInt(a["views"]);
   });
   console.log("Videos Sorted by Views: ", allVideoStats);
+  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
   displayTopVideos();
 }
 
@@ -504,6 +505,7 @@ function sortVideosByLikes() {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
   console.log("Videos Sorted by Views: ", allVideoStats);
+  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
   displayTopVideos();
 }
 
@@ -519,7 +521,7 @@ function displayTopVideos() {
       topVideoCalls(joinDate, todayDate, videoId, "top-video-" + dashboardNum);
       dashboardNum++;
     }
-    i++;
+    index++;
   }
 }
 
