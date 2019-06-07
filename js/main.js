@@ -516,7 +516,7 @@ function sortVideosByLikes() {
 function sortVideosByLikesPerView() {
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   allVideoStats.sort(function(a, b) {
-    return parseInt(b["likesPerView"]) - parseInt(a["likesPerView"]);
+    return parseFloat(b["likesPerView"]) - parseFloat(a["likesPerView"]);
   });
   console.log("Videos Sorted by LikesPerView: ", allVideoStats);
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
@@ -526,7 +526,7 @@ function sortVideosByLikesPerView() {
 function sortVideosByCommentsPerView() {
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   allVideoStats.sort(function(a, b) {
-    return parseInt(b["commentsPerView"]) - parseInt(a["commentsPerView"]);
+    return parseFloat(b["commentsPerView"]) - parseFloat(a["commentsPerView"]);
   });
   console.log("Videos Sorted by CommentsPerView: ", allVideoStats);
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
