@@ -462,13 +462,17 @@ function recordVideoData() {
     let likeCount = parseInt(videoSheet[i][columns["Likes"]]);
     let dislikeCount = parseInt(videoSheet[i][columns["Dislikes"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
+    let likesPerView = likeCount / viewCount;
+    let commentsPerView = commentCount / viewCount;
     let row = {
       "videoId": videoId,
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
       "duration": duration,
-      "comments": commentCount
+      "comments": commentCount,
+      "likesPerView": likesPerView,
+      "commentsPerView": commentsPerView
     };
     allVideoStats.push(row);
     uploads.push(videoId);
@@ -504,7 +508,27 @@ function sortVideosByLikes() {
   allVideoStats.sort(function(a, b) {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
-  console.log("Videos Sorted by Views: ", allVideoStats);
+  console.log("Videos Sorted by Likes: ", allVideoStats);
+  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+  displayTopVideos();
+}
+
+function sortVideosByLikesPerView() {
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  allVideoStats.sort(function(a, b) {
+    return parseInt(b["likesPerView"]) - parseInt(a["likesPerView"]);
+  });
+  console.log("Videos Sorted by LikesPerView: ", allVideoStats);
+  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+  displayTopVideos();
+}
+
+function sortVideosByCommentsPerView() {
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  allVideoStats.sort(function(a, b) {
+    return parseInt(b["commentsPerView"]) - parseInt(a["commentsPerView"]);
+  });
+  console.log("Videos Sorted by CommentsPerView: ", allVideoStats);
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
   displayTopVideos();
 }
@@ -512,7 +536,7 @@ function sortVideosByLikes() {
 function displayTopVideos() {
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   let todayDate = getTodaysDate();
-  let advertisedVideos = [];
+  let advertisedVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4", "Eyvv66xYwS8", "YfrmIjwDvXo"];
   let index = 0;
   let dashboardNum = 1;
   while (dashboardNum <= 5) {
