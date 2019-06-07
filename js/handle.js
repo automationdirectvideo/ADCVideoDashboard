@@ -18,7 +18,7 @@ function handleChannelSearchTerms(response) {
     let searchTerms = response.result.rows;
     let xValues = [];
     let yValues = [];
-    let numTerms = Math.min(9, searchTerms.length - 1);
+    let numTerms = Math.min(9, searchTerms.length+ - 1);
     for (var i = numTerms; i >= 0; i--) {
       xValues.push(searchTerms[i][1]);
       yValues.push(searchTerms[i][0]);
@@ -38,7 +38,7 @@ function handleChannelSearchTerms(response) {
     ];
     
     var layout = {
-      font: {size: 16},
+      font: {size: 24},
       margin: {
         b: 0,
         t: 0,
