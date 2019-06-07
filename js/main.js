@@ -411,7 +411,7 @@ function calcCategoryStats() {
 
 // Records category data from Google Sheet to localStorage.categoryStats
 function recordCategoryData() {
-  let categoriesSheet = localStorage.getItem("categoriesSheet");
+  let categoriesSheet = JSON.parse(localStorage.getItem("categoriesSheet"));
   let columns = {};
   let columnHeaders = categoriesSheet[0];
   for (var i = 0; i < columnHeaders.length; i++) {
