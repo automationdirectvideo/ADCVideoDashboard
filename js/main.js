@@ -93,6 +93,7 @@ function testAPICalls() {
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA", "top-video-1");
   topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo", "top-video-2");
+  requestChannelSearchTerms(joinDate, todayDate);
   // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
   // requestViewsByDeviceType(joinDate, todayDate);
   // requestViewsByTrafficSource(joinDate, todayDate);

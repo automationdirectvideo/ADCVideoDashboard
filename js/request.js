@@ -24,7 +24,7 @@ function requestChannelSearchTerms(startDate, endDate) {
     "endDate": endDate,
     "filters": "insightTrafficSourceType==YT_SEARCH",
     "ids": "channel==MINE",
-    "maxResults": 10,
+    "maxResults": 5,
     "metrics": "views",
     "sort": "-views",
     "startDate": startDate
