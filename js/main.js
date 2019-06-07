@@ -495,6 +495,7 @@ function sortVideosByViews() {
     return parseInt(b["views"]) - parseInt(a["views"]);
   });
   console.log("Videos Sorted by Views: ", allVideoStats);
+  displayTopVideos();
 }
 
 function sortVideosByLikes() {
@@ -503,6 +504,22 @@ function sortVideosByLikes() {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
   console.log("Videos Sorted by Views: ", allVideoStats);
+  displayTopVideos();
+}
+
+function displayTopVideos() {
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  let advertisedVideos = [];
+  let index = 0;
+  let dashboardNum = 1;
+  while (dashboardNum <= 5) {
+    let videoId = allVideoStats[index]["videoId"];
+    if (!advertisedVideos.includes(videoId)) {
+      topVideoCalls(joinDate, todayDate, videoId, "top-video-" + dashboardNum);
+      dashboardNum++;
+    }
+    i++;
+  }
 }
 
 // Get current settings
