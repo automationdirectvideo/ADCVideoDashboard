@@ -419,15 +419,15 @@ function recordCategoryData() {
   let categoryStats = [];
   let productCategoryIds = {};
   for (var i = 1; i < categoriesSheet.length; i++) {
-    let categoryId = categoryStats[i][columns["Category ID"]]
-    let categoryName = categoryStats[i][columns["Name"]];
-    let views = parseInt(categoryStats[i][columns["Views"]]);
-    let duration = parseInt(categoryStats[i][columns["Duration (sec)"]]);
-    let likes = parseInt(categoryStats[i][columns["Likes"]]);
-    let numVideos = parseInt(categoryStats[i][columns["Number of Videos"]]);
-    let avgViews = parseFloat(categoryStats[i][columns["Average Video Views"]]);
-    let avgLikes = parseFloat(categoryStats[i][columns["Average Video Likes"]]);
-    let avgDuration = parseFloat(categoryStats[i][columns["Average Video Duration"]]);
+    let categoryId = categoriesSheet[i][columns["Category ID"]]
+    let categoryName = categoriesSheet[i][columns["Name"]];
+    let views = parseInt(categoriesSheet[i][columns["Views"]]);
+    let duration = parseInt(categoriesSheet[i][columns["Duration (sec)"]]);
+    let likes = parseInt(categoriesSheet[i][columns["Likes"]]);
+    let numVideos = parseInt(categoriesSheet[i][columns["Number of Videos"]]);
+    let avgViews = parseFloat(categoriesSheet[i][columns["Average Video Views"]]);
+    let avgLikes = parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
+    let avgDuration = parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
     categoryStats.push({
       "avgDuration": avgDuration,
       "avgLikes": avgLikes,
