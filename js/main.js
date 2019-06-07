@@ -447,7 +447,7 @@ function recordCategoryData() {
 function recordVideoData() {
   let videoSheet = JSON.parse(localStorage.getItem("videoSheet"));
   let columns = {};
-  let columnHeaders = categoriesSheet[0];
+  let columnHeaders = videoSheet[0];
   for (var i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
