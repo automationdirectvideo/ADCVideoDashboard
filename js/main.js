@@ -298,6 +298,7 @@ function getVideosByCategoryData() {
     }
 
   }
+  localStorage.removeItem("videosByCategorySheet");
   localStorage.setItem("productCategoryIds", JSON.stringify(productCategoryIds));
   localStorage.setItem("categoriesByVideoId", JSON.stringify(categoriesByVideoId));
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
@@ -441,6 +442,7 @@ function recordCategoryData() {
     });
     productCategoryIds[categoryId] = categoryName;
   }
+  localStorage.removeItem("categoriesSheet");
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
   localStorage.setItem("productCategoryIds", JSON.stringify(productCategoryIds));
 }
@@ -477,6 +479,7 @@ function recordVideoData() {
     allVideoStats.push(row);
     uploads.push(videoId);
   }
+  localStorage.removeItem("videoSheet");
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
   localStorage.setItem("uploads", JSON.stringify(uploads));
 }
