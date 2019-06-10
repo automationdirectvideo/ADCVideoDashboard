@@ -160,6 +160,14 @@ function requestVideoStatisticsOverall(settings) {
   callDataAPIVideos(request, "VideoSnippet: ", handleVideoStatisticsOverall, settings);
 }
 
+function requestVideoTitle(videoId, dashboardId) {
+  var request = {
+    "part": "snippet",
+    "id": videoId
+  };
+  callDataAPIVideos(request, "VideoTitle: ", handleVideoTitle, dashboardId);
+}
+
 function requestVideoBasicStats(startDate, endDate, videoId, dashboardId) {
   var stringVideoId = "video==" + videoId;
   const request = {

@@ -264,7 +264,7 @@ function handleVideoSnippet(response, dashboardId) {
 
     let thumbnail = document.getElementById(dashboardId + "-thumbnail");
     let videoId = response.result.items[0].id;
-    thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/sddefault.jpg" alt="thumbnail">`;
+    thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
 
     // let tags = response.result.items[0].snippet.tags;
   }
@@ -314,6 +314,15 @@ function handleVideoStatisticsOverall(response, settings) {
     } else {
       calcCategoryStats();
     }
+  }
+}
+
+function handleVideoTitle(response, dashboardId) {
+  if (response) {
+    console.log("Response received", "handleVideoStatisticsOverall");
+    let title = response.result.items[0].snippet.title;
+    let titleText = document.getElementById(dashboardId + "-title");
+    titleText.innerText = title;
   }
 }
 
