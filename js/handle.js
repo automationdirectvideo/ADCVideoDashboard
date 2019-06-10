@@ -372,31 +372,28 @@ function handleViewsByDeviceType(response) {
   if (response) {
     console.log("Response received", "handleViewsByDeviceType");
     var rows = response.result.rows;
-    var totalViews = 0;
     var values = [];
     var labels = [];
     for (var i = 0; i < rows.length; i++) {
-      totalViews += rows[i][1];
-    }
-    for (var i = 0; i < rows.length; i++) {
-      values.push(decimalToPercent(rows[i][1] / totalViews));
+      values.push(rows[i][1]);
       labels.push(rows[i][0]);
     }
     var data = [{
       values: values,
       labels: labels,
-      type: 'pie'
+      type: 'pie',
+      textinfo: 'label+percent'
     }];
-    
+
     var layout = {
-      font: {size: 24}
+      showlegend: false
     };
 
     var config = {
       staticPlot: true, 
       responsive: true
     };
-    
+
     Plotly.newPlot('channel-views-by-device', data, layout, config);
   }
 }
@@ -423,7 +420,6 @@ function handleViewsByTrafficSource(response) {
     }];
     
     var layout = {
-      font: {size: 24}
     };
 
     var config = {
