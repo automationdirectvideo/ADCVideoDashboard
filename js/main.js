@@ -388,26 +388,6 @@ function calcCategoryStats() {
     "values": categoryValues
   };
   requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats", categoryBody);
-
-  categoryStats.sort(function(a, b) {
-    return parseInt(b["avgViews"]) - parseInt(a["avgViews"]);
-  });
-  console.log("Stats Sorted by AvgViews: ", categoryStats);
-  
-  console.log("Top 10 Categories By Average Views Per Video");
-  for (var i = 0; i < 10; i++) {
-    console.log((i + 1) + ". " + categoryStats[i].name + " - ~" + Math.round(categoryStats[i].avgViews) + " views per video");
-  }
-  
-  categoryStats.sort(function(a, b) {
-    return parseInt(b["avgLikes"]) - parseInt(a["avgLikes"]);
-  });
-  console.log("Stats Sorted by AvgLikes: ", categoryStats);
-  
-  console.log("Top 10 Categories By Average Likes Per Video");
-  for (var i = 0; i < 10; i++) {
-    console.log((i + 1) + ". " + categoryStats[i].name + " - ~" + Math.round(categoryStats[i].avgLikes) + " likes per video");
-  }
 }
 
 // Records category data from Google Sheet to localStorage.categoryStats
@@ -495,6 +475,44 @@ function carouselPrev() {
 
 function goToCarouselItem(index) {
   $(".carousel").carousel(index);
+}
+
+function sortCategoriesByAvgViews() {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats.sort(function(a, b) {
+    return parseInt(b["avgViews"]) - parseInt(a["avgViews"]);
+  });
+  console.log("Stats Sorted by AvgViews: ", categoryStats);
+  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  displayTopCategories("avgViews");
+}
+
+function sortCategoriesByAvgLikes() {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats.sort(function(a, b) {
+    return parseInt(b["avgLikes"]) - parseInt(a["avgLikes"]);
+  });
+  console.log("Stats Sorted by AvgLikes: ", categoryStats);
+  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  displayTopCategories("avgLikes");
+}
+
+function sortCategoriesByAvgDuration() {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats.sort(function(a, b) {
+    return parseInt(b["avgLikes"]) - parseInt(a["avgLikes"]);
+  });
+  console.log("Stats Sorted by AvgLikes: ", categoryStats);
+  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  displayTopCategories("avgDuration");
+}
+
+function displayTopCategories(type) {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));  
+  console.log("Top 10 Categories By " + type);
+  for (var i = 0; i < 10; i++) {
+    console.log((i + 1) + ". " + categoryStats[i].name + " - ~" + Math.round(categoryStats[i][type]) + " " + type);
+  }
 }
 
 function sortVideosByViews() {
