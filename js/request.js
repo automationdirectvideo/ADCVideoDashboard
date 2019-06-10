@@ -243,6 +243,12 @@ function requestFileModifiedTime(fileId, message) {
   callDriveAPIFiles(request, "FileModifiedTime:", handleFileModifiedTime, message);
 }
 
+function platformDashboardCalls(startDate, endDate) {
+  requestChannelSearchTerms(startDate, endDate);
+  requestViewsByDeviceType(startDate, endDate);
+  requestViewsByTrafficSource(startDate, endDate);
+}
+
 // Makes requests data for top video dashboard
 function topVideoCalls(startDate, endDate, videoId, dashboardId) {
   requestVideoSearchTerms(startDate, endDate, videoId, dashboardId);
