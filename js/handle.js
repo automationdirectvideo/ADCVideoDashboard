@@ -382,13 +382,12 @@ function handleViewsByDeviceType(response) {
       values: values,
       labels: labels,
       type: 'pie',
-      textinfo: 'label+percent'
+      textinfo: 'value+percent'
     }];
 
     var layout = {
       automargin: true,
       autosize: true,
-      showlegend: false,
       xaxis: {
         automargin: true,
       },
@@ -399,7 +398,7 @@ function handleViewsByDeviceType(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 0,
+        b: 30,
         pad: 4
       }
     };
