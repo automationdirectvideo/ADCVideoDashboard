@@ -450,7 +450,8 @@ function handleViewsByTrafficSource(response) {
       values: values,
       labels: labels,
       type: 'pie',
-      textinfo: 'label+percent'
+      textinfo: 'label+percent',
+      rotation: 90
     }];
 
     var layout = {
@@ -473,6 +474,48 @@ function handleViewsByTrafficSource(response) {
     };
     
     Plotly.newPlot('channel-traffic-sources', data, layout, config);
+  }
+}
+
+function handleViewsByState(response) {
+  if (response) {
+    console.log("Response received", "handleViewsByState");
+    var rows = response.result.rows;
+    var locations = [];
+    var z = []
+    for (var i = 0; i < rows.length; i++) {
+      locations.push(rows[i][0].substr(3));
+      z.push(rows[i][1]);
+    }
+
+    var data = [{
+      type: 'choropleth',
+      locationmode: 'USA-states',
+      locations: locations,
+      z: z,
+      autocolorscale: true
+    }];
+
+    var layout = {
+      geo:{
+          scope: 'usa',
+          countrycolor: 'rgb(255, 255, 255)',
+          showland: true,
+          landcolor: 'rgb(217, 217, 217)',
+          showlakes: true,
+          lakecolor: 'rgb(255, 255, 255)',
+          subunitcolor: 'rgb(255, 255, 255)',
+          lonaxis: {},
+          lataxis: {}
+      }
+    };
+
+    var config = {
+      staticPlot: true,
+      responsive: true
+    };
+
+    Plotly.plot('channel-views-by-state', data, layout, config);
   }
 }
 

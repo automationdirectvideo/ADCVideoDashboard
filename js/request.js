@@ -189,32 +189,44 @@ function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
       handleVideoViewsByTrafficSource);
 }
 
-// Request views and estimatedMinutesWatched by device from startDate to endDate 
+// Request views by device from startDate to endDate 
 function requestViewsByDeviceType(startDate, endDate) {
   var request = {
     "dimensions": "deviceType",
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "views,estimatedMinutesWatched",
+    "metrics": "views",
     "sort": "-views",
     "startDate": startDate
   };
   callAnalyticsAPI(request, "ViewsByDeviceType: ", handleViewsByDeviceType);
 }
 
-// Request views and estimatedMinutesWatched by traffic source from startDate to
-// endDate
+// Request views by traffic source from startDate to endDate
 function requestViewsByTrafficSource(startDate, endDate) {
   var request = {
     "dimensions": "insightTrafficSourceType",
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "views,estimatedMinutesWatched",
+    "metrics": "views",
     "sort": "-views",
     "startDate": startDate
   };
   callAnalyticsAPI(request, "ViewsByTrafficSource: ",
       handleViewsByTrafficSource);
+}
+
+function requestViewsByState(startDate, endDate) {
+  var request = {
+    "dimensions": "province",
+    "endDate": endDate,
+    "filters": "country==US",
+    "ids": "channel==MINE",
+    "metrics": "views",
+    "sort": "province",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "ViewsByTrafficSource: ", handleViewsByState);
 }
 
 function requestSpreadsheetData(spreadsheetId, range) {
@@ -247,6 +259,7 @@ function platformDashboardCalls(startDate, endDate) {
   requestChannelSearchTerms(startDate, endDate);
   requestViewsByDeviceType(startDate, endDate);
   requestViewsByTrafficSource(startDate, endDate);
+  requestViewsByState(startDate, endDate);
 }
 
 // Makes requests data for top video dashboard
