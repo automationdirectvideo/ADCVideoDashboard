@@ -78,12 +78,12 @@ function handleMostWatchedVideos(response, month) {
     var videos = response.result.rows;
     if (month != undefined) {
       var advertisedVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4", "Eyvv66xYwS8", "YfrmIjwDvXo"];
-      var values = [month];
+      var values = [[month]];
       var index = 0;
       var numVideos = 1;
       while (numVideos <= 10) {
         if (!advertisedVideos.includes(videos[index][0])) {
-          values.push(videos[index][0]);
+          values[0].push(videos[index][0]);
           numVideos++;
         }
         index++;
