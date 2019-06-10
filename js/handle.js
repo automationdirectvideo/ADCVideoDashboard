@@ -79,7 +79,7 @@ function handleMostWatchedVideos(response, month) {
     if (month != undefined) {
       var nonOrganicVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4",
           "Eyvv66xYwS8", "YfrmIjwDvXo", "k40iosW6WWA", "dE2Svgsrex0",
-          "5Ci3PlLr8Oo", "G2D82iNV33g"];
+          "5Ci3PlLr8Oo"];
       var values = [[month]];
       var index = 0;
       var numVideos = 1;
