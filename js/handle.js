@@ -403,7 +403,7 @@ function handleViewsByDeviceType(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 0,
+        b: 10,
         pad: 4
       }
     };
@@ -445,7 +445,7 @@ function handleViewsByTrafficSource(response) {
       }
     }
     var values = [advertisingViews, externalViews, youtubeSearchViews, relatedViews, otherViews];
-    var labels = ["Advertising", "External", "YouTube Search", "Related Video", "Other"];
+    var labels = ["Advertising", "External", "YouTube<br>Search", "Related Video", "Other"];
     var data = [{
       values: values,
       labels: labels,
@@ -463,7 +463,7 @@ function handleViewsByTrafficSource(response) {
         l: 20,
         r: 0,
         t: 0,
-        b: 0,
+        b: 10,
         pad: 4
       }
     };
@@ -512,7 +512,7 @@ function handleViewsByState(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 15,
+        b: 10,
         pad: 4
       }
     };
