@@ -382,14 +382,14 @@ function handleViewsByDeviceType(response) {
       values: values,
       labels: labels,
       type: 'pie',
-      textinfo: 'label+percent'
+      textinfo: 'label+percent',
+      rotation: -45,
+      direction: 'clockwise'
     }];
 
     var layout = {
-      font: {size: 18},
       automargin: true,
       autosize: true,
-      showlegend: false,
       margin: {
         l: 0,
         r: 0,
