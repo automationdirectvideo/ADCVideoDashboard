@@ -528,10 +528,17 @@ function sortCategoriesByAvgDuration() {
 }
 
 function displayTopCategories(type) {
-  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));  
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  let index = 0;
+  let categoryNum = 1;
   console.log("Top 10 Categories By " + type);
-  for (var i = 0; i < 10; i++) {
-    console.log((i + 1) + ". " + categoryStats[i].name + " - ~" + numberWithCommas(Math.round(categoryStats[i][type])) + " " + type);
+  while (categoryNum <= 10) {
+    let category = categoryStats[index];
+    if (!category.name.includes("SPECIAL CATEGORIES")) {
+      console.log((categoryNum + 1) + ". " + category.name + " - ~" + numberWithCommas(Math.round(category[type])) + " " + type);
+      categoryNum++;
+    }
+    index++;
   }
 }
 
