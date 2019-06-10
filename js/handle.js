@@ -507,6 +507,13 @@ function handleViewsByState(response) {
           subunitcolor: 'rgb(255, 255, 255)',
           lonaxis: {},
           lataxis: {}
+      },
+      margin: {
+        l: 0,
+        r: 0,
+        t: 0,
+        b: 0,
+        pad: 4
       }
     };
 
