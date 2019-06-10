@@ -382,18 +382,14 @@ function handleViewsByDeviceType(response) {
       values: values,
       labels: labels,
       type: 'pie',
-      textinfo: 'value+percent'
+      textinfo: 'label+percent'
     }];
 
     var layout = {
+      font: {size: 18},
       automargin: true,
       autosize: true,
-      xaxis: {
-        automargin: true,
-      },
-      yaxis: {
-        automargin: true,
-      },
+      showlegend: false,
       margin: {
         l: 0,
         r: 0,
@@ -417,23 +413,31 @@ function handleViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleViewsByTrafficSource");
     var rows = response.result.rows;
-    var totalViews = 0;
     var values = [];
     var labels = [];
     for (var i = 0; i < rows.length; i++) {
-      totalViews += rows[i][1];
-    }
-    for (var i = 0; i < rows.length; i++) {
-      values.push(decimalToPercent(rows[i][1] / totalViews));
+      values.push(rows[i][1]);
       labels.push(rows[i][0]);
     }
     var data = [{
       values: values,
       labels: labels,
-      type: 'pie'
+      type: 'pie',
+      textinfo: 'label+percent'
     }];
-    
+
     var layout = {
+      font: {size: 18},
+      automargin: true,
+      autosize: true,
+      showlegend: false,
+      margin: {
+        l: 0,
+        r: 0,
+        t: 0,
+        b: 30,
+        pad: 4
+      }
     };
 
     var config = {
