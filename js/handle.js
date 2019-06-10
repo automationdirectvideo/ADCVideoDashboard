@@ -372,11 +372,18 @@ function handleViewsByDeviceType(response) {
   if (response) {
     console.log("Response received", "handleViewsByDeviceType");
     var rows = response.result.rows;
+    var labelConversion = {
+      "DESKTOP": "Desktop",
+      "MOBILE": "Mobile",
+      "TABLET": "Tablet",
+      "TV": "TV",
+      "GAME_CONSOLE": "Game Console"
+    };
     var values = [];
     var labels = [];
     for (var i = 0; i < rows.length; i++) {
       values.push(rows[i][1]);
-      labels.push(rows[i][0]);
+      labels.push(labelConversion[rows[i][0]]);
     }
     var data = [{
       values: values,
@@ -388,8 +395,10 @@ function handleViewsByDeviceType(response) {
     }];
 
     var layout = {
+      font: {size: 18},
       automargin: true,
       autosize: true,
+      showlegend: false,
       margin: {
         l: 0,
         r: 0,
@@ -413,12 +422,30 @@ function handleViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleViewsByTrafficSource");
     var rows = response.result.rows;
-    var values = [];
-    var labels = [];
+    var advertisingViews = 0;
+    var externalViews = 0;
+    var youtubeSearchViews = 0;
+    var relatedViews = 0;
+    var otherViews = 0;
+    var advertisingSources = ["ADVERTISING", "PROMOTED"];
+    var externalSources = ["EXT_URL", "NO_LINK_EMBEDDED", "NO_LINK_OTHER"];
+    var youtubeSearchSources = ["YT_SEARCH"];
+    var relatedSources = ["RELATED_VIDEO"];
     for (var i = 0; i < rows.length; i++) {
-      values.push(rows[i][1]);
-      labels.push(rows[i][0]);
+      if (advertisingSources.includes(rows[i][0])) {
+        advertisingViews += rows[i][1];
+      } else if (externalSources.includes(rows[i][0])) {
+        externalViews += rows[i][1];
+      } else if (youtubeSearchSources.includes(rows[i][0])) {
+        youtubeSearchViews += rows[i][1];
+      } else if (relatedSources.includes(rows[i][0])) {
+        relatedViews += rows[i][1];
+      } else {
+        otherViews += rows[i][1];
+      }
     }
+    var values = [advertisingViews, externalViews, youtubeSearchViews, relatedViews, otherViews];
+    var labels = ["Advertising", "External", "YouTube Search", "Related Video", "Other"];
     var data = [{
       values: values,
       labels: labels,
