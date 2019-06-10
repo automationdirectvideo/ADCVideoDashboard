@@ -403,7 +403,7 @@ function handleViewsByDeviceType(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 30,
+        b: 0,
         pad: 4
       }
     };
@@ -460,10 +460,10 @@ function handleViewsByTrafficSource(response) {
       autosize: true,
       showlegend: false,
       margin: {
-        l: 0,
+        l: 20,
         r: 0,
         t: 0,
-        b: 30,
+        b: 0,
         pad: 4
       }
     };
@@ -512,7 +512,7 @@ function handleViewsByState(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 0,
+        b: 15,
         pad: 4
       }
     };
