@@ -371,6 +371,33 @@ function handleVideoViewsByTrafficSource(response) {
 function handleViewsByDeviceType(response) {
   if (response) {
     console.log("Response received", "handleViewsByDeviceType");
+    var rows = response.result.rows;
+    var totalViews = 0;
+    var values = [];
+    var labels = [];
+    for (var i = 0; i < rows.length; i++) {
+      totalViews += rows[i][1];
+    }
+    for (var i = 0; i < rows.length; i++) {
+      values.push(decimalToPercent(rows[i][1] / totalViews));
+      labels.push(rows[i][0]);
+    }
+    var data = [{
+      values: values,
+      labels: labels,
+      type: 'pie'
+    }];
+    
+    var layout = {
+      font: {size: 24}
+    };
+
+    var config = {
+      staticPlot: true, 
+      responsive: true
+    };
+    
+    Plotly.newPlot('channel-views-by-device', data, layout, config);
   }
 }
 
@@ -378,6 +405,33 @@ function handleViewsByDeviceType(response) {
 function handleViewsByTrafficSource(response) {
   if (response) {
     console.log("Response received", "handleViewsByTrafficSource");
+    var rows = response.result.rows;
+    var totalViews = 0;
+    var values = [];
+    var labels = [];
+    for (var i = 0; i < rows.length; i++) {
+      totalViews += rows[i][1];
+    }
+    for (var i = 0; i < rows.length; i++) {
+      values.push(decimalToPercent(rows[i][1] / totalViews));
+      labels.push(rows[i][0]);
+    }
+    var data = [{
+      values: values,
+      labels: labels,
+      type: 'pie'
+    }];
+    
+    var layout = {
+      font: {size: 24}
+    };
+
+    var config = {
+      staticPlot: true, 
+      responsive: true
+    };
+    
+    Plotly.newPlot('channel-traffic-sources', data, layout, config);
   }
 }
 
