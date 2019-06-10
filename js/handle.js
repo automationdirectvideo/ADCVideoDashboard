@@ -394,11 +394,18 @@ function handleViewsByDeviceType(response) {
       },
       yaxis: {
         automargin: true,
+      },
+      margin: {
+        l: 0,
+        r: 0,
+        t: 0,
+        b: 0,
+        pad: 4
       }
     };
 
     var config = {
-      staticPlot: true, 
+      staticPlot: true,
       responsive: true
     };
 
@@ -431,7 +438,7 @@ function handleViewsByTrafficSource(response) {
     };
 
     var config = {
-      staticPlot: true, 
+      staticPlot: true,
       responsive: true
     };
     
