@@ -72,15 +72,25 @@ function handleImpressions(response) {
 }
 
 // Handles most watched videos response from Analytics API
-function handleMostWatchedVideos(response) {
+function handleMostWatchedVideos(response, month) {
   if (response) {
     console.log("Response received", "handleMostWatchedVideos");
     var videos = response.result.rows;
-    videos.forEach(video => {
-      const videoId = video[0];
-      requestVideoViewsByTrafficSource(getDateFromDaysAgo(30), getTodaysDate(),
-          videoId);
-    });
+    if (month != undefined) {
+      var advertisedVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4", "Eyvv66xYwS8", "YfrmIjwDvXo"];
+      var values = [month];
+      var index = 0;
+      var numVideos = 1;
+      while (numVideos <= 10) {
+        if (!advertisedVideos.includes(videos[index][0])) {
+          values.push(videos[index][0]);
+        }
+      }
+      var body = {
+        "values": values
+      };
+      requestAppendSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Top Ten", body);
+    }
   }
 }
 
@@ -557,6 +567,12 @@ function handleSpreadsheetData(response, message) {
 function handleUpdateSheetData(response) {
   if (response) {
     console.log("Response received", "handleUpdateSheetData");
+  }
+}
+
+function handleAppendSheetData(response) {
+  if (response) {
+    console.log("Response received", "handleAppendSheetData");
   }
 }
 

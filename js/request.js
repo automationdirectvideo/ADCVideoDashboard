@@ -45,7 +45,7 @@ function requestImpressions(startDate, endDate) {
 }
 
 // Requests the numVideos most watched videos from startDate to endDate
-function requestMostWatchedVideos(startDate, endDate, numVideos) {
+function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
   var request = {
     "dimensions": "video",
     "endDate": endDate,
@@ -55,7 +55,7 @@ function requestMostWatchedVideos(startDate, endDate, numVideos) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos);
+  callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos, month);
 }
 
 function requestRealTimeStats(startDate, endDate, message) {
@@ -253,6 +253,16 @@ function requestUpdateSheetData(spreadsheetId, range, body) {
     "resource": body
   };
   callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData);
+}
+
+function requestAppendSheetData(spreadsheetId, range, body) {
+  var request = {
+    "spreadsheetId": spreadsheetId,
+    "range": range,
+    "valueInputOption": "RAW",
+    "resource": body
+  };
+  callSheetsAPIAppend(request, "AppendSheetData:", handleAppendSheetData);
 }
 
 function requestFileModifiedTime(fileId, message) {

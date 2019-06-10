@@ -71,6 +71,19 @@ function callSheetsAPIUpdate(request, source, callback) {
     });
 }
 
+// Calls the Sheets API for appending values with a request and returns response
+// to callback
+function callSheetsAPIAppend(request, source, callback) {
+  gapi.client.sheets.spreadsheets.values.append(request)
+    .then(response => {
+      console.log(source, response);
+      callback(response);
+    })
+    .catch(err => {
+      console.error("Google Sheets API call error", err);
+    });
+}
+
 function callDriveAPIFiles(request, source, callback, message) {
   gapi.client.drive.files.get(request)
     .then(response => {
