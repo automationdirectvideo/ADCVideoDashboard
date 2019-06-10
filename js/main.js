@@ -477,6 +477,26 @@ function goToCarouselItem(index) {
   $(".carousel").carousel(index);
 }
 
+function sortCategoriesByViews() {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats.sort(function(a, b) {
+    return parseInt(b["views"]) - parseInt(a["views"]);
+  });
+  console.log("Stats Sorted by views: ", categoryStats);
+  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  displayTopCategories("views");
+}
+
+function sortCategoriesByLikes() {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats.sort(function(a, b) {
+    return parseInt(b["likes"]) - parseInt(a["likes"]);
+  });
+  console.log("Stats Sorted by likes: ", categoryStats);
+  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  displayTopCategories("likes");
+}
+
 function sortCategoriesByAvgViews() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   categoryStats.sort(function(a, b) {
@@ -500,9 +520,9 @@ function sortCategoriesByAvgLikes() {
 function sortCategoriesByAvgDuration() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   categoryStats.sort(function(a, b) {
-    return parseInt(b["avgLikes"]) - parseInt(a["avgLikes"]);
+    return parseInt(b["avgDuration"]) - parseInt(a["avgDuration"]);
   });
-  console.log("Stats Sorted by AvgLikes: ", categoryStats);
+  console.log("Stats Sorted by AvgDuration: ", categoryStats);
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
   displayTopCategories("avgDuration");
 }
@@ -511,7 +531,7 @@ function displayTopCategories(type) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));  
   console.log("Top 10 Categories By " + type);
   for (var i = 0; i < 10; i++) {
-    console.log((i + 1) + ". " + categoryStats[i].name + " - ~" + Math.round(categoryStats[i][type]) + " " + type);
+    console.log((i + 1) + ". " + categoryStats[i].name + " - ~" + numberWithCommas(Math.round(categoryStats[i][type])) + " " + type);
   }
 }
 
