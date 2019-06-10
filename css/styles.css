@@ -170,6 +170,14 @@ footer {
   border-radius: 0.5rem;
 }
 
+.top-ten-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .thumbnail {
   padding: 2px;
   margin-left: auto;
