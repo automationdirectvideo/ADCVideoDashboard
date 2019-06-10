@@ -185,7 +185,7 @@ footer {
 }
 
 .thumbnail-wrapper {
-  overflow: hidden;
+  overflow-y: scroll;
   height: 100%;
   width: 100%;
 }
