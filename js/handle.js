@@ -386,7 +386,15 @@ function handleViewsByDeviceType(response) {
     }];
 
     var layout = {
-      showlegend: false
+      automargin: true,
+      autosize: true,
+      showlegend: false,
+      xaxis: {
+        automargin: true,
+      },
+      yaxis: {
+        automargin: true,
+      }
     };
 
     var config = {
