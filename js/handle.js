@@ -40,8 +40,8 @@ function handleChannelSearchTerms(response) {
     var layout = {
       font: {size: 24},
       margin: {
-        b: 0,
-        t: 0,
+        b: 10,
+        t: 10,
       },
       xaxis: {
         visible: false,
@@ -377,7 +377,7 @@ function handleViewsByDeviceType(response) {
       "MOBILE": "Mobile",
       "TABLET": "Tablet",
       "TV": "TV",
-      "GAME_CONSOLE": "Game Console"
+      "GAME_CONSOLE": "Game<br>Console"
     };
     var values = [];
     var labels = [];
@@ -460,7 +460,7 @@ function handleViewsByTrafficSource(response) {
       autosize: true,
       showlegend: false,
       margin: {
-        l: 20,
+        l: 0,
         r: 0,
         t: 0,
         b: 10,
