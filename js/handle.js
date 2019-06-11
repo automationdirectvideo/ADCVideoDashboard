@@ -12,6 +12,14 @@ function handleChannelInfo(response) {
   }
 }
 
+function handleChannelNumVideos(response) {
+  if (response) {
+    console.log("Response received", "handleChannelNumVideos");
+    let numVideos = response.result.items[0].statistics.videoCount;
+    document.getElementById("num-videos").innerText = numVideos;
+  }
+}
+
 function handleChannelSearchTerms(response) {
   if (response) {
     console.log("Response received", "handleChannelSearchTerms");

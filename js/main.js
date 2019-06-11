@@ -749,6 +749,7 @@ function showUploadThumbnails() {
 
       new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
     }
+    requestChannelNumVideos();
   }
 }
 showUploadThumbnails();

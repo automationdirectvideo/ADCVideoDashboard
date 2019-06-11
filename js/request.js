@@ -18,6 +18,14 @@ function requestChannelInfo(channel) {
   callDataAPIChannels(request, "ChannelInfo: ", handleChannelInfo);
 }
 
+function requestChannelNumVideos() {
+  var request = {
+    part: "statistics",
+    forUsername: "automationdirect"
+  };
+  callDataAPIChannels(request, "ChannelInfo: ", handleChannelNumVideos);
+}
+
 function requestChannelSearchTerms(startDate, endDate) {
   const request = {
     "dimensions": "insightTrafficSourceDetail",
