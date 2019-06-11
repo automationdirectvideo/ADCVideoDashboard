@@ -309,6 +309,8 @@ function platformDashboardCalls(startDate, endDate) {
   requestViewsByDeviceType(startDate, endDate);
   requestViewsByTrafficSource(startDate, endDate);
   requestViewsByState(startDate, endDate);
+  requestChannelDemographics(startDate, endDate);
+  requestViewsSubscribedStatus(startDate, endDate);
 }
 
 // Makes requests data for top video dashboard
