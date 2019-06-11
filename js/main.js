@@ -101,7 +101,6 @@ function testAPICalls() {
   var thirtyDaysAgo = getDateFromDaysAgo(30);
   // requestBasicVideoStats(joinDate, todayDate);
   // requestImpressions("2019-04-01", "2019-04-30");
-  // requestMostWatchedVideos(thirtyDaysAgo, todayDate, 25);
   // requestSubscribersGained(joinDate, todayDate);
   // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
   topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA", "top-video-1");
@@ -124,6 +123,7 @@ function updateStats() {
   let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
   let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
   if (updateCount >= 86400) {
+    updateTopTenVideoSheet();
     realTimeStatsCalls();
     requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Videos By Category");
     // getVideosByCategoryData();
@@ -222,6 +222,26 @@ function loadRealTimeStats() {
   }
 
   
+}
+
+function updateTopTenVideoSheet() {
+  let firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    if (now - firstDayOfMonth > 432000000) {
+      // Update for current month
+      let lastDayOfMonth = new Date(now.getFullYear(), date.getMonth() + 1, 0);
+      let startDate = getYouTubeDateFormat(firstDayOfMonth);
+      let endDate = getYouTubeDateFormat(lastDayOfMonth);
+      let month = startDate.substr(0, 7);
+      requestMostWatchedVideos(startDate, endDate, 20, month);
+    } else {
+      // Update for previous month
+      firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
+      let lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      let startDate = getYouTubeDateFormat(firstDayOfMonth);
+      let endDate = getYouTubeDateFormat(lastDayOfMonth);
+      let month = startDate.substr(0, 7);
+      requestMostWatchedVideos(startDate, endDate, 20, month);
+    }
 }
 
 function getVideosByCategoryData() {
@@ -478,6 +498,7 @@ function recordVideoData() {
   localStorage.setItem("uploads", JSON.stringify(uploads));
 }
 
+// Displays thumbnails with arrows on Top Ten Dashboard
 function displayTopTenThumbnails() {
   let topTenSheet = JSON.parse(localStorage.getItem("topTenSheet"));
   let numMonths = 12
