@@ -15,7 +15,7 @@ function handleChannelInfo(response) {
 function handleChannelNumVideos(response) {
   if (response) {
     console.log("Response received", "handleChannelNumVideos");
-    
+
     let numVideos = response.result.items[0].statistics.videoCount;
     document.getElementById("num-videos").innerText = numVideos;
   }
@@ -102,7 +102,7 @@ function handleMostWatchedVideos(response, month) {
       var body = {
         "values": values
       };
-      var row = 3 + monthDiff(new Date(2018, 0), new Date(month));
+      var row = 3 + monthDiff(new Date(2008, 3), new Date(month));
       var sheet = "Top Ten Videos!A" + row;
       requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", sheet, body);
     }
