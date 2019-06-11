@@ -64,35 +64,6 @@ footer {
   width: 108vh;
 }
 
-.stat-container {
-  height: 100%;
-}
-
-.stat-container, .grid-item {
-  background-color: white;
-  border: solid black 1px;
-  border-radius: 0.25rem;
-  padding: 5px;
-}
-
-.stat-content {
-  vertical-align: center;
-  height: 100%;
-  padding: auto;
-}
-
-.shell-row {
-  height: 100%;
-  margin-right: 0px;
-  margin-left: 0px;
-}
-
-.inner-row {
-  margin-left: 0px;
-  margin-right: 0px;
-  padding: 0px;
-}
-
 .indicator-list {
   display: inline;
   padding-left: 0px;
@@ -110,11 +81,6 @@ footer {
 
 .indicator.active {
   opacity: 1;
-}
-
-.number-container {
-  background-color: linen;
-  border-radius: 0.5rem;
 }
 
 .top-ten-title {
