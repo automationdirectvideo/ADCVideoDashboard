@@ -39,10 +39,10 @@ footer {
   }
 }
 
-.yt-red {
+.yt-red, .arrow-red {
   color: #ff0000;
 }
-.yt-black {
+.yt-black, .arrow-text-black {
   color: #282828;
 }
 .bg-yt-red {
@@ -178,7 +178,43 @@ footer {
   text-overflow: ellipsis;
 }
 
-.thumbnail {
+.arrow-red, .arrow-green {
+  font-size: 37px;
+  -webkit-text-stroke-width: thick;
+  position: absolute;
+  bottom: 5px;
+  left: 8px;
+  top: auto;
+}
+
+.arrow-green {
+  color: #00ff00;
+}
+
+.arrow-text-white, .arrow-text-black {
+  font-size: 20px;
+  position: absolute;
+  bottom: 9px;
+  left: 16px;
+  top: auto;
+}
+
+.arrow-text-white {
+  color: white;
+}
+
+.top-ten-thumbnail-holder {
+  padding-left: 0px;
+  padding-right: 0px;
+  position: relative;
+}
+
+.top-ten-thumbnail {
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.thumbnail, .top-ten-thumbnail {
   padding: 2px;
   margin-left: auto;
   margin-right: auto;

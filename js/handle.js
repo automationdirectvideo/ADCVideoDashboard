@@ -561,6 +561,9 @@ function handleSpreadsheetData(response, message) {
     } else if (message == "Category Stats") {
       localStorage.setItem("categoriesSheet", JSON.stringify(response.result.values));
       recordCategoryData();
+    } else if (message == "Top Ten Videos") {
+      localStorage.setItem("topTenSheet", JSON.stringify(response.result.values));
+      displayTopTenThumbnails();
     }
     let date = new Date();
     date.setHours(6, 0, 0, 0);

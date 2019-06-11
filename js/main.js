@@ -478,16 +478,38 @@ function recordVideoData() {
   localStorage.setItem("uploads", JSON.stringify(uploads));
 }
 
-function carouselNext() {
-  $(".carousel").carousel("next");
-}
-
-function carouselPrev() {
-  $(".carousel").carousel("prev");
-}
-
-function goToCarouselItem(index) {
-  $(".carousel").carousel(index);
+function displayTopTenThumbnails() {
+  let topTenSheet = JSON.parse(localStorage.getItem("topTenSheet"));
+  let numMonths = 12
+  let output = ``;
+  for (var i = 0; i < topTenSheet[0].length; i++) {
+    for (var j = topTenSheet.length - numMonths; j < topTenSheet.length; j++) {
+      if (i == 0) {
+        output += `<div class="col-1 px-0"><h4>${topTenSheet[j][i]}</h4></div>`;
+      } else {
+        var videoId = topTenSheet[j][i];
+        output += `<div class="col-1 top-ten-thumbnail-holder"><img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
+        var currPosition = i;
+        var prevPosition = topTenSheet[j - 1].indexOf(videoId);
+        if (prevPosition == -1) {
+          // Add + up arrow
+          output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">+</span>`;
+        } else if (prevPosition != currPosition) {
+          var change = prevPosition - currPosition;
+          if (change < 0) {
+            // Add down arrow
+            output += `<span class="oi oi-arrow-thick-bottom arrow-red"></span><span class="arrow-text-white">${Math.abs(change)}</span>`;
+          } else if(change > 0) {
+            // Add up arrow
+            output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">${change}</span>`;
+          }
+        }
+        output += `</div>`;
+      }
+    }
+  }
+  let thumbnailContainer = document.getElementById("top-ten-thumbnail-container");
+  thumbnailContainer.innerHTML = output;
 }
 
 function sortCategoriesByViews() {
@@ -617,6 +639,18 @@ function displayTopVideos() {
     }
     index++;
   }
+}
+
+function carouselNext() {
+  $(".carousel").carousel("next");
+}
+
+function carouselPrev() {
+  $(".carousel").carousel("prev");
+}
+
+function goToCarouselItem(index) {
+  $(".carousel").carousel(index);
 }
 
 // Get current settings
