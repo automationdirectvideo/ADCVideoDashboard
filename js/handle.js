@@ -435,15 +435,22 @@ function handleViewsByTrafficSource(response) {
     }
     var values = [advertisingViews, externalViews, youtubeSearchViews, relatedViews, otherViews];
     var labels = ["Advertising", "External", "YouTube<br>Search", "Related<br>Video", "Other"];
+
+    var height = .33 * document.documentElement.clientHeight;
+    var width = .33 * document.documentElement.clientHeight;
+
     var data = [{
       values: values,
       labels: labels,
       type: 'pie',
       textinfo: 'label+percent',
+      textposition: "inside",
       rotation: 90
     }];
 
     var layout = {
+      height: height,
+      width: width,
       font: {size: 18},
       automargin: true,
       autosize: true,
