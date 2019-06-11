@@ -112,7 +112,10 @@ function testAPICalls() {
 }
 
 function loadDashboards() {
-  showUploadThumbnails();
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  if (carouselInner.children.thumbnails) {
+    requestChannelNumVideos();
+  }
 }
 
 function initializeUpdater() {
@@ -754,9 +757,6 @@ function showUploadThumbnails() {
       new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
     }
   }
-  try {
-    requestChannelNumVideos();
-  } catch (e) {}
 }
 showUploadThumbnails();
 
