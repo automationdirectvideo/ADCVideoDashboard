@@ -185,6 +185,37 @@ footer {
   width: 100%;
 }
 
+.demographics-table th, .demographics-table thead th, .demographics-table td {
+  border: none;
+  font-size: 1rem;
+  padding: 0.3rem;
+  vertical-align: middle;
+}
+
+.demographics-table th, .demographics-table td {
+  border: none;
+  padding: 0.3rem;
+  vertical-align: middle;
+}
+
+.demographics-table span, .demographics-table thead th {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.demographics-table h1, .demographics-table h2, .demographics-table h3,
+.demographics-table h4, .demographics-table h5, .demographics-table h6 {
+  margin-bottom: 0px;
+}
+
+[id*="male-"] {
+  color: #549dd1;
+}
+
+[id*="female-"] {
+  color: #926fd1;
+}
+
 .font-size-3 {
   font-size: 3rem;
 }
@@ -225,5 +256,9 @@ footer {
 }
 
 .grid-item {
+  background-color: white;
+  border: solid black 1px;
+  border-radius: 0.25rem;
   overflow: hidden;
+  padding: 5px;
 }

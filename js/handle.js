@@ -21,58 +21,6 @@ function handleChannelNumVideos(response) {
   }
 }
 
-function handleChannelSearchTerms(response) {
-  if (response) {
-    console.log("Response received", "handleChannelSearchTerms");
-    let searchTerms = response.result.rows;
-    let xValues = [];
-    let yValues = [];
-    let numTerms = Math.min(9, searchTerms.length+ - 1);
-    for (var i = numTerms; i >= 0; i--) {
-      xValues.push(searchTerms[i][1]);
-      yValues.push(searchTerms[i][0]);
-    }
-    var data = [
-      {
-        x: xValues,
-        y: yValues,
-        type: 'bar',
-        orientation: 'h',
-        text: xValues.map(String),
-        textposition: 'auto',
-        marker: {
-          color: 'rgb(255,0,0)'
-        }
-      }
-    ];
-    
-    var layout = {
-      font: {size: 24},
-      margin: {
-        b: 10,
-        t: 10,
-      },
-      xaxis: {
-        visible: false,
-        automargin: true
-      },
-      yaxis: {
-        showline: true,
-        showticklabels: true,
-        tickmode: 'linear',
-        automargin: true
-      }
-    };
-    
-    var config = {
-      staticPlot: true, 
-      responsive: true
-    };
-    
-    Plotly.newPlot('channel-search-terms', data, layout, config);
-  }
-}
-
 // Handles impressions response from Analytics API
 function handleImpressions(response) {
   if (response) {
@@ -479,7 +427,7 @@ function handleViewsByTrafficSource(response) {
       }
     }
     var values = [advertisingViews, externalViews, youtubeSearchViews, relatedViews, otherViews];
-    var labels = ["Advertising", "External", "YouTube<br>Search", "Related Video", "Other"];
+    var labels = ["Advertising", "External", "YouTube<br>Search", "Related<br>Video", "Other"];
     var data = [{
       values: values,
       labels: labels,
@@ -511,10 +459,125 @@ function handleViewsByTrafficSource(response) {
   }
 }
 
+function handleChannelSearchTerms(response) {
+  if (response) {
+    console.log("Response received", "handleChannelSearchTerms");
+    let searchTerms = response.result.rows;
+    let xValues = [];
+    let yValues = [];
+    let numTerms = Math.min(9, searchTerms.length+ - 1);
+    for (var i = numTerms; i >= 0; i--) {
+      xValues.push(searchTerms[i][1]);
+      yValues.push(searchTerms[i][0].replace(" ", "<br>"));
+    }
+    var data = [
+      {
+        x: xValues,
+        y: yValues,
+        type: 'bar',
+        orientation: 'h',
+        text: xValues.map(String),
+        textposition: 'auto',
+        marker: {
+          color: 'rgb(255,0,0)'
+        }
+      }
+    ];
+    
+    var layout = {
+      font: {size: 24},
+      margin: {
+        b: 10,
+        t: 10,
+      },
+      xaxis: {
+        visible: false,
+        automargin: true
+      },
+      yaxis: {
+        showline: true,
+        showticklabels: true,
+        tickmode: 'linear',
+        automargin: true
+      }
+    };
+    
+    var config = {
+      staticPlot: true, 
+      responsive: true
+    };
+    
+    Plotly.newPlot('channel-search-terms', data, layout, config);
+  }
+}
+
 function handleChannelDemographics(response) {
   if (response) {
     console.log("Response received", "handleViewsByTrafficSource");
     var rows = response.result.rows;
+    let maleTotal = 0;
+    let femaleTotal = 0;
+    let maleMax = 0;
+    let femaleMax = 0;
+    for (var i = 0; i < rows.length; i++) {
+      let percentage = parseFloat(rows[i][2]);
+      if (rows[i][1] == "female") {
+        femaleTotal += percentage;
+        if (percentage > femaleMax) {
+          femaleMax = percentage;
+        }
+      } else {
+        maleTotal += percentage;
+        if (percentage > maleMax) {
+          maleMax = percentage;
+        }
+      }
+    }
+    for (var i = 0; i < rows.length; i++) {
+      let range = rows[i][0].substr(3);
+      let percentage = rows[i][2];
+      let cell = document.getElementById(rows[i][1] + "-" + range);
+      cell.innerHTML = `<span>${percentage}</span>%`;
+      if (rows[i][1] == "female") {
+        cell.style.opacity = ((parseFloat(percentage) / femaleMax) + 1.5) / 2.5;
+      } else {
+        cell.style.opacity = ((parseFloat(percentage) / maleMax) + 1.5) / 2.5;
+      }
+    }
+    document.getElementById("male-title").innerHTML = `<span class="oi oi-person" style="font-size:2rem"></span><br><span style="font-size:2rem">${maleTotal}</span>%`;
+    document.getElementById("female-title").innerHTML = `<span class="oi oi-person" style="font-size:2rem"></span><br><span style="font-size:2rem">${femaleTotal}</span>%`;
+
+    var values = [maleTotal, femaleTotal];
+    var labels = ["Male", "Female"];
+    var data = [{
+      values: values,
+      labels: labels,
+      textinfo: "none",
+      hoverinfo: "none",
+      marker: {
+        colors: ["rgb(84, 157, 209)", "rgb(146, 111, 209)"]
+      },
+      type: 'pie',
+    }];
+
+    var layout = {
+      height: 100,
+      weight: 100,
+      showlegend: false,
+      margin: {
+        l: 0,
+        r: 0,
+        t: 0,
+        b: 0,
+        pad: 4
+      }
+    };
+
+    var config = {
+      staticPlot: true
+    };
+
+    Plotly.newPlot('demographics-graph', data, layout, config);
   }
 }
 
@@ -522,6 +585,52 @@ function handleViewsSubscribedStatus(response) {
   if (response) {
     console.log("Response received", "handleViewsSubscribedStatus");
     var rows = response.result.rows;
+    var labelConversion = {
+      "UNSUBSCRIBED": "Not Subscribed",
+      "SUBSCRIBED": "Subscribed"
+    };
+    var values = [];
+    var labels = [];
+    for (var i = 0; i < rows.length; i++) {
+      values.push(rows[i][1]);
+      labels.push(labelConversion[rows[i][0]]);
+    }
+    
+    var height = .33 * document.documentElement.clientHeight;
+    var width = .33 * document.documentElement.clientHeight;
+    
+    var data = [{
+      values: values,
+      labels: labels,
+      textinfo: "label+percent",
+      textposition: "inside",
+      hoverinfo: "none",
+      type: 'pie',
+      rotation: -90
+    }];
+    
+    var layout = {
+      height: height,
+      width: width,
+      font: {size: 18},
+      automargin: true,
+      autosize: true,
+      showlegend: false,
+      margin: {
+        l: 0,
+        r: 0,
+        t: 0,
+        b: 10,
+        pad: 4
+      }
+    };
+    
+    var config = {
+      staticPlot: true,
+      responsive: true
+    };
+    
+    Plotly.newPlot('channel-watch-time', data, layout, config);
   }
 }
 
