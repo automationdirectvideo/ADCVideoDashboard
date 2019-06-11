@@ -359,7 +359,7 @@ function handleViewsByDeviceType(response) {
       "MOBILE": "Mobile",
       "TABLET": "Tablet",
       "TV": "TV",
-      "GAME_CONSOLE": "Game<br>Console"
+      "GAME_CONSOLE": "Game Console"
     };
     var values = [];
     var labels = [];
@@ -367,34 +367,41 @@ function handleViewsByDeviceType(response) {
       values.push(rows[i][1]);
       labels.push(labelConversion[rows[i][0]]);
     }
+    
+    var height = .33 * document.documentElement.clientHeight;
+    var width = .33 * document.documentElement.clientHeight;
+    
     var data = [{
       values: values,
       labels: labels,
       type: 'pie',
       textinfo: 'label+percent',
-      rotation: -45,
+      textposition: ["inside", "inside", "outside", "outside", "outside"],
+      rotation: 200,
       direction: 'clockwise'
     }];
-
+    
     var layout = {
+      height: height,
+      width: width,
       font: {size: 18},
       automargin: true,
       autosize: true,
       showlegend: false,
       margin: {
-        l: 0,
+        l: 20,
         r: 0,
         t: 0,
-        b: 10,
+        b: 60,
         pad: 4
       }
     };
-
+    
     var config = {
       staticPlot: true,
       responsive: true
     };
-
+    
     Plotly.newPlot('channel-views-by-device', data, layout, config);
   }
 }
@@ -603,10 +610,10 @@ function handleViewsSubscribedStatus(response) {
       values: values,
       labels: labels,
       textinfo: "label+percent",
-      textposition: "inside",
       hoverinfo: "none",
       type: 'pie',
-      rotation: -90
+      rotation: 180,
+      direction: "clockwise"
     }];
     
     var layout = {
@@ -620,7 +627,7 @@ function handleViewsSubscribedStatus(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 10,
+        b: 50,
         pad: 4
       }
     };
