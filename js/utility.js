@@ -54,6 +54,12 @@ function isoDurationToSeconds(duration) {
   return seconds;
 }
 
+// Get number of months between two dates (ignoring the day of the month)
+function monthDiff(dateFrom, dateTo) {
+  return dateTo.getMonth() - dateFrom.getMonth() + 
+    (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
+ }
+
 // Add commas to number
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
