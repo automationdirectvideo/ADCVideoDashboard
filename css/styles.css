@@ -81,59 +81,6 @@ footer {
   padding: auto;
 }
 
-.row-1, .row-2, .row-3, .row-4, .row-5, .row-6, .row-7, .row-8, .row-9, .row-10,
-.row-11, .row-12 {
-  padding: 0.5rem;
-}
-
-.row-1 {
-  max-height: 8.333333%;
-}
-
-.row-2 {
-  max-height: 16.666667%;
-}
-
-.row-3 {
-  max-height: 25%;
-}
-
-.row-4 {
-  max-height: 33.333333%;
-}
-
-.row-5 {
-  max-height: 41.666667%;
-}
-
-.row-6 {
-  max-height: 50%;
-}
-
-.row-7 {
-  max-height: 58.333333%;
-}
-
-.row-8 {
-  max-height: 66.666667%;
-}
-
-.row-9 {
-  max-height: 75%;
-}
-
-.row-10 {
-  max-height: 83.333333%;
-}
-
-.row-11 {
-  max-height: 91.666667%;
-}
-
-.row-12 {
-  max-height: 100%;
-}
-
 .shell-row {
   height: 100%;
   margin-right: 0px;
@@ -203,6 +150,33 @@ footer {
   color: white;
 }
 
+.column {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  flex-direction: column;
+  float: left;
+  height: 100%;
+}
+
+.column-title, .column-thumbnail {
+  position: relative;
+  height: 100%;
+}
+
+.column-title {
+  -ms-flex: 0 0 4%;
+  flex: 0 0 4%;
+  max-height: 4%;
+}
+
+.column-thumbnail {
+  -ms-flex: 0 0 9.5%;
+  flex: 0 0 9.5%;
+  max-height: 9.5%;
+}
+
 .top-ten-thumbnail-holder {
   padding-left: 0px;
   padding-right: 0px;
@@ -220,10 +194,18 @@ footer {
   margin-right: auto;
 }
 
-.thumbnail-wrapper {
-  overflow-y: scroll;
+.scroll-x, .scroll-y {
   height: 100%;
   width: 100%;
+}
+
+.scroll-x {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.scroll-y {
+  overflow-y: scroll;
 }
 
 .top-video-thumbnail {

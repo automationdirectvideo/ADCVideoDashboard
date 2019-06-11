@@ -508,28 +508,29 @@ function recordVideoData() {
 // Displays thumbnails with arrows on Top Ten Dashboard
 function displayTopTenThumbnails() {
   let topTenSheet = JSON.parse(localStorage.getItem("topTenSheet"));
-  let numMonths = 12
   let output = ``;
-  for (var i = 0; i < topTenSheet[0].length; i++) {
-    for (var j = topTenSheet.length - numMonths; j < topTenSheet.length; j++) {
+  for (var j = 1; j < topTenSheet.length; j++) {
+    for (var i = 0; i < topTenSheet[0].length; i++) {
       if (i == 0) {
-        output += `<div class="col-1 px-0"><h4>${topTenSheet[j][i]}</h4></div>`;
+        output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
       } else {
         var videoId = topTenSheet[j][i];
-        output += `<div class="col-1 top-ten-thumbnail-holder"><img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
-        var currPosition = i;
-        var prevPosition = topTenSheet[j - 1].indexOf(videoId);
-        if (prevPosition == -1) {
-          // Add + up arrow
-          output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">+</span>`;
-        } else if (prevPosition != currPosition) {
-          var change = prevPosition - currPosition;
-          if (change < 0) {
-            // Add down arrow
-            output += `<span class="oi oi-arrow-thick-bottom arrow-red"></span><span class="arrow-text-white">${Math.abs(change)}</span>`;
-          } else if(change > 0) {
-            // Add up arrow
-            output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">${change}</span>`;
+        output += `<div class="top-ten-thumbnail-holder column-thumbnail"><img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
+        if (j != 1) {
+          var currPosition = i;
+          var prevPosition = topTenSheet[j - 1].indexOf(videoId);
+          if (prevPosition == -1) {
+            // Add + up arrow
+            output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">+</span>`;
+          } else if (prevPosition != currPosition) {
+            var change = prevPosition - currPosition;
+            if (change < 0) {
+              // Add down arrow
+              output += `<span class="oi oi-arrow-thick-bottom arrow-red"></span><span class="arrow-text-white">${Math.abs(change)}</span>`;
+            } else if(change > 0) {
+              // Add up arrow
+              output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">${change}</span>`;
+            }
           }
         }
         output += `</div>`;
@@ -538,6 +539,8 @@ function displayTopTenThumbnails() {
   }
   let thumbnailContainer = document.getElementById("top-ten-thumbnail-container");
   thumbnailContainer.innerHTML = output;
+  let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
+  thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
 }
 
 function sortCategoriesByViews() {

@@ -132,7 +132,6 @@
                 <h3>Platform Dashboard</h3>
                 <h5>How are Users Accessing Our Videos?</h5>
                 <div class="outer-shell container mb-1">
-                  <!-- div.row.shell-row>(div.col-3.row-4*4>div.stat-container>h3{Row 1, Column $})+div.col-12.row-8>div.stat-container>h3{Row 2, Column $} -->
                   <div class="grid-container">
                     <div class="grid-item" style="grid-area: 1/1/7/7;">
                       <div class="row h-100">
@@ -181,7 +180,7 @@
                 <h3>1000 Thumbnail Dashboard</h3>
                 <h5>We have <span id="num-videos">1000+</span> videos servicing the entire chain!</h5>
                 <div class="outer-shell container mb-1">
-                  <div class="thumbnail-wrapper" id="thumbnail-wrapper">
+                  <div class="scroll-y" id="thumbnail-wrapper">
                     <div id="thumbnail-container">
                     </div>
                   </div>
@@ -237,7 +236,9 @@
                 <h3>Top Ten Dashboard</h3>
                 <h5>Which Products are our Customers Most Interested in Learning About Each Month?</h5>
                 <div class="outer-shell container mb-1">
-                  <div class="row mx-auto" id="top-ten-thumbnail-container">
+                  <div class="scroll-x" id="top-ten-thumbnail-wrapper">
+                    <div class="column" id="top-ten-thumbnail-container">
+                    </div>
                   </div>
                 </div>
               </div>
