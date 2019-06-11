@@ -245,6 +245,29 @@ function requestViewsByState(startDate, endDate) {
   callAnalyticsAPI(request, "ViewsByTrafficSource: ", handleViewsByState);
 }
 
+function requestChannelDemographics(startDate, endDate) {
+  var request = {
+    "dimensions": "ageGroup,gender",
+    "endDate": endDate,
+    "ids": "channel==MINE",
+    "metrics": "viewerPercentage",
+    "sort": "gender,ageGroup",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "ChannelDemographics: ", handleChannelDemographics);
+}
+
+function requestViewsSubscribedStatus(startDate, endDate) {
+  var request = {
+    "dimensions": "subscribedStatus",
+    "endDate": endDate,
+    "ids": "channel==MINE",
+    "metrics": "views",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "ViewsSubscribedStatus: ", handleViewsSubscribedStatus);
+}
+
 function requestSpreadsheetData(spreadsheetId, range) {
   var request = {
     "spreadsheetId": spreadsheetId,

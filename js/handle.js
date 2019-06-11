@@ -511,6 +511,20 @@ function handleViewsByTrafficSource(response) {
   }
 }
 
+function handleChannelDemographics(response) {
+  if (response) {
+    console.log("Response received", "handleViewsByTrafficSource");
+    var rows = response.result.rows;
+  }
+}
+
+function handleViewsSubscribedStatus(response) {
+  if (response) {
+    console.log("Response received", "handleViewsSubscribedStatus");
+    var rows = response.result.rows;
+  }
+}
+
 function handleViewsByState(response) {
   if (response) {
     console.log("Response received", "handleViewsByState");
