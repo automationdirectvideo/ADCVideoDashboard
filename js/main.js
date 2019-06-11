@@ -111,6 +111,10 @@ function testAPICalls() {
   // requestViewsByTrafficSource(joinDate, todayDate);
 }
 
+function loadDashboards() {
+  showUploadThumbnails();
+}
+
 function initializeUpdater() {
   var updateId = window.setInterval(updateStats, 1000);
 }
@@ -749,8 +753,10 @@ function showUploadThumbnails() {
 
       new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
     }
-    requestChannelNumVideos();
   }
+  try {
+    requestChannelNumVideos();
+  } catch (e) {}
 }
 showUploadThumbnails();
 

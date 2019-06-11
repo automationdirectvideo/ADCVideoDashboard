@@ -40,6 +40,7 @@ function updateSigninStatus(isSignedIn) {
     loginBox.style.display = "none";
     content.style.display = "block";
     initializeUpdater();
+    loadDashboards();
     testAPICalls();
   } else {
     loginBox.style.display = "block";
