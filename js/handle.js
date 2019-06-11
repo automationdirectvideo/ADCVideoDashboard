@@ -93,7 +93,9 @@ function handleMostWatchedVideos(response, month) {
       var body = {
         "values": values
       };
-      requestAppendSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Top Ten", body);
+      var row = 3 + monthDiff(new Date(2018, 0), new Date(month));
+      var sheet = "Top Ten Videos!A" + row;
+      requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", sheet, body);
     }
   }
 }
@@ -595,6 +597,7 @@ function handleFileModifiedTime(response, message) {
       } else {
         requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats");
         requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats");
+        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Top Ten Videos");
       }
     }
 
