@@ -769,7 +769,7 @@ if (enabledOrder.includes("real-time-stats")) {
 
 
 function getTopTenVideosByMonth() {
-  var startDate = new Date("2008-04-1");
+  var startDate = new Date("2010-07-1");
   var endDate = new Date("2019-06-30");
   while (endDate - startDate > 0) {
     let firstDay = getYouTubeDateFormat(startDate);
