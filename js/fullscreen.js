@@ -35,9 +35,9 @@ function toggleFullscreen() {
   const fullscreenButton = document.getElementById('fullscreen-button');
   if (fullscreenStatus == "opened") {
     closeFullscreen();
-    fullscreenButton.src="open-iconic/svg/fullscreen-enter.svg";
+    fullscreenButton.className = "fas fa-expand-arrows-alt";
   } else {
     openFullscreen();
-    fullscreenButton.src="open-iconic/svg/fullscreen-exit.svg";
+    fullscreenButton.className = "fas fa-compress-arrows-alt";
   }
 }

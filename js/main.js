@@ -330,7 +330,7 @@ for (var i = 0; i < enabledOrder.length; i++) {
     indicator.classList.add("active");
   }
   indicator.id = "indicator-" + i;
-  indicator.setAttribute("data-slide-to", i);
+  indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
   dashboardItem.remove();
   carouselInner.appendChild(dashboardItem);
   indicatorList.appendChild(indicator);

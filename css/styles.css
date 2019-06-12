@@ -39,6 +39,15 @@ footer {
   }
 }
 
+.navbar-item i {
+  color:#222;
+  font-size:32px;
+}
+
+#fullscreen-button {
+  cursor: pointer;
+}
+
 .yt-red, .arrow-red {
   color: #ff0000;
 }
@@ -66,8 +75,6 @@ footer {
 
 .indicator-list {
   display: inline;
-  padding-left: 0px;
-  list-style: none;
 }
 
 .indicator {
@@ -81,6 +88,10 @@ footer {
 
 .indicator.active {
   opacity: 1;
+}
+
+.carousel-arrow {
+  cursor: pointer;
 }
 
 .top-ten-title {

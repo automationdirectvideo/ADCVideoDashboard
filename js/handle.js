@@ -104,8 +104,8 @@ function handleChannelDemographics(response) {
         cell.style.opacity = ((parseFloat(percentage) / maleMax) + 1.5) / 2.5;
       }
     }
-    document.getElementById("male-title").innerHTML = `<span class="oi oi-person" style="font-size:2rem"></span><br><span style="font-size:2rem">${maleTotal}</span>%`;
-    document.getElementById("female-title").innerHTML = `<span class="oi oi-person" style="font-size:2rem"></span><br><span style="font-size:2rem">${femaleTotal}</span>%`;
+    document.getElementById("male-title").innerHTML = `<i class="fas fa-male" style="font-size:3rem"></i><br><span style="font-size:2rem">${maleTotal}</span>%`;
+    document.getElementById("female-title").innerHTML = `<i class="fas fa-female" style="font-size:3rem"></i><br><span style="font-size:2rem">${femaleTotal}</span>%`;
 
     var values = [maleTotal, femaleTotal];
     var labels = ["Male", "Female"];
