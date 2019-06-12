@@ -257,15 +257,15 @@ function requestChannelDemographics(startDate, endDate) {
   callAnalyticsAPI(request, "ChannelDemographics: ", handleChannelDemographics);
 }
 
-function requestViewsSubscribedStatus(startDate, endDate) {
+function requestMinutesSubscribedStatus(startDate, endDate) {
   var request = {
     "dimensions": "subscribedStatus",
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "views",
+    "metrics": "estimatedMinutesWatched",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ViewsSubscribedStatus: ", handleViewsSubscribedStatus);
+  callAnalyticsAPI(request, "MinutesSubscribedStatus: ", handleMinutesSubscribedStatus);
 }
 
 function requestSpreadsheetData(spreadsheetId, range) {
@@ -310,7 +310,7 @@ function platformDashboardCalls(startDate, endDate) {
   requestViewsByTrafficSource(startDate, endDate);
   requestViewsByState(startDate, endDate);
   requestChannelDemographics(startDate, endDate);
-  requestViewsSubscribedStatus(startDate, endDate);
+  requestMinutesSubscribedStatus(startDate, endDate);
 }
 
 // Makes requests data for top video dashboard

@@ -106,6 +106,12 @@ function handleVideoDailyViews(response, dashboardId) {
       yValues.push(rows[i][1]);
     }
 
+    var graphId = dashboardId + "-views-graph";
+    var graphHeight = 0.17;
+    var graphWidth = 0.51;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
+
     var data = [
       {
         x: xValues,
@@ -119,6 +125,8 @@ function handleVideoDailyViews(response, dashboardId) {
     ];
 
     var layout = {
+      height: height,
+      width: width,
       font: {size: 16},
       margin: {
         b: 0,
@@ -144,7 +152,9 @@ function handleVideoDailyViews(response, dashboardId) {
       responsive: true
     };
 
-    Plotly.newPlot(dashboardId + '-views-graph', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -174,6 +184,13 @@ function handleVideoSearchTerms(response, dashboardId) {
       xValues.push(searchTerms[i][1]);
       yValues.push(searchTerms[i][0]);
     }
+
+    var graphId = dashboardId + "-search-terms";
+    var graphHeight = 0.17;
+    var graphWidth = 0.51;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
+
     var data = [
       {
         x: xValues,
@@ -189,6 +206,8 @@ function handleVideoSearchTerms(response, dashboardId) {
     ];
     
     var layout = {
+      height: height,
+      width: width,
       font: {size: 16},
       margin: {
         b: 0,
@@ -211,7 +230,9 @@ function handleVideoSearchTerms(response, dashboardId) {
       responsive: true
     };
     
-    Plotly.newPlot(dashboardId + '-search-terms', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -368,8 +389,11 @@ function handleViewsByDeviceType(response) {
       labels.push(labelConversion[rows[i][0]]);
     }
     
-    var height = .33 * document.documentElement.clientHeight;
-    var width = .33 * document.documentElement.clientHeight;
+    var graphId = "channel-views-by-device";
+    var graphHeight = 0.33;
+    var graphWidth = 0.33;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
     
     var data = [{
       values: values,
@@ -402,7 +426,9 @@ function handleViewsByDeviceType(response) {
       responsive: true
     };
     
-    Plotly.newPlot('channel-views-by-device', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -436,8 +462,11 @@ function handleViewsByTrafficSource(response) {
     var values = [advertisingViews, externalViews, youtubeSearchViews, relatedViews, otherViews];
     var labels = ["Advertising", "External", "YouTube<br>Search", "Related<br>Video", "Other"];
 
-    var height = .33 * document.documentElement.clientHeight;
-    var width = .33 * document.documentElement.clientHeight;
+    var graphId = "channel-traffic-sources";
+    var graphHeight = 0.33;
+    var graphWidth = 0.33;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
 
     var data = [{
       values: values,
@@ -469,7 +498,9 @@ function handleViewsByTrafficSource(response) {
       responsive: true
     };
     
-    Plotly.newPlot('channel-traffic-sources', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -484,6 +515,13 @@ function handleChannelSearchTerms(response) {
       xValues.push(searchTerms[i][1]);
       yValues.push(searchTerms[i][0].replace(" ", "<br>"));
     }
+
+    var graphId = "channel-search-terms";
+    var graphHeight = 0.33;
+    var graphWidth = 0.33;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
+
     var data = [
       {
         x: xValues,
@@ -499,6 +537,8 @@ function handleChannelSearchTerms(response) {
     ];
     
     var layout = {
+      height: height,
+      width: width,
       font: {size: 24},
       margin: {
         b: 10,
@@ -521,7 +561,9 @@ function handleChannelSearchTerms(response) {
       responsive: true
     };
     
-    Plotly.newPlot('channel-search-terms', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -595,9 +637,9 @@ function handleChannelDemographics(response) {
   }
 }
 
-function handleViewsSubscribedStatus(response) {
+function handleMinutesSubscribedStatus(response) {
   if (response) {
-    console.log("Response received", "handleViewsSubscribedStatus");
+    console.log("Response received", "handleMinutesSubscribedStatus");
     var rows = response.result.rows;
     var labelConversion = {
       "UNSUBSCRIBED": "Not Subscribed",
@@ -609,9 +651,11 @@ function handleViewsSubscribedStatus(response) {
       values.push(rows[i][1]);
       labels.push(labelConversion[rows[i][0]]);
     }
-    
-    var height = .33 * document.documentElement.clientHeight;
-    var width = .33 * document.documentElement.clientHeight;
+    var graphId = "channel-watch-time";
+    var graphHeight = 0.33;
+    var graphWidth = 0.33;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
     
     var data = [{
       values: values,
@@ -644,7 +688,9 @@ function handleViewsSubscribedStatus(response) {
       responsive: true
     };
     
-    Plotly.newPlot('channel-watch-time', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+    
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -659,6 +705,12 @@ function handleViewsByState(response) {
       z.push(rows[i][1]);
     }
 
+    var graphId = "channel-views-by-state";
+    var graphHeight = 0.33;
+    var graphWidth = 0.33;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientHeight;
+
     var data = [{
       type: 'choropleth',
       locationmode: 'USA-states',
@@ -668,6 +720,8 @@ function handleViewsByState(response) {
     }];
 
     var layout = {
+      height: height,
+      width: width,
       geo:{
           scope: 'usa',
           countrycolor: 'rgb(255, 255, 255)',
@@ -693,7 +747,9 @@ function handleViewsByState(response) {
       responsive: true
     };
 
-    Plotly.plot('channel-views-by-state', data, layout, config);
+    Plotly.plot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 

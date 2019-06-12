@@ -10,6 +10,7 @@ function resetSettings() {
  */
 function saveNewSettings() {
   localStorage.setItem("settings", JSON.stringify(currentSettings));
+  localStorage.removeItem("graphSizes");
 }
 
 /**

@@ -118,7 +118,7 @@ function loadDashboards() {
   }
   if (carouselInner.children["top-ten"]) {
     displayTopTenThumbnails();
-}
+  }
 }
 
 function initializeUpdater() {
@@ -677,6 +677,18 @@ function displayTopVideos() {
   }
 }
 
+function recordGraphSize(graphId, graphHeight, graphWidth) {
+  if (!localStorage.getItem("graphSizes")) {
+    localStorage.setItem("graphSizes", JSON.stringify({}));
+  }
+  let graphSizes = JSON.parse(localStorage.getItem("graphSizes"));
+  graphSizes[graphId] = {
+    height: graphHeight,
+    width: graphWidth
+  };
+  localStorage.setItem("graphSizes", JSON.stringify(graphSizes));
+}
+
 function carouselNext() {
   $(".carousel").carousel("next");
 }
@@ -784,3 +796,18 @@ function getTopTenVideosByMonth() {
     startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
   }
 }
+
+window.addEventListener('resize', function() {
+  this.console.log("Resize");
+  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
+  let viewportHeight = document.documentElement.clientHeight;
+  for (var graphId in graphSizes) {
+    let height = graphSizes[graphId].height * viewportHeight;
+    let width = graphSizes[graphId].width * viewportHeight;
+    let update = {
+      height: height,
+      width: width
+    };
+    Plotly.relayout(graphId, update);
+  }
+}, true);
