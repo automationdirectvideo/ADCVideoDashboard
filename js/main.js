@@ -236,7 +236,7 @@ function updateTopTenVideoSheet() {
   let firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   if (now - firstDayOfMonth > 432000000) {
     // Update for current month
-    let lastDayOfMonth = new Date(now.getFullYear(), date.getMonth() + 1, 0);
+    let lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
     let startDate = getYouTubeDateFormat(firstDayOfMonth);
     let endDate = getYouTubeDateFormat(lastDayOfMonth);
     let month = startDate.substr(0, 7);
