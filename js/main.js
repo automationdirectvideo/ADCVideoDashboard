@@ -101,20 +101,16 @@ function testAPICalls() {
   var thirtyDaysAgo = getDateFromDaysAgo(30);
   // requestBasicVideoStats(joinDate, todayDate);
   // requestImpressions("2019-04-01", "2019-04-30");
-  // requestSubscribersGained(joinDate, todayDate);
-  // topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo");
-  topVideoCalls(joinDate, todayDate, "tpXW6qWoJGA", "top-video-1");
-  topVideoCalls(joinDate, todayDate, "mXcDYoz1iMo", "top-video-2");
-  platformDashboardCalls(joinDate, todayDate);
-  // requestVideoViewsByTrafficSource(thirtyDaysAgo, todayDate, "mXcDYoz1iMo");
-  // requestViewsByDeviceType(joinDate, todayDate);
-  // requestViewsByTrafficSource(joinDate, todayDate);
 }
 
 function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  var todayDate = getTodaysDate();
   if (carouselInner.children.thumbnails) {
     requestChannelNumVideos();
+  }
+  if (carouselInner.children.platform) {
+    platformDashboardCalls(joinDate, todayDate);
   }
   if (carouselInner.children["top-ten"]) {
     displayTopTenThumbnails();
