@@ -116,6 +116,9 @@ function loadDashboards() {
   if (carouselInner.children.thumbnails) {
     requestChannelNumVideos();
   }
+  if (carouselInner.children["top-ten"]) {
+    displayTopTenThumbnails();
+}
 }
 
 function initializeUpdater() {
@@ -542,6 +545,7 @@ function displayTopTenThumbnails() {
   thumbnailContainer.innerHTML = output;
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
+  new AutoDivScroll("top-ten-thumbnail-wrapper", 25, 1, 2);
 }
 
 function sortCategoriesByViews() {
