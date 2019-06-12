@@ -119,6 +119,9 @@ function loadDashboards() {
   if (carouselInner.children["top-ten"]) {
     displayTopTenThumbnails();
   }
+  if (carouselInner.children["top-video-1"]) {
+    sortVideosByViews();
+  }
 }
 
 function initializeUpdater() {
