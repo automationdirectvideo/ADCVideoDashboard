@@ -662,18 +662,10 @@ function displayTopVideos() {
   let advertisedVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4", "Eyvv66xYwS8", "YfrmIjwDvXo"];
   let index = 0;
   let dashboardNum = 1;
-  while (dashboardNum <= 10) {
+  while (dashboardNum <= 5) {
     let videoId = allVideoStats[index]["videoId"];
     if (!advertisedVideos.includes(videoId)) {
-      if (dashboardNum <= 5) {
-        topVideoCalls(joinDate, todayDate, videoId, "top-video-" + dashboardNum);
-      }
-      // Display on top ten dashboard
-      var thumbnail = document.getElementById("top-ten-" + dashboardNum + "-thumbnail");
-      var viewsText = document.getElementById("top-ten-" + dashboardNum + "-views");
-      viewsText.innerText = numberWithCommas(allVideoStats[index]["views"]) + " views";
-      thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
-      requestVideoTitle(videoId, "top-ten-" + dashboardNum);
+      topVideoCalls(joinDate, todayDate, videoId, "top-video-" + dashboardNum);
       dashboardNum++;
     }
     index++;
