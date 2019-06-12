@@ -302,9 +302,11 @@ function handleVideoStatisticsOverall(response, settings) {
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
       let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
+      let categoryVideos = categoryTotals[categoryId]["videos"];
       categoryTotals[categoryId]["views"] = categoryViews + viewCount;
       categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
       categoryTotals[categoryId]["duration"] = categoryDuration + duration;
+      categoryTotals[categoryId]["videos"] = categoryVideos.push(videoId);
     }
     localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
     localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
@@ -769,9 +771,12 @@ function handleViewsByState(response) {
 function handleSpreadsheetData(response, message) {
   if (response) {
     console.log("Response received", "handleSpreadsheetData");
-    if (message == "Videos By Category") {
-      localStorage.setItem("videosByCategorySheet", JSON.stringify(response.result.values));
-      getVideosByCategoryData();
+    if (message == "Category List") {
+      localStorage.setItem("categoryListSheet", JSON.stringify(response.result.values));
+      recordCategoryListData();
+    } else if (message == "Video List") {
+      localStorage.setItem("videoListSheet", JSON.stringify(response.result.values));
+      recordVideoListData();
     } else if (message == "Video Stats") {
       localStorage.setItem("videoSheet", JSON.stringify(response.result.values));
       recordVideoData();
@@ -806,9 +811,9 @@ function handleFileModifiedTime(response, message) {
     var modifiedTime = new Date(response.result.modifiedTime);
     var lastUpdatedOn = new Date(localStorage.getItem("lastUpdatedOn"));
     console.log(message + " was last modified on " + modifiedTime.toString());
-    if (message == "Videos By Category") {
+    if (message == "Video List") {
       if (lastUpdatedOn - modifiedTime < 0) {
-        requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Videos By Category");
+        requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Category List");
       } else {
         requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats");
         requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats");

@@ -134,8 +134,7 @@ function updateStats() {
   if (updateCount >= 86400) {
     updateTopTenVideoSheet();
     realTimeStatsCalls();
-    requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Videos By Category");
-    // getVideosByCategoryData();
+    requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Video List");
   }
   if (enabledOrder.includes("real-time-stats")) {
     console.log("Update");
@@ -254,121 +253,105 @@ function updateTopTenVideoSheet() {
   }
 }
 
-function getVideosByCategoryData() {
-  let categoriesSheet = JSON.parse(localStorage.getItem("videosByCategorySheet"));
-  let productCategoryIds = {}; // categoryId : category name
-  let categoriesByVideoId = {}; // videoId : array of categoryIds its in
-  let categoryTotals = {}; // categoryId : {views, likes, numVideos}
+function recordCategoryListData() {
+  let categoryList = JSON.parse(localStorage.getItem("categoryListSheet"));
+  let categoryTotals = {}; // categoryId : {shortName, name, root, leaf, views, likes, duration, numVideos}
   let columns = {};
-  let uploads = [];
-  let columnHeaders = categoriesSheet[0];
-  for (var i = 0; i < columnHeaders.length; i++) {
+  let columnHeaders = categoryList[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
-  for (var i = 1; i < categoriesSheet.length; i++) {
-    let videoId = categoriesSheet[i][columns["YouTube ID"]];
-    let categoryId = categoriesSheet[i][columns["Sort"]];
+  for (let i = 1; i < categoryList.length; i++) {
+    let row = categoryList[i];
+    let categoryId = row[columns["Category ID"]];
+    let level1 = row[coumns["L1 Category"]];
+    let level2 = row[coumns["L2 Category"]];
+    let level3 = row[coumns["L3 Category"]];
+    let name = "";
+    let shortName = "";
+    let root = false;
+    let leaf = true;
 
-    let level1Id = categoryId.slice(0, -3) + "000";
-    let level2Id = categoryId.slice(0, -1) + "0";
-    let level3Id = categoryId;
-    if (categoriesSheet[i][columns["L3 Category"]] == "Productivity2000") {
-      level3Id = categoryId.slice(0, -1) + "2";
-    }
-    let levelIds = new Set([level1Id, level2Id, level3Id]);
-
-    // Initialize entries in productCategoryIds and 
-    if (productCategoryIds[categoryId] == undefined) {
-      let categoryName = "";
-      let level1Name = categoriesSheet[i][columns["L1 Category"]];
-      let level2Name = categoriesSheet[i][columns["L2 Category"]];
-      let level3Name = categoriesSheet[i][columns["L3 Category"]];
-      let levels = {
-        "level1": {
-          "id": level1Id,
-          "name": level1Name
-        }
-      };
-      if (level2Name == "") {
-        categoryName = level1Name;
-      } else if (level3Name == "") {
-        categoryName = level1Name + "->>" + level2Name;
-        levels["level2"] = {"id": level2Id, "name": categoryName};
-      } else {
-        categoryName = level1Name + "->>" + level2Name;
-        levels["level2"] = {"id": level2Id, "name": categoryName};
-        categoryName = level1Name + "->" + level2Name + "->>" + level3Name;
-        levels["level3"] = {"id": level3Id, "name": categoryName};
-      }
-      for (var level in levels) {
-        if (levels.hasOwnProperty(level)) {
-          let levelId = levels[level].id;
-          if (productCategoryIds[levelId] == undefined) {
-            productCategoryIds[levelId] = levels[level].name;
-            categoryTotals[levelId] = {
-              "duration": 0,
-              "likes": 0,
-              "views": 0,
-              "numVideos": 0
-            };
-          }
-        }
-      }
-    }
-
-    for (var levelId of levelIds) {
-      categoryTotals[levelId]["numVideos"] = parseInt(categoryTotals[levelId]["numVideos"]) + 1;
-    }
-
-    // Add categories for the videoId to categoriesByVideoId
-    if (categoriesByVideoId[videoId] == undefined) {
-      let categories = [];
-      for (var levelId of levelIds) {
-        categories.push(levelId);
-      }
-      categoriesByVideoId[videoId] = categories;
+    // Set up shortName and name
+    if (level2 == "") {
+      name = level1;
+      shortName = name;
+    } else if (level3 == "") {
+      name = level1 + "->" + level2;
+      shortName = level2;
     } else {
-      let categories = categoriesByVideoId[videoId];
-      for (var levelId of levelIds) {
-        if (!categories.includes(levelId)) {
-          categories.push(levelId);
-        }
-      }
-      categoriesByVideoId[videoId] = categories;
+      name = level1 + "->" + level2 + "->" + level3;
+      shortName = level3;
     }
-    // Add videoIds to uploads
-    if (!uploads.includes(videoId)) {
-      uploads.push(videoId);
+    // Set up root and leaf
+    if (categoryId.slice(-4) == "0000") {
+      root = true;
+    } else {
+      let parentCategoryLvl1 = categoryId.slice(0, -4) + "0000";
+      let parentCategoryLvl2 = categoryId.slice(0, -2) + "00";
+      categoryTotals[parentCategoryLvl1].leaf = false;
+      categoryTotals[parentCategoryLvl2].leaf = false;
     }
 
+    categoryTotals[categoryId] = {
+      "shortName": shortName,
+      "name": name,
+      "root": root,
+      "leaf": leaf,
+      "views": 0,
+      "likes": 0,
+      "duration": 0,
+      "videos": []
+    };
   }
-  localStorage.removeItem("videosByCategorySheet");
-  localStorage.setItem("productCategoryIds", JSON.stringify(productCategoryIds));
+  localStorage.removeItem("categoryListSheet");
   localStorage.setItem("categoriesByVideoId", JSON.stringify(categoriesByVideoId));
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
+
+  requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Video List");
+}
+
+function recordVideoListData() {
+  let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
+  let categoriesByVideoId = {}; // videoId : array of categoryIds its in
+  let uploads = [];
+  let columns = {};
+  let columnHeaders = videoList[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  for (let i = 1; i < videoList.length; i++) {
+    let row = videoList[i];
+    let videoId = row[columns["Video ID"]];
+    let categoryString = row[columns["Categories"]];
+    categoryString.replace(/\s/g, ''); // Removes whitespace
+    categoriesByVideoId[videoId] = categoryString.split(",");
+
+    uploads.push(videoId);
+  }
+  localStorage.removeItem("videoListSheet");
+  localStorage.setItem("categoriesByVideoId", JSON.stringify(categoriesByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
 
-  console.log("Product Category Ids: ", productCategoryIds);
-  console.log("Categories By Video Id: ", categoriesByVideoId);
-  console.log("Uploads: ", uploads);
-
   showUploadThumbnails();
-
   getAllVideoStats(uploads);
 }
 
 function calcCategoryStats() {
-  let productCategoryIds = JSON.parse(localStorage.getItem("productCategoryIds"));
   let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
   let categoryStats = [];
-  for (var categoryId in productCategoryIds) {
-    if (productCategoryIds.hasOwnProperty(categoryId)) {
-      let categoryName = productCategoryIds[categoryId];
+  for (var categoryId in categoryTotals) {
+    if (categoryTotals.hasOwnProperty(categoryId)) {
       let totals = categoryTotals[categoryId];
-      let views = parseInt(totals.views);
-      let likes = parseInt(totals.likes);
-      let duration = parseInt(totals.duration);
-      let numVideos = parseInt(totals.numVideos);
+      let shortName = totals["shortName"];
+      let name = totals["name"];
+      let root = totals["root"];
+      let leaf = totals["leaf"];
+      let views = parseInt(totals["views"]);
+      let likes = parseInt(totals["likes"]);
+      let duration = parseInt(totals["duration"]);
+      let videos = totals["videos"];
+      let numVideos = videos.length;
       let avgViews = views / numVideos;
       let avgLikes = likes / numVideos;
       let avgDuration = duration / numVideos;
@@ -378,9 +361,12 @@ function calcCategoryStats() {
         "avgViews": avgViews,
         "categoryId": categoryId,
         "duration": duration,
+        "leaf": leaf,
         "likes": likes,
-        "name": categoryName,
-        "numVideos": numVideos,
+        "name": name,
+        "root": root,
+        "shortName": shortName,
+        "videos": videos,
         "views": views
       });
     }
@@ -388,49 +374,60 @@ function calcCategoryStats() {
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
 
   console.log("Category Stats: ", categoryStats);
+  saveCategoryStatsToSheets();
+  saveVideoStatsToSheets();
+}
 
+// Record categoryStats to Google Sheets
+function saveCategoryStatsToSheets() {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  var values = [
+    ["Category ID", "Name", "Short Name", "Views", "Likes", "Duration (sec)",
+    "Average Video Views", "Average Video Likes", "Average Video Duration",
+    "Videos", "Root", "Leaf"]
+  ];
+  for (var i = 0; i < categoryStats.length; i++) {
+    var row = [];
+    row.push(categoryStats[i]["categoryId"]);
+    row.push(categoryStats[i]["name"]);
+    row.push(categoryStats[i]["shortName"]);
+    row.push(categoryStats[i]["views"]);
+    row.push(categoryStats[i]["likes"]);
+    row.push(categoryStats[i]["duration"]);
+    row.push(categoryStats[i]["avgViews"]);
+    row.push(categoryStats[i]["avgLikes"]);
+    row.push(categoryStats[i]["avgDuration"]);
+    row.push(categoryStats[i]["videos"].join(","));
+    row.push(categoryStats[i]["root"]);
+    row.push(categoryStats[i]["leaf"]);
+    values.push(row);
+  }
+  var body = {
+    "values": values
+  };
+  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats", body);
+}
 
-  // Record AllVideoStats to Google Sheets
-  var videoValues = [
-    ["Video ID", "Views", "Duration (sec)", "Likes", "Dislikes", "Comments"]
+// Record allVideoStats to Google Sheets
+function saveVideoStatsToSheets() {
+  var values = [
+    ["Video ID", "Views", "Likes", "Dislikes", "Duration (sec)", "Comments"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
     row.push(allVideoStats[i]["videoId"]);
     row.push(allVideoStats[i]["views"]);
-    row.push(allVideoStats[i]["duration"]);
     row.push(allVideoStats[i]["likes"]);
     row.push(allVideoStats[i]["dislikes"]);
+    row.push(allVideoStats[i]["duration"]);
     row.push(allVideoStats[i]["comments"]);
-    videoValues.push(row);
+    values.push(row);
   }
-  var videoBody= {
-    "values": videoValues
+  var body= {
+    "values": values
   };
-  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats", videoBody);
-
-  // Record categoryStats to Google Sheets
-  var categoryValues = [
-    ["Category ID", "Name", "Views", "Duration (sec)", "Likes", "Number of Videos", "Average Video Duration", "Average Video Likes", "Average Video Views"]
-  ];
-  for (var i = 0; i < categoryStats.length; i++) {
-    var row = [];
-    row.push(categoryStats[i]["categoryId"]);
-    row.push(categoryStats[i]["name"]);
-    row.push(categoryStats[i]["views"]);
-    row.push(categoryStats[i]["duration"]);
-    row.push(categoryStats[i]["likes"]);
-    row.push(categoryStats[i]["numVideos"]);
-    row.push(categoryStats[i]["avgDuration"]);
-    row.push(categoryStats[i]["avgLikes"]);
-    row.push(categoryStats[i]["avgViews"]);
-    categoryValues.push(row);
-  }
-  var categoryBody = {
-    "values": categoryValues
-  };
-  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats", categoryBody);
+  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats", body);
 }
 
 // Records category data from Google Sheet to localStorage.categoryStats
@@ -442,33 +439,37 @@ function recordCategoryData() {
     columns[columnHeaders[i]] = i;
   }
   let categoryStats = [];
-  let productCategoryIds = {};
   for (var i = 1; i < categoriesSheet.length; i++) {
     let categoryId = categoriesSheet[i][columns["Category ID"]]
-    let categoryName = categoriesSheet[i][columns["Name"]];
+    let name = categoriesSheet[i][columns["Name"]];
+    let shortName = categoriesSheet[i][columns["Short Name"]];
     let views = parseInt(categoriesSheet[i][columns["Views"]]);
-    let duration = parseInt(categoriesSheet[i][columns["Duration (sec)"]]);
     let likes = parseInt(categoriesSheet[i][columns["Likes"]]);
-    let numVideos = parseInt(categoriesSheet[i][columns["Number of Videos"]]);
+    let duration = parseInt(categoriesSheet[i][columns["Duration (sec)"]]);
     let avgViews = parseFloat(categoriesSheet[i][columns["Average Video Views"]]);
     let avgLikes = parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
     let avgDuration = parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
+    let videosString = categoriesSheet[i][columns["Videos"]];
+    let videos = videosString.split(",");
+    let root = ("true" === categoriesSheet[i][columns["Root"]]);
+    let leaf = ("true" === categoriesSheet[i][columns["Leaf"]]);
     categoryStats.push({
-      "avgDuration": avgDuration,
-      "avgLikes": avgLikes,
-      "avgViews": avgViews,
       "categoryId": categoryId,
-      "duration": duration,
+      "name": name,
+      "shortName": shortName,
+      "views": views,
       "likes": likes,
-      "name": categoryName,
-      "numVideos": numVideos,
-      "views": views
+      "duration": duration,
+      "avgViews": avgViews,
+      "avgLikes": avgLikes,
+      "avgDuration": avgDuration,
+      "videos": videos,
+      "root": root,
+      "leaf": leaf,
     });
-    productCategoryIds[categoryId] = categoryName;
   }
   localStorage.removeItem("categoriesSheet");
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  localStorage.setItem("productCategoryIds", JSON.stringify(productCategoryIds));
 }
 
 // Records video data from Google Sheet to localStorage.allVideoStats & .uploads
@@ -484,21 +485,17 @@ function recordVideoData() {
   for (var i = 1; i < videoSheet.length; i++) {
     let videoId = videoSheet[i][columns["Video ID"]];
     let viewCount = parseInt(videoSheet[i][columns["Views"]]);
-    let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
     let likeCount = parseInt(videoSheet[i][columns["Likes"]]);
     let dislikeCount = parseInt(videoSheet[i][columns["Dislikes"]]);
+    let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
-    let likesPerView = likeCount / viewCount;
-    let commentsPerView = commentCount / viewCount;
     let row = {
       "videoId": videoId,
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
       "duration": duration,
-      "comments": commentCount,
-      "likesPerView": likesPerView,
-      "commentsPerView": commentsPerView
+      "comments": commentCount
     };
     allVideoStats.push(row);
     uploads.push(videoId);
@@ -628,26 +625,6 @@ function sortVideosByLikes() {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
   console.log("Videos Sorted by Likes: ", allVideoStats);
-  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
-  displayTopVideos();
-}
-
-function sortVideosByLikesPerView() {
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  allVideoStats.sort(function(a, b) {
-    return parseFloat(b["likesPerView"]) - parseFloat(a["likesPerView"]);
-  });
-  console.log("Videos Sorted by LikesPerView: ", allVideoStats);
-  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
-  displayTopVideos();
-}
-
-function sortVideosByCommentsPerView() {
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  allVideoStats.sort(function(a, b) {
-    return parseFloat(b["commentsPerView"]) - parseFloat(a["commentsPerView"]);
-  });
-  console.log("Videos Sorted by CommentsPerView: ", allVideoStats);
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
   displayTopVideos();
 }
