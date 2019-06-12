@@ -111,6 +111,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var graphWidth = 0.51;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
+    var automargin = "xy";
 
     var data = [
       {
@@ -154,7 +155,7 @@ function handleVideoDailyViews(response, dashboardId) {
 
     Plotly.newPlot(graphId, data, layout, config);
 
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
 
@@ -190,6 +191,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     var graphWidth = 0.51;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
+    var automargin = "y";
 
     var data = [
       {
@@ -209,13 +211,14 @@ function handleVideoSearchTerms(response, dashboardId) {
       height: height,
       width: width,
       font: {size: 16},
+      autosize: false,
       margin: {
         b: 0,
+        r: 0,
         t: 0,
       },
       xaxis: {
-        visible: false,
-        automargin: true
+        visible: false
       },
       yaxis: {
         showline: true,
@@ -226,13 +229,13 @@ function handleVideoSearchTerms(response, dashboardId) {
     };
     
     var config = {
-      staticPlot: true, 
+      staticPlot: true,
       responsive: true
     };
     
     Plotly.newPlot(graphId, data, layout, config);
 
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
 
@@ -521,6 +524,7 @@ function handleChannelSearchTerms(response) {
     var graphWidth = 0.33;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
+    var automargin = "y";
 
     var data = [
       {
@@ -542,6 +546,7 @@ function handleChannelSearchTerms(response) {
       font: {size: 24},
       margin: {
         b: 10,
+        r: 0,
         t: 10,
       },
       xaxis: {
@@ -563,7 +568,7 @@ function handleChannelSearchTerms(response) {
     
     Plotly.newPlot(graphId, data, layout, config);
 
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
 

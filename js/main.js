@@ -677,7 +677,7 @@ function displayTopVideos() {
   }
 }
 
-function recordGraphSize(graphId, graphHeight, graphWidth) {
+function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
   if (!localStorage.getItem("graphSizes")) {
     localStorage.setItem("graphSizes", JSON.stringify({}));
   }
@@ -686,19 +686,57 @@ function recordGraphSize(graphId, graphHeight, graphWidth) {
     height: graphHeight,
     width: graphWidth
   };
+  if (automargin) {
+    graphSizes[graphId]["automargin"] = automargin;
+  }
   localStorage.setItem("graphSizes", JSON.stringify(graphSizes));
+}
+
+function resizeGraphs() {
+  this.console.log("Resize");
+  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
+  let viewportHeight = document.documentElement.clientHeight;
+  for (var graphId in graphSizes) {
+    let height = graphSizes[graphId].height * viewportHeight;
+    let width = graphSizes[graphId].width * viewportHeight;
+    let update = {
+      height: height,
+      width: width
+    };
+    Plotly.relayout(graphId, update);
+  }
+}
+
+function fixGraphMargins() {
+  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
+  for (var graphId in graphSizes) {
+    let automargin = graphSizes[graphId]["automargin"];
+    if (automargin) {
+      let update = {};
+      if (automargin.includes("x")) {
+        update["xaxis"] = {automargin: true};
+      }
+      if (automargin.includes("y")) {
+        update["yaxis"] = {automargin: true};
+      }
+      Plotly.relayout(graphId, update);
+    }
+  }
 }
 
 function carouselNext() {
   $(".carousel").carousel("next");
+  fixGraphMargins()
 }
 
 function carouselPrev() {
   $(".carousel").carousel("prev");
+  fixGraphMargins()
 }
 
 function goToCarouselItem(index) {
   $(".carousel").carousel(index);
+  fixGraphMargins()
 }
 
 // Get current settings
@@ -797,17 +835,4 @@ function getTopTenVideosByMonth() {
   }
 }
 
-window.addEventListener('resize', function() {
-  this.console.log("Resize");
-  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
-  let viewportHeight = document.documentElement.clientHeight;
-  for (var graphId in graphSizes) {
-    let height = graphSizes[graphId].height * viewportHeight;
-    let width = graphSizes[graphId].width * viewportHeight;
-    let update = {
-      height: height,
-      width: width
-    };
-    Plotly.relayout(graphId, update);
-  }
-}, true);
+window.addEventListener('resize', resizeGraphs, true);
