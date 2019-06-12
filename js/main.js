@@ -819,4 +819,21 @@ function getTopTenVideosByMonth() {
   }
 }
 
+function recordVideoIds() {
+  var videoValues = [
+    ["Video ID", "Categories"]
+  ];
+  var categoriesByVideoId = JSON.parse(localStorage.getItem("categoriesByVideoId"));
+  for (var key in categoriesByVideoId) {
+    var row = [];
+    row.push(key);
+    row.push(categoriesByVideoId[key]);
+    videoValues.push(row);
+  }
+  var videoBody= {
+    "values": videoValues
+  };
+  requestUpdateSheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Video List", videoBody);
+}
+
 window.addEventListener('resize', resizeGraphs, true);
