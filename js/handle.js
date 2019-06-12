@@ -111,7 +111,23 @@ function handleVideoDailyViews(response, dashboardId) {
     var graphWidth = 0.51;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
-    var automargin = "xy";
+    var xaxis = {
+      automargin: true,
+      tickangle: -90,
+      tickformat: '%-m/%d',
+      title: 'Day',
+      type: 'date'
+    };
+    var yaxis = {
+      showline: true,
+      showticklabels: true,
+      automargin: true,
+      title: 'Views'
+    };
+    var automargin = {
+      xaxis: xaxis,
+      yaxis: yaxis
+    };
 
     var data = [
       {
@@ -133,19 +149,8 @@ function handleVideoDailyViews(response, dashboardId) {
         b: 0,
         t: 0,
       },
-      xaxis: {
-        automargin: true,
-        tickangle: -90,
-        tickformat: '%-m/%d',
-        title: 'Day',
-        type: 'date'
-      },
-      yaxis: {
-        showline: true,
-        showticklabels: true,
-        automargin: true,
-        title: 'Views'
-      }
+      xaxis: xaxis,
+      yaxis: yaxis
     };
 
     var config = {
@@ -191,7 +196,13 @@ function handleVideoSearchTerms(response, dashboardId) {
     var graphWidth = 0.51;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
-    var automargin = "y";
+    var yaxis = {
+      showline: true,
+      showticklabels: true,
+      tickmode: 'linear',
+      automargin: true
+    };
+    var automargin = {yaxis: yaxis};
 
     var data = [
       {
@@ -220,12 +231,7 @@ function handleVideoSearchTerms(response, dashboardId) {
       xaxis: {
         visible: false
       },
-      yaxis: {
-        showline: true,
-        showticklabels: true,
-        tickmode: 'linear',
-        automargin: true
-      }
+      yaxis: yaxis
     };
     
     var config = {
@@ -524,7 +530,13 @@ function handleChannelSearchTerms(response) {
     var graphWidth = 0.33;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
-    var automargin = "y";
+    var yaxis = {
+      showline: true,
+      showticklabels: true,
+      tickmode: 'linear',
+      automargin: true
+    };
+    var automargin = {yaxis: yaxis};
 
     var data = [
       {
@@ -553,12 +565,7 @@ function handleChannelSearchTerms(response) {
         visible: false,
         automargin: true
       },
-      yaxis: {
-        showline: true,
-        showticklabels: true,
-        tickmode: 'linear',
-        automargin: true
-      }
+      yaxis: yaxis
     };
     
     var config = {

@@ -707,14 +707,7 @@ function fixGraphMargins() {
   for (var graphId in graphSizes) {
     let automargin = graphSizes[graphId]["automargin"];
     if (automargin) {
-      let update = {};
-      if (automargin.includes("x")) {
-        update["xaxis"] = {automargin: true};
-      }
-      if (automargin.includes("y")) {
-        update["yaxis"] = {automargin: true};
-      }
-      Plotly.relayout(graphId, update);
+      Plotly.relayout(graphId, automargin);
     }
   }
 }
