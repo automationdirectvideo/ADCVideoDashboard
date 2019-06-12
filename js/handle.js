@@ -522,7 +522,8 @@ function handleChannelSearchTerms(response) {
     let numTerms = Math.min(9, searchTerms.length+ - 1);
     for (var i = numTerms; i >= 0; i--) {
       xValues.push(searchTerms[i][1]);
-      yValues.push(searchTerms[i][0].replace(" ", "<br>"));
+      yValues.push(searchTerms[i][0].replace("proximity ", "proximity<br>")
+          .replace("plc ", "plc<br>"));
     }
 
     var graphId = "channel-search-terms";
