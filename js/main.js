@@ -232,6 +232,7 @@ function loadRealTimeStats() {
 }
 
 function updateTopTenVideoSheet() {
+  let now = new Date();
   let firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   if (now - firstDayOfMonth > 432000000) {
     // Update for current month
