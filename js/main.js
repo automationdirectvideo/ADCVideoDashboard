@@ -827,7 +827,7 @@ function recordVideoIds() {
   for (var key in categoriesByVideoId) {
     var row = [];
     row.push(key);
-    row.push(categoriesByVideoId[key]);
+    row.push(categoriesByVideoId[key].toString());
     videoValues.push(row);
   }
   var videoBody= {
