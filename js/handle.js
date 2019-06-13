@@ -505,9 +505,8 @@ function handleMostWatchedVideos(response, month) {
     console.log("Response received", "handleMostWatchedVideos");
     var videos = response.result.rows;
     if (month != undefined) {
-      var nonOrganicVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4",
-          "Eyvv66xYwS8", "YfrmIjwDvXo", "k40iosW6WWA", "dE2Svgsrex0",
-          "5Ci3PlLr8Oo"];
+      var nonOrganicVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "YfrmIjwDvXo",
+          "k40iosW6WWA", "nac3gBfz1W4", "dE2Svgsrex0", "5Ci3PlLr8Oo"];
       var values = [[month]];
       var index = 0;
       var numVideos = 1;
