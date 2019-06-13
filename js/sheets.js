@@ -13,9 +13,9 @@ function recordCategoryListData() {
   for (let i = 1; i < categoryList.length; i++) {
     let row = categoryList[i];
     let categoryId = row[columns["Category ID"]];
-    let level1 = row[coumns["L1 Category"]];
-    let level2 = row[coumns["L2 Category"]];
-    let level3 = row[coumns["L3 Category"]];
+    let level1 = row[columns["L1 Category"]];
+    let level2 = row[columns["L2 Category"]];
+    let level3 = row[columns["L3 Category"]];
     let name = "";
     let shortName = "";
     let root = false;
