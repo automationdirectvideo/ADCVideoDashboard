@@ -22,10 +22,10 @@ function recordCategoryListData() {
     let leaf = true;
 
     // Set up shortName and name
-    if (level2 == "") {
+    if (level2 == undefined) {
       name = level1;
       shortName = name;
-    } else if (level3 == "") {
+    } else if (level3 == undefined) {
       name = level1 + "->" + level2;
       shortName = level2;
     } else {

@@ -48,10 +48,11 @@ function handleVideoStatisticsOverall(response, settings) {
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
       let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
       let categoryVideos = categoryTotals[categoryId]["videos"];
+      categoryVideos.push(videoId);
       categoryTotals[categoryId]["views"] = categoryViews + viewCount;
       categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
       categoryTotals[categoryId]["duration"] = categoryDuration + duration;
-      categoryTotals[categoryId]["videos"] = categoryVideos.push(videoId);
+      categoryTotals[categoryId]["videos"] = categoryVideos;
     }
     localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
     localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
