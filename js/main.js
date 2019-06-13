@@ -197,7 +197,6 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
     }
     i++;
   }
-  console.log("Top Videos:", topVideos);
   return topVideos;
 }
 
