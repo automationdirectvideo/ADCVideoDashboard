@@ -203,13 +203,7 @@ footer {
 .demographics-table th, .demographics-table thead th, .demographics-table td {
   border: none;
   font-size: 1rem;
-  padding: 0.3rem;
-  vertical-align: middle;
-}
-
-.demographics-table th, .demographics-table td {
-  border: none;
-  padding: 0.3rem;
+  padding: 0.2rem;
   vertical-align: middle;
 }
 
