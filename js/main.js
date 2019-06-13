@@ -11,7 +11,8 @@ function loadDashboards() {
     displayTopTenThumbnails();
   }
   if (carouselInner.children["top-video-1"]) {
-    sortVideosByViews();
+    // sortVideosByViews();
+    displayTopVideosByCategory();
   }
 }
 
@@ -166,6 +167,53 @@ function calcCategoryStats() {
   console.log("Category Stats: ", categoryStats);
   saveCategoryStatsToSheets();
   saveVideoStatsToSheets();
+}
+
+function getTopVideoByCategory(categoryId, type, numVideos) {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  allVideoStats.sort(function(a, b) {
+    return parseInt(b[type]) - parseInt(a[type]);
+  });
+  if (numVideos == undefined || numVideos <= 0) {
+    numVideos = 1;
+  }
+  let topVideos = [];
+  let i = 0;
+  let categoryFound = false;
+  while (i < categoryStats.length && !categoryFound) {
+    if (categoryStats[i]["categoryId"] == categoryId) {
+      categoryFound = true;
+      let videos = categoryStats[i]["videos"];
+      let j = 0;
+      let numFound = 0;
+      while (j < allVideoStats.length && numFound < numVideos) {
+        if (videos.includes(allVideoStats[j]["videoId"])) {
+          topVideos.push(allVideoStats[j]["videoId"]);
+          numFound++;
+        }
+        j++;
+      }
+    }
+    i++;
+  }
+  console.log("Top Videos:", topVideos);
+  return topVideos;
+}
+
+function displayTopVideosByCategory() {
+  let plcVideo = getTopVideoByCategory("20000", "views")[0];
+  let drivesVideo = getTopVideoByCategory("40000", "views")[0];
+  let hmiVideo = getTopVideoByCategory("50000", "views")[0];
+  let motionControlVideo = getTopVideoByCategory("80000", "views")[0];
+  let sensorsVideo = getTopVideoByCategory("100000", "views")[0];
+
+  let todayDate = getTodaysDate();
+  topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
+  topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
+  topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
+  topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
+  topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
 }
 
 // Displays thumbnails with arrows on Top Ten Dashboard
