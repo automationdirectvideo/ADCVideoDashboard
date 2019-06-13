@@ -442,7 +442,7 @@ window.addEventListener('resize', function () {
   if (topTenDashboard.classList.contains("active")) {
     let thumbnailContainer = document.getElementById("top-ten-thumbnail-container");
     thumbnailContainer.style.display = "none";
-    this.window.setInterval(function () {
+    this.window.setTimeout(function () {
       thumbnailContainer.style.display = "flex";
     }, 500);
   }
