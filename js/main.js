@@ -436,4 +436,14 @@ function getTopTenVideosByMonth() {
   }
 }
 
-window.addEventListener('resize', resizeGraphs, true);
+window.addEventListener('resize', function () {
+  resizeGraphs();
+  let topTenDashboard = document.getElementById("top-ten");
+  if (topTenDashboard.classList.contains("active")) {
+    let thumbnailContainer = document.getElementById("top-ten-thumbnail-container");
+    thumbnailContainer.style.display = "none";
+    this.window.setInterval(function () {
+      thumbnailContainer.style.display = "flex";
+    }, 500);
+  }
+}, true);

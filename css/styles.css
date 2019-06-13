@@ -107,11 +107,11 @@ footer {
 }
 
 .arrow-red, .arrow-green {
-  font-size: 37px;
+  font-size: 2.1rem;
   -webkit-text-stroke-width: thick;
   position: absolute;
-  bottom: 5px;
-  left: 8px;
+  bottom: 0.35rem;
+  left: 0.4444rem;
   top: auto;
 }
 
@@ -120,10 +120,10 @@ footer {
 }
 
 .arrow-text-white, .arrow-text-black {
-  font-size: 20px;
+  font-size: 1.1rem;
   position: absolute;
-  bottom: 9px;
-  left: 16px;
+  bottom: 0.5rem;
+  left: 0.9rem;
   top: auto;
 }
 
@@ -153,9 +153,9 @@ footer {
 }
 
 .column-thumbnail {
-  -ms-flex: 0 0 9.5%;
-  flex: 0 0 9.5%;
-  max-height: 9.5%;
+  -ms-flex: 0 0 9.6%;
+  flex: 0 0 9.6%;
+  max-height: 9.6%;
 }
 
 .top-ten-thumbnail-holder {
