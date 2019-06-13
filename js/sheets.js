@@ -17,20 +17,17 @@ function recordCategoryListData() {
     let level2 = row[columns["L2 Category"]];
     let level3 = row[columns["L3 Category"]];
     let name = "";
-    let shortName = "";
+    let shortName = row[columns["Short Name"]];
     let root = false;
     let leaf = true;
 
     // Set up shortName and name
     if (level2 == undefined) {
       name = level1;
-      shortName = name;
     } else if (level3 == undefined) {
       name = level1 + "->" + level2;
-      shortName = level2;
     } else {
       name = level1 + "->" + level2 + "->" + level3;
-      shortName = level3;
     }
     // Set up root and leaf
     if (categoryId.slice(-4) == "0000") {
@@ -74,12 +71,15 @@ function recordVideoListData() {
   }
   for (let i = 1; i < videoList.length; i++) {
     let row = videoList[i];
-    let videoId = row[columns["Video ID"]];
-    let categoryString = row[columns["Categories"]];
-    categoryString.replace(/\s/g, ''); // Removes whitespace
-    categoriesByVideoId[videoId] = categoryString.split(",");
+    let organic = ("TRUE" === row[columns["Organic"]]);
+    if (organic) {
+      let videoId = row[columns["Video ID"]];
+      let categoryString = row[columns["Categories"]];
+      categoryString.replace(/\s/g, ''); // Removes whitespace
+      categoriesByVideoId[videoId] = categoryString.split(",");
 
-    uploads.push(videoId);
+      uploads.push(videoId);
+    }
   }
   localStorage.removeItem("videoListSheet");
   localStorage.setItem("categoriesByVideoId", JSON.stringify(categoriesByVideoId));
@@ -110,8 +110,8 @@ function recordCategoryData() {
     let avgDuration = parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
     let videosString = categoriesSheet[i][columns["Videos"]];
     let videos = videosString.split(",");
-    let root = ("true" === categoriesSheet[i][columns["Root"]]);
-    let leaf = ("true" === categoriesSheet[i][columns["Leaf"]]);
+    let root = ("TRUE" === categoriesSheet[i][columns["Root"]]);
+    let leaf = ("TRUE" === categoriesSheet[i][columns["Leaf"]]);
     categoryStats.push({
       "categoryId": categoryId,
       "name": name,
