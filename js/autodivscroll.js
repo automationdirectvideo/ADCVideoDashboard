@@ -114,6 +114,7 @@ function AutoDivScroll( elemId, speed, step, plane, options )
  this.xInc = 0; 
  this.yInc = 0; 
  this.canScroll = true;
+ this.end = false;
   
  this.init = function()
  { 
@@ -151,9 +152,27 @@ function AutoDivScroll( elemId, speed, step, plane, options )
     if( this.plane & 1 )
     {
      if( this.yDir == 1 && this.elem.scrollTop < this.y + this.yInc || this.yDir == -1 && this.elem.scrollTop > this.y + this.yInc) {
-        this.endStop ? this.plane &= 2 : this.elem.scrollTop = 0; 
+       if (this.endStop) {
+        this.plane &= 2
+       } else {
+        this.yDir = 1;
+        if (!this.elem.getAttribute("scroll") && this.elem.scrollHeight != 0) {
+          window.setTimeout(function () {
+            let elem = document.getElementById(elemId);
+            elem.setAttribute("scroll", "true");
+          }, 3000);
+        }
+        if (this.elem.scrollTop == this.y && this.elem.scrollHeight != 0 && this.elem.getAttribute("scroll") == "true") {
+          this.elem.setAttribute("scroll", "false");
+          window.setTimeout(function () {
+            let elem = document.getElementById(elemId);
+            elem.scrollTop = 0;
+            elem.setAttribute("scroll", "true");
+          }, 1500);
+        }
+       }
      }
-     
+
      this.y = this.elem.scrollTop;
      
      this.elem.scrollTop += ( this.yInc = this.step * this.yDir );    
@@ -161,8 +180,27 @@ function AutoDivScroll( elemId, speed, step, plane, options )
 
     if( this.plane & 2 )
     {
-     if( this.xDir == 1 && this.elem.scrollLeft < this.x + this.xInc || this.xDir == -1 && this.elem.scrollLeft > this.x + this.xInc)
-      this.endStop ? this.plane &= 1 : this.xDir = -this.xDir;
+     if( this.xDir == 1 && this.elem.scrollLeft < this.x + this.xInc || this.xDir == -1 && this.elem.scrollLeft > this.x + this.xInc) {
+      if (this.endStop) {
+        this.plane &= 1
+       } else {
+        this.xDir = 1;
+        if (!this.elem.getAttribute("scroll") && this.elem.scrollWidth != 0) {
+          window.setTimeout(function () {
+            let elem = document.getElementById(elemId);
+            elem.setAttribute("scroll", "true");
+          }, 3000);
+        }
+        if (this.elem.scrollLeft == this.x && this.elem.scrollWidth != 0 && this.elem.getAttribute("scroll") == "true") {
+          this.elem.setAttribute("scroll", "false");
+          window.setTimeout(function () {
+            let elem = document.getElementById(elemId);
+            elem.scrollLeft = 0;
+            elem.setAttribute("scroll", "true");
+          }, 1500);
+        }
+       }
+     };
      
      this.x = this.elem.scrollLeft;
      
