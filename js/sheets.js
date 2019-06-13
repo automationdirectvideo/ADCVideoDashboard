@@ -33,11 +33,16 @@ function recordCategoryListData() {
       shortName = level3;
     }
     // Set up root and leaf
+    console.log("Current Category: " + categoryId);
     if (categoryId.slice(-4) == "0000") {
       root = true;
     } else {
       let parentCategoryLvl1 = categoryId.slice(0, -4) + "0000";
       let parentCategoryLvl2 = categoryId.slice(0, -2) + "00";
+      console.log("Parent Category Lvl1: " + parentCategoryLvl1);
+      console.log("Parent Category Lvl2: " + parentCategoryLvl2);
+      console.log("Parent Category Lvl1 Totals: ", categoryTotals[parentCategoryLvl1]);
+      console.log("Parent Category Lvl2 Totals: ", categoryTotals[parentCategoryLvl2]);
       categoryTotals[parentCategoryLvl1].leaf = false;
       categoryTotals[parentCategoryLvl2].leaf = false;
     }
