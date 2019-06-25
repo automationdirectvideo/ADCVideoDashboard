@@ -21,7 +21,6 @@ body.dark .grid-item {
   background-color: #222;
 }
 
-
 body.dark .text-muted {
   color: #999;
 }
@@ -40,4 +39,8 @@ body.dark ::-webkit-scrollbar-thumb {
 
 body.dark ::-webkit-scrollbar-thumb:hover {
   background: #ddd; 
+}
+
+body.dark table .fas {
+  color: inherit;
 }

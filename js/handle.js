@@ -148,8 +148,8 @@ function handleChannelDemographics(response) {
       index++;
     }
     if (theme == "dark") {
-      layout["plot_bgcolor"] = "#222";
-      layout["paper_bgcolor"] = "#222";
+      layout["plot_bgcolor"] = "#343a40";
+      layout["paper_bgcolor"] = "#343a40";
     }
 
     Plotly.newPlot('demographics-graph', data, layout, config);
@@ -458,8 +458,7 @@ function handleViewsByState(response) {
     if (theme == "dark") {
       layout["plot_bgcolor"] = "#222";
       layout["paper_bgcolor"] = "#222";
-      layout["font"]["color"] = "#fff";
-      data["colorbar"] = {
+      data[0]["colorbar"] = {
         tickfont: {
           color: "#fff"
         }
