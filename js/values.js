@@ -53,7 +53,7 @@ const defaultSettings =
       "theme": "light"
     }
   ],
-  "footer": "show",
+  "footer": "hide",
   "numEnabled": 10
 };
 
