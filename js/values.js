@@ -28,33 +28,38 @@ const defaultSettings =
       "theme": "light"
     },
     {
-      "name": "top-video-1",
+      "name": "feedback",
       "index": 5,
       "theme": "light"
     },
     {
-      "name": "top-video-2",
+      "name": "top-video-1",
       "index": 6,
       "theme": "light"
     },
     {
-      "name": "top-video-3",
+      "name": "top-video-2",
       "index": 7,
       "theme": "light"
     },
     {
-      "name": "top-video-4",
+      "name": "top-video-3",
       "index": 8,
       "theme": "light"
     },
     {
-      "name": "top-video-5",
+      "name": "top-video-4",
       "index": 9,
+      "theme": "light"
+    },
+    {
+      "name": "top-video-5",
+      "index": 10,
       "theme": "light"
     }
   ],
   "footer": "hide",
-  "numEnabled": 10
+  "numEnabled": 11
 };
 
 // Must be in the form YYYY-MM-DD

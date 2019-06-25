@@ -10,6 +10,10 @@ function loadDashboards() {
   if (carouselInner.children["top-ten"]) {
     displayTopTenThumbnails();
   }
+  if (carouselInner.children["feedback"]) {
+    requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
+        "User Feedback List");
+  }
   if (carouselInner.children["top-video-1"]) {
     // sortVideosByViews();
     displayTopVideosByCategory();
@@ -277,6 +281,25 @@ function displayTopVideos() {
     }
     index++;
   }
+}
+
+function displayUserFeedback() {
+  let feedbackSheet = JSON.parse(localStorage.getItem("feedbackSheet"));
+  let output = ``;
+  for (var i = 1; i < feedbackSheet.length; i++) {
+    var videoId = feedbackSheet[i][0];
+    var feedbackText = feedbackSheet[i][1];
+    var thumbnail = `<div class="col-4"><img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}"></div>`;
+    var feedback = `<div class="col-8"><h1 class="overflow-auto">${feedbackText}</h1></div>`;
+    if (i % 2 == 0) {
+      output += feedback + thumbnail;
+    } else {
+      output += thumbnail + feedback;
+    }
+  }
+  let feedbackContainer = document.getElementById("feedback-container");
+  feedbackContainer.innerHTML = output;
+  new AutoDivScroll("feedback-wrapper", 25, 1, 1);
 }
 
 function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {

@@ -930,6 +930,9 @@ function handleSpreadsheetData(response, message) {
     } else if (message == "Top Ten Videos") {
       localStorage.setItem("topTenSheet", JSON.stringify(response.result.values));
       displayTopTenThumbnails();
+    } else if (message == "User Feedback List") {
+      localStorage.setItem("feedbackSheet", JSON.stringify(response.result.values));
+      displayUserFeedback();
     }
     let date = new Date();
     date.setHours(6, 0, 0, 0);
