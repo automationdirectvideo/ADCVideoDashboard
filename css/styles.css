@@ -245,6 +245,21 @@ footer {
   height: 1rem;
 }
 
+.stat-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.stat-caption {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.odometer, .stat-retention {
+  font-size: 4.5rem;
+  margin: 0;
+}
+
 /* Settings page */
 .drag-handle {
   cursor: grab;

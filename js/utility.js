@@ -71,3 +71,9 @@ function secondsToDuration(seconds) {
   let durationSeconds = ('00' + seconds % 60).substr(-2);
   return minutes + ":" + durationSeconds;
 }
+
+function secondsToDurationMinSec(seconds) {
+  let minutes = Math.floor(seconds / 60);
+  let durationSeconds = ("00" + seconds % 60).substr(-2);
+  return minutes + " min " + durationSeconds + " sec";
+}

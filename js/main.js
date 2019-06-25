@@ -83,21 +83,15 @@ function loadRealTimeStats() {
       "views": ["stat-views-cumulative", "stat-views-month"],
       "estimatedMinutesWatched": ["stat-minutes-cumulative", "stat-minutes-month"],
       "netSubscribersGained": ["stat-subs-cumulative", "stat-subs-month"],
-      "comments": ["stat-comments-cumulative", "stat-comments-month"],
-      "likes": ["stat-likes-cumulative", "stat-likes-month"],
       "cumulative": {
         "views": "stat-views-cumulative",
         "estimatedMinutesWatched": "stat-minutes-cumulative",
-        "netSubscribersGained": "stat-subs-cumulative",
-        "comments": "stat-comments-cumulative",
-        "likes": "stat-likes-cumulative"
+        "netSubscribersGained": "stat-subs-cumulative"
       },
       "month": {
         "views": "stat-views-month",
         "estimatedMinutesWatched": "stat-minutes-month",
-        "netSubscribersGained": "stat-subs-month",
-        "comments": "stat-comments-month",
-        "likes": "stat-likes-month"
+        "netSubscribersGained": "stat-subs-month"
       }
     };
     localStorage.setItem("odometerCategories", JSON.stringify(odometerCategories));
@@ -117,7 +111,7 @@ function loadRealTimeStats() {
       }
     });
     var avgDurationCumulative =
-        secondsToDuration(stats.cumulative.averageViewDuration);
+        secondsToDurationMinSec(stats.cumulative.averageViewDuration);
     avgDurationOdometer.innerHTML = avgDurationCumulative;
     var avgPercentageCumulative =
         decimalToPercent(stats.cumulative.averageViewDuration / 
