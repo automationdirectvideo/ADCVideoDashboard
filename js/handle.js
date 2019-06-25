@@ -105,6 +105,8 @@ function handleChannelDemographics(response) {
         cell.style.opacity = ((parseFloat(percentage) / maleMax) + 1.5) / 2.5;
       }
     }
+    maleTotal = Math.round(maleTotal * 10) / 10;
+    femaleTotal = Math.round(femaleTotal * 10) / 10;
     document.getElementById("male-title").innerHTML = `<i class="fas fa-male" style="font-size:3rem"></i><br><span style="font-size:2rem">${maleTotal}</span>%`;
     document.getElementById("female-title").innerHTML = `<i class="fas fa-female" style="font-size:3rem"></i><br><span style="font-size:2rem">${femaleTotal}</span>%`;
 
