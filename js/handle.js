@@ -138,6 +138,20 @@ function handleChannelDemographics(response) {
       staticPlot: true
     };
 
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == "platform") {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+    }
+
     Plotly.newPlot('demographics-graph', data, layout, config);
   }
 }
@@ -203,6 +217,24 @@ function handleChannelSearchTerms(response) {
       staticPlot: true, 
       responsive: true
     };
+
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == "platform") {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+      yaxis["linecolor"] = "#fff";
+      layout["yaxis"] = yaxis;
+      automargin = {yaxis: yaxis};
+    }
     
     Plotly.newPlot(graphId, data, layout, config);
 
@@ -261,6 +293,21 @@ function handleMinutesSubscribedStatus(response) {
       staticPlot: true,
       responsive: true
     };
+
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == "platform") {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+    }
     
     Plotly.newPlot(graphId, data, layout, config);
     
@@ -323,6 +370,21 @@ function handleViewsByDeviceType(response) {
       staticPlot: true,
       responsive: true
     };
+
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == "platform") {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+    }
     
     Plotly.newPlot(graphId, data, layout, config);
 
@@ -383,6 +445,27 @@ function handleViewsByState(response) {
       staticPlot: true,
       responsive: true
     };
+
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == "platform") {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+      data["colorbar"] = {
+        tickfont: {
+          color: "#fff"
+        }
+      };
+      layout["geo"]["bgcolor"] = "#222";
+    }
 
     Plotly.plot(graphId, data, layout, config);
 
@@ -455,6 +538,21 @@ function handleViewsByTrafficSource(response) {
       staticPlot: true,
       responsive: true
     };
+
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == "platform") {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+    }
     
     Plotly.newPlot(graphId, data, layout, config);
 
@@ -639,6 +737,29 @@ function handleVideoDailyViews(response, dashboardId) {
       responsive: true
     };
 
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == dashboardId) {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+      xaxis["linecolor"] = "#fff";
+      yaxis["linecolor"] = "#fff";
+      layout["xaxis"] = xaxis;
+      layout["yaxis"] = yaxis;
+      automargin = {
+        xaxis: xaxis,
+        yaxis: yaxis
+      };
+    }
+    
     Plotly.newPlot(graphId, data, layout, config);
 
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
@@ -705,6 +826,24 @@ function handleVideoSearchTerms(response, dashboardId) {
       staticPlot: true,
       responsive: true
     };
+
+    var currentSettings = JSON.parse(localStorage.getItem("settings"));
+    var theme = "";
+    var index = 0;
+    while (index < currentSettings.dashboards.length && theme == "") {
+      if (currentSettings.dashboards[index].name == dashboardId) {
+        theme = currentSettings.dashboards[index].theme;
+      }
+      index++;
+    }
+    if (theme == "dark") {
+      layout["plot_bgcolor"] = "#222";
+      layout["paper_bgcolor"] = "#222";
+      layout["font"]["color"] = "#fff";
+      yaxis["linecolor"] = "#fff";
+      layout["yaxis"] = yaxis;
+      automargin = {yaxis: yaxis};
+    }
     
     Plotly.newPlot(graphId, data, layout, config);
 
