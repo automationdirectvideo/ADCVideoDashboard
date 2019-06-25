@@ -327,17 +327,14 @@ function fixGraphMargins() {
 
 function carouselNext() {
   $(".carousel").carousel("next");
-  fixGraphMargins();
 }
 
 function carouselPrev() {
   $(".carousel").carousel("prev");
-  fixGraphMargins();
 }
 
 function goToCarouselItem(index) {
   $(".carousel").carousel(index);
-  fixGraphMargins();
 }
 
 // Get current settings
@@ -405,6 +402,7 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
   window.setTimeout(function(){updateTheme(e.to)}, 250);
+  fixGraphMargins();
 })
 
 function updateTheme(dashboardIndex) {
