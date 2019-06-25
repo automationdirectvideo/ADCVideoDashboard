@@ -1,0 +1,43 @@
+/* Dark Mode */
+
+body.dark {
+  background-color: #111;
+}
+
+body.dark .navbar,
+body.dark .outer-shell {
+  background-color: #333;
+}
+
+body.dark h1, body.dark h2, body.dark h3, body.dark h4,
+body.dark h5, body.dark h6, body.dark .h1, body.dark .h2,
+body.dark .h3, body.dark .h4, body.dark .h5, body.dark .h6,
+body.dark .navbar-brand,
+body.dark .fas {
+  color: #fff;
+}
+
+body.dark .grid-item {
+  background-color: #222;
+}
+
+
+body.dark .text-muted {
+  color: #999;
+}
+
+body.dark ::-webkit-scrollbar {
+  width: 12px;
+}
+
+body.dark ::-webkit-scrollbar-track {
+  background: #777; 
+}
+
+body.dark ::-webkit-scrollbar-thumb {
+  background: #bbb; 
+}
+
+body.dark ::-webkit-scrollbar-thumb:hover {
+  background: #ddd; 
+}

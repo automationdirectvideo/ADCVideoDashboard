@@ -327,17 +327,17 @@ function fixGraphMargins() {
 
 function carouselNext() {
   $(".carousel").carousel("next");
-  fixGraphMargins()
+  fixGraphMargins();
 }
 
 function carouselPrev() {
   $(".carousel").carousel("prev");
-  fixGraphMargins()
+  fixGraphMargins();
 }
 
 function goToCarouselItem(index) {
   $(".carousel").carousel(index);
-  fixGraphMargins()
+  fixGraphMargins();
 }
 
 // Get current settings
@@ -362,11 +362,13 @@ $(".carousel").carousel({
 });
 
 // Set order of dashboards
+var themeOrder = new Array(currentSettings.numEnabled);
 var enabledOrder = new Array(currentSettings.numEnabled);
 for (var i = 0; i < currentSettings.dashboards.length; i++) {
   var dashboard = currentSettings.dashboards[i];
   if (dashboard.index >= 0) {
     enabledOrder.splice(dashboard.index, 1, dashboard.name);
+    themeOrder.splice(dashboard.index, 1, dashboard.theme);
   }
 }
 for (var i = 0; i < enabledOrder.length; i++) {
@@ -378,9 +380,13 @@ for (var i = 0; i < enabledOrder.length; i++) {
   }
   indicator.id = "indicator-" + i;
   indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
+  dashboardItem.setAttribute("theme", themeOrder[i]);
   dashboardItem.remove();
   carouselInner.appendChild(dashboardItem);
   indicatorList.appendChild(indicator);
+  if (i == 0) {
+    updateTheme(i);
+  }
 }
 
 // Handle carousel scrolling
@@ -398,7 +404,26 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   var endIndicator = document.getElementById("indicator-" + e.to);
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
+  window.setTimeout(function(){updateTheme(e.to)}, 250);
 })
+
+function updateTheme(dashboardIndex) {
+  var endDashboard = 
+      document.getElementsByClassName("carousel-item")[dashboardIndex];
+  var body = document.getElementsByTagName("body")[0];
+  var navbar = document.getElementsByClassName("navbar")[0];
+  if (endDashboard.getAttribute("theme") == "dark") {
+    body.className = "dark";
+    navbar.className = "navbar navbar-expand-lg navbar-dark bg-dark";
+    if (endDashboard.id == "platform") {
+      document.getElementsByClassName("demographics-table")[0]
+          .classList.add("table-dark");
+    }
+  } else {
+    body.className = "";
+    navbar.className = "navbar navbar-expand-lg navbar-light bg-light";
+  }
+}
 
 // Load thumbnails in 1000 thumbnail dashboard
 function showUploadThumbnails() {
