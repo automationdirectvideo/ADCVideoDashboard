@@ -225,7 +225,7 @@ function displayTopTenThumbnails() {
         output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
       } else {
         var videoId = topTenSheet[j][i];
-        output += `<div class="top-ten-thumbnail-holder column-thumbnail"><img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
+        output += `<div class="top-ten-thumbnail-holder column-thumbnail"><img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
         if (j != 1) {
           var currPosition = i;
           var prevPosition = topTenSheet[j - 1].indexOf(videoId);
@@ -408,7 +408,7 @@ function showUploadThumbnails() {
     if (uploads) {
       var uploadThumbnails = "";
       for (var i = 0; i < uploads.length; i++) {
-        uploadThumbnails += `<img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail">`;
+        uploadThumbnails += `<img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="YouTube Video ID: ${uploads[i]}">`;
       }
       var thumbnailContainer = document.getElementById("thumbnail-container");
       thumbnailContainer.innerHTML = uploadThumbnails;

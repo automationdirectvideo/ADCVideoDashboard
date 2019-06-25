@@ -736,7 +736,7 @@ function handleVideoSnippet(response, dashboardId) {
 
     let thumbnail = document.getElementById(dashboardId + "-thumbnail");
     let videoId = response.result.items[0].id;
-    thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail">`;
+    thumbnail.innerHTML = `<img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
 
     // let tags = response.result.items[0].snippet.tags;
   }
