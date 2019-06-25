@@ -241,6 +241,20 @@ for (var i = 0; i < currentSettings.dashboards.length; i++) {
     let disableButton = document.getElementById(dashboardName + "-disable-btn");
     let lightButton = document.getElementById(dashboardName + "-light-btn");
     let darkButton = document.getElementById(dashboardName + "-dark-btn");
+    if (currentSettings.dashboards[i].theme == "light") {
+      lightButton.disabled = true;
+      darkButton.disabled = false;
+    } else {
+      darkButton.disabled = true;
+      lightButton.disabled = false;
+    }
+    if (currentSettings.dashboards[i].index == -1) {
+      disableButton.disabled = true;
+      enableButton.disabled = false;
+    } else {
+      enableButton.disabled = true;
+      disableButton.disabled = false;
+    }
     enableButton.addEventListener("click", function () {
       enableButton.disabled = true;
       disableButton.disabled = false;
