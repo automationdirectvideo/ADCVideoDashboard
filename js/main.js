@@ -402,6 +402,8 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
   window.setTimeout(function(){updateTheme(e.to)}, 250);
+});
+$(".carousel").on("slid.bs.carousel", function (e) {
   fixGraphMargins();
 })
 
