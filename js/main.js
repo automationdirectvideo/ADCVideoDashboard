@@ -241,7 +241,7 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
 
 function displayTopCategories() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
-  var excludeKeys = ["->", "SPECIAL CATEGORIES", "OTHER", "MISC"];
+  var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   var total = 0;
   let otherTotal = 0;
@@ -282,10 +282,12 @@ function displayTopCategories() {
 
   for (var i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
-    let include = true;
-    for (var j = 0; j < excludeKeys.length; j++) {
-      if (category.name.includes(excludeKeys[j])) {
-        include = false;
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
       }
     }
     if (include) {
