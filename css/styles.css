@@ -275,6 +275,16 @@ footer {
   margin: 0;
 }
 
+[id*="category-title-"] {
+  font-weight: bold;
+}
+
+.category-number {
+  color: red;
+  background-color: linen;
+  border-radius: 0.5rem;
+}
+
 /* Settings page */
 .drag-handle {
   cursor: grab;

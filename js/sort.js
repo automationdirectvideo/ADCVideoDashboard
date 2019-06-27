@@ -19,8 +19,7 @@ function sortCategoriesByLikes() {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
   console.log("Stats Sorted by likes: ", categoryStats);
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  displayTopCategories("likes");
+  return JSON.stringify(categoryStats);
 }
 
 function sortCategoriesByAvgViews() {
@@ -29,8 +28,7 @@ function sortCategoriesByAvgViews() {
     return parseInt(b["avgViews"]) - parseInt(a["avgViews"]);
   });
   console.log("Stats Sorted by AvgViews: ", categoryStats);
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  displayTopCategories("avgViews");
+  return JSON.stringify(categoryStats);
 }
 
 function sortCategoriesByAvgLikes() {
@@ -39,8 +37,7 @@ function sortCategoriesByAvgLikes() {
     return parseInt(b["avgLikes"]) - parseInt(a["avgLikes"]);
   });
   console.log("Stats Sorted by AvgLikes: ", categoryStats);
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  displayTopCategories("avgLikes");
+  return JSON.stringify(categoryStats);
 }
 
 function sortCategoriesByAvgDuration() {
@@ -49,8 +46,7 @@ function sortCategoriesByAvgDuration() {
     return parseInt(b["avgDuration"]) - parseInt(a["avgDuration"]);
   });
   console.log("Stats Sorted by AvgDuration: ", categoryStats);
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  displayTopCategories("avgDuration");
+  return JSON.stringify(categoryStats);
 }
 
 function sortVideosByViews() {
