@@ -175,6 +175,11 @@ footer {
   margin-right: auto;
 }
 
+.thumbnail {
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
 .feedback-thumbnail {
   max-height: 100%;
   max-width: 100%;
