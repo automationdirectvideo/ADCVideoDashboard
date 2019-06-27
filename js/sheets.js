@@ -21,10 +21,10 @@ function recordCategoryListData() {
     let root = false;
     let leaf = true;
 
-    // Set up shortName and name
-    if (level2 == undefined) {
+    // Set up name
+    if (level2 == undefined || level2 == "") {
       name = level1;
-    } else if (level3 == undefined) {
+    } else if (level3 == undefined || level3 == "") {
       name = level1 + "->" + level2;
     } else {
       name = level1 + "->" + level2 + "->" + level3;

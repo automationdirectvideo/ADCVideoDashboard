@@ -621,7 +621,6 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
   window.setTimeout(function(){
-    console.log("FIX!!!");
     fixGraphMargins();
     updateTheme(e.to);
   }, 250);
