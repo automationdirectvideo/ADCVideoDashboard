@@ -568,6 +568,7 @@ for (var i = 0; i < currentSettings.dashboards.length; i++) {
   if (dashboard.index >= 0) {
     enabledOrder.splice(dashboard.index, 1, {
       "name": dashboard.name,
+      "icon": dashboard.icon,
       "theme": dashboard.theme,
       "title": dashboard.title
     });
@@ -591,6 +592,7 @@ for (var i = 0; i < enabledOrder.length; i++) {
   dashboardItem.setAttribute("theme", enabledOrder[i].theme);
   indicator.id = "indicator-" + i;
   indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
+  indicator.className = enabledOrder[i].icon + " indicator";
   carouselInner.appendChild(dashboardItem);
   indicatorList.appendChild(indicator);
   if (i == 0) {
