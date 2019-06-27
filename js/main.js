@@ -7,6 +7,9 @@ function loadDashboards() {
   if (carouselInner.children.platform) {
     platformDashboardCalls(joinDate, todayDate);
   }
+  if (carouselInner.children["product-categories"]) {
+    displayTopCategories();
+  }
   if (carouselInner.children["top-ten"]) {
     displayTopTenThumbnails();
   }
@@ -213,19 +216,148 @@ function displayTopVideosByCategory() {
   topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
 }
 
-function displayTopCategories(type) {
+function displayTopCategories() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
-  let index = 0;
-  let categoryNum = 1;
-  console.log("Top 10 Categories By " + type);
-  while (categoryNum <= 5) {
-    let category = categoryStats[index];
-    if (!category.name.includes("SPECIAL CATEGORIES")) {
-      console.log(categoryNum + ". " + category.name + " - ~" + numberWithCommas(Math.round(category[type])) + " " + type);
-      categoryNum++;
+  var excludeKeys = ["->", "SPECIAL CATEGORIES", "OTHER", "MISC"];
+
+  var total = 0;
+  let otherTotal = 0;
+  var height = 0.458 * document.documentElement.clientHeight;
+  var width = 0.535 * document.documentElement.clientHeight;
+  var values = [];
+  var sortedCategories = [];
+  var labels = [];
+  var graphId = "categories-views-chart";
+  var type = "views";
+  var cutoff = 0.025;
+
+  var labelConversion = {
+    "Programmable Controllers": "Programmable<br>Controllers",
+    "Drives": "Drives",
+    "HMI": "HMI",
+    "Process Control & Measurement": "Process Control<br>& Measurement",
+    "Motion Control": "Motion Control",
+    "Cables": "Cables",
+    "Sensors / Encoders": "Sensors/<br>Encoders",
+    "Motors": "Motors",
+    "Motor Controls": "Motor Controls",
+    "Field I/O": "Field I/O",
+    "Communications": "Communications",
+    "Pneumatic Components": "Pneumatic<br>Components",
+    "Relays / Timers": "Relays/Timers",
+    "Stacklights": "Stacklights",
+    "Power Products": "Power Products",
+    "Pushbuttons / Switches / Indicators": "Pushbuttons/<br>Switches/<br>Indicators",
+    "Circuit Protection": "Circuit<br>Protection",
+    "Safety": "Safety",
+    "Tools & Test Equipment": "Tools & Test<br>Equipment",
+    "Wiring Solutions": "Wiring<br>Solutions",
+    "Enclosures": "Enclosures",
+    "Terminal Blocks": "Terminal Blocks",
+    "Power Transmission": "Power<br>Transmission"
+  };
+
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = true;
+    for (var j = 0; j < excludeKeys.length; j++) {
+      if (category.name.includes(excludeKeys[j])) {
+        include = false;
+      }
+    }
+    if (include) {
+      total += Math.round(category[type]);
+    }
+  }
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = true;
+    for (var j = 0; j < excludeKeys.length; j++) {
+      if (category.name.includes(excludeKeys[j])) {
+        include = false;
+      }
+    }
+    if (include) {
+      let value = Math.round(category[type]);
+      if (value / total <= cutoff) {
+        otherTotal += value;
+      } else {
+        values.push(value);
+        labels.push(labelConversion[category.name]);
+        sortedCategories.push({
+          "value": value,
+          "name": category.name,
+          "numVideos": category.videos.length
+        });
+      }
+    }
+  }
+  if (cutoff != undefined && cutoff > 0) {
+    values.push(otherTotal);
+    labels.push("Other");
+  }
+  sortedCategories.sort(function(a, b) {
+    return parseInt(b["value"]) - parseInt(a["value"]);
+  });
+
+  var data = [{
+    values: values,
+    labels: labels,
+    textinfo: "label+percent",
+    textposition: "auto",
+    sort: false,
+    type: 'pie',
+    rotation: -20
+  }];
+
+  var layout = {
+    height: height,
+    width: width,
+    font: {size: 18},
+    automargin: true,
+    autosize: true,
+    showlegend: false,
+    margin: {
+      b:100,
+      l:70,
+      r:0,
+      t:0
+    }
+  };
+
+  var config = {
+    staticPlot: true,
+    responsive: true
+  };
+
+  var currentSettings = JSON.parse(localStorage.getItem("settings"));
+  var theme = "";
+  var index = 0;
+  while (index < currentSettings.dashboards.length && theme == "") {
+    if (currentSettings.dashboards[index].name == "platform") {
+      theme = currentSettings.dashboards[index].theme;
     }
     index++;
   }
+  if (theme == "dark") {
+    layout["plot_bgcolor"] = "#222";
+    layout["paper_bgcolor"] = "#222";
+    layout["font"]["color"] = "#fff";
+  }
+
+  Plotly.newPlot(graphId, data, layout, config);
+
+  for (var i = 1; i < 9; i++) {
+    var title = document.getElementById("category-title-" + i);
+    var views = document.getElementById("category-views-" + i);
+    var videos = document.getElementById("category-videos-" + i);
+    title.innerText = sortedCategories[i - 1]["name"];
+    views.innerText = numberWithCommas(sortedCategories[i - 1]["value"]) +
+        " Total Views";
+    videos.innerText = numberWithCommas(sortedCategories[i - 1]["numVideos"]) +
+        " Videos";
+  }
+
 }
 
 // Displays thumbnails with arrows on Top Ten Dashboard

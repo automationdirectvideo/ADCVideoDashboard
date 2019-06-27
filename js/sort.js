@@ -9,8 +9,7 @@ function sortCategoriesByViews() {
     return parseInt(b["views"]) - parseInt(a["views"]);
   });
   console.log("Stats Sorted by views: ", categoryStats);
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  displayTopCategories("views");
+  return JSON.stringify(categoryStats);
 }
 
 function sortCategoriesByLikes() {
