@@ -128,8 +128,8 @@ function showFooter() {
  */
 function loadSettings() {
   cycleSpeedInput.value = currentSettings.cycleSpeed;
-  if (currentSettings.footer == "hide") {
-    hideFooter();
+  if (currentSettings.footer == "show") {
+    showFooter();
   }
   var enabledOrder = new Array(currentSettings.numEnabled);
   var disabledOrder = new Array();

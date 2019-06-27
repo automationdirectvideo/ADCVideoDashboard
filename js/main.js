@@ -141,7 +141,7 @@ function calcAvgVideoDuration() {
         avgViewPercentage + "%";
   } else {
     // Default value if allVideoStats does not exist yet
-    document.getElementById("stat-avg-percentage").innerText = "36.1%"
+    document.getElementById("stat-avg-percentage").innerText = "36.1%";
   }
 }
 
@@ -542,8 +542,8 @@ if (!localStorage.getItem("settings")) {
 var currentSettings = JSON.parse(localStorage.getItem("settings"));
 console.log("Current Settings: ", currentSettings);
 
-if (currentSettings.footer == "hide") {
-  document.getElementsByTagName("footer")[0].classList.add("d-none");
+if (currentSettings.footer == "show") {
+  document.getElementsByTagName("footer")[0].classList.remove("d-none");
   document.getElementById("main-container").style.paddingBottom = "0px";
 }
 
