@@ -59,7 +59,7 @@ function recordCategoryListData() {
 }
 
 // Records video IDs from Google Sheet
-// Initiates showUploadThumbnails() and getAllVideoStats()
+// Initiates displayUploadThumbnails() and getAllVideoStats()
 function recordVideoListData() {
   let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
   let categoriesByVideoId = {}; // videoId : array of categoryIds its in
@@ -85,7 +85,7 @@ function recordVideoListData() {
   localStorage.setItem("categoriesByVideoId", JSON.stringify(categoriesByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
 
-  showUploadThumbnails();
+  displayUploadThumbnails();
   getAllVideoStats(uploads);
 }
 

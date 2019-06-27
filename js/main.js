@@ -213,6 +213,21 @@ function displayTopVideosByCategory() {
   topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
 }
 
+function displayTopCategories(type) {
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  let index = 0;
+  let categoryNum = 1;
+  console.log("Top 10 Categories By " + type);
+  while (categoryNum <= 5) {
+    let category = categoryStats[index];
+    if (!category.name.includes("SPECIAL CATEGORIES")) {
+      console.log(categoryNum + ". " + category.name + " - ~" + numberWithCommas(Math.round(category[type])) + " " + type);
+      categoryNum++;
+    }
+    index++;
+  }
+}
+
 // Displays thumbnails with arrows on Top Ten Dashboard
 function displayTopTenThumbnails() {
   let topTenSheet = JSON.parse(localStorage.getItem("topTenSheet"));
@@ -223,7 +238,10 @@ function displayTopTenThumbnails() {
         output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
       } else {
         var videoId = topTenSheet[j][i];
-        output += `<div class="top-ten-thumbnail-holder column-thumbnail"><img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
+        output += `
+          <div class="top-ten-thumbnail-holder column-thumbnail">
+            <a href="https://youtu.be/${videoId}" target="_blank" alt="YouTube Video ID: ${videoId}">
+              <img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
         if (j != 1) {
           var currPosition = i;
           var prevPosition = topTenSheet[j - 1].indexOf(videoId);
@@ -241,7 +259,7 @@ function displayTopTenThumbnails() {
             }
           }
         }
-        output += `</div>`;
+        output += `</a></div>`;
       }
     }
   }
@@ -250,21 +268,6 @@ function displayTopTenThumbnails() {
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
   new AutoDivScroll("top-ten-thumbnail-wrapper", 25, 1, 2);
-}
-
-function displayTopCategories(type) {
-  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
-  let index = 0;
-  let categoryNum = 1;
-  console.log("Top 10 Categories By " + type);
-  while (categoryNum <= 5) {
-    let category = categoryStats[index];
-    if (!category.name.includes("SPECIAL CATEGORIES")) {
-      console.log(categoryNum + ". " + category.name + " - ~" + numberWithCommas(Math.round(category[type])) + " " + type);
-      categoryNum++;
-    }
-    index++;
-  }
 }
 
 function displayTopVideos() {
@@ -283,13 +286,39 @@ function displayTopVideos() {
   }
 }
 
+// Load thumbnails in 1000 thumbnail dashboard
+function displayUploadThumbnails() {
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  if (carouselInner.children.thumbnails) {
+    let uploads = JSON.parse(localStorage.getItem("uploads"));
+    if (uploads) {
+      var uploadThumbnails = "";
+      for (var i = 0; i < uploads.length; i++) {
+        uploadThumbnails += `
+          <a href="https://youtu.be/${uploads[i]}" target="_blank" alt="YouTube Video ID: ${uploads[i]}">
+            <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="YouTube Video ID: ${uploads[i]}">
+          </a>`;
+      }
+      var thumbnailContainer = document.getElementById("thumbnail-container");
+      thumbnailContainer.innerHTML = uploadThumbnails;
+
+      new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
+    }
+  }
+}
+
 function displayUserFeedback() {
   let feedbackSheet = JSON.parse(localStorage.getItem("feedbackSheet"));
   let output = ``;
   for (var i = 1; i < feedbackSheet.length; i++) {
     var videoId = feedbackSheet[i][0];
     var feedbackText = feedbackSheet[i][1];
-    var thumbnail = `<div class="col-4"><img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}"></div>`;
+    var thumbnail = `
+      <div class="col-4">
+        <a href="https://youtu.be/${videoId}" target="_blank" alt="YouTube Video ID: ${videoId}">
+          <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
+        </a>
+      </div>`;
     var feedback = `<div class="col-8"><h1 class="overflow-auto">${feedbackText}</h1></div>`;
     var spacer = `<div class="col-12"><hr></div>`;
     if (i % 2 == 0) {
@@ -446,24 +475,7 @@ function updateTheme(dashboardIndex) {
   }
 }
 
-// Load thumbnails in 1000 thumbnail dashboard
-function showUploadThumbnails() {
-  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  if (carouselInner.children.thumbnails) {
-    let uploads = JSON.parse(localStorage.getItem("uploads"));
-    if (uploads) {
-      var uploadThumbnails = "";
-      for (var i = 0; i < uploads.length; i++) {
-        uploadThumbnails += `<img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="YouTube Video ID: ${uploads[i]}">`;
-      }
-      var thumbnailContainer = document.getElementById("thumbnail-container");
-      thumbnailContainer.innerHTML = uploadThumbnails;
-
-      new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
-    }
-  }
-}
-showUploadThumbnails();
+displayUploadThumbnails();
 
 if (enabledOrder.includes("real-time-stats")) {
   loadRealTimeStats();
