@@ -280,9 +280,22 @@ footer {
 }
 
 .category-number {
-  color: red;
   background-color: linen;
   border-radius: 0.5rem;
+  color: red;
+  font-size: 4.5rem;
+  margin-left: 0.5rem;
+  margin-bottom: 0;
+}
+
+.category-number-container {
+  flex: 0 0 20%;
+  max-width: 20%;
+}
+
+.category-description-container {
+  flex: 0 0 80%;
+  max-width: 80%;
 }
 
 /* Settings page */
