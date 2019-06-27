@@ -127,16 +127,22 @@ function loadRealTimeStats() {
   
 }
 
-function calcAvgVideoDuration(avgViewDuration) {
+function calcAvgVideoDuration() {
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  let totalDuration = 0;
-  for (var i = 0; i < allVideoStats.length; i++) {
-    totalDuration += allVideoStats[i].duration;
+  if (allVideoStats) {
+    let totalDuration = 0;
+    for (var i = 0; i < allVideoStats.length; i++) {
+      totalDuration += allVideoStats[i].duration;
+    }
+    let avgDuration = totalDuration / allVideoStats.length;
+    let avgViewDuration = document.getElementById("stat-avg-duration").value;
+    let avgViewPercentage = decimalToPercent(avgViewDuration / avgDuration);
+    document.getElementById("stat-avg-percentage").innerText =
+        avgViewPercentage + "%";
+  } else {
+    // Default value if allVideoStats does not exist yet
+    document.getElementById("stat-avg-percentage").innerText = "36.1%"
   }
-  let avgDuration = totalDuration / allVideoStats.length;
-  let avgViewPercentage = decimalToPercent(avgViewDuration / avgDuration);
-  document.getElementById("stat-avg-percentage").innerText =
-      avgViewPercentage + "%";
 }
 
 function calcCategoryStats() {
