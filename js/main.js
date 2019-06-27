@@ -156,6 +156,9 @@ function calcAvgVideoDuration() {
     let avgDuration = totalDuration / allVideoStats.length;
     let avgViewDuration = document.getElementById("stat-avg-duration").value;
     let avgViewPercentage = decimalToPercent(avgViewDuration / avgDuration);
+    if (isNaN(avgViewPercentage)) {
+      avgViewPercentage = 36.1;
+    }
     document.getElementById("stat-avg-percentage").innerText =
         avgViewPercentage + "%";
   } else {
