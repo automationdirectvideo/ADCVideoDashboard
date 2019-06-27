@@ -120,13 +120,23 @@ function loadRealTimeStats() {
     var avgDurationCumulative =
         secondsToDurationMinSec(stats.cumulative.averageViewDuration);
     avgDurationOdometer.innerHTML = avgDurationCumulative;
-    var avgPercentageCumulative =
-        decimalToPercent(stats.cumulative.averageViewDuration / 
-        averageVideoDuration);
-    avgPercentageOdometer.innerHTML = avgPercentageCumulative + "%";
+    avgDurationOdometer.value = stats.cumulative.averageViewDuration;
+    calcAvgVideoDuration(stats.cumulative.averageViewDuration);
   }
 
   
+}
+
+function calcAvgVideoDuration(avgViewDuration) {
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  let totalDuration = 0;
+  for (var i = 0; i < allVideoStats.length; i++) {
+    totalDuration += allVideoStats[i].duration;
+  }
+  let avgDuration = totalDuration / allVideoStats.length;
+  let avgViewPercentage = decimalToPercent(avgViewDuration / avgDuration);
+  document.getElementById("stat-avg-percentage").innerText =
+      avgViewPercentage + "%";
 }
 
 function calcCategoryStats() {
