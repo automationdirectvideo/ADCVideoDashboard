@@ -296,10 +296,12 @@ function displayTopCategories() {
   }
   for (var i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
-    let include = true;
-    for (var j = 0; j < excludeKeys.length; j++) {
-      if (category.name.includes(excludeKeys[j])) {
-        include = false;
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
       }
     }
     if (include) {
