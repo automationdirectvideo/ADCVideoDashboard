@@ -180,6 +180,11 @@ footer {
   max-width: 100%;
 }
 
+#feedback-container hr {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .scroll-x, .scroll-y {
   height: 100%;
   width: 100%;
