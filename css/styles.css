@@ -1,3 +1,5 @@
+/*----- General -----*/
+
 html {
   font-size: 1.5vh;
 }
@@ -98,6 +100,38 @@ footer {
   cursor: pointer;
 }
 
+.scroll-x, .scroll-y {
+  height: 100%;
+  width: 100%;
+}
+
+.scroll-x {
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
+
+.scroll-y {
+  overflow-y: scroll;
+}
+
+.font-size-3 {
+  font-size: 3rem;
+}
+
+.font-size-3-5 {
+  font-size: 3.5rem;
+}
+
+.font-size-4 {
+  font-size: 4rem;
+}
+
+.font-size-4-5 {
+  font-size: 4.5rem;
+}
+
+/*----- Top Ten Dashboard -----*/
+
 .top-ten-title {
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -175,10 +209,14 @@ footer {
   margin-right: auto;
 }
 
+/*----- 1000 Thumbnail Dashboard -----*/
+
 .thumbnail {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+/*----- User Feedback Dashboard -----*/
 
 .feedback-thumbnail {
   max-height: 100%;
@@ -190,19 +228,7 @@ footer {
   margin-bottom: 0.5rem;
 }
 
-.scroll-x, .scroll-y {
-  height: 100%;
-  width: 100%;
-}
-
-.scroll-x {
-  overflow-x: scroll;
-  overflow-y: hidden;
-}
-
-.scroll-y {
-  overflow-y: scroll;
-}
+/*----- Top Video Dashboard -----*/
 
 .top-video-thumbnail {
   position: absolute;
@@ -214,6 +240,37 @@ footer {
   height: auto;
   width: 100%;
 }
+
+.like-progress {
+  height: 1rem;
+}
+
+.top-video-eye, .top-video-people, .top-video-retention, .top-video-clock,
+.top-video-comment, .top-video-like {
+  color: red;
+  font-size: 4rem;
+}
+
+.top-video-retention, .top-video-clock, .top-video-comment, .top-video-like {
+  padding-bottom: 1rem;
+  padding-top: 0.6667rem;
+}
+
+.top-video-retention {
+  font-size: 4.5rem;
+}
+
+.top-video-clock {
+  font-size: 4.25rem;
+}
+
+.top-video-comment {
+  padding-top: 1.3333rem;
+}
+
+.top-video-
+
+/*----- Platform Dashboard -----*/
 
 .demographics-table th, .demographics-table thead th, .demographics-table td {
   border: none;
@@ -232,37 +289,15 @@ footer {
   margin-bottom: 0px;
 }
 
-[id*="male-"] {
+[id^="male-"] {
   color: #549dd1;
 }
 
-[id*="female-"] {
+[id^="female-"] {
   color: #926fd1;
 }
 
-.font-size-3 {
-  font-size: 3rem;
-}
-
-.font-size-3-5 {
-  font-size: 3.5rem;
-}
-
-.font-size-4 {
-  font-size: 4rem;
-}
-
-.font-size-4-5 {
-  font-size: 4.5rem;
-}
-
-.video-icon {
-  font-size: 4rem;
-}
-
-.like-progress {
-  height: 1rem;
-}
+/*----- Real Time Stats Dashboard -----*/
 
 .stat-title {
   font-weight: bold;
@@ -279,7 +314,9 @@ footer {
   margin: 0;
 }
 
-[id*="category-title-"] {
+/*----- Product Category Dashboard -----*/
+
+[id^="category-title-"] {
   font-weight: bold;
 }
 
@@ -302,7 +339,8 @@ footer {
   max-width: 80%;
 }
 
-/* Settings page */
+/*----- Settings page -----*/
+
 .drag-handle {
   cursor: grab;
   cursor: -webkit-grabbing;
@@ -318,7 +356,8 @@ footer {
   margin-left: 0.75rem;
 }
 
-/* Grid */
+/*----- Grid -----*/
+
 .grid-container {
   display: grid;
   grid-column-gap: 1rem;
@@ -337,7 +376,8 @@ footer {
   padding: 0.3333rem;
 }
 
-/* Scrollbars */
+/*----- Scrollbars -----*/
+
 ::-webkit-scrollbar {
   width: 12px;
 }

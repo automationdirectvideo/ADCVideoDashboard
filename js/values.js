@@ -35,27 +35,32 @@ const defaultSettings =
     {
       "name": "top-video-1",
       "index": 6,
-      "theme": "light"
+      "theme": "light",
+      "title": "Programmable Controllers"
     },
     {
       "name": "top-video-2",
       "index": 7,
-      "theme": "light"
+      "theme": "light",
+      "title": "Drives"
     },
     {
       "name": "top-video-3",
       "index": 8,
-      "theme": "light"
+      "theme": "light",
+      "title": "HMI"
     },
     {
       "name": "top-video-4",
       "index": 9,
-      "theme": "light"
+      "theme": "light",
+      "title": "Motion Control"
     },
     {
       "name": "top-video-5",
       "index": 10,
-      "theme": "light"
+      "theme": "light",
+      "title": "Sensors/Encoders"
     }
   ],
   "footer": "hide",

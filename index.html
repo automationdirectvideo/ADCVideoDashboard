@@ -409,37 +409,63 @@
                   </div>
                 </div>
               </div>
-              <div class="carousel-item" id="top-video-1">
-                <h3>Programmable Controllers - Most Watched Video</h3>
+              <div class="carousel-item" id="top-video-#">
+                <h3>TITLE PLACEHOLDER - Most Watched Video</h3>
                 <h5>This Popular Video Shows How Customers Engage With Our Videos</h5>
-                <div class="d-none" id="top-video-1-duration-seconds"></div>
+                <div class="d-none" id="top-video-#-duration-seconds"></div>
                 <div class="outer-shell container mb-1">
                   <div class="grid-container">
+                    <div class="grid-item" style="grid-area: 1/1/4/4;">
+                      <span class="fas fa-eye top-video-eye" title="Views"></span>
+                      <h1 class="font-size-3-5" id="top-video-#-views">#</h1>
+                      <h3 class="text-muted">Views</h3>
+                    </div>
                     <div class="grid-item" style="grid-area: 1/4/5/10;">
                       <div class="row align-items-center h-100">
                         <div class="col-6 h-100">
-                          <div class="position-relative h-100 ml-2" id="top-video-1-thumbnail"></div>
+                          <div class="position-relative h-100 ml-2" id="top-video-#-thumbnail"></div>
                         </div>
                         <div class="col-6 text-left">
-                          <h3 class="font-weight-bold" id="top-video-1-title">Placeholder Title</h3>
-                          <h4 class="text-muted" id="top-video-1-publish-date">Placeholder Date</h4>
-                          <h4 class="text-muted" id="top-video-1-duration">Placeholder Duration</h4>
+                          <h3 class="font-weight-bold" id="top-video-#-title">Placeholder Title</h3>
+                          <h4 class="text-muted" id="top-video-#-publish-date">Placeholder Date</h4>
+                          <h4 class="text-muted" id="top-video-#-duration">Placeholder Duration</h4>
                         </div>
                       </div>
                     </div>
+                    <div class="grid-item" style="grid-area: 1/10/4/13;">
+                      <span class="fas fa-users top-video-people" title="Subscribers"></span>
+                      <h1 class="font-size-4" id="top-video-#-subs-net">#</h1>
+                      <h4 class="text-muted">Subscribers Gained</h4>
+                    </div>
                     <div class="grid-item" style="grid-area: 4/1/9/4;">
-                      <span class="oi oi-reload yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Reload"></span>
+                      <span class="fas fa-redo-alt top-video-retention" title="Audience Retention"></span>
                       <h1 class="font-size-3-5">
-                        <span id="top-video-1-avg-view-duration">M:SS</span>
+                        <span id="top-video-#-avg-view-duration">M:SS</span>
                         <br>
-                        <span id="top-video-1-avg-view-percentage">(%)</span>
+                        <span id="top-video-#-avg-view-percentage">(%)</span>
                       </h1>
                       <h3 class="text-muted mt-3">Average View Duration/Percentage</h3>
                     </div>
                     <div class="grid-item" style="grid-area: 5/4/9/7;">
-                      <span class="oi oi-clock yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Clock"></span>
-                      <h1 class="font-size-3-5" id="top-video-1-minutes-watched">#</h1>
+                      <span class="far fa-clock top-video-clock" title="Minutes Watched"></span>
+                      <h1 class="font-size-3-5" id="top-video-#-minutes-watched">#</h1>
                       <h3 class="text-muted">Estimated Minutes Watched</h3>
+                    </div>
+                    <div class="grid-item" style="grid-area: 5/7/9/10;">
+                      <span class="fas fa-comment-alt top-video-comment" title="Comments"></span>
+                      <h1 class="font-size-4-5 my-auto" id="top-video-#-comments">#</h1>
+                      <h3 class="text-muted my-auto">Comments</h3>
+                    </div>
+                    <div class="grid-item" style="grid-area: 4/10/9/13;">
+                      <span class="fas fa-thumbs-up top-video-like" title="Likes"></span>
+                      <h1 class="font-size-3 m-0" id="top-video-#-like-ratio">%</h1>
+                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
+                      <div class="progress like-progress">
+                        <div class="progress-bar bg-yt-red" id="top-video-#-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                      <hr>
+                      <h2 id="top-video-#-likes"># Likes</h2>
+                      <h2 class="text-muted" id="top-video-#-dislikes"># Dislikes</h2>
                     </div>
                     <div class="grid-item" style="grid-area: 9/1/13/7;">
                       <div class="row h-100">
@@ -447,35 +473,9 @@
                           <h2>Daily Video Views from Last 30 Days</h2>
                         </div>
                         <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-1-views-graph"></div>
+                          <div class="h-100 w-100" id="top-video-#-views-graph"></div>
                         </div>
                       </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <span class="oi oi-eye yt-red video-icon" title="Eye"></span>
-                      <h1 class="font-size-3-5" id="top-video-1-views">#</h1>
-                      <h3 class="text-muted">Views</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <span class="oi oi-people yt-red video-icon" title="People"></span>
-                      <h1 class="font-size-4" id="top-video-1-subs-net">#</h1>
-                      <h4 class="text-muted">Subscribers Gained</h4>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/10/9/13;">
-                      <span class="oi oi-thumb-up yt-red video-icon" title="Thumb Up"></span>
-                      <h1 class="font-size-3" id="top-video-1-like-ratio">%</h1>
-                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
-                      <div class="progress like-progress">
-                        <div class="progress-bar bg-yt-red" id="top-video-1-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <hr>
-                      <h2 id="top-video-1-likes"># Likes</h2>
-                      <h2 class="text-muted" id="top-video-1-dislikes"># Dislikes</h2>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/7/9/10;">
-                      <span class="oi oi-comment-square yt-red my-auto video-icon" style="padding-top:2vh;padding-bottom:1.5vh;" title="Comment Square"></span>
-                      <h1 class="font-size-4-5 my-auto" id="top-video-1-comments">#</h1>
-                      <h3 class="text-muted my-auto">Comments</h3>
                     </div>
                     <div class="grid-item" style="grid-area: 9/7/13/13;">
                       <div class="row h-100">
@@ -483,331 +483,7 @@
                           <h2>Top Search Terms By Views</h2>
                         </div>
                         <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-1-search-terms"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="top-video-2">
-                <h3>Drives - Most Watched Video</h3>
-                <h5>This Popular Video Shows How Customers Engage With Our Videos</h5>
-                <div class="d-none" id="top-video-2-duration-seconds"></div>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/4/5/10;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-6 h-100">
-                          <div class="position-relative h-100 ml-2" id="top-video-2-thumbnail"></div>
-                        </div>
-                        <div class="col-6 text-left">
-                          <h3 class="font-weight-bold" id="top-video-2-title">Placeholder Title</h3>
-                          <h4 class="text-muted" id="top-video-2-publish-date">Placeholder Date</h4>
-                          <h4 class="text-muted" id="top-video-2-duration">Placeholder Duration</h4>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/1/9/4;">
-                      <span class="oi oi-reload yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Reload"></span>
-                      <h1 class="font-size-3-5">
-                        <span id="top-video-2-avg-view-duration">M:SS</span>
-                        <br>
-                        <span id="top-video-2-avg-view-percentage">(%)</span>
-                      </h1>
-                      <h3 class="text-muted mt-3">Average View Duration/Percentage</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/4/9/7;">
-                      <span class="oi oi-clock yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Clock"></span>
-                      <h1 class="font-size-3-5" id="top-video-2-minutes-watched">#</h1>
-                      <h3 class="text-muted">Estimated Minutes Watched</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/1/13/7;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Daily Video Views from Last 30 Days</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-2-views-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <span class="oi oi-eye yt-red video-icon" title="Eye"></span>
-                      <h1 class="font-size-3-5" id="top-video-2-views">#</h1>
-                      <h3 class="text-muted">Views</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <span class="oi oi-people yt-red video-icon" title="People"></span>
-                      <h1 class="font-size-4" id="top-video-2-subs-net">#</h1>
-                      <h4 class="text-muted">Subscribers Gained</h4>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/10/9/13;">
-                      <span class="oi oi-thumb-up yt-red video-icon" title="Thumb Up"></span>
-                      <h1 class="font-size-3" id="top-video-2-like-ratio">%</h1>
-                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
-                      <div class="progress like-progress">
-                        <div class="progress-bar bg-yt-red" id="top-video-2-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <hr>
-                      <h2 id="top-video-2-likes"># Likes</h2>
-                      <h2 class="text-muted" id="top-video-2-dislikes"># Dislikes</h2>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/7/9/10;">
-                      <span class="oi oi-comment-square yt-red my-auto video-icon" style="padding-top:2vh;padding-bottom:1.5vh;" title="Comment Square"></span>
-                      <h1 class="font-size-4-5 my-auto" id="top-video-2-comments">#</h1>
-                      <h3 class="text-muted my-auto">Comments</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/7/13/13;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Top Search Terms By Views</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-2-search-terms"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="top-video-3">
-                <h3>HMI - Most Watched Video</h3>
-                <h5>This Popular Video Shows How Customers Engage With Our Videos</h5>
-                <div class="d-none" id="top-video-3-duration-seconds"></div>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/4/5/10;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-6 h-100">
-                          <div class="position-relative h-100 ml-2" id="top-video-3-thumbnail"></div>
-                        </div>
-                        <div class="col-6 text-left">
-                          <h3 class="font-weight-bold" id="top-video-3-title">Placeholder Title</h3>
-                          <h4 class="text-muted" id="top-video-3-publish-date">Placeholder Date</h4>
-                          <h4 class="text-muted" id="top-video-3-duration">Placeholder Duration</h4>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/1/9/4;">
-                      <span class="oi oi-reload yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Reload"></span>
-                      <h1 class="font-size-3-5">
-                        <span id="top-video-3-avg-view-duration">M:SS</span>
-                        <br>
-                        <span id="top-video-3-avg-view-percentage">(%)</span>
-                      </h1>
-                      <h3 class="text-muted mt-3">Average View Duration/Percentage</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/4/9/7;">
-                      <span class="oi oi-clock yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Clock"></span>
-                      <h1 class="font-size-3-5" id="top-video-3-minutes-watched">#</h1>
-                      <h3 class="text-muted">Estimated Minutes Watched</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/1/13/7;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Daily Video Views from Last 30 Days</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-3-views-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <span class="oi oi-eye yt-red video-icon" title="Eye"></span>
-                      <h1 class="font-size-3-5" id="top-video-3-views">#</h1>
-                      <h3 class="text-muted">Views</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <span class="oi oi-people yt-red video-icon" title="People"></span>
-                      <h1 class="font-size-4" id="top-video-3-subs-net">#</h1>
-                      <h4 class="text-muted">Subscribers Gained</h4>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/10/9/13;">
-                      <span class="oi oi-thumb-up yt-red video-icon" title="Thumb Up"></span>
-                      <h1 class="font-size-3" id="top-video-3-like-ratio">%</h1>
-                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
-                      <div class="progress like-progress">
-                        <div class="progress-bar bg-yt-red" id="top-video-3-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <hr>
-                      <h2 id="top-video-3-likes"># Likes</h2>
-                      <h2 class="text-muted" id="top-video-3-dislikes"># Dislikes</h2>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/7/9/10;">
-                      <span class="oi oi-comment-square yt-red my-auto video-icon" style="padding-top:2vh;padding-bottom:1.5vh;" title="Comment Square"></span>
-                      <h1 class="font-size-4-5 my-auto" id="top-video-3-comments">#</h1>
-                      <h3 class="text-muted my-auto">Comments</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/7/13/13;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Top Search Terms By Views</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-3-search-terms"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="top-video-4">
-                <h3>Motion Control - Most Watched Video</h3>
-                <h5>This Popular Video Shows How Customers Engage With Our Videos</h5>
-                <div class="d-none" id="top-video-4-duration-seconds"></div>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/4/5/10;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-6 h-100">
-                          <div class="position-relative h-100 ml-2" id="top-video-4-thumbnail"></div>
-                        </div>
-                        <div class="col-6 text-left">
-                          <h3 class="font-weight-bold" id="top-video-4-title">Placeholder Title</h3>
-                          <h4 class="text-muted" id="top-video-4-publish-date">Placeholder Date</h4>
-                          <h4 class="text-muted" id="top-video-4-duration">Placeholder Duration</h4>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/1/9/4;">
-                      <span class="oi oi-reload yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Reload"></span>
-                      <h1 class="font-size-3-5">
-                        <span id="top-video-4-avg-view-duration">M:SS</span>
-                        <br>
-                        <span id="top-video-4-avg-view-percentage">(%)</span>
-                      </h1>
-                      <h3 class="text-muted mt-3">Average View Duration/Percentage</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/4/9/7;">
-                      <span class="oi oi-clock yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Clock"></span>
-                      <h1 class="font-size-3-5" id="top-video-4-minutes-watched">#</h1>
-                      <h3 class="text-muted">Estimated Minutes Watched</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/1/13/7;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Daily Video Views from Last 30 Days</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-4-views-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <span class="oi oi-eye yt-red video-icon" title="Eye"></span>
-                      <h1 class="font-size-3-5" id="top-video-4-views">#</h1>
-                      <h3 class="text-muted">Views</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <span class="oi oi-people yt-red video-icon" title="People"></span>
-                      <h1 class="font-size-4" id="top-video-4-subs-net">#</h1>
-                      <h4 class="text-muted">Subscribers Gained</h4>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/10/9/13;">
-                      <span class="oi oi-thumb-up yt-red video-icon" title="Thumb Up"></span>
-                      <h1 class="font-size-3" id="top-video-4-like-ratio">%</h1>
-                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
-                      <div class="progress like-progress">
-                        <div class="progress-bar bg-yt-red" id="top-video-4-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <hr>
-                      <h2 id="top-video-4-likes"># Likes</h2>
-                      <h2 class="text-muted" id="top-video-4-dislikes"># Dislikes</h2>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/7/9/10;">
-                      <span class="oi oi-comment-square yt-red my-auto video-icon" style="padding-top:2vh;padding-bottom:1.5vh;" title="Comment Square"></span>
-                      <h1 class="font-size-4-5 my-auto" id="top-video-4-comments">#</h1>
-                      <h3 class="text-muted my-auto">Comments</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/7/13/13;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Top Search Terms By Views</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-4-search-terms"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="top-video-5">
-                <h3>Sensors/Encoders - Most Watched Video</h3>
-                <h5>This Popular Video Shows How Customers Engage With Our Videos</h5>
-                <div class="d-none" id="top-video-5-duration-seconds"></div>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/4/5/10;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-6 h-100">
-                          <div class="position-relative h-100 ml-2" id="top-video-5-thumbnail"></div>
-                        </div>
-                        <div class="col-6 text-left">
-                          <h3 class="font-weight-bold" id="top-video-5-title">Placeholder Title</h3>
-                          <h4 class="text-muted" id="top-video-5-publish-date">Placeholder Date</h4>
-                          <h4 class="text-muted" id="top-video-5-duration">Placeholder Duration</h4>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/1/9/4;">
-                      <span class="oi oi-reload yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Reload"></span>
-                      <h1 class="font-size-3-5">
-                        <span id="top-video-5-avg-view-duration">M:SS</span>
-                        <br>
-                        <span id="top-video-5-avg-view-percentage">(%)</span>
-                      </h1>
-                      <h3 class="text-muted mt-3">Average View Duration/Percentage</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/4/9/7;">
-                      <span class="oi oi-clock yt-red video-icon" style="padding-top:1vh;padding-bottom:2vh;" title="Clock"></span>
-                      <h1 class="font-size-3-5" id="top-video-5-minutes-watched">#</h1>
-                      <h3 class="text-muted">Estimated Minutes Watched</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/1/13/7;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Daily Video Views from Last 30 Days</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-5-views-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <span class="oi oi-eye yt-red video-icon" title="Eye"></span>
-                      <h1 class="font-size-3-5" id="top-video-5-views">#</h1>
-                      <h3 class="text-muted">Views</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <span class="oi oi-people yt-red video-icon" title="People"></span>
-                      <h1 class="font-size-4" id="top-video-5-subs-net">#</h1>
-                      <h4 class="text-muted">Subscribers Gained</h4>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/10/9/13;">
-                      <span class="oi oi-thumb-up yt-red video-icon" title="Thumb Up"></span>
-                      <h1 class="font-size-3" id="top-video-5-like-ratio">%</h1>
-                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
-                      <div class="progress like-progress">
-                        <div class="progress-bar bg-yt-red" id="top-video-5-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <hr>
-                      <h2 id="top-video-5-likes"># Likes</h2>
-                      <h2 class="text-muted" id="top-video-5-dislikes"># Dislikes</h2>
-                    </div>
-                    <div class="grid-item" style="grid-area: 5/7/9/10;">
-                      <span class="oi oi-comment-square yt-red my-auto video-icon" style="padding-top:2vh;padding-bottom:1.5vh;" title="Comment Square"></span>
-                      <h1 class="font-size-4-5 my-auto" id="top-video-5-comments">#</h1>
-                      <h3 class="text-muted my-auto">Comments</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/7/13/13;">
-                      <div class="row h-100">
-                        <div class="col-12">
-                          <h2>Top Search Terms By Views</h2>
-                        </div>
-                        <div class="col-12 h-75">
-                          <div class="h-100 w-100" id="top-video-5-search-terms"></div>
+                          <div class="h-100 w-100" id="top-video-#-search-terms"></div>
                         </div>
                       </div>
                     </div>

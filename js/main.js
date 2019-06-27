@@ -1,10 +1,13 @@
 function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
-  if (carouselInner.children.thumbnails) {
+  if (carouselInner.children["real-time-stats"]) {
+    loadRealTimeStats();
+  }
+  if (carouselInner.children["thumbnails"]) {
     requestChannelNumVideos();
   }
-  if (carouselInner.children.platform) {
+  if (carouselInner.children["platform"]) {
     platformDashboardCalls(joinDate, todayDate);
   }
   if (carouselInner.children["product-categories"]) {
@@ -18,8 +21,24 @@ function loadDashboards() {
         "User Feedback List");
   }
   if (carouselInner.children["top-video-1"]) {
-    // sortVideosByViews();
-    displayTopVideosByCategory();
+    let plcVideo = getTopVideoByCategory("20000", "views")[0];
+    topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
+  }
+  if (carouselInner.children["top-video-2"]) {
+    let drivesVideo = getTopVideoByCategory("40000", "views")[0];
+    topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
+  }
+  if (carouselInner.children["top-video-3"]) {
+    let hmiVideo = getTopVideoByCategory("50000", "views")[0];
+    topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
+  }
+  if (carouselInner.children["top-video-4"]) {
+    let motionControlVideo = getTopVideoByCategory("80000", "views")[0];
+    topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
+  }
+  if (carouselInner.children["top-video-5"]) {
+    let sensorsVideo = getTopVideoByCategory("100000", "views")[0];
+    topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
   }
 }
 
@@ -215,21 +234,6 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
     i++;
   }
   return topVideos;
-}
-
-function displayTopVideosByCategory() {
-  let plcVideo = getTopVideoByCategory("20000", "views")[0];
-  let drivesVideo = getTopVideoByCategory("40000", "views")[0];
-  let hmiVideo = getTopVideoByCategory("50000", "views")[0];
-  let motionControlVideo = getTopVideoByCategory("80000", "views")[0];
-  let sensorsVideo = getTopVideoByCategory("100000", "views")[0];
-
-  let todayDate = getTodaysDate();
-  topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
-  topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
-  topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
-  topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
-  topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
 }
 
 function displayTopCategories() {
@@ -562,24 +566,36 @@ var enabledOrder = new Array(currentSettings.numEnabled);
 for (var i = 0; i < currentSettings.dashboards.length; i++) {
   var dashboard = currentSettings.dashboards[i];
   if (dashboard.index >= 0) {
-    enabledOrder.splice(dashboard.index, 1, dashboard.name);
-    themeOrder.splice(dashboard.index, 1, dashboard.theme);
+    enabledOrder.splice(dashboard.index, 1, {
+      "name": dashboard.name,
+      "theme": dashboard.theme,
+      "title": dashboard.title
+    });
   }
 }
 for (var i = 0; i < enabledOrder.length; i++) {
-  var dashboardItem = document.getElementById(enabledOrder[i]);
+  var dashboardItem = document.getElementById(enabledOrder[i].name);
   var indicator = document.getElementById("indicator").cloneNode();
-  if (i == 0) {
-    dashboardItem.classList.add("active");
-    indicator.classList.add("active");
+  if (enabledOrder[i].name.includes("top-video-")) {
+    dashboardItem = document.getElementById("top-video-#").cloneNode(true);
+    dashboardText = dashboardItem.outerHTML;
+    dashboardText = dashboardText.replace(/top-video-#/g, enabledOrder[i].name);
+    dashboardText = dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
+    var template = document.createElement("template");
+    template.innerHTML = dashboardText;
+    dashboardItem = template.content.firstChild;
+  } else {
+    dashboardItem.remove();
   }
+  document.createElement("div",dashboardItem.outerText)
+  dashboardItem.setAttribute("theme", enabledOrder[i].theme);
   indicator.id = "indicator-" + i;
   indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
-  dashboardItem.setAttribute("theme", themeOrder[i]);
-  dashboardItem.remove();
   carouselInner.appendChild(dashboardItem);
   indicatorList.appendChild(indicator);
   if (i == 0) {
+    dashboardItem.classList.add("active");
+    indicator.classList.add("active");
     updateTheme(i);
   }
 }
@@ -623,12 +639,11 @@ function updateTheme(dashboardIndex) {
   }
 }
 
-displayUploadThumbnails();
-
-if (enabledOrder.includes("real-time-stats")) {
+if (carouselInner.children["real-time-stats"]) {
   loadRealTimeStats();
 }
 
+displayUploadThumbnails();
 
 function getTopTenVideosByMonth() {
   var startDate = new Date("2010-07-1");
