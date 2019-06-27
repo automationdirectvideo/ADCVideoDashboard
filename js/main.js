@@ -544,7 +544,7 @@ console.log("Current Settings: ", currentSettings);
 
 if (currentSettings.footer == "show") {
   document.getElementsByTagName("footer")[0].classList.remove("d-none");
-  document.getElementById("main-container").style.paddingBottom = "0px";
+  document.getElementById("main-container").style.paddingBottom = "5rem";
 }
 
 // Initialize carousel
