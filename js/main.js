@@ -620,7 +620,11 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   var endIndicator = document.getElementById("indicator-" + e.to);
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
-  window.setTimeout(function(){updateTheme(e.to)}, 250);
+  window.setTimeout(function(){
+    console.log("FIX!!!");
+    fixGraphMargins();
+    updateTheme(e.to);
+  }, 250);
 });
 $(".carousel").on("slid.bs.carousel", function (e) {
   fixGraphMargins();
