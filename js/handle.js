@@ -256,17 +256,18 @@ function handleMinutesSubscribedStatus(response) {
       "UNSUBSCRIBED": "Not Subscribed",
       "SUBSCRIBED": "Subscribed"
     };
+    var total = 0;
     var xValues = [];
     var yValues = [];
     for (var i = 0; i < rows.length; i++) {
+      total += rows[i][1];
       xValues.push(rows[i][1]);
       yValues.push(labelConversion[rows[i][0]]);
     }
-    var textValues = xValues.map(String);
-    for (var i = 0; i < textValues.length; i++) {
-      textValues[i] = numberWithCommas(textValues[i]);
+    var textValues = [];
+    for (var i = 0; i < xValues.length; i++) {
+      textValues[i] = decimalToPercent(xValues[i] / total) + "%";
     }
-    console.log(textValues);
     if (xValues[0] > xValues[1]) {
       xValues.reverse();
       yValues.reverse();
