@@ -364,8 +364,8 @@ function handleViewsByDeviceType(response) {
     }
     
     var graphId = "channel-views-by-device";
-    var graphHeight = 0.33;
-    var graphWidth = 0.33;
+    var graphHeight = 0.337;
+    var graphWidth = 0.330;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
     
@@ -390,7 +390,7 @@ function handleViewsByDeviceType(response) {
         l: 20,
         r: 0,
         t: 0,
-        b: 60,
+        b: 70,
         pad: 4
       }
     };
@@ -434,7 +434,7 @@ function handleViewsByState(response) {
     }
 
     var graphId = "channel-views-by-state";
-    var graphHeight = 0.33;
+    var graphHeight = 0.337;
     var graphWidth = 0.509;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
@@ -533,8 +533,8 @@ function handleViewsByTrafficSource(response) {
     var labels = ["Advertising", "External", "YouTube<br>Search", "Related<br>Video", "Other"];
 
     var graphId = "channel-traffic-sources";
-    var graphHeight = 0.33;
-    var graphWidth = 0.33;
+    var graphHeight = 0.337;
+    var graphWidth = 0.330;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
 
