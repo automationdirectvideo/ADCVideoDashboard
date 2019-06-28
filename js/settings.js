@@ -123,6 +123,20 @@ function showFooter() {
   document.getElementsByTagName("footer")[0].classList.remove("d-none");
 }
 
+function loadDashboardList() {
+  for (let i = 0; i < currentSettings.dashboards.length; i++) {
+    let dashboard = currentSettings.dashboards[i];
+    let dashboardItem = document.getElementById("INSERT_ID").cloneNode(true);
+    let dashboardText = dashboardItem.outerHTML;
+    dashboardText = dashboardText.replace(/INSERT_ID/g, dashboard.name);
+    dashboardText = dashboardText.replace(/TITLE PLACEHOLDER/, dashboard.title);
+    var template = document.createElement("template");
+    template.innerHTML = dashboardText;
+    dashboardItem = template.content.firstChild;
+    enabledDashboardsList.appendChild(dashboardItem);
+  }
+}
+
 /**
  * Reads the current settings and updates the page to match the current settings
  */
@@ -234,6 +248,8 @@ saveButton.addEventListener("click", function () {
   window.location = "index.html";
 });
 
+loadDashboardList();
+
 // Create button press event listeners for buttons in each dashboard
 for (var i = 0; i < currentSettings.dashboards.length; i++) {
   (function () {
@@ -324,4 +340,24 @@ var disabledSortable = Sortable.create(disabledDashboards, {
   onChange: function () {
     updateDashboardText();
   }
+});
+
+// Toggle collapse/expand arrow buttons
+$(".collapse").on('show.bs.collapse', function () {
+  var id = this.id;
+  var collapseId = this.id.substring(0, id.length - 4) + "collapse";
+  var expandId = this.id.substring(0, id.length - 4) + "expand";
+  var collapseButton = document.getElementById(collapseId);
+  var expandButton = document.getElementById(expandId);
+  expandButton.classList.add("d-none");
+  collapseButton.classList.remove("d-none");
+});
+$(".collapse").on('hide.bs.collapse', function () {
+  var id = this.id;
+  var collapseId = this.id.substring(0, id.length - 4) + "collapse";
+  var expandId = this.id.substring(0, id.length - 4) + "expand";
+  var collapseButton = document.getElementById(collapseId);
+  var expandButton = document.getElementById(expandId);
+  collapseButton.classList.add("d-none");
+  expandButton.classList.remove("d-none");
 });

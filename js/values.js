@@ -6,72 +6,78 @@ const defaultSettings =
       "name": "real-time-stats",
       "icon": "fas fa-clock",
       "index": 0,
-      "theme": "light"
+      "theme": "light",
+      "title": "Real Time Channel Stats"
     },
     {
       "name": "platform",
       "icon": "fas fa-user",
       "index": 1,
-      "theme": "light"
+      "theme": "light",
+      "title": "Platform Dashboard"
     },
     {
       "name": "thumbnails",
       "icon": "fas fa-images",
       "index": 2,
-      "theme": "light"
+      "theme": "light",
+      "title": "1000 Thumbnail Dashboard"
     },
     {
       "name": "product-categories",
       "icon": "fas fa-list",
       "index": 3,
-      "theme": "light"
+      "theme": "light",
+      "title": "Product Categories Dashboard"
     },
     {
       "name": "top-ten",
       "icon": "far fa-calendar-alt",
       "index": 4,
-      "theme": "light"
+      "theme": "light",
+      "title": "Top Ten Dashboard"
     },
     {
       "name": "feedback",
       "icon": "fas fa-comment-alt",
       "index": 5,
-      "theme": "light"
+      "theme": "light",
+      "title": "User Feedback Dashboard"
     },
     {
       "name": "top-video-1",
       "icon": "fas fa-play-circle",
       "index": 6,
       "theme": "light",
-      "title": "Programmable Controllers"
+      "title": "Programmable Controllers - Most Watched Video"
     },
     {
       "name": "top-video-2",
       "icon": "fas fa-play-circle",
       "index": 7,
       "theme": "light",
-      "title": "Drives"
+      "title": "Drives - Most Watched Video"
     },
     {
       "name": "top-video-3",
       "icon": "fas fa-play-circle",
       "index": 8,
       "theme": "light",
-      "title": "HMI"
+      "title": "HMI - Most Watched Video"
     },
     {
       "name": "top-video-4",
       "icon": "fas fa-play-circle",
       "index": 9,
       "theme": "light",
-      "title": "Motion Control"
+      "title": "Motion Control - Most Watched Video"
     },
     {
       "name": "top-video-5",
       "icon": "fas fa-play-circle",
       "index": 10,
       "theme": "light",
-      "title": "Sensors/Encoders"
+      "title": "Sensors/Encoders - Most Watched Video"
     }
   ],
   "footer": "hide",
@@ -80,6 +86,3 @@ const defaultSettings =
 
 // Must be in the form YYYY-MM-DD
 const joinDate = "2008-04-11";
-
-// Average video duration in seconds of the 926 public videos in uploadsIds
-const averageVideoDuration = 251.4;

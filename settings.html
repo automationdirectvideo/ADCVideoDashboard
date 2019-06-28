@@ -107,362 +107,49 @@
           <h5>Enabled</h5>
           <p class="d-none" id="no-enabled-text">There are no enabled dashboards</p>
           <ul class="list-group mb-3" id="enabledDashboards">
-            <li class="list-group-item" data-id="real-time-stats" id="real-time-stats">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Real Time Channel Stats Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="real-time-stats-badge"></span>
-              <a class="text-dark" href="#real-time-stats-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="real-time-stats-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="real-time-stats-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="real-time-stats-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="real-time-stats-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="real-time-stats-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="platform" id="platform">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Platform Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="platform-badge"></span>
-              <a class="text-dark" href="#platform-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="platform-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="platform-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="platform-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="platform-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="platform-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="thumbnails" id="thumbnails">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;1000 Thumbnail Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="thumbnails-badge"></span>
-              <a class="text-dark" href="#thumbnails-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="thumbnails-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="thumbnails-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="thumbnails-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="thumbnails-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="thumbnails-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="product-categories" id="product-categories">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Product Categories Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="product-categories-badge"></span>
-              <a class="text-dark" href="#product-categories-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="product-categories-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="product-categories-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="product-categories-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="product-categories-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="product-categories-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-ten" id="top-ten">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Top Ten Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="top-ten-badge"></span>
-              <a class="text-dark" href="#top-ten-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-ten-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-ten-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-ten-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-ten-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-ten-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="feedback" id="feedback">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;User Feedback Dashboard</span>
-              <span class="badge badge-pill badge-theme" id="feedback-badge"></span>
-              <a class="text-dark" href="#feedback-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="feedback-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="feedback-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="feedback-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="feedback-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="feedback-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-video-1" id="top-video-1">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Programmable Controllers - Most Watched Video</span>
-              <span class="badge badge-pill badge-theme" id="top-video-1-badge"></span>
-              <a class="text-dark" href="#top-video-1-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-video-1-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-video-1-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-video-1-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-video-1-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-video-1-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-video-2" id="top-video-2">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Drives - Most Watched Video</span>
-              <span class="badge badge-pill badge-theme" id="top-video-2-badge"></span>
-              <a class="text-dark" href="#top-video-2-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-video-2-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-video-2-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-video-2-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-video-2-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-video-2-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-video-3" id="top-video-3">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;HMI - Most Watched Video</span>
-              <span class="badge badge-pill badge-theme" id="top-video-3-badge"></span>
-              <a class="text-dark" href="#top-video-3-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-video-3-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-video-3-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-video-3-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-video-3-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-video-3-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-video-4" id="top-video-4">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Motion Control - Most Watched Video</span>
-              <span class="badge badge-pill badge-theme" id="top-video-4-badge"></span>
-              <a class="text-dark" href="#top-video-4-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-video-4-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-video-4-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-video-4-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-video-4-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-video-4-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
-            <li class="list-group-item" data-id="top-video-5" id="top-video-5">
-              <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
-              <span>&nbsp;&nbsp;Sensors/Encoders - Most Watched Video</span>
-              <span class="badge badge-pill badge-theme" id="top-video-5-badge"></span>
-              <a class="text-dark" href="#top-video-5-info" data-toggle="collapse">
-                <span class="oi oi-caret-bottom float-right" style="font-size:1.1111rem;" title="Caret Down" aria-hidden="true"></span>
-              </a>
-              <div class="collapse mt-2" id="top-video-5-info">
-                <div class="card card-body">
-                  <div class="row">
-                    <div class="col-8">
-                      <strong>Enable/Disable Dashboard</strong>
-                      <p>Shows or hides this dashboard on the home screen</p>
-                    </div>
-                    <div class="col-4 text-right">
-                      <button class="btn btn-secondary" id="top-video-5-enable-btn" disabled>Enable</button>
-                      <button class="btn btn-secondary" id="top-video-5-disable-btn">Disable</button>
-                    </div>
-                  </div>
-                  <div class="row">
-                      <div class="col-8">
-                        <strong>Theme</strong>
-                        <p class="mb-0">Changes theme of this dashboard</p>
-                      </div>
-                      <div class="col-4 text-right">
-                        <button class="btn btn-light" id="top-video-5-light-btn" disabled>Light</button>
-                        <button class="btn btn-dark" id="top-video-5-dark-btn">Dark</button>
-                      </div>
-                    </div>
-                </div>
-              </div>
-            </li>
           </ul>
           <h5>Disabled</h5>
           <p id="no-disabled-text">There are no disabled dashboards</p>
           <ul class="list-group mb-3" id="disabledDashboards">
+          </ul>
+          <ul class="d-none">
+            <li class="list-group-item" data-id="INSERT_ID" id="INSERT_ID">
+              <div class="row">
+                <div class="col drag-container">
+                  <span class="oi oi-menu drag-handle" title="Menu" aria-hidden="true"></span>
+                </div>
+                <div class="col dropdown-container" data-target="#INSERT_ID-info" data-toggle="collapse">
+                  <span>TITLE PLACEHOLDER</span>
+                  <span class="badge badge-pill badge-theme" id="INSERT_ID-badge"></span>
+                  <span class="oi oi-caret-bottom collapse-btn" id="INSERT_ID-expand" title="Expand" aria-hidden="true"></span>
+                  <span class="oi oi-caret-top collapse-btn d-none" id="INSERT_ID-collapse" title="Collapse" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="collapse mt-2" id="INSERT_ID-info">
+                <div class="card card-body">
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Enable/Disable Dashboard</strong>
+                      <p>Shows or hides this dashboard on the home screen</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-secondary" id="INSERT_ID-enable-btn" disabled>Enable</button>
+                      <button class="btn btn-secondary" id="INSERT_ID-disable-btn">Disable</button>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-8">
+                      <strong>Theme</strong>
+                      <p class="mb-0">Changes theme of this dashboard</p>
+                    </div>
+                    <div class="col-4 text-right">
+                      <button class="btn btn-light" id="INSERT_ID-light-btn" disabled>Light</button>
+                      <button class="btn btn-dark" id="INSERT_ID-dark-btn">Dark</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
           </ul>
           <br>
           <div class="row justify-content-center">

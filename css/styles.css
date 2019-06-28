@@ -347,6 +347,23 @@ footer {
   cursor: -webkit-grabbing;
 }
 
+.drag-container {
+  flex: 0 0 5%;
+  max-width: 5%;
+}
+
+.dropdown-container {
+  cursor: pointer;
+  flex: 0 0 95%;
+  max-width: 95%;
+  padding-left: 0;
+}
+
+.collapse-btn {
+  float: right;
+  font-size: 1.1111rem;
+}
+
 .grey-background {
   background-color: lightgrey;
 }
