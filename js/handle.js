@@ -168,7 +168,11 @@ function handleChannelSearchTerms(response) {
     let numTerms = Math.min(9, searchTerms.length+ - 1);
     for (var i = numTerms; i >= 0; i--) {
       xValues.push(searchTerms[i][1]);
-      yValues.push(searchTerms[i][0].replace("proximity ", "proximity<br>"));
+      yValues.push(searchTerms[i][0]);
+    }
+    var textValues = xValues.map(String);
+    for (var i = 0; i < textValues.length; i++) {
+      textValues[i] = numberWithCommas(textValues[i]);
     }
 
     var graphId = "channel-search-terms";
@@ -190,7 +194,7 @@ function handleChannelSearchTerms(response) {
         y: yValues,
         type: 'bar',
         orientation: 'h',
-        text: xValues.map(String),
+        text: textValues,
         textposition: 'auto',
         marker: {
           color: 'rgb(255,0,0)'
@@ -258,13 +262,15 @@ function handleMinutesSubscribedStatus(response) {
       xValues.push(rows[i][1]);
       yValues.push(labelConversion[rows[i][0]]);
     }
-    if (xValues[0] < xValues[1]) {
+    var textValues = xValues.map(String);
+    for (var i = 0; i < textValues.length; i++) {
+      textValues[i] = numberWithCommas(textValues[i]);
+    }
+    console.log(textValues);
+    if (xValues[0] > xValues[1]) {
       xValues.reverse();
       yValues.reverse();
-    }
-    var textValues = xValues.map(String);
-    for (var i = 0; i < textValues; i++) {
-      textValues[i] = numberWithCommas(textValues[i]);
+      textValues.reverse();
     }
 
     var graphId = "channel-watch-time";
