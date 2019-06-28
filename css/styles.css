@@ -98,6 +98,7 @@ footer {
 
 .carousel-arrow {
   cursor: pointer;
+  font-size: 1.6667rem;
 }
 
 .scroll-x, .scroll-y {
