@@ -617,7 +617,11 @@ document.addEventListener("keydown", function (e) {
   } else if (e.key == "ArrowRight") {
     carouselNext();
   } else if (!isNaN(e.key)) {
-    goToCarouselItem(parseInt(e.key) - 1);
+    if (e.ctrlKey || e.altKey) {
+      goToCarouselItem(parseInt(e.key) + 9);
+    } else {
+      goToCarouselItem(parseInt(e.key) - 1);
+    }
   }
 });
 $(".carousel").on("slide.bs.carousel", function (e) {
