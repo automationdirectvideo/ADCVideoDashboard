@@ -832,6 +832,7 @@ function handleVideoSearchTerms(response, dashboardId) {
         type: 'bar',
         orientation: 'h',
         text: textValues,
+        textangle: 0,
         textposition: 'auto',
         marker: {
           color: 'rgb(255,0,0)'
