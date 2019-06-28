@@ -687,7 +687,7 @@ function handleVideoDailyViews(response, dashboardId) {
     }
 
     var graphId = dashboardId + "-views-graph";
-    var graphHeight = 0.17;
+    var graphHeight = 0.198;
     var graphWidth = 0.51;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
@@ -781,7 +781,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     }
 
     var graphId = dashboardId + "-search-terms";
-    var graphHeight = 0.17;
+    var graphHeight = 0.198;
     var graphWidth = 0.51;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
