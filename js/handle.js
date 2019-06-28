@@ -201,7 +201,7 @@ function handleChannelSearchTerms(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: 20},
       margin: {
         b: 10,
         r: 0,
@@ -258,6 +258,15 @@ function handleMinutesSubscribedStatus(response) {
       xValues.push(rows[i][1]);
       yValues.push(labelConversion[rows[i][0]]);
     }
+    if (xValues[0] < xValues[1]) {
+      xValues.reverse();
+      yValues.reverse();
+    }
+    var textValues = xValues.map(String);
+    for (var i = 0; i < textValues; i++) {
+      textValues[i] = numberWithCommas(textValues[i]);
+    }
+
     var graphId = "channel-watch-time";
     var graphHeight = 0.093;
     var graphWidth = 0.509;
@@ -276,7 +285,7 @@ function handleMinutesSubscribedStatus(response) {
       y: yValues,
       type: 'bar',
       orientation: 'h',
-      text: xValues.map(String),
+      text: textValues,
       textposition: 'auto',
       marker: {
         color: 'rgb(255,0,0)'
@@ -286,7 +295,7 @@ function handleMinutesSubscribedStatus(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: 20},
       margin: {
         r: 0,
         t: 10,
@@ -419,7 +428,7 @@ function handleViewsByState(response) {
 
     var graphId = "channel-views-by-state";
     var graphHeight = 0.33;
-    var graphWidth = 0.33;
+    var graphWidth = 0.509;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
 
