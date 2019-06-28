@@ -721,7 +721,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var width = graphWidth * document.documentElement.clientHeight;
     var xaxis = {
       automargin: true,
-      tickangle: -90,
+      tickangle: -60,
       tickformat: '%-m/%d',
       title: 'Day',
       type: 'date'
