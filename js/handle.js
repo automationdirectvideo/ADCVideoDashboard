@@ -806,6 +806,10 @@ function handleVideoSearchTerms(response, dashboardId) {
       xValues.push(searchTerms[i][1]);
       yValues.push(searchTerms[i][0]);
     }
+    var textValues = xValues.map(String);
+    for (var i = 0; i < textValues.length; i++) {
+      textValues[i] = numberWithCommas(textValues[i]);
+    }
 
     var graphId = dashboardId + "-search-terms";
     var graphHeight = 0.198;
@@ -826,7 +830,7 @@ function handleVideoSearchTerms(response, dashboardId) {
         y: yValues,
         type: 'bar',
         orientation: 'h',
-        text: xValues.map(String),
+        text: textValues,
         textposition: 'auto',
         marker: {
           color: 'rgb(255,0,0)'
