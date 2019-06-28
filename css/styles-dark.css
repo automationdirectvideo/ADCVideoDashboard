@@ -17,7 +17,7 @@ body.dark .carousel-arrow, body.dark .indicator-list {
   color: #fff;
 }
 
-body.dark .grid-item {
+body.dark .grid-item, body.dark table {
   background-color: #222;
 }
 
