@@ -168,13 +168,12 @@ function handleChannelSearchTerms(response) {
     let numTerms = Math.min(9, searchTerms.length+ - 1);
     for (var i = numTerms; i >= 0; i--) {
       xValues.push(searchTerms[i][1]);
-      yValues.push(searchTerms[i][0].replace("proximity ", "proximity<br>")
-          .replace("plc ", "plc<br>"));
+      yValues.push(searchTerms[i][0].replace("proximity ", "proximity<br>"));
     }
 
     var graphId = "channel-search-terms";
-    var graphHeight = 0.33;
-    var graphWidth = 0.33;
+    var graphHeight = 0.206;
+    var graphWidth = 0.509;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
     var yaxis = {
@@ -253,42 +252,51 @@ function handleMinutesSubscribedStatus(response) {
       "UNSUBSCRIBED": "Not Subscribed",
       "SUBSCRIBED": "Subscribed"
     };
-    var values = [];
-    var labels = [];
+    var xValues = [];
+    var yValues = [];
     for (var i = 0; i < rows.length; i++) {
-      values.push(rows[i][1]);
-      labels.push(labelConversion[rows[i][0]]);
+      xValues.push(rows[i][1]);
+      yValues.push(labelConversion[rows[i][0]]);
     }
     var graphId = "channel-watch-time";
-    var graphHeight = 0.33;
-    var graphWidth = 0.33;
+    var graphHeight = 0.093;
+    var graphWidth = 0.509;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientHeight;
+    var yaxis = {
+      showline: true,
+      showticklabels: true,
+      tickmode: 'linear',
+      automargin: true
+    };
+    var automargin = {yaxis: yaxis};
     
     var data = [{
-      values: values,
-      labels: labels,
-      textinfo: "label+percent",
-      hoverinfo: "none",
-      type: 'pie',
-      rotation: 180,
-      direction: "clockwise"
+      x: xValues,
+      y: yValues,
+      type: 'bar',
+      orientation: 'h',
+      text: xValues.map(String),
+      textposition: 'auto',
+      marker: {
+        color: 'rgb(255,0,0)'
+      }
     }];
     
     var layout = {
       height: height,
       width: width,
-      font: {size: 18},
-      automargin: true,
-      autosize: true,
-      showlegend: false,
+      font: {size: 24},
       margin: {
-        l: 0,
         r: 0,
-        t: 0,
-        b: 50,
-        pad: 4
-      }
+        t: 10,
+        b: 10
+      },
+      xaxis: {
+        visible: false,
+        automargin: true
+      },
+      yaxis: yaxis,
     };
     
     var config = {
@@ -309,11 +317,14 @@ function handleMinutesSubscribedStatus(response) {
       layout["plot_bgcolor"] = "#222";
       layout["paper_bgcolor"] = "#222";
       layout["font"]["color"] = "#fff";
+      yaxis["linecolor"] = "#fff";
+      layout["yaxis"] = yaxis;
+      automargin = {yaxis: yaxis};
     }
     
     Plotly.newPlot(graphId, data, layout, config);
     
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
 
@@ -466,6 +477,7 @@ function handleViewsByState(response) {
         }
       };
       layout["geo"]["bgcolor"] = "#222";
+      layout["geo"]["showlakes"] = false;
     }
 
     Plotly.plot(graphId, data, layout, config);
