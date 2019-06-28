@@ -4,8 +4,12 @@ body.dark {
   background-color: #111;
 }
 
-body.dark .navbar,
 body.dark .outer-shell {
+  background-color: #555;
+}
+
+body.dark .navbar,
+body.dark .outer-shell-dark {
   background-color: #333;
 }
 
