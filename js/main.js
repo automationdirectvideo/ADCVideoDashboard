@@ -58,7 +58,8 @@ function updateStats() {
     realTimeStatsCalls();
     requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Video List");
   }
-  if (enabledOrder.includes("real-time-stats")) {
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  if (carouselInner.children["real-time-stats"]) {
     console.log("Update");
     updateRealTimeStats(updateCount);
   }
