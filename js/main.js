@@ -573,7 +573,6 @@ $(".carousel").carousel({
 });
 
 // Set order of dashboards
-var themeOrder = new Array(currentSettings.numEnabled);
 var enabledOrder = new Array(currentSettings.numEnabled);
 for (var i = 0; i < currentSettings.dashboards.length; i++) {
   var dashboard = currentSettings.dashboards[i];
