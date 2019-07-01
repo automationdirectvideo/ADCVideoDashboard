@@ -246,41 +246,109 @@ function displayTopCategories() {
 
   var total = 0;
   let otherTotal = 0;
-  var graphHeight = 0.458;
-  var graphWidth = 0.535;
+  var graphHeight = 0.7679;
+  var graphWidth = 0.9595;
   var height = graphHeight * document.documentElement.clientHeight;
-  var width = graphWidth * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
   var values = [];
-  var sortedCategories = [];
   var labels = [];
-  var graphId = "categories-views-chart";
+  var colors = [];
   var type = "views";
   var cutoff = 0.025;
 
   var labelConversion = {
-    "Programmable Controllers": "Programmable<br>Controllers",
-    "Drives": "Drives",
-    "HMI": "HMI",
-    "Process Control & Measurement": "Process Control<br>& Measurement",
-    "Motion Control": "Motion Control",
-    "Cables": "Cables",
-    "Sensors / Encoders": "Sensors/<br>Encoders",
-    "Motors": "Motors",
-    "Motor Controls": "Motor Controls",
-    "Field I/O": "Field I/O",
-    "Communications": "Communications",
-    "Pneumatic Components": "Pneumatic<br>Components",
-    "Relays / Timers": "Relays/Timers",
-    "Stacklights": "Stacklights",
-    "Power Products": "Power Products",
-    "Pushbuttons / Switches / Indicators": "Pushbuttons/<br>Switches/<br>Indicators",
-    "Circuit Protection": "Circuit<br>Protection",
-    "Safety": "Safety",
-    "Tools & Test Equipment": "Tools & Test<br>Equipment",
-    "Wiring Solutions": "Wiring<br>Solutions",
-    "Enclosures": "Enclosures",
-    "Terminal Blocks": "Terminal Blocks",
-    "Power Transmission": "Power<br>Transmission"
+    "Programmable Controllers": {
+      "name": "Programmable<br>Controllers",
+      "color": "#1f77b4",
+    },
+    "Drives": {
+      "name": "Drives",
+      "color": ""
+    },
+    "HMI": {
+      "name": "HMI",
+      "color": "#ff7f0e"
+    },
+    "Process Control & Measurement": {
+      "name": "Process Control<br>& Measurement",
+      "color": "#2ca02c"
+    },
+    "Motion Control": {
+      "name": "Motion Control",
+      "color": "#d62728"
+    },
+    "Cables": {
+      "name": "Cables",
+      "color": "#e77c7c"
+    },
+    "Sensors / Encoders": {
+      "name": "Sensors/Encoders",
+      "color": "#9467bd"
+    },
+    "Motors": {
+      "name": "Motors",
+      "color": "#8c564b"
+    },
+    "Motor Controls": {
+      "name": "Motor Controls",
+      "color": "#e377c2"
+    },
+    "Field I/O": {
+      "name": "Field I/O",
+      "color": ""
+    },
+    "Communications": {
+      "name": "Communications",
+      "color": ""
+    },
+    "Pneumatic Components": {
+      "name": "Pneumatic<br>Components",
+      "color": "#7f7f7f"
+    },
+    "Relays / Timers": {
+      "name": "Relays/Timers",
+      "color": "#c6aedc"
+    },
+    "Stacklights": {
+      "name": "Stacklights",
+      "color": ""
+    },
+    "Power Products": {
+      "name": "Power Products",
+      "color": "#c6aedc"
+    },
+    "Pushbuttons / Switches / Indicators": {
+      "name": "Pushbuttons/<br>Switches/Indicators",
+      "color": "#f4cce8"
+    },
+    "Circuit Protection": {
+      "name": "Circuit<br>Protection",
+      "color": "#f4cce8"
+    },
+    "Safety": {
+      "name": "Safety",
+      "color": "#b2b2b2"
+    },
+    "Tools & Test Equipment": {
+      "name": "Tools & Test<br>Equipment",
+      "color": "#bcbd22"
+    },
+    "Wiring Solutions": {
+      "name": "Wiring Solutions",
+      "color": "#bc8b81"
+    },
+    "Enclosures": {
+      "name": "Enclosures",
+      "color": "#103d5d"
+    },
+    "Terminal Blocks": {
+      "name": "Terminal Blocks",
+      "color": "#ffb574"
+    },
+    "Power Transmission": {
+      "name": "Power<br>Transmission",
+      "color": "#165016"
+    }
   };
 
   for (var i = 0; i < categoryStats.length; i++) {
@@ -313,45 +381,148 @@ function displayTopCategories() {
         otherTotal += value;
       } else {
         values.push(value);
-        labels.push(labelConversion[category.name]);
-        sortedCategories.push({
-          "value": value,
-          "name": category.name,
-          "numVideos": category.videos.length
-        });
+        labels.push(labelConversion[category.name].name);
+        colors.push(labelConversion[category.name].color);
       }
     }
   }
   if (cutoff != undefined && cutoff > 0) {
     values.push(otherTotal);
     labels.push("Other");
+    colors.push("#5fe0ed");
   }
-  sortedCategories.sort(function(a, b) {
-    return parseInt(b["value"]) - parseInt(a["value"]);
-  });
 
-  var data = [{
+  var data1 = {
     values: values,
     labels: labels,
-    textinfo: "label+percent",
-    textposition: "auto",
+    marker: {
+      colors: colors
+    },
+    domain: {
+      row: 0,
+      column: 0
+    },
+    name: "Categories By<br>Total Views",
+    title: {
+      text: "Categories By<br>Total Views",
+      font: {
+        size: 30
+      }
+    },
+    textinfo: "label",
+    textposition: "inside",
+    hoverlabel: {
+      namelength: "-1"
+    },
+    hovertemplate: "%{label}<br>%{value} views<br>%{percent}",
     sort: false,
     type: 'pie',
-    rotation: -20
-  }];
+    rotation: 90
+  };
+
+  // Avg Views Graph
+
+  total = 0;
+  otherTotal = 0;
+  values = [];
+  labels = [];
+  colors = [];
+  type = "avgViews";
+  cutoff = 0.025;
+
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      total += Math.round(category[type]);
+    }
+  }
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      let value = Math.round(category[type]);
+      if (value / total <= cutoff) {
+        otherTotal += value;
+      } else {
+        values.push(value);
+        labels.push(labelConversion[category.name].name);
+        colors.push(labelConversion[category.name].color);
+      }
+    }
+  }
+  if (cutoff != undefined && cutoff > 0) {
+    values.push(otherTotal);
+    labels.push("Other");
+    colors.push("#5fe0ed");
+  }
+
+  var data2 = {
+    values: values,
+    labels: labels,
+    marker: {
+      colors: colors
+    },
+    domain: {
+      row: 0,
+      column: 1
+    },
+    name: "Categories By<br>Average Views Per Video",
+    title: {
+      text: "Categories By<br>Average Views Per Video",
+      font: {
+        size: 30
+      }
+    },
+    textinfo: "label",
+    textposition: "inside",
+    hoverlabel: {
+      namelength: "-1"
+    },
+    hovertemplate: "%{label}<br>~%{value} views per video<br>%{percent}",
+    sort: false,
+    type: 'pie',
+    rotation: 140
+  };
+
+  var data = [data2, data1];
 
   var layout = {
     height: height,
     width: width,
-    font: {size: 18},
+    font: {size: 25},
     automargin: true,
     autosize: true,
-    showlegend: false,
+    legend: {
+      bgcolor: "#eeeeee",
+      bordercolor: "#444",
+      font: {
+        size: 20
+      }
+    },
+    grid: {
+      rows: 1,
+      columns: 2
+    },
     margin: {
-      b:100,
-      l:70,
-      r:0,
-      t:0
+      b:5,
+      l:5,
+      r:5,
+      t:5
     }
   };
 
@@ -375,21 +546,11 @@ function displayTopCategories() {
     layout["font"]["color"] = "#fff";
   }
 
+  var graphId = "categories-double-views-chart";
+
   Plotly.newPlot(graphId, data, layout, config);
 
   recordGraphSize(graphId, graphHeight, graphWidth);
-
-  for (var i = 1; i < 9; i++) {
-    var title = document.getElementById("category-title-" + i);
-    var views = document.getElementById("category-views-" + i);
-    var videos = document.getElementById("category-videos-" + i);
-    title.innerText = sortedCategories[i - 1]["name"];
-    views.innerText = numberWithCommas(sortedCategories[i - 1]["value"]) +
-        " Total Views";
-    videos.innerText = numberWithCommas(sortedCategories[i - 1]["numVideos"]) +
-        " Videos";
-  }
-
 }
 
 // Displays thumbnails with arrows on Top Ten Dashboard
