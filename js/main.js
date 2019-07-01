@@ -404,7 +404,7 @@ function displayTopTenThumbnails() {
         var videoId = topTenSheet[j][i];
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
-            <a href="https://youtu.be/${videoId}" target="_blank" alt="YouTube Video ID: ${videoId}">
+            <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${videoId}">
               <img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
         if (j != 1) {
           var currPosition = i;
@@ -462,7 +462,7 @@ function displayUploadThumbnails() {
       var uploadThumbnails = "";
       for (var i = 0; i < uploads.length; i++) {
         uploadThumbnails += `
-          <a href="https://youtu.be/${uploads[i]}" target="_blank" alt="YouTube Video ID: ${uploads[i]}">
+          <a href="https://youtu.be/${uploads[i]}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${uploads[i]}">
             <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="YouTube Video ID: ${uploads[i]}">
           </a>`;
       }
@@ -485,7 +485,7 @@ function displayUserFeedback() {
     var feedbackText = feedbackSheet[i][1];
     var thumbnail = `
       <div class="col-4">
-        <a href="https://youtu.be/${videoId}" target="_blank" alt="YouTube Video ID: ${videoId}">
+        <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${videoId}">
           <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
         </a>
       </div>`;

@@ -910,7 +910,7 @@ function handleVideoSnippet(response, dashboardId) {
     let thumbnail = document.getElementById(dashboardId + "-thumbnail");
     let videoId = response.result.items[0].id;
     thumbnail.innerHTML = `
-      <a href="https://youtu.be/${videoId}" target="_blank" alt="YouTube Video ID: ${videoId}">
+      <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${videoId}">
         <img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
       </a>`;
 
