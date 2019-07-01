@@ -5,26 +5,30 @@ window.onload = function () {
 const doc = document.documentElement;
 
 function openFullscreen() {
-  if (doc.requestFullscreen) {
-    doc.requestFullscreen();
-  } else if (doc.mozRequestFullScreen) {
-    doc.mozRequestFullScreen();
-  } else if (doc.webkitRequestFullscreen) {
-    doc.webkitRequestFullscreen();
-  } else if (doc.msRequestFullscreen) {
-    doc.msRequestFullscreen();
+  if (!document.fullscreen) {
+    if (doc.requestFullscreen) {
+      doc.requestFullscreen();
+    } else if (doc.mozRequestFullScreen) {
+      doc.mozRequestFullScreen();
+    } else if (doc.webkitRequestFullscreen) {
+      doc.webkitRequestFullscreen();
+    } else if (doc.msRequestFullscreen) {
+      doc.msRequestFullscreen();
+    }
   }
 }
 
 function closeFullscreen() {
-  if (document.exitFullscreen) {
-    document.exitFullscreen();
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen();
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen();
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen();
+  if (document.fullscreen) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
   }
 }
 
