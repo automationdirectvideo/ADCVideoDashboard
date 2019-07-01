@@ -375,6 +375,8 @@ function displayTopCategories() {
 
   Plotly.newPlot(graphId, data, layout, config);
 
+  recordGraphSize(graphId, graphHeight, graphWidth);
+
   for (var i = 1; i < 9; i++) {
     var title = document.getElementById("category-title-" + i);
     var views = document.getElementById("category-views-" + i);
