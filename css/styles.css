@@ -233,6 +233,7 @@ footer {
 }
 
 .feedback-text {
+  font-size: 3vw;
   font-style: italic;
   overflow: auto;
 }

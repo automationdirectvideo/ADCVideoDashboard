@@ -209,7 +209,7 @@ function handleChannelSearchTerms(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 20},
+      font: {size: 24},
       margin: {
         b: 10,
         r: 0,
@@ -306,7 +306,7 @@ function handleMinutesSubscribedStatus(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 20},
+      font: {size: 24},
       margin: {
         r: 0,
         t: 10,
@@ -386,7 +386,7 @@ function handleViewsByDeviceType(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 18},
+      font: {size: 24},
       automargin: true,
       autosize: true,
       showlegend: false,
@@ -448,6 +448,7 @@ function handleViewsByState(response) {
       locationmode: 'USA-states',
       locations: locations,
       z: z,
+      hoverinfo: "location+z+text+name",
       autocolorscale: true
     }];
 
@@ -554,7 +555,7 @@ function handleViewsByTrafficSource(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 18},
+      font: {size: 24},
       automargin: true,
       autosize: true,
       showlegend: false,
@@ -756,7 +757,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 16},
+      font: {size: 24},
       margin: {
         b: 0,
         t: 0,
@@ -847,7 +848,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 16},
+      font: {size: 24},
       autosize: false,
       margin: {
         b: 0,
