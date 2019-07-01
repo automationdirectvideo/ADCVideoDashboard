@@ -25,7 +25,7 @@ const defaultSettings =
     },
     {
       "name": "product-categories",
-      "icon": "fas fa-list",
+      "icon": "fas fa-chart-pie",
       "index": 3,
       "theme": "light",
       "title": "Product Categories Dashboard"
@@ -78,10 +78,17 @@ const defaultSettings =
       "index": 10,
       "theme": "light",
       "title": "Sensors/Encoders - Most Watched Video"
+    },
+    {
+      "name": "top-video-6",
+      "icon": "fas fa-play-circle",
+      "index": 11,
+      "theme": "light",
+      "title": "Motors - Most Watched Video"
     }
   ],
   "footer": "hide",
-  "numEnabled": 11
+  "numEnabled": 12
 };
 
 // Must be in the form YYYY-MM-DD

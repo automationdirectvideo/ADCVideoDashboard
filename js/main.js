@@ -40,6 +40,10 @@ function loadDashboards() {
     let sensorsVideo = getTopVideoByCategory("100000", "views")[0];
     topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
   }
+  if (carouselInner.children["top-video-6"]) {
+    let sensorsVideo = getTopVideoByCategory("120000", "views")[0];
+    topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-6");
+  }
 }
 
 function initializeUpdater() {
