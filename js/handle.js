@@ -183,7 +183,7 @@ function handleChannelSearchTerms(response) {
     var graphHeight = 0.2039;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
     var yaxis = {
       showline: true,
       showticklabels: true,
@@ -282,7 +282,7 @@ function handleMinutesSubscribedStatus(response) {
     var graphHeight = 0.0927;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
     var yaxis = {
       showline: true,
       showticklabels: true,
@@ -353,6 +353,9 @@ function handleViewsByDeviceType(response) {
   if (response) {
     console.log("Response received", "handleViewsByDeviceType");
     var rows = response.result.rows;
+    var temp = rows[1];
+    rows[1] = rows[3];
+    rows[3] = temp;
     var labelConversion = {
       "DESKTOP": "Desktop",
       "MOBILE": "Mobile",
@@ -371,14 +374,15 @@ function handleViewsByDeviceType(response) {
     var graphHeight = 0.3337;
     var graphWidth = 0.3065;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
     
     var data = [{
       values: values,
       labels: labels,
       type: 'pie',
+      sort: false,
       textinfo: 'label+percent',
-      textposition: ["inside", "inside", "outside", "outside", "outside"],
+      textposition: ["inside", "outside", "outside", "inside", "outside"],
       rotation: 200,
       direction: 'clockwise'
     }];
@@ -441,14 +445,14 @@ function handleViewsByState(response) {
     var graphHeight = 0.3337;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
 
     var data = [{
       type: 'choropleth',
       locationmode: 'USA-states',
       locations: locations,
       z: z,
-      hoverinfo: "location+z+text+name",
+      hoverinfo: "location+z+name",
       autocolorscale: true
     }];
 
@@ -541,7 +545,7 @@ function handleViewsByTrafficSource(response) {
     var graphHeight = 0.3337;
     var graphWidth = 0.3065;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
 
     var data = [{
       values: values,
@@ -723,7 +727,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var graphHeight = 0.2026;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
     var xaxis = {
       automargin: true,
       tickangle: -60,
@@ -757,7 +761,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: 20},
       margin: {
         b: 0,
         t: 0,
@@ -821,7 +825,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     var graphHeight = 0.2026;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
     var yaxis = {
       showline: true,
       showticklabels: true,

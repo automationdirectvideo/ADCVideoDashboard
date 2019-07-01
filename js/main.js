@@ -508,7 +508,7 @@ function displayTopCategories() {
   var layout = {
     height: height,
     width: width,
-    font: {size: 25},
+    font: {size: 30},
     automargin: true,
     autosize: true,
     legend: {
