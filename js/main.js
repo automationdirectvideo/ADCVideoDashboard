@@ -56,7 +56,7 @@ function updateStats() {
   if (updateCount >= 86400) {
     updateTopTenVideoSheet();
     realTimeStatsCalls();
-    requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Video List");
+    requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Category List");
   }
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children["real-time-stats"]) {
