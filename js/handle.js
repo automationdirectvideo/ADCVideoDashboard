@@ -24,6 +24,8 @@ function handleVideoStatisticsOverall(response, settings) {
     let videoId = response.result.items[0].id;
     let videoStats = response.result.items[0].statistics;
     let durationStr = response.result.items[0].contentDetails.duration;
+    let title = response.result.items[0].snippet.title;
+    let publishDate = response.result.items[0].snippet.publishedAt;
     let duration = parseInt(isoDurationToSeconds(durationStr));
     let viewCount = parseInt(videoStats.viewCount);
     let likeCount = parseInt(videoStats.likeCount);
@@ -38,7 +40,9 @@ function handleVideoStatisticsOverall(response, settings) {
       "likes": likeCount,
       "dislikes": dislikeCount,
       "duration": duration,
-      "comments": commentCount
+      "comments": commentCount,
+      "title": title,
+      "publishDate": publishDate
     };
     allVideoStats.push(row);
     let categories = categoriesByVideoId[videoId];

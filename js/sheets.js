@@ -143,11 +143,13 @@ function recordVideoData() {
   let allVideoStats = [];
   for (var i = 1; i < videoSheet.length; i++) {
     let videoId = videoSheet[i][columns["Video ID"]];
+    let title = videoSheet[i][columns["Title"]];
     let viewCount = parseInt(videoSheet[i][columns["Views"]]);
     let likeCount = parseInt(videoSheet[i][columns["Likes"]]);
     let dislikeCount = parseInt(videoSheet[i][columns["Dislikes"]]);
     let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
+    let publishDate = parseInt(videoSheet[i][columns["Publish Date"]]);
     let row = {
       "videoId": videoId,
       "views": viewCount,
@@ -197,17 +199,19 @@ function saveCategoryStatsToSheets() {
 // Saves allVideoStats to Google Sheets
 function saveVideoStatsToSheets() {
   var values = [
-    ["Video ID", "Views", "Likes", "Dislikes", "Duration (sec)", "Comments"]
+    ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)", "Comments", "Publish Date"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
     row.push(allVideoStats[i]["videoId"]);
+    row.push(allVideoStats[i]["title"]);
     row.push(allVideoStats[i]["views"]);
     row.push(allVideoStats[i]["likes"]);
     row.push(allVideoStats[i]["dislikes"]);
     row.push(allVideoStats[i]["duration"]);
     row.push(allVideoStats[i]["comments"]);
+    row.push(allVideoStats[i]["publishDate"]);
     values.push(row);
   }
   var body= {
