@@ -689,9 +689,10 @@ function resizeGraphs() {
   this.console.log("Resize");
   let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
   let viewportHeight = document.documentElement.clientHeight;
+  let viewportWidth = document.documentElement.clientWidth;
   for (var graphId in graphSizes) {
     let height = graphSizes[graphId].height * viewportHeight;
-    let width = graphSizes[graphId].width * viewportHeight;
+    let width = graphSizes[graphId].width * viewportWidth;
     let update = {
       height: height,
       width: width
