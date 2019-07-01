@@ -489,7 +489,7 @@ function displayUserFeedback() {
           <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
         </a>
       </div>`;
-    var feedback = `<div class="col-8"><h1 class="overflow-auto">${feedbackText}</h1></div>`;
+    var feedback = `<div class="col-8"><h1 class="feedback-text">"${feedbackText}"</h1></div>`;
     var spacer = `<div class="col-12"><hr></div>`;
     if (i % 2 == 0) {
       output += feedback + thumbnail;

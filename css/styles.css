@@ -229,6 +229,11 @@ footer {
   margin-bottom: 0.5rem;
 }
 
+.feedback-text {
+  font-style: italic;
+  overflow: auto;
+}
+
 /*----- Top Video Dashboard -----*/
 
 .top-video-thumbnail {
