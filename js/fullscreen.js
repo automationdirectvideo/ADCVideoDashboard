@@ -3,7 +3,6 @@ window.onload = function () {
       .addEventListener("click", function () { toggleFullscreen(); });
 }
 const doc = document.documentElement;
-var fullscreenStatus = "closed";
 
 function openFullscreen() {
   if (doc.requestFullscreen) {
@@ -15,7 +14,6 @@ function openFullscreen() {
   } else if (doc.msRequestFullscreen) {
     doc.msRequestFullscreen();
   }
-  fullscreenStatus = "opened";
 }
 
 function closeFullscreen() {
@@ -28,16 +26,21 @@ function closeFullscreen() {
   } else if (document.msExitFullscreen) {
     document.msExitFullscreen();
   }
-  fullscreenStatus = "closed";
 }
 
 function toggleFullscreen() {
-  const fullscreenButton = document.getElementById('fullscreen-button');
-  if (fullscreenStatus == "opened") {
+  if (document.fullscreen) {
     closeFullscreen();
-    fullscreenButton.className = "fas fa-expand-arrows-alt";
   } else {
     openFullscreen();
-    fullscreenButton.className = "fas fa-compress-arrows-alt";
   }
 }
+
+document.addEventListener("fullscreenchange", function (e) {
+  const fullscreenButton = document.getElementById('fullscreen-button');
+  if (document.fullscreen) {
+    fullscreenButton.className = "fas fa-compress-arrows-alt";
+  } else {
+    fullscreenButton.className = "fas fa-expand-arrows-alt";
+  }
+});
