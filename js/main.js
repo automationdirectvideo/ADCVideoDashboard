@@ -246,8 +246,10 @@ function displayTopCategories() {
 
   var total = 0;
   let otherTotal = 0;
-  var height = 0.458 * document.documentElement.clientHeight;
-  var width = 0.535 * document.documentElement.clientHeight;
+  var graphHeight = 0.458;
+  var graphWidth = 0.535;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientHeight;
   var values = [];
   var sortedCategories = [];
   var labels = [];
