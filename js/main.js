@@ -431,7 +431,10 @@ function displayTopTenThumbnails() {
   thumbnailContainer.innerHTML = output;
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
-  new AutoDivScroll("top-ten-thumbnail-wrapper", 25, 1, 2);
+  if (!autoScrollDivs.includes("top-ten-thumbnail-wrapper")) {
+    new AutoDivScroll("top-ten-thumbnail-wrapper", 25, 1, 2);
+    autoScrollDivs.push("top-ten-thumbnail-wrapper");
+  }
 }
 
 function displayTopVideos() {
@@ -466,7 +469,10 @@ function displayUploadThumbnails() {
       var thumbnailContainer = document.getElementById("thumbnail-container");
       thumbnailContainer.innerHTML = uploadThumbnails;
 
-      new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
+      if (!autoScrollDivs.includes("thumbnail-wrapper")) {
+        new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
+        autoScrollDivs.push("thumbnail-wrapper");
+      }
     }
   }
 }
@@ -496,7 +502,11 @@ function displayUserFeedback() {
   }
   let feedbackContainer = document.getElementById("feedback-container");
   feedbackContainer.innerHTML = output;
-  new AutoDivScroll("feedback-wrapper", 25, 1, 1);
+  if (!autoScrollDivs.includes("feedback-wrapper")) {
+    new AutoDivScroll("feedback-wrapper", 25, 1, 1);
+    autoScrollDivs.push("feedback-wrapper");
+  }
+  
 }
 
 function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {

@@ -86,3 +86,5 @@ const defaultSettings =
 
 // Must be in the form YYYY-MM-DD
 const joinDate = "2008-04-11";
+
+var autoScrollDivs = [];
