@@ -361,7 +361,7 @@ function handleViewsByDeviceType(response) {
       "MOBILE": "Mobile",
       "TABLET": "Tablet",
       "TV": "TV",
-      "GAME_CONSOLE": "Game Console"
+      "GAME_CONSOLE": "Game<br>Console"
     };
     var values = [];
     var labels = [];
@@ -383,7 +383,7 @@ function handleViewsByDeviceType(response) {
       sort: false,
       textinfo: 'label+percent',
       textposition: ["inside", "outside", "outside", "inside", "outside"],
-      rotation: 200,
+      rotation: -120,
       direction: 'clockwise'
     }];
     
@@ -395,10 +395,10 @@ function handleViewsByDeviceType(response) {
       autosize: true,
       showlegend: false,
       margin: {
-        l: 20,
+        l: 0,
         r: 0,
         t: 0,
-        b: 70,
+        b: 0,
         pad: 4
       }
     };
@@ -436,9 +436,11 @@ function handleViewsByState(response) {
     var rows = response.result.rows;
     var locations = [];
     var z = []
+    var labels = [];
     for (var i = 0; i < rows.length; i++) {
       locations.push(rows[i][0].substr(3));
       z.push(rows[i][1]);
+      labels.push(numberWithCommas(rows[i][1]) + " views")
     }
 
     var graphId = "channel-views-by-state";
@@ -452,7 +454,9 @@ function handleViewsByState(response) {
       locationmode: 'USA-states',
       locations: locations,
       z: z,
-      hoverinfo: "location+z+name",
+      text: labels,
+      hovertemplate: "%{location}<br>%{text}",
+      name: "Views By State",
       autocolorscale: true
     }];
 
@@ -466,9 +470,7 @@ function handleViewsByState(response) {
           landcolor: 'rgb(217, 217, 217)',
           showlakes: true,
           lakecolor: 'rgb(255, 255, 255)',
-          subunitcolor: 'rgb(255, 255, 255)',
-          lonaxis: {},
-          lataxis: {}
+          subunitcolor: 'rgb(255, 255, 255)'
       },
       margin: {
         l: 0,
@@ -480,7 +482,8 @@ function handleViewsByState(response) {
     };
 
     var config = {
-      staticPlot: true,
+      scrollZoom: false,
+      displayModeBar: false,
       responsive: true
     };
 
@@ -732,7 +735,6 @@ function handleVideoDailyViews(response, dashboardId) {
       automargin: true,
       tickangle: -60,
       tickformat: '%-m/%d',
-      title: 'Day',
       type: 'date'
     };
     var yaxis = {
