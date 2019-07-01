@@ -9,7 +9,7 @@ function sortCategoriesByViews() {
     return parseInt(b["views"]) - parseInt(a["views"]);
   });
   console.log("Stats Sorted by views: ", categoryStats);
-  return JSON.stringify(categoryStats);
+  return categoryStats;
 }
 
 function sortCategoriesByLikes() {
@@ -18,7 +18,7 @@ function sortCategoriesByLikes() {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
   console.log("Stats Sorted by likes: ", categoryStats);
-  return JSON.stringify(categoryStats);
+  return categoryStats;
 }
 
 function sortCategoriesByAvgViews() {
@@ -27,7 +27,7 @@ function sortCategoriesByAvgViews() {
     return parseInt(b["avgViews"]) - parseInt(a["avgViews"]);
   });
   console.log("Stats Sorted by AvgViews: ", categoryStats);
-  return JSON.stringify(categoryStats);
+  return categoryStats;
 }
 
 function sortCategoriesByAvgLikes() {
@@ -36,7 +36,7 @@ function sortCategoriesByAvgLikes() {
     return parseInt(b["avgLikes"]) - parseInt(a["avgLikes"]);
   });
   console.log("Stats Sorted by AvgLikes: ", categoryStats);
-  return JSON.stringify(categoryStats);
+  return categoryStats;
 }
 
 function sortCategoriesByAvgDuration() {
@@ -45,7 +45,7 @@ function sortCategoriesByAvgDuration() {
     return parseInt(b["avgDuration"]) - parseInt(a["avgDuration"]);
   });
   console.log("Stats Sorted by AvgDuration: ", categoryStats);
-  return JSON.stringify(categoryStats);
+  return categoryStats;
 }
 
 function sortVideosByViews() {
@@ -54,8 +54,7 @@ function sortVideosByViews() {
     return parseInt(b["views"]) - parseInt(a["views"]);
   });
   console.log("Videos Sorted by Views: ", allVideoStats);
-  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
-  displayTopVideos();
+  return allVideoStats;
 }
 
 function sortVideosByLikes() {
@@ -64,6 +63,5 @@ function sortVideosByLikes() {
     return parseInt(b["likes"]) - parseInt(a["likes"]);
   });
   console.log("Videos Sorted by Likes: ", allVideoStats);
-  localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
-  displayTopVideos();
+  return allVideoStats;
 }
