@@ -454,16 +454,16 @@ function handleViewsByState(response) {
       hovertemplate: "%{location}<br>%{text}",
       name: "Views By State",
       autocolorscale: true,
+      colorbar: {
+        tickfont: {
+          size: 18
+        }
+      }
     }];
 
     var layout = {
       height: height,
       width: width,
-      colorbar: {
-        tickfont: {
-          size: 18
-        }
-      },
       geo:{
           scope: 'usa',
           countrycolor: 'rgb(255, 255, 255)',
