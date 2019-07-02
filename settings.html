@@ -21,13 +21,16 @@
   </head>
   <body>
     <div class="main-wrapper">
-      <div class="main" id="main-container">
+      <div class="main" style="padding-bottom:5rem;" id="main-container">
         <div class="container my-2" style="padding-left:18rem;padding-right:18rem;">
           <div class="row position-relative">
             <i class="fas fa-home" id="home-button" onclick="window.location='index.html';"></i>
             <i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i>
             <div class="col-2">
-              <a href="index.html" class="btn btn-light "><img class="mb-1" src="open-iconic/svg/chevron-left.svg" alt="Left Arrow" style="color:white;width:1em;height:1em;"> Back</a>
+              <a href="index.html" class="btn btn-light ">
+                <img class="mb-1" src="open-iconic/svg/chevron-left.svg" alt="Left Arrow" style="color:white;width:1em;height:1em;">
+                Back
+              </a>
             </div>
             <div class="col-8 text-center">
               <h3>Settings</h3>
@@ -67,16 +70,6 @@
             <div class="col-4 text-right">
               <button class="btn btn-secondary" id="enable-all-btn">Enable All</button>
               <button class="btn btn-secondary" id="disable-all-btn">Disable All</button>
-            </div>
-          </div>
-          <div class="row justify-content-between">
-            <div class="col-8">
-              <strong>Footer</strong>
-              <p>Show or hide the links in the footer</p>
-            </div>
-            <div class="col-4 text-right">
-              <button class="btn btn-primary d-none" id="show-footer-btn">Show</button>
-              <button class="btn btn-secondary" id="hide-footer-btn">Hide</button>
             </div>
           </div>
           <div class="row justify-content-between">
@@ -140,31 +133,15 @@
           <br>
           <div class="row justify-content-center">
             <div class="col-3 text-center">
-              <a href="index.html" class="btn btn-danger" id="cancel-btn">Cancel</a>
+              <a href="index.html" class="btn btn-danger" style="font-size:1.5rem;" id="cancel-btn">Cancel</a>
             </div>
             <div class="col-3 text-center">
-              <button class="btn btn-success" id="save-btn">Save Changes</button>
+              <button class="btn btn-success" style="font-size:1.5rem;" id="save-btn">Save Changes</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <footer class="d-none">
-      <div class="container">
-        <div class="row justify-content-center">
-          <div class="ml-auto my-auto col-6 text-center">
-            <a class="btn btn-light btn-lg" style="border-color:#282828;" href="https://www.youtube.com/automationdirect">
-              <img src="imgs/yt_icon_rgb.png" alt="YouTube Play Button Logo" style="height:1.6667rem;"> Visit Channel
-            </a>
-          </div>
-          <div class="mr-auto my-auto col-6 text-center">
-            <a class="btn btn-light btn-lg" style="border-color:#282828;" href="https://www.automationdirect.com/adc/home/home">
-              <img src="imgs/adc_logo_fullcolor_transparent.png" alt="ADC Logo" style="height:2rem;"> Visit AutomationDirect.com
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
     <!-- Warning modal for resetting settings -->
     <div class="modal fade" id="resetModal" tabindex="-1" role="dialog" aria-labelledby="resetModal" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">

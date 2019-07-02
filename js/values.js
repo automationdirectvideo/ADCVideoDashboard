@@ -87,7 +87,6 @@ const defaultSettings =
       "title": "Motors - Most Watched Video"
     }
   ],
-  "footer": "hide",
   "numEnabled": 12
 };
 

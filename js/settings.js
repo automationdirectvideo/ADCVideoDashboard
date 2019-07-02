@@ -30,19 +30,6 @@ function recordCycleSpeed(speed) {
 }
 
 /**
- * Records whether the footer is shown or hidden to current settings
- *
- * @param {string} display the display status of the footer
- */
-function recordFooterDisplay(display) {
-  if (display == "show" || display == "hide") {
-    currentSettings.footer = display;
-  } else {
-    console.error("Type Error: ", "Parameter display is not a supported value");
-  }
-}
-
-/**
  * Moves the dashboards in the startList to the bottom of the targetList
  *
  * @param {HTMLUListElement} startList starting unordered list of dashboards
@@ -105,24 +92,6 @@ function recordDashboardOrderandThemes() {
   currentSettings.numEnabled = numEnabled;
 }
 
-/**
- * Hides footer and toggles display of show and hide footer buttons
- */
-function hideFooter() {
-  hideFooterButton.classList.add("d-none");
-  showFooterButton.classList.remove("d-none");
-  document.getElementsByTagName("footer")[0].classList.add("d-none");
-}
-
-/**
- * Shows footer and toggles display of show and hide footer buttons
- */
-function showFooter() {
-  showFooterButton.classList.add("d-none");
-  hideFooterButton.classList.remove("d-none");
-  document.getElementsByTagName("footer")[0].classList.remove("d-none");
-}
-
 function loadDashboardList() {
   for (let i = 0; i < currentSettings.dashboards.length; i++) {
     let dashboard = currentSettings.dashboards[i];
@@ -142,11 +111,6 @@ function loadDashboardList() {
  */
 function loadSettings() {
   cycleSpeedInput.value = currentSettings.cycleSpeed;
-  if (currentSettings.footer == "show") {
-    showFooter();
-  } else {
-    hideFooter();
-  }
   var enabledOrder = new Array(currentSettings.numEnabled);
   var disabledOrder = new Array();
   for (var i = 0; i < currentSettings.dashboards.length; i++) {
@@ -198,8 +162,6 @@ const allLightThemeButton = document.getElementById("all-light-btn");
 const allDarkThemeButton = document.getElementById("all-dark-btn");
 const enableAllButton = document.getElementById("enable-all-btn");
 const disableAllButton = document.getElementById("disable-all-btn");
-const showFooterButton = document.getElementById("show-footer-btn");
-const hideFooterButton = document.getElementById("hide-footer-btn");
 const resetButton = document.getElementById("confirm-reset-btn");
 const saveButton = document.getElementById("save-btn");
 
@@ -224,16 +186,6 @@ enableAllButton.addEventListener("click", function () {
 disableAllButton.addEventListener("click", function () {
   moveDashboards(enabledDashboardsList, disabledDashboardsList);
   updateDashboardText();
-});
-
-showFooterButton.addEventListener("click", function () {
-  recordFooterDisplay("show");
-  showFooter();
-});
-
-hideFooterButton.addEventListener("click", function () {
-  recordFooterDisplay("hide");
-  hideFooter();
 });
 
 resetButton.addEventListener("click", function () {

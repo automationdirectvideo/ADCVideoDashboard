@@ -17,27 +17,9 @@ body {
 
 .main {
   overflow: auto;
-  padding-bottom: 5rem; /* This needs to be > footer height */
+  padding-bottom: 0;
 }
 
-footer {
-  border-top: 1px solid gray;
-  bottom: 0;
-  clear: both;
-  height: 4.4444rem;
-  left: 0;
-  margin-top: -4.4444rem;
-  padding-top: 0.5555rem;
-  padding-bottom: 0.5555rem;
-  position: relative;
-  width: 100%;
-}
-
-@media screen and (max-width: 1000px) {
-  footer {
-    display: none;
-  }
-}
 
 @media (min-width: 1300px) {
   .container {
