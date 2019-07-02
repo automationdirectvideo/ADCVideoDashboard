@@ -513,7 +513,6 @@ function displayTopCategories() {
     autosize: true,
     legend: {
       bgcolor: "#eeeeee",
-      bordercolor: "#444",
       font: {
         size: 20
       }
@@ -539,7 +538,7 @@ function displayTopCategories() {
   var theme = "";
   var index = 0;
   while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "platform") {
+    if (currentSettings.dashboards[index].name == "product-categories") {
       theme = currentSettings.dashboards[index].theme;
     }
     index++;
@@ -548,6 +547,8 @@ function displayTopCategories() {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
     layout["font"]["color"] = "#fff";
+    layout["legend"]["bgcolor"] = "#444";
+    layout["legend"]["font"]["color"] = "#fff";
   }
 
   var graphId = "categories-double-views-chart";
