@@ -37,10 +37,10 @@ function handleVideoStatisticsOverall(response, settings) {
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
-      "duration": duration,
       "comments": commentCount
     };
     allVideoStats.push(row);
+    statsByVideoId[videoId]["duration"] = duration;
     let categories = statsByVideoId[videoId]["categories"];
     for (let i = 0; i < categories.length; i++) {
       let categoryId = categories[i];

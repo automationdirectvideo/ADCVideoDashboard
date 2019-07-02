@@ -333,6 +333,6 @@ function realTimeStatsCalls() {
 function topVideoCalls(startDate, endDate, videoId, dashboardId) {
   requestVideoSearchTerms(startDate, endDate, videoId, dashboardId);
   requestVideoDailyViews(getDateFromDaysAgo(32), endDate, videoId, dashboardId);
-  requestVideoSnippet(videoId, dashboardId);
   requestVideoBasicStats(startDate, endDate, videoId, dashboardId);
+  displayTopVideoTitle(videoId, dashboardId);
 }

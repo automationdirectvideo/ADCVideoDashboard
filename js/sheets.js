@@ -163,13 +163,13 @@ function recordVideoData() {
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
-      "duration": duration,
       "comments": commentCount
     };
     allVideoStats.push(row);
     statsByVideoId[videoId] = {
       "title": title,
-      "publishDate": publishDate
+      "publishDate": publishDate,
+      "duration": duration
     };
     uploads.push(videoId);
   }
@@ -224,7 +224,7 @@ function saveVideoStatsToSheets() {
     row.push(allVideoStats[i]["views"]);
     row.push(allVideoStats[i]["likes"]);
     row.push(allVideoStats[i]["dislikes"]);
-    row.push(allVideoStats[i]["duration"]);
+    row.push(statsByVideoId[videoId]["duration"]);
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
     values.push(row);

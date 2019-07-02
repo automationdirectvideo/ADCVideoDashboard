@@ -650,6 +650,37 @@ function displayTopVideos() {
   }
 }
 
+function displayTopVideoTitle(videoId, dashboardId) {
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  let title = document.getElementById(dashboardId + "-title");
+  title.innerHTML = statsByVideoId[videoId]["title"];
+  let duration = statsByVideoId[videoId]["duration"];
+  let videoDuration = isoDurationToSeconds(duration);
+  document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
+      secondsToDuration(videoDuration);
+  document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
+      videoDuration;
+
+  let publishDateText = document.getElementById(dashboardId + "-publish-date");
+  let publishDate = statsByVideoId[videoId]["publishDate"];
+  let year = publishDate.slice(0, 4);
+  let month = publishDate.slice(5, 7);
+  let day = publishDate.slice(8, 10);
+  publishDate = month + "/" + day + "/" + year;
+  publishDateText.innerHTML = "Published: " + publishDate;
+
+  let thumbnail = document.getElementById(dashboardId + "-thumbnail");
+  let videoTitle = "YouTube Video ID: " + videoId;
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  if (statsByVideoId && statsByVideoId[videoId]) {
+    videoTitle = statsByVideoId[videoId]["title"];
+  }
+  thumbnail.innerHTML = `
+    <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
+      <img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
+    </a>`;
+}
+
 // Load thumbnails in 1000 thumbnail dashboard
 function displayUploadThumbnails() {
   let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
