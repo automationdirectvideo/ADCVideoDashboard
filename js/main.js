@@ -21,7 +21,8 @@ function loadDashboards() {
     }
   }
   if (carouselInner.children["top-ten"]) {
-    displayTopTenThumbnails();
+    requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+        "Top Ten Videos");
   }
   if (carouselInner.children["feedback"]) {
     requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
