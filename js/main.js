@@ -655,11 +655,10 @@ function displayTopVideoTitle(videoId, dashboardId) {
   let title = document.getElementById(dashboardId + "-title");
   title.innerHTML = statsByVideoId[videoId]["title"];
   let duration = statsByVideoId[videoId]["duration"];
-  let videoDuration = isoDurationToSeconds(duration);
   document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
-      secondsToDuration(videoDuration);
+      secondsToDuration(duration);
   document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
-      videoDuration;
+      duration;
 
   let publishDateText = document.getElementById(dashboardId + "-publish-date");
   let publishDate = statsByVideoId[videoId]["publishDate"];
