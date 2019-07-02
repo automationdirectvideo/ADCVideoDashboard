@@ -2,7 +2,12 @@ function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
   if (carouselInner.children["real-time-stats"]) {
-    loadRealTimeStats();
+    try {
+      loadRealTimeStats();
+    } catch (err) {
+      console.log(err);
+      realTimeStatsCalls();
+    }
   }
   if (carouselInner.children["thumbnails"]) {
     requestChannelNumVideos();
