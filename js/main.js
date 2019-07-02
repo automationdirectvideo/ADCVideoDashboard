@@ -11,7 +11,14 @@ function loadDashboards() {
     platformDashboardCalls(joinDate, todayDate);
   }
   if (carouselInner.children["product-categories"]) {
-    displayTopCategories();
+    try {
+      displayTopCategories();
+    } catch (TypeError) {
+      console.error(TypeError);
+      requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+          "Category Stats");
+      window.setTimeout(displayTopCategories, 10000);
+    }
   }
   if (carouselInner.children["top-ten"]) {
     displayTopTenThumbnails();
@@ -62,6 +69,9 @@ function updateStats() {
     realTimeStatsCalls();
     requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
         "Video List");
+  }
+  if (updateCount % 360) {
+    loadDashboards();
   }
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children["real-time-stats"]) {
