@@ -515,7 +515,8 @@ function displayTopCategories() {
       bgcolor: "#eeeeee",
       font: {
         size: 20
-      }
+      },
+      yanchor: "middle"
     },
     grid: {
       rows: 1,

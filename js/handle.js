@@ -394,7 +394,7 @@ function handleViewsByDeviceType(response) {
         l: 0,
         r: 0,
         t: 0,
-        b: 0,
+        b: 20,
         pad: 4
       }
     };
