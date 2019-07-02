@@ -280,7 +280,7 @@ footer {
 }
 
 .top-video-retention, .top-video-like {
-  padding-bottom: 1rem;
+  padding-bottom: 0.6667rem;
   padding-top: 0.6667rem;
 }
 
@@ -288,33 +288,30 @@ footer {
   font-size: 4.5vw;
 }
 
-.top-video-retention {
-  font-size: 4.5rem;
+.top-video-retention, .top-video-like {
+  font-size: 5rem;
 }
 
 .top-video-clock {
   font-size: 5.25vw;
 }
 
-.top-video-like {
-  font-size: 4rem;
-}
-
 .top-video-stat, .top-video-stat-subs, .top-video-stat-comment {
-  font-size: 3.5vw;
+  font-size: 4vw;
   margin: 0;
 }
 
-.top-video-stat-comment {
-  font-size: 4vw;
-}
-
-.top-video-stat-subs {
-  font-size: 4vw;
+.top-video-stat-comment, .top-video-stat-subs {
+  font-size: 4.5vw;
 }
 
 .top-video-caption {
   font-size: 1.5vw;
+  margin: 0;
+}
+
+.top-video-caption-views, .top-video-caption-comment {
+  font-size: 2vw;
   margin: 0;
 }
 
