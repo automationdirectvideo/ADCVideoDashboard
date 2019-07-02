@@ -1,5 +1,6 @@
 function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  var todayDate = getTodaysDate();
   if (carouselInner.children["real-time-stats"]) {
     loadRealTimeStats();
   }
