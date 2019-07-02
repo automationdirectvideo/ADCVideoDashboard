@@ -62,7 +62,7 @@ function recordCategoryListData() {
 // Initiates displayUploadThumbnails() and getAllVideoStats()
 function recordVideoListData() {
   let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
-  let categoriesByVideoId = {}; // videoId : array of categoryIds its in
+  let statsByVideoId = {};
   let uploads = [];
   let columns = {};
   let columnHeaders = videoList[0];
@@ -74,15 +74,21 @@ function recordVideoListData() {
     let organic = ("TRUE" === row[columns["Organic"]]);
     if (organic) {
       let videoId = row[columns["Video ID"]];
+      let title = row[columns["Title"]];
+      let publishDate = row[columns["Publish Date"]];
       let categoryString = row[columns["Categories"]];
       categoryString.replace(/\s/g, ''); // Removes whitespace
-      categoriesByVideoId[videoId] = categoryString.split(",");
+      statsByVideoId[videoId] = {
+        "categories": categoryString.split(","),
+        "title": title,
+        "publishDate": publishDate
+      };
 
       uploads.push(videoId);
     }
   }
   localStorage.removeItem("videoListSheet");
-  localStorage.setItem("categoriesByVideoId", JSON.stringify(categoriesByVideoId));
+  localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
 
   displayUploadThumbnails();
@@ -131,7 +137,8 @@ function recordCategoryData() {
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
 }
 
-// Records video data from Google Sheet to localStorage.allVideoStats & .uploads
+// Records video data from Google Sheet to localStorage.allVideoStats, .uploads,
+// and .statsByVideoId
 function recordVideoData() {
   let videoSheet = JSON.parse(localStorage.getItem("videoSheet"));
   let columns = {};
@@ -141,6 +148,7 @@ function recordVideoData() {
   }
   let uploads = [];
   let allVideoStats = [];
+  let statsByVideoId = {};
   for (var i = 1; i < videoSheet.length; i++) {
     let videoId = videoSheet[i][columns["Video ID"]];
     let title = videoSheet[i][columns["Title"]];
@@ -159,10 +167,15 @@ function recordVideoData() {
       "comments": commentCount
     };
     allVideoStats.push(row);
+    statsByVideoId[videoId] = {
+      "title": title,
+      "publishDate": publishDate
+    };
     uploads.push(videoId);
   }
   localStorage.removeItem("videoSheet");
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+  localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
 }
 
@@ -202,16 +215,18 @@ function saveVideoStatsToSheets() {
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)", "Comments", "Publish Date"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
-    row.push(allVideoStats[i]["videoId"]);
-    row.push(allVideoStats[i]["title"]);
+    var videoId = allVideoStats[i]["videoId"];
+    row.push(videoId);
+    row.push(statsByVideoId[videoId]["title"]);
     row.push(allVideoStats[i]["views"]);
     row.push(allVideoStats[i]["likes"]);
     row.push(allVideoStats[i]["dislikes"]);
     row.push(allVideoStats[i]["duration"]);
     row.push(allVideoStats[i]["comments"]);
-    row.push(allVideoStats[i]["publishDate"]);
+    row.push(statsByVideoId[videoId]["publishDate"]);
     values.push(row);
   }
   var body= {

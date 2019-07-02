@@ -18,10 +18,10 @@ function requestChannelNumVideos() {
 function requestVideoStatisticsOverall(settings) {
   var videoId = settings["uploads"][settings["index"]];
   var request = {
-    "part": "statistics,contentDetails,snippet",
+    "part": "statistics,contentDetails",
     "id": videoId
   };
-  callDataAPIVideos(request, "VideoSnippet: ", handleVideoStatisticsOverall, settings);
+  callDataAPIVideos(request, "VideoStatistics: ", handleVideoStatisticsOverall, settings);
 }
 
 

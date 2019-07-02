@@ -24,15 +24,13 @@ function handleVideoStatisticsOverall(response, settings) {
     let videoId = response.result.items[0].id;
     let videoStats = response.result.items[0].statistics;
     let durationStr = response.result.items[0].contentDetails.duration;
-    let title = response.result.items[0].snippet.title;
-    let publishDate = response.result.items[0].snippet.publishedAt;
     let duration = parseInt(isoDurationToSeconds(durationStr));
     let viewCount = parseInt(videoStats.viewCount);
     let likeCount = parseInt(videoStats.likeCount);
     let dislikeCount = parseInt(videoStats.dislikeCount);
     let commentCount = parseInt(videoStats.commentCount);
     let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-    let categoriesByVideoId = JSON.parse(localStorage.getItem("categoriesByVideoId"));
+    let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
     let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
     let row = {
       "videoId": videoId,
@@ -40,12 +38,10 @@ function handleVideoStatisticsOverall(response, settings) {
       "likes": likeCount,
       "dislikes": dislikeCount,
       "duration": duration,
-      "comments": commentCount,
-      "title": title,
-      "publishDate": publishDate
+      "comments": commentCount
     };
     allVideoStats.push(row);
-    let categories = categoriesByVideoId[videoId];
+    let categories = statsByVideoId[videoId]["categories"];
     for (let i = 0; i < categories.length; i++) {
       let categoryId = categories[i];
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
