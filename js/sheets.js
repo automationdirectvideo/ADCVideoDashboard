@@ -157,7 +157,7 @@ function recordVideoData() {
     let dislikeCount = parseInt(videoSheet[i][columns["Dislikes"]]);
     let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
-    let publishDate = parseInt(videoSheet[i][columns["Publish Date"]]);
+    let publishDate = videoSheet[i][columns["Publish Date"]].substr(0, 10);
     let row = {
       "videoId": videoId,
       "views": viewCount,
