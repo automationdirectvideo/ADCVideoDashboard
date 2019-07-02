@@ -8,7 +8,6 @@ body.dark .outer-shell {
   background-color: #444;
 }
 
-body.dark .navbar,
 body.dark .outer-shell-dark {
   background-color: #333;
 }
@@ -16,7 +15,6 @@ body.dark .outer-shell-dark {
 body.dark h1, body.dark h2, body.dark h3, body.dark h4,
 body.dark h5, body.dark h6, body.dark .h1, body.dark .h2,
 body.dark .h3, body.dark .h4, body.dark .h5, body.dark .h6,
-body.dark .navbar-brand, body.dark .navbar .fas,
 body.dark .carousel-arrow, body.dark .indicator-list,
 body.dark #settings-button, body.dark #fullscreen-button {
   color: #fff;

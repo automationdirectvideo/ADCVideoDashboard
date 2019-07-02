@@ -22,24 +22,10 @@
   <body>
     <div class="main-wrapper">
       <div class="main" id="main-container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a href ="index.html" class="navbar-brand">
-            <img src="imgs/yt_icon_rgb.png" style="width:2.3333rem" class="d-inline-block align-top" alt="">
-            AutomationDirect.com YouTube Dashboard
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-              <li class="navbar-item mr-2"><a href="index.html"><i class="fas fa-home"></i></a></li>
-              <li class="navbar-item"><i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i></li>
-            </ul>
-          </div>
-        </nav>
         <div class="container my-2" style="padding-left:18rem;padding-right:18rem;">
-          <div class="row">
+          <div class="row position-relative">
+            <i class="fas fa-home" id="home-button" onclick="window.location='index.html';"></i>
+            <i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i>
             <div class="col-2">
               <a href="index.html" class="btn btn-light "><img class="mb-1" src="open-iconic/svg/chevron-left.svg" alt="Left Arrow" style="color:white;width:1em;height:1em;"> Back</a>
             </div>
