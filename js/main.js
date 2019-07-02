@@ -516,7 +516,7 @@ function displayTopCategories() {
       font: {
         size: 20
       },
-      yanchor: "middle"
+      y: 0.5
     },
     grid: {
       rows: 1,
