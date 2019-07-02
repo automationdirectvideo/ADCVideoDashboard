@@ -410,7 +410,7 @@ function displayTopCategories() {
     title: {
       text: "Categories By<br>Total Views",
       font: {
-        size: 30
+        size: 45
       }
     },
     textinfo: "label",
@@ -489,7 +489,7 @@ function displayTopCategories() {
     title: {
       text: "Categories By<br>Average Views Per Video",
       font: {
-        size: 30
+        size: 45
       }
     },
     textinfo: "label",

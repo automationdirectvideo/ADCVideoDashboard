@@ -30,6 +30,10 @@ body {
   }
 }
 
+.dashboard-title {
+  font-size: 3rem;
+}
+
 #settings-button, #home-button, #fullscreen-button {
   cursor: pointer;
   font-size: 1.75rem;
