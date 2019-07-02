@@ -1,6 +1,5 @@
 function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  var todayDate = getTodaysDate();
   if (carouselInner.children["real-time-stats"]) {
     loadRealTimeStats();
   }
@@ -28,6 +27,19 @@ function loadDashboards() {
     requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
         "User Feedback List");
   }
+  try {
+    loadTopVideoDashboards();
+  } catch (err) {
+    console.log(err);
+    requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+        "Video Stats");
+    window.setTimeout(loadTopVideoDashboards, 5000);
+  }
+}
+
+function loadTopVideoDashboards() {
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  var todayDate = getTodaysDate();
   if (carouselInner.children["top-video-1"]) {
     let plcVideo = getTopVideoByCategory("20000", "views")[0];
     topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
