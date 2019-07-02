@@ -70,7 +70,7 @@ function updateStats() {
     requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
         "Video List");
   }
-  if (updateCount % 3600) {
+  if (updateCount % 3600 == 0) {
     loadDashboards();
   }
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
