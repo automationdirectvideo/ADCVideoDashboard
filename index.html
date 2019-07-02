@@ -26,23 +26,9 @@
   <body>
     <div class="main-wrapper">
       <div class="main" style="padding-bottom:0;" id="main-container">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a href ="index.html" class="navbar-brand">
-            <img src="imgs/yt_icon_rgb.png" style="width:2.3333rem" class="d-inline-block align-top" alt="">
-            AutomationDirect.com YouTube Dashboard
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" 
-              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ml-auto">
-              <li class="navbar-item mr-2"><a href="settings.html"><i class="fas fa-cog"></i></a></li>
-              <li class="navbar-item"><i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i></li>
-            </ul>
-          </div>
-        </nav>
-        <div class="container my-2">
+        <div class="container my-1 position-relative">
+          <i class="fas fa-cog" id="settings-button" onclick="window.location='settings.html';"></i>
+          <i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i>
           <div id="login-box">
             <p>Log In With Google</p>
             <button class="btn btn-primary" id="authorize-button">Log In</button>
@@ -55,8 +41,7 @@
             </div>
             <div class="d-none" id="dashboard-holder">
               <div class="carousel-item" id="real-time-stats">
-                <h1>Real Time Channel Statistics</h1>
-                <h4>Watch These Key Channel Statistics Update in <span style="font-style:italic;text-decoration:underline;">Real Time!</span></h4>
+                <h1 class="dashboard-title">Watch These Key Channel Statistics Update in <span style="font-style:italic;text-decoration:underline;">Real Time!</span></h1>
                 <div class="outer-shell container mb-1">
                   <div class="grid-container">
                     <div class="grid-item" style="grid-area: 1/1/4/13;">
@@ -151,8 +136,7 @@
                 </div>
               </div>
               <div class="carousel-item" id="platform">
-                <h1>Platform Dashboard</h1>
-                <h4>How are Users Accessing Our Videos?</h4>
+                <h1 class="dashboard-title">How are Users Accessing Our Videos?</h1>
                 <div class="outer-shell container mb-1">
                   <div class="grid-container">
                     <div class="grid-item" style="grid-area: 1/1/7/5;">
@@ -267,8 +251,7 @@
                 </div>
               </div>
               <div class="carousel-item" id="thumbnails">
-                <h1>1000 Thumbnail Dashboard</h1>
-                <h4>We have <span style="text-decoration:underline;" id="num-videos">1000+</span> videos servicing the entire chain!</h4>
+                <h1 class="dashboard-title">We have <span style="text-decoration:underline;" id="num-videos">1000+</span> videos servicing the entire chain!</h1>
                 <div class="outer-shell outer-shell-dark container mb-1">
                   <div class="scroll-y" id="thumbnail-wrapper">
                     <div id="thumbnail-container">
@@ -277,8 +260,7 @@
                 </div>
               </div>
               <div class="carousel-item" id="product-categories">
-                <h1>Product Categories Dashboard</h1>
-                <h4>Which Product Categories are our Customers Watching the Most?</h4>
+                <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                 <div class="outer-shell container mb-1">
                   <div class="grid-container">
                     <div class="grid-item" style="grid-area: 1/1/13/13;">
@@ -292,8 +274,7 @@
                 </div>
               </div>
               <div class="carousel-item" id="top-ten">
-                <h1>Top Ten Dashboard</h1>
-                <h4>Which Products are our Customers Most Interested in Learning About Each Month?</h4>
+                <h1 class="dashboard-title">Which Products are our Customers Most Interested in Learning About Each Month?</h1>
                 <div class="outer-shell outer-shell-dark container mb-1">
                   <div class="scroll-x" id="top-ten-thumbnail-wrapper">
                     <div class="column" id="top-ten-thumbnail-container">
@@ -302,8 +283,7 @@
                 </div>
               </div>
               <div class="carousel-item" id="feedback">
-                <h1>User Feedback Dashboard</h1>
-                <h4>What Feedback Are Users Commenting on our YouTube Videos?</h4>
+                <h1 class="dashboard-title">What Feedback Are Users Commenting on our YouTube Videos?</h1>
                 <div class="outer-shell outer-shell-dark container mb-1">
                   <div class="scroll-y" style="overflow-x:hidden;" id="feedback-wrapper">
                     <div class="row align-items-center" style="margin-right:0px;" id="feedback-container">
@@ -312,8 +292,7 @@
                 </div>
               </div>
               <div class="carousel-item" id="top-video-#">
-                <h1>TITLE PLACEHOLDER</h1>
-                <h4>This Popular Video Shows How Customers Engage With Our Videos!</h4>
+                <h1 class="dashboard-title">TITLE PLACEHOLDER</h1>
                 <div class="d-none" id="top-video-#-duration-seconds"></div>
                 <div class="outer-shell container mb-1">
                   <div class="grid-container">
