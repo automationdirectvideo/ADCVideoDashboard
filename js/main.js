@@ -671,7 +671,6 @@ function displayTopVideoTitle(videoId, dashboardId) {
 
   let thumbnail = document.getElementById(dashboardId + "-thumbnail");
   let videoTitle = "YouTube Video ID: " + videoId;
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   if (statsByVideoId && statsByVideoId[videoId]) {
     videoTitle = statsByVideoId[videoId]["title"];
   }
