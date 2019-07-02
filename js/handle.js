@@ -729,14 +729,16 @@ function handleVideoDailyViews(response, dashboardId) {
     var width = graphWidth * document.documentElement.clientWidth;
     var xaxis = {
       automargin: true,
+      fixedrange: true,
       tickangle: -60,
       tickformat: '%-m/%d',
       type: 'date'
     };
     var yaxis = {
+      automargin: true,
+      fixedrange: true,
       showline: true,
       showticklabels: true,
-      automargin: true,
       title: 'Views'
     };
     var automargin = {
@@ -769,7 +771,7 @@ function handleVideoDailyViews(response, dashboardId) {
     };
 
     var config = {
-      staticPlot: true, 
+      displayModeBar: false,
       responsive: true
     };
 
