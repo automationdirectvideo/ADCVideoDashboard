@@ -318,26 +318,38 @@
                 <div class="outer-shell container mb-1">
                   <div class="grid-container">
                     <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <span class="fas fa-eye top-video-eye" title="Views"></span>
-                      <h1 class="font-size-3-5" id="top-video-#-views">#</h1>
-                      <h3 class="text-muted">Views</h3>
+                      <div class="row align-items-center h-100">
+                        <div class="col-3">
+                          <span class="fas fa-eye top-video-eye" title="Views"></span>
+                        </div>
+                        <div class="col-9">
+                          <h1 class="top-video-stat" id="top-video-#-views">#</h1>
+                          <h3 class="top-video-caption text-muted">Views</h3>
+                        </div>
+                      </div>
                     </div>
-                    <div class="grid-item" style="grid-area: 1/4/5/10;">
+                    <div class="grid-item" style="grid-area: 1/4/6/10;">
                       <div class="row align-items-center h-100">
                         <div class="col-6 h-100">
                           <div class="position-relative h-100 ml-2" id="top-video-#-thumbnail"></div>
                         </div>
                         <div class="col-6 text-left">
-                          <h3 class="font-weight-bold" id="top-video-#-title">Placeholder Title</h3>
-                          <h4 class="text-muted" id="top-video-#-publish-date">Placeholder Date</h4>
-                          <h4 class="text-muted" id="top-video-#-duration">Placeholder Duration</h4>
+                          <h1 class="font-weight-bold" id="top-video-#-title">Placeholder Title</h1>
+                          <h3 class="text-muted" id="top-video-#-publish-date">Placeholder Date</h3>
+                          <h3 class="text-muted" id="top-video-#-duration">Placeholder Duration</h3>
                         </div>
                       </div>
                     </div>
                     <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <span class="fas fa-users top-video-people" title="Subscribers"></span>
-                      <h1 class="font-size-4" id="top-video-#-subs-net">#</h1>
-                      <h4 class="text-muted">Subscribers Gained</h4>
+                      <div class="row align-items-center h-100">
+                        <div class="col-3">
+                          <span class="fas fa-users top-video-people" title="Subscribers"></span>
+                        </div>
+                        <div class="col-9">
+                          <h1 class="top-video-stat-subs" id="top-video-#-subs-net">#</h1>
+                          <h3 class="top-video-caption text-muted">Subscribers Gained</h3>
+                        </div>
+                      </div>
                     </div>
                     <div class="grid-item" style="grid-area: 4/1/9/4;">
                       <span class="fas fa-redo-alt top-video-retention" title="Audience Retention"></span>
@@ -348,15 +360,27 @@
                       </h1>
                       <h3 class="text-muted mt-3">Average View Duration/Percentage</h3>
                     </div>
-                    <div class="grid-item" style="grid-area: 5/4/9/7;">
-                      <span class="far fa-clock top-video-clock" title="Minutes Watched"></span>
-                      <h1 class="font-size-3-5" id="top-video-#-minutes-watched">#</h1>
-                      <h3 class="text-muted">Estimated Minutes Watched</h3>
+                    <div class="grid-item" style="grid-area: 6/4/9/7;">
+                      <div class="row align-items-center h-100">
+                        <div class="col-3">
+                          <span class="far fa-clock top-video-clock" title="Minutes Watched"></span>
+                        </div>
+                        <div class="col-9">
+                          <h1 class="top-video-stat" id="top-video-#-minutes-watched">#</h1>
+                          <h3 class="top-video-caption text-muted">Estimated Minutes Watched</h3>
+                        </div>
+                      </div>
                     </div>
-                    <div class="grid-item" style="grid-area: 5/7/9/10;">
-                      <span class="fas fa-comment-alt top-video-comment" title="Comments"></span>
-                      <h1 class="font-size-4-5 my-auto" id="top-video-#-comments">#</h1>
-                      <h3 class="text-muted my-auto">Comments</h3>
+                    <div class="grid-item" style="grid-area: 6/7/9/10;">
+                      <div class="row align-items-center h-100">
+                        <div class="col-3">
+                          <span class="fas fa-comment-alt top-video-comment" title="Comments"></span>
+                        </div>
+                        <div class="col-9">
+                          <h1 class="top-video-stat-comment" id="top-video-#-comments">#</h1>
+                          <h3 class="top-video-caption text-muted">Comments</h3>
+                        </div>
+                      </div>
                     </div>
                     <div class="grid-item" style="grid-area: 4/10/9/13;">
                       <span class="fas fa-thumbs-up top-video-like" title="Likes"></span>

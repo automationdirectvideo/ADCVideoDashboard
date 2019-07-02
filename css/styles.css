@@ -258,12 +258,23 @@ footer {
 .top-video-eye, .top-video-people, .top-video-retention, .top-video-clock,
 .top-video-comment, .top-video-like {
   color: red;
-  font-size: 4rem;
 }
 
-.top-video-retention, .top-video-clock, .top-video-comment, .top-video-like {
+.top-video-eye, .top-video-people, .top-video-clock, .top-video-comment {
+  padding-left: 1vw;
+}
+
+.top-video-eye, .top-video-comment {
+  font-size: 5vw;
+}
+
+.top-video-retention, .top-video-like {
   padding-bottom: 1rem;
   padding-top: 0.6667rem;
+}
+
+.top-video-people {
+  font-size: 4.5vw;
 }
 
 .top-video-retention {
@@ -271,14 +282,30 @@ footer {
 }
 
 .top-video-clock {
-  font-size: 4.25rem;
+  font-size: 5.25vw;
 }
 
-.top-video-comment {
-  padding-top: 1.3333rem;
+.top-video-like {
+  font-size: 4rem;
 }
 
-.top-video-
+.top-video-stat, .top-video-stat-subs, .top-video-stat-comment {
+  font-size: 3.5vw;
+  margin: 0;
+}
+
+.top-video-stat-comment {
+  font-size: 4vw;
+}
+
+.top-video-stat-subs {
+  font-size: 4vw;
+}
+
+.top-video-caption {
+  font-size: 1.5vw;
+  margin: 0;
+}
 
 /*----- Platform Dashboard -----*/
 
