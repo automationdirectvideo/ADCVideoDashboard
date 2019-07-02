@@ -209,7 +209,7 @@ function saveCategoryStatsToSheets() {
   requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats", body);
 }
 
-// Saves allVideoStats to Google Sheets
+// Saves allVideoStats and statsByVideoId to Google Sheets
 function saveVideoStatsToSheets() {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)", "Comments", "Publish Date"]
