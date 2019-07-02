@@ -569,13 +569,13 @@ function displayTopTenThumbnails() {
       } else {
         var videoId = topTenSheet[j][i];
         var videoTitle = "YouTube Video ID: " + videoId;
-        if (statsByVideoId) {
+        if (statsByVideoId && statsByVideoId[videoId]) {
           videoTitle = statsByVideoId[videoId]["title"];
         }
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
             <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
+              <img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">`;
         if (j != 1) {
           var currPosition = i;
           var prevPosition = topTenSheet[j - 1].indexOf(videoId);
@@ -633,12 +633,12 @@ function displayUploadThumbnails() {
       var uploadThumbnails = "";
       for (var i = 0; i < uploads.length; i++) {
         var videoTitle = "YouTube Video ID: " + uploads[i];
-        if (statsByVideoId) {
+        if (statsByVideoId && statsByVideoId[uploads[i]]) {
           videoTitle = statsByVideoId[uploads[i]]["title"];
         }
         uploadThumbnails += `
           <a href="https://youtu.be/${uploads[i]}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-            <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="YouTube Video ID: ${uploads[i]}">
+            <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="${videoTitle}">
           </a>`;
       }
       var thumbnailContainer = document.getElementById("thumbnail-container");
@@ -660,13 +660,13 @@ function displayUserFeedback() {
     var videoId = feedbackSheet[i][0];
     var feedbackText = feedbackSheet[i][1];
     let videoTitle = "YouTube Video ID: " + videoId;
-    if (statsByVideoId) {
+    if (statsByVideoId && statsByVideoId[videoId]) {
       videoTitle = statsByVideoId[videoId]["title"];
     }
     var thumbnail = `
       <div class="col-4">
         <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-          <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
+          <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
         </a>
       </div>`;
     var feedback = `<div class="col-8"><h1 class="feedback-text">"${feedbackText}"</h1></div>`;

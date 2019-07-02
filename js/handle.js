@@ -918,12 +918,12 @@ function handleVideoSnippet(response, dashboardId) {
     let videoId = response.result.items[0].id;
     let videoTitle = "YouTube Video ID: " + videoId;
     let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-    if (statsByVideoId) {
+    if (statsByVideoId && statsByVideoId[videoId]) {
       videoTitle = statsByVideoId[videoId]["title"];
     }
     thumbnail.innerHTML = `
       <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-        <img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
+        <img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
       </a>`;
 
     // let tags = response.result.items[0].snippet.tags;
