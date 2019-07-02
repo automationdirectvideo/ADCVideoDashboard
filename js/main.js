@@ -560,6 +560,7 @@ function displayTopCategories() {
 // Displays thumbnails with arrows on Top Ten Dashboard
 function displayTopTenThumbnails() {
   let topTenSheet = JSON.parse(localStorage.getItem("topTenSheet"));
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let output = ``;
   for (var j = 1; j < topTenSheet.length; j++) {
     for (var i = 0; i < topTenSheet[0].length; i++) {
@@ -567,9 +568,13 @@ function displayTopTenThumbnails() {
         output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
       } else {
         var videoId = topTenSheet[j][i];
+        var videoTitle = "YouTube Video ID: " + videoId;
+        if (statsByVideoId) {
+          videoTitle = statsByVideoId[videoId]["title"];
+        }
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
-            <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${videoId}">
+            <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
               <img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">`;
         if (j != 1) {
           var currPosition = i;
@@ -620,14 +625,19 @@ function displayTopVideos() {
 
 // Load thumbnails in 1000 thumbnail dashboard
 function displayUploadThumbnails() {
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children.thumbnails) {
     let uploads = JSON.parse(localStorage.getItem("uploads"));
     if (uploads) {
       var uploadThumbnails = "";
       for (var i = 0; i < uploads.length; i++) {
+        var videoTitle = "YouTube Video ID: " + uploads[i];
+        if (statsByVideoId) {
+          videoTitle = statsByVideoId[uploads[i]]["title"];
+        }
         uploadThumbnails += `
-          <a href="https://youtu.be/${uploads[i]}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${uploads[i]}">
+          <a href="https://youtu.be/${uploads[i]}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
             <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="YouTube Video ID: ${uploads[i]}">
           </a>`;
       }
@@ -644,13 +654,18 @@ function displayUploadThumbnails() {
 
 function displayUserFeedback() {
   let feedbackSheet = JSON.parse(localStorage.getItem("feedbackSheet"));
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let output = ``;
   for (var i = 1; i < feedbackSheet.length; i++) {
     var videoId = feedbackSheet[i][0];
     var feedbackText = feedbackSheet[i][1];
+    let videoTitle = "YouTube Video ID: " + videoId;
+    if (statsByVideoId) {
+      videoTitle = statsByVideoId[videoId]["title"];
+    }
     var thumbnail = `
       <div class="col-4">
-        <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="YouTube Video ID: ${videoId}">
+        <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
           <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="YouTube Video ID: ${videoId}">
         </a>
       </div>`;
