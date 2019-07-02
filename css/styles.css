@@ -247,8 +247,8 @@ footer {
   right: 0;
   left: 0;
   margin: auto;
-  height: 100%;
-  width: auto;
+  height: auto;
+  width: 100%;
 }
 
 .like-progress {
