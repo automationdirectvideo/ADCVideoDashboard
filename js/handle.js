@@ -176,7 +176,7 @@ function handleChannelSearchTerms(response) {
     }
 
     var graphId = "channel-search-terms";
-    var graphHeight = 0.2039;
+    var graphHeight = 0.2287;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
@@ -275,7 +275,7 @@ function handleMinutesSubscribedStatus(response) {
     }
 
     var graphId = "channel-watch-time";
-    var graphHeight = 0.0927;
+    var graphHeight = 0.1039;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
@@ -367,7 +367,7 @@ function handleViewsByDeviceType(response) {
     }
     
     var graphId = "channel-views-by-device";
-    var graphHeight = 0.3337;
+    var graphHeight = 0.3742;
     var graphWidth = 0.3065;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
@@ -440,7 +440,7 @@ function handleViewsByState(response) {
     }
 
     var graphId = "channel-views-by-state";
-    var graphHeight = 0.3337;
+    var graphHeight = 0.3742;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
@@ -541,7 +541,7 @@ function handleViewsByTrafficSource(response) {
     var labels = ["Advertising", "External", "YouTube<br>Search", "Related<br>Video", "Other"];
 
     var graphId = "channel-traffic-sources";
-    var graphHeight = 0.3337;
+    var graphHeight = 0.3742;
     var graphWidth = 0.3065;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
@@ -723,7 +723,7 @@ function handleVideoDailyViews(response, dashboardId) {
     }
 
     var graphId = dashboardId + "-views-graph";
-    var graphHeight = 0.2026;
+    var graphHeight = 0.2280;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
@@ -820,7 +820,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     }
 
     var graphId = dashboardId + "-search-terms";
-    var graphHeight = 0.2026;
+    var graphHeight = 0.2280;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;

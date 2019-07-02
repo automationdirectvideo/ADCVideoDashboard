@@ -250,8 +250,8 @@ function displayTopCategories() {
 
   var total = 0;
   let otherTotal = 0;
-  var graphHeight = 0.7679;
-  var graphWidth = 0.9595;
+  var graphHeight = 0.8583;
+  var graphWidth = 0.9528;
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
   var values = [];
