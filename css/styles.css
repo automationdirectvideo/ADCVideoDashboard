@@ -310,18 +310,29 @@ footer {
 /*----- Real Time Stats Dashboard -----*/
 
 .stat-title {
+  font-size: 3.75vw;
   font-weight: bold;
   margin: 0;
 }
 
 .stat-caption {
-  font-size: 1.5rem;
+  font-size: 1.7vw;
   margin: 0;
 }
 
 .odometer, .stat-retention {
-  font-size: 4.4rem;
+  font-size: 5.25vw;
   margin: 0;
+}
+
+.stats-icon, .stats-icon-subscribers {
+  color: #ff0000;
+  font-size: 7vw;
+  padding-left: 1rem;
+}
+
+.stats-icon-subscribers {
+  font-size: 6.5vw;
 }
 
 /*----- Product Category Dashboard -----*/
