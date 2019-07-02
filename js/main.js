@@ -11,6 +11,7 @@ function loadDashboards() {
   }
   if (carouselInner.children["thumbnails"]) {
     requestChannelNumVideos();
+    displayUploadThumbnails();
   }
   if (carouselInner.children["platform"]) {
     platformDashboardCalls(joinDate, todayDate);
