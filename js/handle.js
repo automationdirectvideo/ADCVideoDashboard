@@ -787,7 +787,9 @@ function handleVideoDailyViews(response, dashboardId) {
       font: {size: fontSize},
       margin: {
         b: 0,
-        t: 0,
+        l: 5,
+        r: 5,
+        t: 0
       },
       xaxis: xaxis,
       yaxis: yaxis
