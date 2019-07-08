@@ -16,7 +16,8 @@ body {
 }
 
 .main {
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding-bottom: 0;
 }
 
