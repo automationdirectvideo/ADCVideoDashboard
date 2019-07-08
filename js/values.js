@@ -20,6 +20,7 @@ const defaultSettings =
       "name": "thumbnails",
       "icon": "fas fa-images",
       "index": 2,
+      "scrollSpeed": 40,
       "theme": "light",
       "title": "1000 Thumbnail Dashboard"
     },
@@ -34,6 +35,7 @@ const defaultSettings =
       "name": "top-ten",
       "icon": "far fa-calendar-alt",
       "index": 4,
+      "scrollSpeed": 40,
       "theme": "light",
       "title": "Top Ten Dashboard"
     },
@@ -41,6 +43,7 @@ const defaultSettings =
       "name": "feedback",
       "icon": "fas fa-comment-alt",
       "index": 5,
+      "scrollSpeed": 30,
       "theme": "light",
       "title": "User Feedback Dashboard"
     },

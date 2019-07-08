@@ -638,7 +638,22 @@ function displayTopTenThumbnails() {
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
   if (!autoScrollDivs.includes("top-ten-thumbnail-wrapper")) {
-    new AutoDivScroll("top-ten-thumbnail-wrapper", 35, 1, 2);
+    let currentSettings = JSON.parse(localStorage.getItem("settings"));
+    let speed = -1;
+    let index = 0;
+    while (speed == -1 && index <= currentSettings.dashboards.length) {
+      let dashboard = currentSettings.dashboards[index];
+      if (dashboard.name == "top-ten") {
+        speed = dashboard.scrollSpeed;
+      }
+      index++;
+    }
+    if (speed <= 0) {
+      speed = 0;
+    } else {
+      speed = Math.ceil(1000 / speed);
+    }
+    new AutoDivScroll("top-ten-thumbnail-wrapper", speed, 1, 2);
     autoScrollDivs.push("top-ten-thumbnail-wrapper");
   }
 }
@@ -710,7 +725,22 @@ function displayUploadThumbnails() {
       thumbnailContainer.innerHTML = uploadThumbnails;
 
       if (!autoScrollDivs.includes("thumbnail-wrapper")) {
-        new AutoDivScroll("thumbnail-wrapper", 25, 1, 1);
+        let currentSettings = JSON.parse(localStorage.getItem("settings"));
+        let speed = -1;
+        let index = 0;
+        while (speed == -1 && index <= currentSettings.dashboards.length) {
+          let dashboard = currentSettings.dashboards[index];
+          if (dashboard.name == "thumbnails") {
+            speed = dashboard.scrollSpeed;
+          }
+          index++;
+        }
+        if (speed <= 0) {
+          speed = 0;
+        } else {
+          speed = Math.ceil(1000 / speed);
+        }
+        new AutoDivScroll("thumbnail-wrapper", speed, 1, 1);
         autoScrollDivs.push("thumbnail-wrapper");
       }
     }
@@ -748,7 +778,22 @@ function displayUserFeedback() {
   let feedbackContainer = document.getElementById("feedback-container");
   feedbackContainer.innerHTML = output;
   if (!autoScrollDivs.includes("feedback-wrapper")) {
-    new AutoDivScroll("feedback-wrapper", 30, 1, 1);
+    let currentSettings = JSON.parse(localStorage.getItem("settings"));
+    let speed = -1;
+    let index = 0;
+    while (speed == -1 && index <= currentSettings.dashboards.length) {
+      let dashboard = currentSettings.dashboards[index];
+      if (dashboard.name == "top-ten") {
+        speed = dashboard.scrollSpeed;
+      }
+      index++;
+    }
+    if (speed <= 0) {
+      speed = 0;
+    } else {
+      speed = Math.ceil(1000 / speed);
+    }
+    new AutoDivScroll("feedback-wrapper", speed, 1, 1);
     autoScrollDivs.push("feedback-wrapper");
   }
   

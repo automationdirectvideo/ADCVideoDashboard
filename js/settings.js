@@ -30,6 +30,20 @@ function recordCycleSpeed(speed) {
 }
 
 /**
+ * Records scroll speeds for dashboards to current settings
+ */
+function recordScrollSpeeds() {
+  var dashboards = currentSettings.dashboards;
+  for (var i = 0; i < dashboards.length; i++) {
+    var dashboard = dashboards[i];
+    if (dashboard.scrollSpeed != undefined) {
+      scrollInput = document.getElementById(dashboard.name + "-scroll-input");
+      currentSettings.dashboards[i].scrollSpeed = scrollInput.value;
+    }
+  }
+}
+
+/**
  * Moves the dashboards in the startList to the bottom of the targetList
  *
  * @param {HTMLUListElement} startList starting unordered list of dashboards
@@ -92,6 +106,9 @@ function recordDashboardOrderandThemes() {
   currentSettings.numEnabled = numEnabled;
 }
 
+/**
+ * Duplicates the dashboard list item in settings.html for each dashboard
+ */
 function loadDashboardList() {
   for (let i = 0; i < currentSettings.dashboards.length; i++) {
     let dashboard = currentSettings.dashboards[i];
@@ -103,6 +120,12 @@ function loadDashboardList() {
     template.innerHTML = dashboardText;
     dashboardItem = template.content.firstChild;
     enabledDashboardsList.appendChild(dashboardItem);
+    if (dashboard.scrollSpeed != undefined) {
+      document.getElementById(dashboard.name + "-scroll-row").classList
+          .remove("d-none");
+      document.getElementById(dashboard.name + "-scroll-input")
+          .setAttribute("value", dashboard.scrollSpeed);
+    }
   }
 }
 
@@ -195,6 +218,7 @@ resetButton.addEventListener("click", function () {
 
 saveButton.addEventListener("click", function () {
   recordCycleSpeed(parseInt(cycleSpeedInput.value, 10));
+  recordScrollSpeeds();
   recordDashboardOrderandThemes();
   saveNewSettings();
   window.location = "index.html";
