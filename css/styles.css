@@ -21,7 +21,7 @@ body {
 }
 
 
-@media (min-width: 1300px) {
+@media (min-width: 1000px) {
   .container {
     max-width: none;
     width: 100%;
