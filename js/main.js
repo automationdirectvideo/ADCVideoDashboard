@@ -638,7 +638,7 @@ function displayTopTenThumbnails() {
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
   if (!autoScrollDivs.includes("top-ten-thumbnail-wrapper")) {
-    new AutoDivScroll("top-ten-thumbnail-wrapper", 25, 1, 2);
+    new AutoDivScroll("top-ten-thumbnail-wrapper", 35, 1, 2);
     autoScrollDivs.push("top-ten-thumbnail-wrapper");
   }
 }
@@ -748,7 +748,7 @@ function displayUserFeedback() {
   let feedbackContainer = document.getElementById("feedback-container");
   feedbackContainer.innerHTML = output;
   if (!autoScrollDivs.includes("feedback-wrapper")) {
-    new AutoDivScroll("feedback-wrapper", 25, 1, 1);
+    new AutoDivScroll("feedback-wrapper", 30, 1, 1);
     autoScrollDivs.push("feedback-wrapper");
   }
   
