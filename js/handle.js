@@ -161,7 +161,7 @@ function handleChannelDemographics(response) {
     }
 
     var graphContainer = document.getElementById(graphId);
-    graphContainer.style.height = height + "px";
+    graphContainer.style.height = width + "px";
     graphContainer.style.width = width + "px";
 
     Plotly.newPlot(graphId, data, layout, config);
