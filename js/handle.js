@@ -111,7 +111,7 @@ function handleChannelDemographics(response) {
     document.getElementById("female-title").innerHTML = `<i class="fas fa-female" style="font-size:3rem"></i><br><span style="font-size:2rem">${femaleTotal}</span>%`;
 
     var graphId = "demographics-graph";
-    var graphHeight = 0.0909;
+    var graphHeight = 0.0875;
     var graphWidth = 0.0520;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
