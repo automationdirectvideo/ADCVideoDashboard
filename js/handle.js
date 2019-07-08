@@ -112,7 +112,7 @@ function handleChannelDemographics(response) {
 
     var graphId = "demographics-graph";
     var graphHeight = 0.0875;
-    var graphWidth = 0.0520;
+    var graphWidth = 0.0500;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
 
