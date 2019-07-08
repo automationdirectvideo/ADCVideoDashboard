@@ -110,6 +110,12 @@ function handleChannelDemographics(response) {
     document.getElementById("male-title").innerHTML = `<i class="fas fa-male" style="font-size:3rem"></i><br><span style="font-size:2rem">${maleTotal}</span>%`;
     document.getElementById("female-title").innerHTML = `<i class="fas fa-female" style="font-size:3rem"></i><br><span style="font-size:2rem">${femaleTotal}</span>%`;
 
+    var graphId = "demographics-graph";
+    var graphHeight = 0.0909;
+    var graphWidth = 0.0520;
+    var height = graphHeight * document.documentElement.clientHeight;
+    var width = graphWidth * document.documentElement.clientWidth;
+
     var values = [maleTotal, femaleTotal];
     var labels = ["Male", "Female"];
     var data = [{
@@ -124,8 +130,8 @@ function handleChannelDemographics(response) {
     }];
 
     var layout = {
-      height: 100,
-      weight: 100,
+      height: height,
+      weight: width,
       showlegend: false,
       margin: {
         l: 0,
@@ -154,7 +160,9 @@ function handleChannelDemographics(response) {
       layout["paper_bgcolor"] = "#222";
     }
 
-    Plotly.newPlot('demographics-graph', data, layout, config);
+    Plotly.newPlot(graphId, data, layout, config);
+
+    recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
 
@@ -180,6 +188,7 @@ function handleChannelSearchTerms(response) {
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
     var yaxis = {
       showline: true,
       showticklabels: true,
@@ -205,7 +214,7 @@ function handleChannelSearchTerms(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: fontSize},
       margin: {
         b: 10,
         r: 0,
@@ -279,6 +288,7 @@ function handleMinutesSubscribedStatus(response) {
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
     var yaxis = {
       showline: true,
       showticklabels: true,
@@ -302,7 +312,7 @@ function handleMinutesSubscribedStatus(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: fontSize},
       margin: {
         r: 0,
         t: 10,
@@ -371,6 +381,7 @@ function handleViewsByDeviceType(response) {
     var graphWidth = 0.3065;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
     
     var data = [{
       values: values,
@@ -386,7 +397,7 @@ function handleViewsByDeviceType(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: fontSize},
       automargin: true,
       autosize: true,
       showlegend: false,
@@ -444,6 +455,7 @@ function handleViewsByState(response) {
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0093 * document.documentElement.clientWidth);
 
     var data = [{
       type: 'choropleth',
@@ -456,7 +468,7 @@ function handleViewsByState(response) {
       autocolorscale: true,
       colorbar: {
         tickfont: {
-          size: 18
+          size: fontSize
         }
       }
     }];
@@ -550,6 +562,7 @@ function handleViewsByTrafficSource(response) {
     var graphWidth = 0.3065;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
 
     var data = [{
       values: values,
@@ -563,7 +576,7 @@ function handleViewsByTrafficSource(response) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: fontSize},
       automargin: true,
       autosize: true,
       showlegend: false,
