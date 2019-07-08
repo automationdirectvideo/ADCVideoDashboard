@@ -195,8 +195,8 @@ body {
 }
 
 .top-ten-thumbnail-holder {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
   position: relative;
 }
 
@@ -214,8 +214,8 @@ body {
 /*----- 1000 Thumbnail Dashboard -----*/
 
 .thumbnail {
-  padding-left: 0px;
-  padding-right: 0px;
+  padding-left: 0;
+  padding-right: 0;
   max-width: 9.7%;
 }
 
@@ -325,7 +325,7 @@ body {
 
 .demographics-table h1, .demographics-table h2, .demographics-table h3,
 .demographics-table h4, .demographics-table h5, .demographics-table h6 {
-  margin-bottom: 0px;
+  margin-bottom: 0;
 }
 
 [id^="male-"] {
