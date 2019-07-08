@@ -116,10 +116,6 @@ function handleChannelDemographics(response) {
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
 
-    var graphContainer = document.getElementById(graphId);
-    graphContainer.style.height = height + "px";
-    graphContainer.style.width = width + "px";
-
     var values = [maleTotal, femaleTotal];
     var labels = ["Male", "Female"];
     var data = [{
@@ -163,6 +159,10 @@ function handleChannelDemographics(response) {
       layout["plot_bgcolor"] = "#222";
       layout["paper_bgcolor"] = "#222";
     }
+
+    var graphContainer = document.getElementById(graphId);
+    graphContainer.style.height = height + "px";
+    graphContainer.style.width = width + "px";
 
     Plotly.newPlot(graphId, data, layout, config);
 

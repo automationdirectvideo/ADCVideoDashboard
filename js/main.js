@@ -286,8 +286,8 @@ function displayTopCategories() {
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
   var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
-  var labelFontSize = Math.floor(0.0156 * document.documentElement.clientWidth);
-  var legendFontSize = Math.floor(0.0104 * document.documentElement.clientWidth);
+  var labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
+  var legendFontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
   var values = [];
   var labels = [];
   var colors = [];
