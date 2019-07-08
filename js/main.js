@@ -700,7 +700,7 @@ function displayUploadThumbnails() {
         }
         uploadThumbnails += `
           <a href="https://youtu.be/${uploads[i]}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-            <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/default.jpg" alt="thumbnail" title="${videoTitle}">
+            <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
           </a>`;
       }
       var thumbnailContainer = document.getElementById("thumbnail-container");
