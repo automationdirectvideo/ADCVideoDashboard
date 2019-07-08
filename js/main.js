@@ -658,22 +658,6 @@ function displayTopTenThumbnails() {
   }
 }
 
-function displayTopVideos() {
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  let todayDate = getTodaysDate();
-  let advertisedVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "rNOoyOGBFK4", "Eyvv66xYwS8", "YfrmIjwDvXo"];
-  let index = 0;
-  let dashboardNum = 1;
-  while (dashboardNum <= 5) {
-    let videoId = allVideoStats[index]["videoId"];
-    if (!advertisedVideos.includes(videoId)) {
-      topVideoCalls(joinDate, todayDate, videoId, "top-video-" + dashboardNum);
-      dashboardNum++;
-    }
-    index++;
-  }
-}
-
 function displayTopVideoTitle(videoId, dashboardId) {
   let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let title = document.getElementById(dashboardId + "-title");

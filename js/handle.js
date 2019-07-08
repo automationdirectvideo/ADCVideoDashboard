@@ -1019,38 +1019,3 @@ function handleUpdateSheetData(response) {
     console.log("Response received", "handleUpdateSheetData");
   }
 }
-
-
-/* Miscellaneous Calls */
-
-function handleChannelInfo(response) {
-  if (response) {
-    console.log("Response received", "handleChannelInfo");
-  }
-}
-
-function handleSubscribersGained(response) {
-  if (response) {
-    console.log("Response received", "handleSubscribersGained");
-  }
-}
-
-function handleVideoPlaylist(response) {
-  const playlistItems = response.result.items;
-  if (playlistItems) {
-    console.log("Response received", "handleVideoPlaylist");
-  }
-}
-
-function handleVideoRetention(response) {
-  if (response) {
-    console.log("Response received", "handleVideoRetention");
-    // console.log("Percent Watched: ", response.result.rows);
-  }
-}
-
-function handleVideoViewsByTrafficSource(response) {
-  if (response) {
-    console.log("Response received", "handleVideoViewsByTrafficSource");
-  }
-}

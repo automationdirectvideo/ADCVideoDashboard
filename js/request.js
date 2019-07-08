@@ -239,69 +239,6 @@ function requestUpdateSheetData(spreadsheetId, range, body) {
   callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData);
 }
 
-
-/* Miscellaneous Calls */
-
-// Request channel info from Data API channels list
-function requestChannelInfo(channel) {
-  var request = {
-    part: "snippet,contentDetails,statistics",
-    forUsername: channel
-  };
-  callDataAPIChannels(request, "ChannelInfo: ", handleChannelInfo);
-}
-
-// Request # of subscribers gained from startDate to endDate
-function requestSubscribersGained(startDate, endDate) {
-  var request = {
-    "endDate": endDate,
-    "ids": "channel==MINE",
-    "metrics": "subscribersGained,subscribersLost",
-    "startDate": startDate
-  };
-  callAnalyticsAPI(request, "SubscribersGained: ", handleSubscribersGained);
-}
-
-// Request videos from a playlist
-function requestVideoPlaylist(playlistId) {
-  const request = {
-    playlistId: playlistId,
-    part: "snippet"
-  };
-  callDataAPIPlaylists(request, "VideoPlaylist: ", handleVideoPlaylist);
-}
-
-// Request retention metrics for a video
-function requestVideoRetention(startDate, endDate, videoId) {
-  var filters = "video==" + videoId + ";audienceType==ORGANIC";
-  const request = {
-    "dimensions": "elapsedVideoTimeRatio",
-    "endDate": endDate,
-    "filters": filters,
-    "ids": "channel==MINE",
-    "metrics": "audienceWatchRatio,relativeRetentionPerformance",
-    "startDate": startDate
-  };
-  callAnalyticsAPI(request, "VideoRetention: ", handleVideoRetention);
-}
-
-function requestVideoViewsByTrafficSource(startDate, endDate, videoId) {
-  var stringVideoId = "video==" + videoId;
-  const request = {
-    "dimensions": "insightTrafficSourceType",
-    "endDate": endDate,
-    "filters": stringVideoId,
-    "ids": "channel==MINE",
-    "maxResults": 10,
-    "metrics": "views",
-    "sort": "-views",
-    "startDate": startDate
-  };
-  callAnalyticsAPI(request, "VideoViewsByTrafficSource: ",
-      handleVideoViewsByTrafficSource);
-}
-
-
 /* Multiple Requests Functions */
 
 function getAllVideoStats(uploads) {

@@ -96,11 +96,3 @@ function callDriveAPIFiles(request, source, callback, message) {
       console.error("Google Sheets API call error", err);
     });
 }
-
-// Tests calls to the API
-function testAPICalls() {
-  var todayDate = getTodaysDate();
-  var thirtyDaysAgo = getDateFromDaysAgo(30);
-  // requestBasicVideoStats(joinDate, todayDate);
-  // requestImpressions("2019-04-01", "2019-04-30");
-}
