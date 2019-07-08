@@ -749,6 +749,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0104 * document.documentElement.clientWidth);
     var xaxis = {
       automargin: true,
       fixedrange: true,
@@ -783,7 +784,7 @@ function handleVideoDailyViews(response, dashboardId) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 20},
+      font: {size: fontSize},
       margin: {
         b: 0,
         t: 0,
@@ -848,6 +849,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
     var width = graphWidth * document.documentElement.clientWidth;
+    var fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
     var yaxis = {
       showline: true,
       showticklabels: true,
@@ -874,7 +876,7 @@ function handleVideoSearchTerms(response, dashboardId) {
     var layout = {
       height: height,
       width: width,
-      font: {size: 24},
+      font: {size: fontSize},
       autosize: false,
       margin: {
         b: 0,

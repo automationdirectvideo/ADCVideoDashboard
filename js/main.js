@@ -285,6 +285,9 @@ function displayTopCategories() {
   var graphWidth = 0.9528;
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
+  var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
+  var labelFontSize = Math.floor(0.0156 * document.documentElement.clientWidth);
+  var legendFontSize = Math.floor(0.0104 * document.documentElement.clientWidth);
   var values = [];
   var labels = [];
   var colors = [];
@@ -441,7 +444,7 @@ function displayTopCategories() {
     title: {
       text: "Categories By<br>Total Views",
       font: {
-        size: 45
+        size: titleFontSize
       }
     },
     textinfo: "label",
@@ -520,7 +523,7 @@ function displayTopCategories() {
     title: {
       text: "Categories By<br>Average Views Per Video",
       font: {
-        size: 45
+        size: titleFontSize
       }
     },
     textinfo: "label",
@@ -539,13 +542,13 @@ function displayTopCategories() {
   var layout = {
     height: height,
     width: width,
-    font: {size: 30},
+    font: {size: labelFontSize},
     automargin: true,
     autosize: true,
     legend: {
       bgcolor: "#eeeeee",
       font: {
-        size: 20
+        size: legendFontSize
       },
       y: 0.5
     },
