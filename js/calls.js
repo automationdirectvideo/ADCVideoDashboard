@@ -23,16 +23,6 @@ function callDataAPIChannels(request, source, callback) {
     });
 }
 
-// Calls the Data API for playlists with a request and returns response to 
-// callback
-function callDataAPIPlaylists(request, source, callback) {
-  gapi.client.youtube.playlistItems.list(request)
-    .then(response => {
-      console.log(source, response);
-      callback(response);
-    });
-}
-
 // Calls the Data API for videos with a request and returns response to callback
 function callDataAPIVideos(request, source, callback, message) {
   gapi.client.youtube.videos.list(request)
