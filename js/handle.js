@@ -117,8 +117,8 @@ function handleChannelDemographics(response) {
     var width = graphWidth * document.documentElement.clientWidth;
 
     var graphContainer = document.getElementById(graphId);
-    graphContainer.style.height = height;
-    graphContainer.style.width = width;
+    graphContainer.style.height = height + "px";
+    graphContainer.style.width = width + "px";
 
     var values = [maleTotal, femaleTotal];
     var labels = ["Male", "Female"];
