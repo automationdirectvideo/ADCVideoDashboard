@@ -440,9 +440,9 @@ function displayTopCategories() {
       row: 0,
       column: 0
     },
-    name: "Categories By<br>Total Views",
+    name: "Total Views<br>By Category",
     title: {
-      text: "Categories By<br>Total Views",
+      text: "Total Views<br>By Category",
       font: {
         size: titleFontSize
       }
@@ -519,9 +519,9 @@ function displayTopCategories() {
       row: 0,
       column: 1
     },
-    name: "Categories By<br>Average Views Per Video",
+    name: "Average Views Per Video<br>By Category",
     title: {
-      text: "Categories By<br>Average Views Per Video",
+      text: "Average Views Per Video<br>By Category",
       font: {
         size: titleFontSize
       }
