@@ -391,7 +391,7 @@ body {
 
 /*----- Settings page -----*/
 
-.drag-handle {
+.cursor-grab {
   cursor: grab;
   cursor: -webkit-grabbing;
 }
