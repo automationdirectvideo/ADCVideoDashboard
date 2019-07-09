@@ -6,8 +6,6 @@
 // Displays the number of videos the channel has
 function handleChannelNumVideos(response) {
   if (response) {
-    console.log("Response received", "handleChannelNumVideos");
-
     let numVideos = response.result.items[0].statistics.videoCount;
     document.getElementById("num-videos").innerText = numVideos;
   }
@@ -20,7 +18,6 @@ function handleChannelNumVideos(response) {
 // Semi-recursively calls requestVideoStatisticsOverall for all uploads
 function handleVideoStatisticsOverall(response, settings) {
   if (response) {
-    console.log("Response received", "handleVideoStatisticsOverall");
     let videoId = response.result.items[0].id;
     let videoStats = response.result.items[0].statistics;
     let durationStr = response.result.items[0].contentDetails.duration;
@@ -75,7 +72,6 @@ function handleVideoStatisticsOverall(response, settings) {
 // Loads demographics table in platform dashboard
 function handleChannelDemographics(response) {
   if (response) {
-    console.log("Response received", "handleViewsByTrafficSource");
     var rows = response.result.rows;
     let maleTotal = 0;
     let femaleTotal = 0;
@@ -174,7 +170,6 @@ function handleChannelDemographics(response) {
 // Creates top search terms graph in platform dashboard
 function handleChannelSearchTerms(response) {
   if (response) {
-    console.log("Response received", "handleChannelSearchTerms");
     let searchTerms = response.result.rows;
     let xValues = [];
     let yValues = [];
@@ -264,7 +259,6 @@ function handleChannelSearchTerms(response) {
 // Creates minutes by subscribers graph in platform dashboard
 function handleMinutesSubscribedStatus(response) {
   if (response) {
-    console.log("Response received", "handleMinutesSubscribedStatus");
     var rows = response.result.rows;
     var labelConversion = {
       "UNSUBSCRIBED": "Not Subscribed",
@@ -362,7 +356,6 @@ function handleMinutesSubscribedStatus(response) {
 // Creates views by device type graph in platform dashboard
 function handleViewsByDeviceType(response) {
   if (response) {
-    console.log("Response received", "handleViewsByDeviceType");
     var rows = response.result.rows;
     var temp = rows[1];
     rows[1] = rows[3];
@@ -444,7 +437,6 @@ function handleViewsByDeviceType(response) {
 // Creates views by state cholorpleth map in platform dashboard
 function handleViewsByState(response) {
   if (response) {
-    console.log("Response received", "handleViewsByState");
     var rows = response.result.rows;
     var locations = [];
     var z = []
@@ -535,7 +527,6 @@ function handleViewsByState(response) {
 // Creates views by traffic source graph in platform dashboard
 function handleViewsByTrafficSource(response) {
   if (response) {
-    console.log("Response received", "handleViewsByTrafficSource");
     var rows = response.result.rows;
     var advertisingViews = 0;
     var externalViews = 0;
@@ -626,8 +617,6 @@ function handleViewsByTrafficSource(response) {
 // Saves stats to realTimeStats then loads them
 function handleRealTimeStats(response, message) {
   if (response) {
-    console.log("Response received", "handleRealTimeStats");
-
     if (!localStorage.getItem("realTimeStats")) {
       localStorage.setItem("realTimeStats", JSON.stringify({}));
     }
@@ -660,7 +649,6 @@ function handleRealTimeStats(response, message) {
 // Saves most watched videos by month to a Google Sheet
 function handleMostWatchedVideos(response, month) {
   if (response) {
-    console.log("Response received", "handleMostWatchedVideos");
     var videos = response.result.rows;
     if (month != undefined) {
       var nonOrganicVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "YfrmIjwDvXo",
@@ -691,7 +679,6 @@ function handleMostWatchedVideos(response, month) {
 // Displays video views, likes, comments, etc. in top video dashboard
 function handleVideoBasicStats(response, dashboardId) {
   if (response) {
-    console.log("Response received", "handleVideoBasicStats");
     let stats = response.result.rows[0];
 
     let views = document.getElementById(dashboardId + "-views");
@@ -735,7 +722,6 @@ function handleVideoBasicStats(response, dashboardId) {
 // Creates daily views graph for a video in top video dashboard
 function handleVideoDailyViews(response, dashboardId) {
   if (response) {
-    console.log("Response received", "handleVideoDailyViews");
     let rows = response.result.rows;
     var xValues = [];
     var yValues = [];
@@ -831,7 +817,6 @@ function handleVideoDailyViews(response, dashboardId) {
 // Creates top search terms graph for a video in top video dashboard
 function handleVideoSearchTerms(response, dashboardId) {
   if (response) {
-    console.log("Response received", "handleVideoSearchTerms");
     let searchTerms = response.result.rows;
     let xValues = [];
     let yValues = [];
@@ -923,7 +908,6 @@ function handleVideoSearchTerms(response, dashboardId) {
 // dashboard
 function handleVideoSnippet(response, dashboardId) {
   if (response) {
-    console.log("Response received", "handleVideoSnippet");
     let title = document.getElementById(dashboardId + "-title");
     title.innerHTML = response.result.items[0].snippet.title;
     duration = response.result.items[0].contentDetails.duration;
@@ -963,7 +947,6 @@ function handleVideoSnippet(response, dashboardId) {
 // Requests spreadsheet data based on when sheet was last modified
 function handleFileModifiedTime(response, message) {
   if (response) {
-    console.log("Response received", "handleFileModifiedTime");
     var modifiedTime = new Date(response.result.modifiedTime);
     var lastUpdatedOn = new Date(localStorage.getItem("lastUpdatedOn"));
     console.log(message + " was last modified on " + modifiedTime.toString());
@@ -983,7 +966,6 @@ function handleFileModifiedTime(response, message) {
 // Calls different functions based on what sheet data was requested
 function handleSpreadsheetData(response, message) {
   if (response) {
-    console.log("Response received", "handleSpreadsheetData");
     if (message == "Category List") {
       localStorage.setItem("categoryListSheet", JSON.stringify(response.result.values));
       recordCategoryListData();
