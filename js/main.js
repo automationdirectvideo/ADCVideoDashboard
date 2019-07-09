@@ -104,8 +104,10 @@ function updateStats() {
 
 // Update odometers in real time stats dashboard
 function updateRealTimeStats(updateCount) {
-  let secondsPerIncrement = JSON.parse(localStorage.getItem("secondsPerIncrement"));
-  let odometerCategories = JSON.parse(localStorage.getItem("odometerCategories"));
+  let secondsPerIncrement = 
+      JSON.parse(localStorage.getItem("secondsPerIncrement"));
+  let odometerCategories = 
+      JSON.parse(localStorage.getItem("odometerCategories"));
   for (var key in secondsPerIncrement) {
     if (secondsPerIncrement.hasOwnProperty(key)) {
       if (updateCount % secondsPerIncrement[key] == 0) {
@@ -135,7 +137,8 @@ function loadRealTimeStats() {
       }
     }
     console.log(secondsPerIncrement);
-    localStorage.setItem("secondsPerIncrement", JSON.stringify(secondsPerIncrement));
+    localStorage.setItem("secondsPerIncrement",
+        JSON.stringify(secondsPerIncrement));
     
     var recordDate = new Date(localStorage.getItem("lastUpdatedOn"));
     var now = new Date();
@@ -145,7 +148,8 @@ function loadRealTimeStats() {
     var avgPercentageOdometer = document.getElementById("stat-avg-percentage");
     var odometerCategories = {
       "views": ["stat-views-cumulative", "stat-views-month"],
-      "estimatedMinutesWatched": ["stat-minutes-cumulative", "stat-minutes-month"],
+      "estimatedMinutesWatched": ["stat-minutes-cumulative",
+          "stat-minutes-month"],
       "netSubscribersGained": ["stat-subs-cumulative", "stat-subs-month"],
       "cumulative": {
         "views": "stat-views-cumulative",
@@ -158,7 +162,8 @@ function loadRealTimeStats() {
         "netSubscribersGained": "stat-subs-month"
       }
     };
-    localStorage.setItem("odometerCategories", JSON.stringify(odometerCategories));
+    localStorage.setItem("odometerCategories",
+        JSON.stringify(odometerCategories));
     
     // Load data into odometers
     ["cumulative", "month"].forEach(category => {
@@ -293,7 +298,8 @@ function displayTopCategories() {
   var width = graphWidth * document.documentElement.clientWidth;
   var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
   var labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
-  var legendFontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
+  var legendFontSize = 
+      Math.floor(0.0125 * document.documentElement.clientWidth);
   var values = [];
   var labels = [];
   var colors = [];
@@ -616,22 +622,34 @@ function displayTopTenThumbnails() {
         }
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
-            <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="top-ten-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">`;
+            <a href="https://youtu.be/${videoId}" target="_blank"
+                onclick="closeFullscreen()" alt="${videoTitle}">
+              <img class="top-ten-thumbnail" 
+                  src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" 
+                  alt="thumbnail" title="${videoTitle}">`;
         if (j != 1) {
           var currPosition = i;
           var prevPosition = topTenSheet[j - 1].indexOf(videoId);
           if (prevPosition == -1) {
             // Add + up arrow
-            output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">+</span>`;
+            output += `
+              <span class="oi oi-arrow-thick-top arrow-green"></span>
+              <span class="arrow-text-black">+</span>
+            `;
           } else if (prevPosition != currPosition) {
             var change = prevPosition - currPosition;
             if (change < 0) {
               // Add down arrow
-              output += `<span class="oi oi-arrow-thick-bottom arrow-red"></span><span class="arrow-text-white">${Math.abs(change)}</span>`;
+              output += `
+                <span class="oi oi-arrow-thick-bottom arrow-red"></span>
+                <span class="arrow-text-white">${Math.abs(change)}</span>
+              `;
             } else if(change > 0) {
               // Add up arrow
-              output += `<span class="oi oi-arrow-thick-top arrow-green"></span><span class="arrow-text-black">${change}</span>`;
+              output += `
+                <span class="oi oi-arrow-thick-top arrow-green"></span>
+                <span class="arrow-text-black">${change}</span>
+              `;
             }
           }
         }
@@ -639,7 +657,8 @@ function displayTopTenThumbnails() {
       }
     }
   }
-  let thumbnailContainer = document.getElementById("top-ten-thumbnail-container");
+  let thumbnailContainer =
+      document.getElementById("top-ten-thumbnail-container");
   thumbnailContainer.innerHTML = output;
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
@@ -688,8 +707,11 @@ function displayTopVideoTitle(videoId, dashboardId) {
     videoTitle = statsByVideoId[videoId]["title"];
   }
   thumbnail.innerHTML = `
-    <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-      <img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
+    <a href="https://youtu.be/${videoId}" target="_blank"
+        onclick="closeFullscreen()" alt="${videoTitle}">
+      <img class="top-video-thumbnail"
+          src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" 
+          title="${videoTitle}">
     </a>`;
 }
 
@@ -707,8 +729,11 @@ function displayUploadThumbnails() {
           videoTitle = statsByVideoId[uploads[i]]["title"];
         }
         uploadThumbnails += `
-          <a href="https://youtu.be/${uploads[i]}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-            <img class="thumbnail" src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
+          <a href="https://youtu.be/${uploads[i]}" target="_blank"
+              onclick="closeFullscreen()" alt="${videoTitle}">
+            <img class="thumbnail"
+                src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" 
+                alt="thumbnail" title="${videoTitle}">
           </a>`;
       }
       var thumbnailContainer = document.getElementById("thumbnail-container");
@@ -750,11 +775,18 @@ function displayUserFeedback() {
     }
     var thumbnail = `
       <div class="col-4">
-        <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-          <img class="feedback-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
+        <a href="https://youtu.be/${videoId}" target="_blank"
+            onclick="closeFullscreen()" alt="${videoTitle}">
+          <img class="feedback-thumbnail"
+              src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+              alt="thumbnail" title="${videoTitle}">
         </a>
       </div>`;
-    var feedback = `<div class="col-8"><h1 class="feedback-text">"${feedbackText}"</h1></div>`;
+    var feedback = `
+      <div class="col-8">
+        <h1 class="feedback-text">"${feedbackText}"</h1>
+      </div>
+    `;
     var spacer = `<div class="col-12"><hr></div>`;
     if (i % 2 == 0) {
       output += feedback + thumbnail;
@@ -830,6 +862,21 @@ function fixGraphMargins() {
   }
 }
 
+function updateTheme(dashboardIndex) {
+  var endDashboard = 
+      document.getElementsByClassName("carousel-item")[dashboardIndex];
+  var body = document.getElementsByTagName("body")[0];
+  if (endDashboard.getAttribute("theme") == "dark") {
+    body.className = "dark";
+    if (endDashboard.id == "platform") {
+      document.getElementsByClassName("demographics-table")[0]
+          .classList.add("table-dark");
+    }
+  } else {
+    body.className = "";
+  }
+}
+
 function carouselNext() {
   $(".carousel").carousel("next");
 }
@@ -879,7 +926,8 @@ for (var i = 0; i < enabledOrder.length; i++) {
     dashboardItem = document.getElementById("top-video-#").cloneNode(true);
     dashboardText = dashboardItem.outerHTML;
     dashboardText = dashboardText.replace(/top-video-#/g, enabledOrder[i].name);
-    dashboardText = dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
+    dashboardText =
+        dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
     var template = document.createElement("template");
     template.innerHTML = dashboardText;
     dashboardItem = template.content.firstChild;
@@ -928,44 +976,18 @@ $(".carousel").on("slid.bs.carousel", function (e) {
   fixGraphMargins();
 })
 
-function updateTheme(dashboardIndex) {
-  var endDashboard = 
-      document.getElementsByClassName("carousel-item")[dashboardIndex];
-  var body = document.getElementsByTagName("body")[0];
-  if (endDashboard.getAttribute("theme") == "dark") {
-    body.className = "dark";
-    if (endDashboard.id == "platform") {
-      document.getElementsByClassName("demographics-table")[0]
-          .classList.add("table-dark");
-    }
-  } else {
-    body.className = "";
-  }
-}
-
 if (carouselInner.children["real-time-stats"]) {
   loadRealTimeStats();
 }
 
 displayUploadThumbnails();
 
-function getTopTenVideosByMonth() {
-  var startDate = new Date("2010-07-1");
-  var endDate = new Date("2019-06-30");
-  while (endDate - startDate > 0) {
-    let firstDay = getYouTubeDateFormat(startDate);
-    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0));
-    let month = firstDay.substr(0, 7);
-    requestMostWatchedVideos(firstDay, lastDay, 20, month);
-    startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
-  }
-}
-
 window.addEventListener('resize', function () {
   resizeGraphs();
   let topTenDashboard = document.getElementById("top-ten");
   if (topTenDashboard.classList.contains("active")) {
-    let thumbnailContainer = document.getElementById("top-ten-thumbnail-container");
+    let thumbnailContainer =
+        document.getElementById("top-ten-thumbnail-container");
     thumbnailContainer.style.display = "none";
     this.window.setTimeout(function () {
       thumbnailContainer.style.display = "flex";
