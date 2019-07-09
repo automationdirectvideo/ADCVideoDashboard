@@ -55,7 +55,7 @@ body {
   right: 1%;
 }
 
-.yt-red, .arrow-red {
+.arrow-red {
   color: #ff0000;
 }
 .yt-black, .arrow-text-black {
@@ -63,9 +63,6 @@ body {
 }
 .bg-yt-red {
   background-color: #ff0000;
-}
-.bg-yt-black {
-  background-color: #282828;
 }
 
 #login-box {
@@ -114,22 +111,6 @@ body {
 
 .scroll-y {
   overflow-y: scroll;
-}
-
-.font-size-3 {
-  font-size: 3rem;
-}
-
-.font-size-3-5 {
-  font-size: 3.5rem;
-}
-
-.font-size-4 {
-  font-size: 4rem;
-}
-
-.font-size-4-5 {
-  font-size: 4.5rem;
 }
 
 /*----- Top Ten Dashboard -----*/
