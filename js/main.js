@@ -12,7 +12,18 @@ function loadDashboards() {
     }
   }
   if (carouselInner.children["thumbnails"]) {
-    requestChannelNumVideos();
+    try {
+      requestChannelNumVideos();
+    } catch (err) {
+      console.log(err);
+      window.setTimeout(requestChannelNumVideos, 5000);
+    }
+    try {
+      displayUploadThumbnails();
+    } catch (err) {
+      console.log(err);
+      window.setTimeout(displayUploadThumbnails, 5000);
+    }
     displayUploadThumbnails();
   }
   if (carouselInner.children["platform"]) {
