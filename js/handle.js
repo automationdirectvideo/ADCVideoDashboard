@@ -56,6 +56,7 @@ function handleVideoStatisticsOverall(response, settings) {
     }
     localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
     localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+    localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
 
     let uploads = settings["uploads"];
     let index = parseInt(settings["index"]);

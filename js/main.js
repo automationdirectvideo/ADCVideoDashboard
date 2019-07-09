@@ -186,8 +186,10 @@ function calcAvgVideoDuration() {
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   if (allVideoStats) {
     let totalDuration = 0;
-    for (var i = 0; i < allVideoStats.length; i++) {
-      totalDuration += allVideoStats[i].duration;
+    for (let videoId in statsByVideoId) {
+      if (statsByVideoId.hasOwnProperty(videoId)) {
+        totalDuration += statsByVideoId[videoId]["duration"];
+      }
     }
     let avgDuration = totalDuration / allVideoStats.length;
     let avgViewDuration = document.getElementById("stat-avg-duration").value;

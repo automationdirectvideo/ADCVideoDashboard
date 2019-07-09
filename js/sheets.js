@@ -166,11 +166,12 @@ function recordVideoData() {
       "comments": commentCount
     };
     allVideoStats.push(row);
-    statsByVideoId[videoId] = {
-      "title": title,
-      "publishDate": publishDate,
-      "duration": duration
-    };
+    if (!statsByVideoId[videoId]) {
+      statsByVideoId[videoId] = {};
+    }
+    statsByVideoId[videoId]["title"] = title;
+    statsByVideoId[videoId]["publishDate"] = publishDate;
+    statsByVideoId[videoId]["duration"] = duration;
     uploads.push(videoId);
   }
   localStorage.removeItem("videoSheet");
