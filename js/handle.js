@@ -1008,9 +1008,3 @@ function handleSpreadsheetData(response, message) {
     localStorage.setItem("lastUpdatedOn", date.toString());
   }
 }
-
-function handleUpdateSheetData(response) {
-  if (response) {
-    console.log("Response received", "handleUpdateSheetData");
-  }
-}
