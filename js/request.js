@@ -203,16 +203,6 @@ function requestVideoSnippet(videoId, dashboardId) {
 
 /* Google Sheets/Drive Calls */
 
-function requestAppendSheetData(spreadsheetId, range, body) {
-  var request = {
-    "spreadsheetId": spreadsheetId,
-    "range": range,
-    "valueInputOption": "RAW",
-    "resource": body
-  };
-  callSheetsAPIAppend(request, "AppendSheetData:", handleAppendSheetData);
-}
-
 function requestFileModifiedTime(fileId, message) {
   var request = {
     "fileId": fileId,

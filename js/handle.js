@@ -960,12 +960,6 @@ function handleVideoSnippet(response, dashboardId) {
 
 /* Google Sheets/Drive Calls */
 
-function handleAppendSheetData(response) {
-  if (response) {
-    console.log("Response received", "handleAppendSheetData");
-  }
-}
-
 // Requests spreadsheet data based on when sheet was last modified
 function handleFileModifiedTime(response, message) {
   if (response) {
