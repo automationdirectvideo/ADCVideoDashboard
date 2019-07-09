@@ -1,3 +1,5 @@
+/* Handles fullscreen mode */
+
 window.onload = function () {
   document.getElementById('fullscreen-button')
       .addEventListener("click", function () { toggleFullscreen(); });

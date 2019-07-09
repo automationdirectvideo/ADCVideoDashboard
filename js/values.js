@@ -1,3 +1,5 @@
+/* Values needed across the site */
+
 const defaultSettings = 
 {
   "cycleSpeed": 10,

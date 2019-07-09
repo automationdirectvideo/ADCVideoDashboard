@@ -1,3 +1,5 @@
+/* Load and display dashboards */
+
 function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();

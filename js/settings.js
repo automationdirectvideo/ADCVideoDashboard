@@ -1,3 +1,5 @@
+/* Functions and event listeners for the settings page */
+
 /**
  * Resets the settings back to the default settings
  */
