@@ -104,8 +104,18 @@ function handleChannelDemographics(response) {
     }
     maleTotal = Math.round(maleTotal * 10) / 10;
     femaleTotal = Math.round(femaleTotal * 10) / 10;
-    document.getElementById("male-title").innerHTML = `<i class="fas fa-male" style="font-size:3rem"></i><br><span style="font-size:2rem">${maleTotal}</span>%`;
-    document.getElementById("female-title").innerHTML = `<i class="fas fa-female" style="font-size:3rem"></i><br><span style="font-size:2rem">${femaleTotal}</span>%`;
+    document.getElementById("male-title").innerHTML = `
+      <i class="fas fa-male" style="font-size:3rem"></i>
+      <br>
+      <span style="font-size:2rem">${maleTotal}</span>
+      %
+    `;
+    document.getElementById("female-title").innerHTML = `
+      <i class="fas fa-female" style="font-size:3rem"></i>
+      <br>
+      <span style="font-size:2rem">${femaleTotal}</span>
+      %
+    `;
 
     var graphId = "demographics-graph";
     var graphHeight = 0.0875;
@@ -550,8 +560,10 @@ function handleViewsByTrafficSource(response) {
         otherViews += rows[i][1];
       }
     }
-    var values = [advertisingViews, externalViews, youtubeSearchViews, relatedViews, otherViews];
-    var labels = ["Advertising", "External", "YouTube<br>Search", "Related<br>Video", "Other"];
+    var values = [advertisingViews, externalViews, youtubeSearchViews,
+        relatedViews, otherViews];
+    var labels = ["Advertising", "External", "YouTube<br>Search",
+        "Related<br>Video", "Other"];
 
     var graphId = "channel-traffic-sources";
     var graphHeight = 0.3742;
@@ -668,7 +680,8 @@ function handleMostWatchedVideos(response, month) {
       };
       var row = 3 + monthDiff(new Date(2010, 6), new Date(month));
       var sheet = "Top Ten Videos!A" + row;
-      requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", sheet, body);
+      requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+          sheet, body);
     }
   }
 }
@@ -706,7 +719,8 @@ function handleVideoBasicStats(response, dashboardId) {
         document.getElementById(dashboardId + "-avg-view-duration");
     let avd = stats[6];
     avgViewDuration.innerHTML = secondsToDuration(avd);
-    let videoDuration = document.getElementById(dashboardId + "-duration-seconds").innerHTML;
+    let videoDuration =
+        document.getElementById(dashboardId + "-duration-seconds").innerHTML;
 
     let avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
@@ -912,12 +926,13 @@ function handleVideoSnippet(response, dashboardId) {
     title.innerHTML = response.result.items[0].snippet.title;
     duration = response.result.items[0].contentDetails.duration;
     let videoDuration = isoDurationToSeconds(duration);
-    document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
-        secondsToDuration(videoDuration);
+    document.getElementById(dashboardId + "-duration").innerHTML =
+        "Duration: " + secondsToDuration(videoDuration);
     document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
         videoDuration;
 
-    let publishDateText = document.getElementById(dashboardId + "-publish-date");
+    let publishDateText =
+        document.getElementById(dashboardId + "-publish-date");
     let publishDate = response.result.items[0].snippet.publishedAt;
     let year = publishDate.slice(0, 4);
     let month = publishDate.slice(5, 7);
@@ -933,11 +948,12 @@ function handleVideoSnippet(response, dashboardId) {
       videoTitle = statsByVideoId[videoId]["title"];
     }
     thumbnail.innerHTML = `
-      <a href="https://youtu.be/${videoId}" target="_blank" onclick="closeFullscreen()" alt="${videoTitle}">
-        <img class="top-video-thumbnail" src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" title="${videoTitle}">
+      <a href="https://youtu.be/${videoId}" target="_blank"
+          onclick="closeFullscreen()" alt="${videoTitle}">
+        <img class="top-video-thumbnail"
+            src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+            alt="thumbnail" title="${videoTitle}">
       </a>`;
-
-    // let tags = response.result.items[0].snippet.tags;
   }
 }
 
@@ -952,11 +968,15 @@ function handleFileModifiedTime(response, message) {
     console.log(message + " was last modified on " + modifiedTime.toString());
     if (message == "Video List") {
       if (lastUpdatedOn - modifiedTime < 0) {
-        requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Category List");
+        requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
+            "Category List");
       } else {
-        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats");
-        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats");
-        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Top Ten Videos");
+        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+            "Video Stats");
+        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+            "Category Stats");
+        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+            "Top Ten Videos");
       }
     }
 
@@ -967,22 +987,28 @@ function handleFileModifiedTime(response, message) {
 function handleSpreadsheetData(response, message) {
   if (response) {
     if (message == "Category List") {
-      localStorage.setItem("categoryListSheet", JSON.stringify(response.result.values));
+      localStorage.setItem("categoryListSheet",
+          JSON.stringify(response.result.values));
       recordCategoryListData();
     } else if (message == "Video List") {
-      localStorage.setItem("videoListSheet", JSON.stringify(response.result.values));
+      localStorage.setItem("videoListSheet",
+          JSON.stringify(response.result.values));
       recordVideoListData();
     } else if (message == "Video Stats") {
-      localStorage.setItem("videoSheet", JSON.stringify(response.result.values));
+      localStorage.setItem("videoSheet",
+          JSON.stringify(response.result.values));
       recordVideoData();
     } else if (message == "Category Stats") {
-      localStorage.setItem("categoriesSheet", JSON.stringify(response.result.values));
+      localStorage.setItem("categoriesSheet",
+          JSON.stringify(response.result.values));
       recordCategoryData();
     } else if (message == "Top Ten Videos") {
-      localStorage.setItem("topTenSheet", JSON.stringify(response.result.values));
+      localStorage.setItem("topTenSheet",
+          JSON.stringify(response.result.values));
       displayTopTenThumbnails();
     } else if (message == "User Feedback List") {
-      localStorage.setItem("feedbackSheet", JSON.stringify(response.result.values));
+      localStorage.setItem("feedbackSheet",
+          JSON.stringify(response.result.values));
       displayUserFeedback();
     }
     let date = new Date();

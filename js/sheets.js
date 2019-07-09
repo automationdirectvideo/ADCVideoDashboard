@@ -4,7 +4,7 @@
 // Eventually initiates recordVideoListData()
 function recordCategoryListData() {
   let categoryList = JSON.parse(localStorage.getItem("categoryListSheet"));
-  let categoryTotals = {}; // categoryId : {shortName, name, root, leaf, views, likes, duration, numVideos}
+  let categoryTotals = {};
   let columns = {};
   let columnHeaders = categoryList[0];
   for (let i = 0; i < columnHeaders.length; i++) {
@@ -55,7 +55,8 @@ function recordCategoryListData() {
   localStorage.removeItem("categoryListSheet");
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
 
-  requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM", "Video List");
+  requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
+      "Video List");
 }
 
 // Records video IDs from Google Sheet
@@ -111,9 +112,12 @@ function recordCategoryData() {
     let views = parseInt(categoriesSheet[i][columns["Views"]]);
     let likes = parseInt(categoriesSheet[i][columns["Likes"]]);
     let duration = parseInt(categoriesSheet[i][columns["Duration (sec)"]]);
-    let avgViews = parseFloat(categoriesSheet[i][columns["Average Video Views"]]);
-    let avgLikes = parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
-    let avgDuration = parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
+    let avgViews =
+        parseFloat(categoriesSheet[i][columns["Average Video Views"]]);
+    let avgLikes =
+        parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
+    let avgDuration =
+        parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
     let videosString = categoriesSheet[i][columns["Videos"]];
     let videos = videosString.split(",");
     let root = ("TRUE" === categoriesSheet[i][columns["Root"]]);
@@ -207,13 +211,15 @@ function saveCategoryStatsToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Category Stats", body);
+  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+      "Category Stats", body);
 }
 
 // Saves allVideoStats and statsByVideoId to Google Sheets
 function saveVideoStatsToSheets() {
   var values = [
-    ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)", "Comments", "Publish Date"]
+    ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
+        "Comments", "Publish Date"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
@@ -233,7 +239,8 @@ function saveVideoStatsToSheets() {
   var body= {
     "values": values
   };
-  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw", "Video Stats", body);
+  requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+      "Video Stats", body);
 }
 
 // Saves top ten videos by views this month to Google Sheets

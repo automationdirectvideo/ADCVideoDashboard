@@ -21,7 +21,8 @@ function requestVideoStatisticsOverall(settings) {
     "part": "statistics,contentDetails",
     "id": videoId
   };
-  callDataAPIVideos(request, "VideoStatistics: ", handleVideoStatisticsOverall, settings);
+  callDataAPIVideos(request, "VideoStatistics: ", handleVideoStatisticsOverall,
+      settings);
 }
 
 
@@ -63,7 +64,8 @@ function requestMinutesSubscribedStatus(startDate, endDate) {
     "metrics": "estimatedMinutesWatched",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MinutesSubscribedStatus: ", handleMinutesSubscribedStatus);
+  callAnalyticsAPI(request, "MinutesSubscribedStatus: ",
+      handleMinutesSubscribedStatus);
 }
 
 function requestViewsByDeviceType(startDate, endDate) {
@@ -111,7 +113,8 @@ function requestRealTimeStats(startDate, endDate, message) {
   var request = {
     "endDate": endDate,
     "ids": "channel==MINE",
-    "metrics": "views,subscribersGained,subscribersLost,estimatedMinutesWatched,averageViewDuration",
+    "metrics": "views,subscribersGained,subscribersLost," +
+        "estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
   };
   callAnalyticsAPI(request, "RealTimeStats: ", handleRealTimeStats, message);
@@ -144,7 +147,8 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos, month);
+  callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos,
+      month);
 }
 
 
@@ -157,10 +161,12 @@ function requestVideoBasicStats(startDate, endDate, videoId, dashboardId) {
     "endDate": endDate,
     "filters": stringVideoId,
     "ids": "channel==MINE",
-    "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched,averageViewDuration,subscribersGained,subscribersLost",
+    "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched," +
+        "averageViewDuration,subscribersGained,subscribersLost",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoBasicStats: ", handleVideoBasicStats, dashboardId);
+  callAnalyticsAPI(request, "VideoBasicStats: ", handleVideoBasicStats,
+      dashboardId);
 }
 
 function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
@@ -174,7 +180,8 @@ function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
     "sort": "day",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoDailyViews: ", handleVideoDailyViews, dashboardId);
+  callAnalyticsAPI(request, "VideoDailyViews: ", handleVideoDailyViews,
+      dashboardId);
 }
 
 function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
@@ -189,7 +196,8 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoSearchTerms: ", handleVideoSearchTerms, dashboardId);
+  callAnalyticsAPI(request, "VideoSearchTerms: ", handleVideoSearchTerms,
+      dashboardId);
 }
 
 function requestVideoSnippet(videoId, dashboardId) {
@@ -208,7 +216,8 @@ function requestFileModifiedTime(fileId, message) {
     "fileId": fileId,
     "fields": "modifiedTime"
   };
-  callDriveAPIFiles(request, "FileModifiedTime:", handleFileModifiedTime, message);
+  callDriveAPIFiles(request, "FileModifiedTime:", handleFileModifiedTime,
+      message);
 }
 
 function requestSpreadsheetData(spreadsheetId, range) {
