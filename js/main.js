@@ -183,15 +183,17 @@ function loadRealTimeStats() {
 }
 
 function calcAvgVideoDuration() {
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  if (allVideoStats) {
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  if (statsByVideoId) {
+    let numVideos = 0;
     let totalDuration = 0;
     for (let videoId in statsByVideoId) {
       if (statsByVideoId.hasOwnProperty(videoId)) {
         totalDuration += statsByVideoId[videoId]["duration"];
+        numVideos++;
       }
     }
-    let avgDuration = totalDuration / allVideoStats.length;
+    let avgDuration = totalDuration / numVideos;
     let avgViewDuration = document.getElementById("stat-avg-duration").value;
     let avgViewPercentage = decimalToPercent(avgViewDuration / avgDuration);
     if (isNaN(avgViewPercentage)) {
@@ -200,7 +202,7 @@ function calcAvgVideoDuration() {
     document.getElementById("stat-avg-percentage").innerText =
         avgViewPercentage + "%";
   } else {
-    // Default value if allVideoStats does not exist yet
+    // Default value if statsByVideoId does not exist yet
     document.getElementById("stat-avg-percentage").innerText = "36.1%";
   }
 }
