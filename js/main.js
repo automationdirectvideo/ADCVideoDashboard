@@ -728,50 +728,55 @@ function displayTopVideoTitle(videoId, dashboardId) {
 
 // Load thumbnails in 1000 thumbnail dashboard
 function displayUploadThumbnails() {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  if (carouselInner.children.thumbnails) {
-    let uploads = JSON.parse(localStorage.getItem("uploads"));
-    if (!uploads) {
-      throw "Uploads does not exist";
-    } else {
-      var uploadThumbnails = "";
-      for (var i = 0; i < uploads.length; i++) {
-        var videoTitle = "YouTube Video ID: " + uploads[i];
-        if (statsByVideoId && statsByVideoId[uploads[i]]) {
-          videoTitle = statsByVideoId[uploads[i]]["title"];
-        }
-        uploadThumbnails += `
-          <a href="https://youtu.be/${uploads[i]}" target="_blank"
-              onclick="closeFullscreen()" alt="${videoTitle}">
-            <img class="thumbnail"
-                src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" 
-                alt="thumbnail" title="${videoTitle}">
-          </a>`;
-      }
-      var thumbnailContainer = document.getElementById("thumbnail-container");
-      thumbnailContainer.innerHTML = uploadThumbnails;
-
-      if (!autoScrollDivs.includes("thumbnail-wrapper")) {
-        let currentSettings = JSON.parse(localStorage.getItem("settings"));
-        let speed = -1;
-        let index = 0;
-        while (speed == -1 && index <= currentSettings.dashboards.length) {
-          let dashboard = currentSettings.dashboards[index];
-          if (dashboard.name == "thumbnails") {
-            speed = dashboard.scrollSpeed;
+  try {
+    let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+    var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+    if (carouselInner.children.thumbnails) {
+      let uploads = JSON.parse(localStorage.getItem("uploads"));
+      if (!uploads) {
+        throw "Uploads does not exist";
+      } else {
+        var uploadThumbnails = "";
+        for (var i = 0; i < uploads.length; i++) {
+          var videoTitle = "YouTube Video ID: " + uploads[i];
+          if (statsByVideoId && statsByVideoId[uploads[i]]) {
+            videoTitle = statsByVideoId[uploads[i]]["title"];
           }
-          index++;
+          uploadThumbnails += `
+            <a href="https://youtu.be/${uploads[i]}" target="_blank"
+                onclick="closeFullscreen()" alt="${videoTitle}">
+              <img class="thumbnail"
+                  src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" 
+                  alt="thumbnail" title="${videoTitle}">
+            </a>`;
         }
-        if (speed <= 0) {
-          speed = 0;
-        } else {
-          speed = Math.ceil(1000 / speed);
+        var thumbnailContainer = document.getElementById("thumbnail-container");
+        thumbnailContainer.innerHTML = uploadThumbnails;
+
+        if (!autoScrollDivs.includes("thumbnail-wrapper")) {
+          let currentSettings = JSON.parse(localStorage.getItem("settings"));
+          let speed = -1;
+          let index = 0;
+          while (speed == -1 && index <= currentSettings.dashboards.length) {
+            let dashboard = currentSettings.dashboards[index];
+            if (dashboard.name == "thumbnails") {
+              speed = dashboard.scrollSpeed;
+            }
+            index++;
+          }
+          if (speed <= 0) {
+            speed = 0;
+          } else {
+            speed = Math.ceil(1000 / speed);
+          }
+          new AutoDivScroll("thumbnail-wrapper", speed, 1, 1);
+          autoScrollDivs.push("thumbnail-wrapper");
         }
-        new AutoDivScroll("thumbnail-wrapper", speed, 1, 1);
-        autoScrollDivs.push("thumbnail-wrapper");
       }
     }
+  } catch (err) {
+    console.log(err);
+    window.setTimeout(displayUploadThumbnails, 5000);
   }
 }
 
