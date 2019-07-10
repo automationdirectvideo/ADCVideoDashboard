@@ -77,12 +77,14 @@ function recordVideoListData() {
       let videoId = row[columns["Video ID"]];
       let title = row[columns["Title"]];
       let publishDate = row[columns["Publish Date"]];
+      let duration = row[columns["Duration"]];
       let categoryString = row[columns["Categories"]];
       categoryString.replace(/\s/g, ''); // Removes whitespace
       statsByVideoId[videoId] = {
         "categories": categoryString.split(","),
         "title": title,
-        "publishDate": publishDate
+        "publishDate": publishDate,
+        "duration": duration
       };
 
       uploads.push(videoId);
