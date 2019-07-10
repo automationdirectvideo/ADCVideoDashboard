@@ -961,9 +961,9 @@ for (var i = 0; i < enabledOrder.length; i++) {
 
 // Handle carousel scrolling
 document.addEventListener("keydown", function (e) {
-  if (e.key == "ArrowLeft") {
+  if (e.key == "ArrowLeft" || e.key == "ArrowUp") {
     carouselPrev();
-  } else if (e.key == "ArrowRight") {
+  } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
     carouselNext();
   } else if (!isNaN(e.key)) {
     if (e.ctrlKey || e.altKey) {
