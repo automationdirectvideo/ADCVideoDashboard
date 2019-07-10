@@ -732,7 +732,9 @@ function displayUploadThumbnails() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children.thumbnails) {
     let uploads = JSON.parse(localStorage.getItem("uploads"));
-    if (uploads) {
+    if (!uploads) {
+      throw "Uploads does not exist";
+    } else {
       var uploadThumbnails = "";
       for (var i = 0; i < uploads.length; i++) {
         var videoTitle = "YouTube Video ID: " + uploads[i];
