@@ -680,7 +680,7 @@ function handleMostWatchedVideos(response, month) {
       };
       var row = 3 + monthDiff(new Date(2010, 6), new Date(month));
       var sheet = "Top Ten Videos!A" + row;
-      requestUpdateSheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+      requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
           sheet, body);
     }
   }
@@ -968,14 +968,14 @@ function handleFileModifiedTime(response, message) {
     console.log(message + " was last modified on " + modifiedTime.toString());
     if (message == "Video List") {
       if (lastUpdatedOn - modifiedTime < 0) {
-        requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
+        requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
             "Category List");
       } else {
-        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+        requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
             "Video Stats");
-        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+        requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
             "Category Stats");
-        requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+        requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
             "Top Ten Videos");
       }
     }

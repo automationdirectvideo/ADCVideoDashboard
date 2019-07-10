@@ -34,24 +34,24 @@ function loadDashboards() {
       displayTopCategories();
     } catch (TypeError) {
       console.error(TypeError);
-      requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+      requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
           "Category Stats");
       window.setTimeout(displayTopCategories, 10000);
     }
   }
   if (carouselInner.children["top-ten"]) {
-    requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
         "Top Ten Videos");
   }
   if (carouselInner.children["feedback"]) {
-    requestSpreadsheetData("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
+    requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
         "User Feedback List");
   }
   try {
     loadTopVideoDashboards();
   } catch (err) {
     console.log(err);
-    requestSpreadsheetData("1Srtu29kx9nwUe_5citZpsrPw20e27xXrlfcbMvRPPUw",
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
         "Video Stats");
     window.setTimeout(loadTopVideoDashboards, 5000);
   }
@@ -100,7 +100,7 @@ function updateStats() {
   if (updateCount >= 86400) {
     updateTopTenVideoSheet();
     realTimeStatsCalls();
-    requestFileModifiedTime("1rFuVMl_jarRY7IHxDZkpu9Ma-vA_YBFj-wvK-1XZDyM",
+    requestFileModifiedTime("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
         "Video List");
   }
   if (updateCount % 3600 == 0) {
