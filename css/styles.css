@@ -8,7 +8,11 @@ html, body {
   height: 100%;
 } 
 body {
-    font-family: 'Roboto', 'Noto Sans', sans-serif;
+  font-family: 'Roboto', 'Noto Sans', sans-serif;
+  -webkit-user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .main-wrapper {

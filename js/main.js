@@ -103,7 +103,7 @@ function updateStats() {
     requestFileModifiedTime("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
         "Video List");
   }
-  if (updateCount % 3600 == 0) {
+  if (updateCount % 900 == 0) {
     loadDashboards();
   }
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
