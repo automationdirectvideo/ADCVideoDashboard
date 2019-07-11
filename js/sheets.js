@@ -5,6 +5,7 @@
 function recordCategoryListData() {
   let categoryList = JSON.parse(localStorage.getItem("categoryListSheet"));
   let categoryTotals = {};
+  let categoryIds = {};
   let columns = {};
   let columnHeaders = categoryList[0];
   for (let i = 0; i < columnHeaders.length; i++) {
@@ -13,6 +14,7 @@ function recordCategoryListData() {
   for (let i = 1; i < categoryList.length; i++) {
     let row = categoryList[i];
     let categoryId = row[columns["Category ID"]];
+    let newCategoryId = row[columns["New Category ID"]];
     let level1 = row[columns["L1 Category"]];
     let level2 = row[columns["L2 Category"]];
     let level3 = row[columns["L3 Category"]];
@@ -41,6 +43,8 @@ function recordCategoryListData() {
       }
     }
 
+    categoryIds[categoryId] = newCategoryId;
+
     categoryTotals[categoryId] = {
       "shortName": shortName,
       "name": name,
@@ -54,6 +58,7 @@ function recordCategoryListData() {
   }
   localStorage.removeItem("categoryListSheet");
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
+  localStorage.setItem("categoryIds", JSON.stringify(categoryIds));
 
   requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
       "Video List");
@@ -63,6 +68,7 @@ function recordCategoryListData() {
 // Initiates displayUploadThumbnails() and getAllVideoStats()
 function recordVideoListData() {
   let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
+  let categoryIds = JSON.parse(localStorage.getItem("categoryIds"));
   let statsByVideoId = {};
   let uploads = [];
   let columns = {};
@@ -80,8 +86,12 @@ function recordVideoListData() {
       let duration = row[columns["Duration"]];
       let categoryString = row[columns["Categories"]];
       categoryString.replace(/\s/g, ''); // Removes whitespace
+      let categoryArr = categoryString.split(",");
+      for (var j = 0; j < categoryArr.length; j++) {
+        categoryArr[j] = categoryIds[categoryArr[j]];
+      }
       statsByVideoId[videoId] = {
-        "categories": categoryString.split(","),
+        "categories": categoryArr,
         "title": title,
         "publishDate": publishDate,
         "duration": duration
@@ -343,7 +353,7 @@ function saveCategoryStatsToSheets() {
 function saveVideoStatsToSheets() {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-        "Comments", "Publish Date"]
+        "Comments", "Publish Date", "Categories"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
@@ -358,6 +368,7 @@ function saveVideoStatsToSheets() {
     row.push(statsByVideoId[videoId]["duration"]);
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
+    row.push(statsByVideoId[videoId]["categories"].join());
     values.push(row);
   }
   var body= {
