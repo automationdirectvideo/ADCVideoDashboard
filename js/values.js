@@ -100,4 +100,4 @@ const joinDate = "2008-04-11";
 
 var autoScrollDivs = [];
 
-var totalNumGraphs = 18;
+var totalNumGraphs = 19;
