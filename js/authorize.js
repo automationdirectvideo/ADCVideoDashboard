@@ -52,13 +52,11 @@ function loadSigninStatus(isSignedIn) {
   if (isSignedIn) {
     signinModalButton.style.display = "none";
     signoutModalButton.style.display = "inline";
-    initializeDashboards();
     initializeUpdater();
     loadDashboards();
   } else {
     signinModalButton.style.display = "inline";
     signoutModalButton.style.display = "none";
-    initializeDashboards();
     initializeUpdater();
     loadDashboardsSignedOut();
   }
