@@ -39,24 +39,19 @@ body {
   font-size: 3rem;
 }
 
-#settings-button, #home-button, #fullscreen-button {
-  cursor: pointer;
-  font-size: 1.75rem;
+.icon-bar {
   position: absolute;
-  top: 0.5%;
+  top: 0%;
+  right: 1%;
+  float: right;
+  list-style: none;
   z-index: 10;
 }
 
-#settings-button {
-  right: 3%;
-}
-
-#home-button {
-  right: 4%;
-}
-
-#fullscreen-button {
-  right: 1%;
+.icon-bar li {
+  display: inline;
+  cursor: pointer;
+  font-size: 1.75rem;
 }
 
 .arrow-red {

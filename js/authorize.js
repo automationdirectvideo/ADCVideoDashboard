@@ -17,8 +17,8 @@ const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
     'https://www.googleapis.com/auth/drive.metadata.readonly';
 
 const authorizeButton = document.getElementById("authorize-button");
-const loginBox = document.getElementById("login-box");
-const content = document.getElementById("content");
+const signinModalButton = document.getElementById("signin-modal-button");
+const signoutModalButton = document.getElementById("signout-modal-button");
 
 // Load auth2 library
 function handleClientLoad() {
@@ -44,13 +44,13 @@ function initClient() {
 // Update UI sign in state changes
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    loginBox.style.display = "none";
-    content.style.display = "block";
+    signinModalButton.style.display = "none";
+    signoutModalButton.style.display = "block";
     initializeUpdater();
     loadDashboards();
   } else {
-    loginBox.style.display = "block";
-    content.style.display = "none";
+    signinModalButton.style.display = "block";
+    signoutModalButton.style.display = "none";
   }
 }
 

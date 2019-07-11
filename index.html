@@ -27,8 +27,20 @@
     <div class="main-wrapper">
       <div class="main" id="main-container">
         <div class="container my-1 position-relative">
-          <i class="fas fa-cog" id="settings-button" onclick="window.location='settings.html';"></i>
-          <i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i>
+          <ul class="icon-bar">
+            <li>
+              <i class="fas fa-sign-in-alt" id="signin-modal-button" data-toggle="#signinModal" title="Sign In"></i>
+            </li>
+            <li>
+              <i class="fas fa-sign-out-alt" id="signout-modal-button" style="display: none;" data-toggle="#signoutModal" title="Sign Out"></i>
+            </li>
+            <li>
+              <i class="fas fa-cog" id="settings-button" onclick="window.location='settings.html';"></i>
+            </li>
+            <li>
+              <i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i>
+            </li>
+          </ul>
           <div class="text-center mt-3" id="login-box">
             <h4>Log In with the AutomationDirect YouTube account</h4>
             <button class="btn btn-primary btn-lg" id="authorize-button">Log In</button>
