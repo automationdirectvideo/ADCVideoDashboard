@@ -930,31 +930,22 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
   let graphData = JSON.parse(localStorage.getItem("graphData"));
   if (!graphData || graphData.length >= totalNumGraphs) {
-    graphData = [];
+    graphData = {};
   }
   if (!automargin) {
     automargin = "None";
   }
-  if (!graphData[graphId]) {
-    graphData[graphId] = {
-      "data": data,
-      "layout": layout,
-      "config": config,
-      "graphHeight": graphHeight,
-      "graphWidth": graphWidth,
-      "automargin": automargin,
-    };
-    if (!graphData["numGraphs"]) {
-      graphData["numGraphs"] = 0;
-    }
-    graphData["numGraphs"] = graphData["numGraphs"] + 1;
-  }
-  if (graphData["numGraphs"] == totalNumGraphs) {
-    delete graphData["numGraphs"];
+  graphData[graphId] = {
+    "data": data,
+    "layout": layout,
+    "config": config,
+    "graphHeight": graphHeight,
+    "graphWidth": graphWidth,
+    "automargin": automargin,
+  };
+  if (Object.keys(graphData).length == totalNumGraphs) {
     localStorage.setItem("graphData", JSON.stringify(graphData));
     saveGraphDataToSheets();
-  } else  {
-    localStorage.setItem("graphData", JSON.stringify(graphData));
   }
 }
 
