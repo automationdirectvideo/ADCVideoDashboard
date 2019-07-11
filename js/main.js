@@ -94,11 +94,11 @@ function loadDashboardsSignedOut() {
   }
   if (carouselInner.children["thumbnails"]) {
     try {
+      requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+            "Video Stats");
       displayUploadThumbnails();
     } catch (err) {
       console.log(err);
-      requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-            "Video Stats");
       window.setTimeout(displayUploadThumbnails, 5000);
     }
   }
