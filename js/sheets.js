@@ -186,8 +186,7 @@ function recordVideoData() {
   localStorage.setItem("uploads", JSON.stringify(uploads));
 }
 
-// Records graph data from Google Sheet to localStorage.graphData and displays
-// graphs
+// Displays graphs on dashboards
 function recordGraphDataFromSheets() {
   let graphDataSheet = JSON.parse(localStorage.getItem("graphDataSheet"));
   let graphData = [];
@@ -215,15 +214,65 @@ function recordGraphDataFromSheets() {
       "automargin": automargin
     });
     // Display graphs
-    Plotly.newPlot(graphId, data, layout, config);
-    if (automargin != "None") {
-      recordGraphSize(graphId, graphHeight, graphWidth, automargin);
-    } else {
-      recordGraphSize(graphId, graphHeight, graphWidth);
+    try {
+      Plotly.newPlot(graphId, data, layout, config);
+      if (automargin != "None") {
+        recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+      } else {
+        recordGraphSize(graphId, graphHeight, graphWidth);
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
   localStorage.removeItem("graphDataSheet");
-  localStorage.setItem("graphData", JSON.stringify(graphData));
+}
+
+// Displays top video stats on dashboards
+function recordTopVideoStatsFromSheets() {
+  let topVideoStatsSheet = 
+      JSON.parse(localStorage.getItem("topVideoStatsSheet"));
+  let columns = {};
+  let columnHeaders = topVideoStatsSheet[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  for (let i = 1; i < topVideoStatsSheet.length; i++) {
+    let row = topVideoStatsSheet[i];
+    let dashboardId = row[columns["Dashboard ID"]];
+    let videoId = row[columns["Video ID"]];
+    let views = row[columns["Views"]];
+    let subscribersGained = row[columns["Subscribers Gained"]];
+    let avgViewDuration = row[columns["Average View Duration"]];
+    let minutesWatched = row[columns["Estimated Minutes Watched"]];
+    let comments = row[columns["Comments"]];
+    let likes = row[columns["Likes"]];
+    let dislikes = row[columns["Dislikes"]];
+    try {
+      displayTopVideoTitle(videoId, dashboardId);
+      let response = {
+        "result": {
+          "rows": [
+            [
+              0,
+              views,
+              comments,
+              likes,
+              dislikes,
+              minutesWatched,
+              avgViewDuration,
+              subscribersGained,
+              0
+            ]
+          ]
+        }
+      };
+      handleVideoBasicStats(response, dashboardId);
+    } catch (err) {
+      console.error(`Dashboard "${dashboardId}" does not exist`, err)
+    }
+  }
+  localStorage.removeItem("topVideoStatsSheet");
 }
 
 // Saves categoryStats to Google Sheets
@@ -308,6 +357,36 @@ function saveGraphDataToSheets() {
   };
   requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
       "Graph Data", body);
+}
+
+// Saves topVideoStats to Google Sheets
+function saveTopVideoStatsToSheets() {
+  var values = [
+    ["Dashboard ID", "Video ID", "Views", "Subscribers Gained",
+        "Average View Duration", "Estimated Minutes Watched", "Comments",
+        "Likes", "Dislikes"]
+  ];
+  let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
+  for (var dashboardId in topVideoStats) {
+    if (topVideoStats.hasOwnProperty(dashboardId)) {
+      var row = [];
+      row.push(dashboardId);
+      row.push(topVideoStats[dashboardId]["videoId"]);
+      row.push(topVideoStats[dashboardId]["views"]);
+      row.push(topVideoStats[dashboardId]["subscribersGained"]);
+      row.push(topVideoStats[dashboardId]["avgViewDuration"]);
+      row.push(topVideoStats[dashboardId]["minutesWatched"]);
+      row.push(topVideoStats[dashboardId]["comments"]);
+      row.push(topVideoStats[dashboardId]["likes"]);
+      row.push(topVideoStats[dashboardId]["dislikes"]);
+      values.push(row);
+    }
+  }
+  var body = {
+    "values": values
+  };
+  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+      "Top Video Stats", body);
 }
 
 // Saves top ten videos by views this month to Google Sheets

@@ -738,6 +738,17 @@ function handleVideoBasicStats(response, dashboardId) {
     let estimatedMinutesWatched =
         document.getElementById(dashboardId + "-minutes-watched");
     estimatedMinutesWatched.innerHTML = numberWithCommas(stats[5]);
+
+    let videoData = {
+      "views": stats[1],
+      "subscribersGained": stats[7] - stats[8],
+      "avgViewDuration": stats[6],
+      "minutesWatched": stats[5],
+      "comments": stats[2],
+      "likes": stats[3],
+      "dislikes": stats[4]
+    };
+    recordTopVideoStats(dashboardId, videoData);
   }
 }
 

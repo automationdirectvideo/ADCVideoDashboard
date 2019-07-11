@@ -725,6 +725,9 @@ function displayTopVideoTitle(videoId, dashboardId) {
           src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" 
           title="${videoTitle}">
     </a>`;
+
+  let videoData = {"videoId": videoId};
+  recordTopVideoStats(dashboardId, videoData);
 }
 
 // Load thumbnails in 1000 thumbnail dashboard
