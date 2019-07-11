@@ -929,7 +929,7 @@ function recordTopVideoStats(dashboardId, data) {
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
   let graphData = JSON.parse(localStorage.getItem("graphData"));
-  if (!graphData || graphData.length >= totalNumGraphs) {
+  if (!graphData || Object.keys(graphData).length >= totalNumGraphs) {
     graphData = {};
   }
   if (!automargin) {
@@ -946,6 +946,8 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
   if (Object.keys(graphData).length == totalNumGraphs) {
     localStorage.setItem("graphData", JSON.stringify(graphData));
     saveGraphDataToSheets();
+  } else {
+    localStorage.setItem("graphData", JSON.stringify(graphData));
   }
 }
 
