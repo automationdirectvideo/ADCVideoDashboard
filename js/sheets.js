@@ -240,8 +240,8 @@ function recordTopVideoStatsFromSheets() {
     let avgViewDuration = row[columns["Average View Duration"]];
     let minutesWatched = row[columns["Estimated Minutes Watched"]];
     let comments = row[columns["Comments"]];
-    let likes = row[columns["Likes"]];
-    let dislikes = row[columns["Dislikes"]];
+    let likes = parseInt(row[columns["Likes"]]);
+    let dislikes = parseInt(row[columns["Dislikes"]]);
     try {
       document.getElementById(dashboardId + "-title").innerHTML = title;
       document.getElementById(dashboardId + "-duration").innerHTML =
