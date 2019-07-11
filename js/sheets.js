@@ -22,7 +22,7 @@ function recordCategoryListData() {
     let leaf = true;
 
     // Set up root and leaf
-    if (/\d/.test(categoryId)) {
+    if (!/\d/.test(categoryId)) {
       root = true;
       name = level1;
     } else {
