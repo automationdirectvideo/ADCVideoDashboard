@@ -172,6 +172,7 @@ function handleChannelDemographics(response) {
     graphContainer.style.width = width + "px";
 
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
@@ -261,6 +262,8 @@ function handleChannelSearchTerms(response) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin);
 
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
@@ -358,6 +361,8 @@ function handleMinutesSubscribedStatus(response) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin);
     
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
@@ -439,6 +444,7 @@ function handleViewsByDeviceType(response) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
@@ -529,6 +535,7 @@ function handleViewsByState(response) {
     }
 
     Plotly.plot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
@@ -618,6 +625,7 @@ function handleViewsByTrafficSource(response) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
@@ -823,6 +831,8 @@ function handleVideoDailyViews(response, dashboardId) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin);
 
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
@@ -913,6 +923,8 @@ function handleVideoSearchTerms(response, dashboardId) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin);
 
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }

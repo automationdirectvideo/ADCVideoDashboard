@@ -612,6 +612,7 @@ function displayTopCategories() {
   var graphId = "categories-double-views-chart";
 
   Plotly.newPlot(graphId, data, layout, config);
+  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
   recordGraphSize(graphId, graphHeight, graphWidth);
 }
@@ -837,6 +838,31 @@ function displayUserFeedback() {
     autoScrollDivs.push("feedback-wrapper");
   }
   
+}
+
+function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin) {
+  let graphData = JSON.parse(localStorage.getItem("graphData"));
+  if (!graphData) {
+    graphData = [];
+  }
+  if (!automargin) {
+    automargin = "None";
+  }
+  graphData.push({
+    "graphId": graphId,
+    "data": data,
+    "layout": layout,
+    "config": config,
+    "graphHeight": graphHeight,
+    "graphWidth": graphWidth,
+    "automargin": automargin,
+  });
+  localStorage.setItem(JSON.stringify(graphData));
+  if (graphData.length == totalNumGraphs) {
+    // Record graphData to sheets after all 18 graphs are recorded
+    saveGraphDataToSheets();
+  }
 }
 
 function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {

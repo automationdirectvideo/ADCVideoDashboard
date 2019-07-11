@@ -186,6 +186,46 @@ function recordVideoData() {
   localStorage.setItem("uploads", JSON.stringify(uploads));
 }
 
+// Records graph data from Google Sheet to localStorage.graphData and displays
+// graphs
+function recordGraphDataFromSheets() {
+  let graphDataSheet = JSON.parse(localStorage.getItem("graphDataSheet"));
+  let graphData = [];
+  let columns = {};
+  let columnHeaders = graphDataSheet[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  for (let i = 1; i < graphDataSheet.length; i++) {
+    let row = graphDataSheet[i];
+    let graphId = row[columns["Graph ID"]];
+    let data = row[columns["Data"]];
+    let layout = row[columns["Layout"]];
+    let config = row[columns["Config"]];
+    let graphHeight = row[columns["Graph Height"]];
+    let graphWidth = row[columns["Graph Width"]];
+    let automargin = row[columns["Automargin"]];
+    graphData.push({
+      "graphId": graphId,
+      "data": data,
+      "layout": layout,
+      "config": config,
+      "graphHeight": graphHeight,
+      "graphWidth": graphWidth,
+      "automargin": automargin
+    });
+    // Display graphs
+    Plotly.newPlot(graphId, data, layout, config);
+    if (automargin != "None") {
+      recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+    } else {
+      recordGraphSize(graphId, graphHeight, graphWidth);
+    }
+  }
+  localStorage.removeItem("graphDataSheet");
+  localStorage.setItem("graphData", JSON.stringify(graphData));
+}
+
 // Saves categoryStats to Google Sheets
 function saveCategoryStatsToSheets() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
@@ -243,6 +283,31 @@ function saveVideoStatsToSheets() {
   };
   requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
       "Video Stats", body);
+}
+
+// Saves graphData to Google Sheets
+function saveGraphDataToSheets() {
+  var values = [
+    ["Graph ID", "Data", "Layout", "Config", "Graph Height", "Graph Width",
+        "Automargin"]
+  ];
+  var graphData = JSON.parse(localStorage.getItem("graphData"));
+  for (var i = 0; i < graphData.length; i++) {
+    var row = [];
+    row.push(graphData[i]["graphId"]);
+    row.push(graphData[i]["data"]);
+    row.push(graphData[i]["layout"]);
+    row.push(graphData[i]["config"]);
+    row.push(graphData[i]["graphHeight"]);
+    row.push(graphData[i]["graphWidth"]);
+    row.push(graphData[i]["automargin"]);
+    values.push(row);
+  }
+  var body = {
+    "values": values
+  };
+  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+      "Graph Data", body);
 }
 
 // Saves top ten videos by views this month to Google Sheets
