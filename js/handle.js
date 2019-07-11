@@ -729,6 +729,12 @@ function handleVideoBasicStats(response, dashboardId) {
     likes.innerHTML = numberWithCommas(stats[3]) + " Likes";
     likeBar.style.width = likeRatio + "%";
     likeBar.setAttribute("aria-valuenow", likeRatio);
+    console.log("Likes: " + stats[3]);
+    console.log("Dislikes: " + stats[4]);
+    console.log("Like Ratio 1: " + stats[3] / (stats[3] + stats[4]));
+    console.log("Like Ratio 2: " +
+        decimalToPercent(stats[3] / (stats[3] + stats[4])));
+    console.log("Like Ratio 3: " + likeRatio);
 
     let dislikes = document.getElementById(dashboardId + "-dislikes");
     dislikes.innerHTML = stats[4] + " Dislikes";
