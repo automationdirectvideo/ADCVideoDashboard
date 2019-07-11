@@ -29,10 +29,10 @@
         <div class="container my-1 position-relative">
           <ul class="icon-bar">
             <li>
-              <i class="fas fa-sign-in-alt" id="signin-modal-button" data-toggle="#signinModal" title="Sign In"></i>
+              <i class="fas fa-sign-in-alt" id="signin-modal-button" data-toggle="modal" data-target="#signinModal" title="Sign In"></i>
             </li>
             <li>
-              <i class="fas fa-sign-out-alt" id="signout-modal-button" style="display: none;" data-toggle="#signoutModal" title="Sign Out"></i>
+              <i class="fas fa-sign-out-alt" id="signout-modal-button" style="display:none;" data-toggle="modal" data-target="#signoutModal" title="Sign Out"></i>
             </li>
             <li>
               <i class="fas fa-cog" id="settings-button" onclick="window.location='settings.html';"></i>
@@ -41,11 +41,6 @@
               <i class="fas fa-expand-arrows-alt" id="fullscreen-button"></i>
             </li>
           </ul>
-          <div class="text-center mt-3" id="login-box">
-            <h4>Log In with the AutomationDirect YouTube account</h4>
-            <button class="btn btn-primary btn-lg" id="authorize-button">Log In</button>
-            <br>
-          </div>
           <div class="text-center" id="content">
             <div class="carousel slide" id="dashboard-carousel" data-ride="carousel">
               <div class="carousel-inner">
@@ -420,6 +415,46 @@
         </div>
       </div>
     </div>
+    <!-- Sign In Modal-->
+    <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signinModalLabel">Sign In</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Sign In with the AutomationDirect YouTube account to view more dashboards!</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="authorize-button">Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sign Out Modal-->
+    <div class="modal fade" id="signoutModal" tabindex="-1" role="dialog" aria-labelledby="signoutModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="signoutModalLabel">Sign Out</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Are you sure you want to sign out?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger" id="signout-button">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </div>
     <script src="js/authorize.js"></script>
     <script src="js/calls.js"></script>
     <script src="js/handle.js"></script>

@@ -17,6 +17,7 @@ const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
     'https://www.googleapis.com/auth/drive.metadata.readonly';
 
 const authorizeButton = document.getElementById("authorize-button");
+const signoutButton = document.getElementById("signout-button");
 const signinModalButton = document.getElementById("signin-modal-button");
 const signoutModalButton = document.getElementById("signout-modal-button");
 
@@ -38,6 +39,7 @@ function initClient() {
     // Handle initial sign in state
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.onclick = handleAuthClick;
+    signoutButton.onclick = handleSignout;
   });
 }
 
