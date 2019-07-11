@@ -761,7 +761,9 @@ function handleVideoBasicStats(response, dashboardId) {
       "likes": stats[3],
       "dislikes": stats[4]
     };
-    recordTopVideoStats(dashboardId, videoData);
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      recordTopVideoStats(dashboardId, videoData);
+    }
   }
 }
 
