@@ -1034,6 +1034,18 @@ function handleSpreadsheetData(response, message) {
       localStorage.setItem("feedbackSheet",
           JSON.stringify(response.result.values));
       displayUserFeedback();
+    } else if (message == "Graph Data") {
+      localStorage.setItem("graphDataSheet",
+          JSON.stringify(response.result.values));
+      recordGraphDataFromSheets();
+    } else if (message == "Top Video Stats") {
+      localStorage.setItem("topVideoStatsSheet",
+          JSON.stringify(response.result.values));
+      recordTopVideoStatsFromSheets();
+    } else if (message == "Real Time Stats") {
+      localStorage.setItem("realTimeStatsSheet",
+          JSON.stringify(response.result.values));
+      recordRealTimeStatsFromSheets();
     }
     let date = new Date();
     date.setHours(6, 0, 0, 0);

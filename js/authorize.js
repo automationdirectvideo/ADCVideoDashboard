@@ -48,11 +48,15 @@ function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     signinModalButton.style.display = "none";
     signoutModalButton.style.display = "block";
+    initializeDashboards();
     initializeUpdater();
     loadDashboards();
   } else {
     signinModalButton.style.display = "block";
     signoutModalButton.style.display = "none";
+    initializeDashboards();
+    initializeUpdater();
+    loadDashboardsSignedOut();
   }
 }
 

@@ -86,31 +86,33 @@ function loadTopVideoDashboards() {
   }
 }
 
-
-function recordTopVideoStats(dashboardId, data) {
-  let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
-  if (!topVideoStats) {
-    topVideoStats = {};
+function loadDashboardsSignedOut() {
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  if (carouselInner.children["real-time-stats"]) {
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Real Time Stats");
   }
-  if (!topVideoStats[dashboardId]) {
-    topVideoStats[dashboardId] = {};
-  }
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      topVideoStats[dashboardId][key] = data[key];
+  if (carouselInner.children["thumbnails"]) {
+    try {
+      displayUploadThumbnails();
+    } catch (err) {
+      console.log(err);
+      window.setTimeout(displayUploadThumbnails, 5000);
     }
+    displayUploadThumbnails();
   }
-  if (!topVideoStats["numUpdates"]) {
-    topVideoStats["numUpdates"] = 0;
+  if (carouselInner.children["top-ten"]) {
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Top Ten Videos");
   }
-  topVideoStats["numUpdates"] = topVideoStats["numUpdates"] + 1;
-  if (topVideoStats["numUpdates"] == 12) {
-    delete topVideoStats["numUpdates"];
-    localStorage.setItem(JSON.stringify(topVideoStats));
-    saveTopVideoStatsToSheets();
-  } else  {
-    localStorage.setItem(JSON.stringify(topVideoStats));
+  if (carouselInner.children["feedback"]) {
+    requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
+        "User Feedback List");
   }
+  requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Graph Data");
+  requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Top Video Stats");
 }
 
 function initializeUpdater() {
@@ -118,20 +120,23 @@ function initializeUpdater() {
 }
 
 function updateStats() {
-  if (!localStorage.getItem("lastUpdatedOn")) {
-    let oldDate = new Date(0);
-    localStorage.setItem("lastUpdatedOn", oldDate.toString());
-  }
-  let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
-  let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
-  if (updateCount >= 86400) {
-    updateTopTenVideoSheet();
-    realTimeStatsCalls();
-    requestFileModifiedTime("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-        "Video List");
-  }
-  if (updateCount % 900 == 0) {
-    loadDashboards();
+  let isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+  if (isSignedIn) {
+    if (!localStorage.getItem("lastUpdatedOn")) {
+      let oldDate = new Date(0);
+      localStorage.setItem("lastUpdatedOn", oldDate.toString());
+    }
+    let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
+    let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
+    if (updateCount >= 86400) {
+      updateTopTenVideoSheet();
+      realTimeStatsCalls();
+      requestFileModifiedTime("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
+          "Video List");
+    }
+    if (updateCount % 900 == 0) {
+      loadDashboards();
+    }
   }
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children["real-time-stats"]) {
@@ -870,6 +875,32 @@ function displayUserFeedback() {
   
 }
 
+function recordTopVideoStats(dashboardId, data) {
+  let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
+  if (!topVideoStats) {
+    topVideoStats = {};
+  }
+  if (!topVideoStats[dashboardId]) {
+    topVideoStats[dashboardId] = {};
+  }
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      topVideoStats[dashboardId][key] = data[key];
+    }
+  }
+  if (!topVideoStats["numUpdates"]) {
+    topVideoStats["numUpdates"] = 0;
+  }
+  topVideoStats["numUpdates"] = topVideoStats["numUpdates"] + 1;
+  if (topVideoStats["numUpdates"] == 12) {
+    delete topVideoStats["numUpdates"];
+    localStorage.setItem(JSON.stringify(topVideoStats));
+    saveTopVideoStatsToSheets();
+  } else  {
+    localStorage.setItem(JSON.stringify(topVideoStats));
+  }
+}
+
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
   let graphData = JSON.parse(localStorage.getItem("graphData"));
@@ -963,108 +994,104 @@ function goToCarouselItem(index) {
   $(".carousel").carousel(index);
 }
 
+function initializeDashboards() {
 // Get current settings
-if (!localStorage.getItem("settings")) {
-  localStorage.setItem("settings", JSON.stringify(defaultSettings));
-}
-var currentSettings = JSON.parse(localStorage.getItem("settings"));
-console.log("Current Settings: ", currentSettings);
-
-
-// Initialize carousel
-var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-var indicatorList = 
-    document.getElementsByClassName("indicator-list")[0];
-const cycleSpeed = currentSettings.cycleSpeed * 1000;
-$(".carousel").carousel({
-  interval: cycleSpeed
-});
-
-// Set order of dashboards
-var enabledOrder = new Array(currentSettings.numEnabled);
-for (var i = 0; i < currentSettings.dashboards.length; i++) {
-  var dashboard = currentSettings.dashboards[i];
-  if (dashboard.index >= 0) {
-    enabledOrder.splice(dashboard.index, 1, {
-      "name": dashboard.name,
-      "icon": dashboard.icon,
-      "theme": dashboard.theme,
-      "title": dashboard.title
-    });
+  if (!localStorage.getItem("settings")) {
+    localStorage.setItem("settings", JSON.stringify(defaultSettings));
   }
-}
-for (var i = 0; i < enabledOrder.length; i++) {
-  var dashboardItem = document.getElementById(enabledOrder[i].name);
-  var indicator = document.getElementById("indicator").cloneNode();
-  if (enabledOrder[i].name.includes("top-video-")) {
-    dashboardItem = document.getElementById("top-video-#").cloneNode(true);
-    dashboardText = dashboardItem.outerHTML;
-    dashboardText = dashboardText.replace(/top-video-#/g, enabledOrder[i].name);
-    dashboardText =
-        dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
-    var template = document.createElement("template");
-    template.innerHTML = dashboardText;
-    dashboardItem = template.content.firstChild;
-  } else {
-    dashboardItem.remove();
-  }
-  document.createElement("div",dashboardItem.outerText)
-  dashboardItem.setAttribute("theme", enabledOrder[i].theme);
-  indicator.id = "indicator-" + i;
-  indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
-  indicator.className = enabledOrder[i].icon + " indicator";
-  carouselInner.appendChild(dashboardItem);
-  indicatorList.appendChild(indicator);
-  if (i == 0) {
-    dashboardItem.classList.add("active");
-    indicator.classList.add("active");
-    updateTheme(i);
-  }
-}
+  var currentSettings = JSON.parse(localStorage.getItem("settings"));
+  console.log("Current Settings: ", currentSettings);
 
-// Handle carousel scrolling
-document.addEventListener("keydown", function (e) {
-  if (e.key == "ArrowLeft" || e.key == "ArrowUp") {
-    carouselPrev();
-  } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
-    carouselNext();
-  } else if (!isNaN(e.key)) {
-    if (e.ctrlKey || e.altKey) {
-      goToCarouselItem(parseInt(e.key) + 9);
-    } else {
-      goToCarouselItem(parseInt(e.key) - 1);
+
+  // Initialize carousel
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  var indicatorList = 
+      document.getElementsByClassName("indicator-list")[0];
+  const cycleSpeed = currentSettings.cycleSpeed * 1000;
+  $(".carousel").carousel({
+    interval: cycleSpeed
+  });
+
+  // Set order of dashboards
+  var enabledOrder = new Array(currentSettings.numEnabled);
+  for (var i = 0; i < currentSettings.dashboards.length; i++) {
+    var dashboard = currentSettings.dashboards[i];
+    if (dashboard.index >= 0) {
+      enabledOrder.splice(dashboard.index, 1, {
+        "name": dashboard.name,
+        "icon": dashboard.icon,
+        "theme": dashboard.theme,
+        "title": dashboard.title
+      });
     }
   }
-});
-$(".carousel").on("slide.bs.carousel", function (e) {
-  var startIndicator = document.getElementById("indicator-" + e.from);
-  var endIndicator = document.getElementById("indicator-" + e.to);
-  startIndicator.classList.remove("active");
-  endIndicator.classList.add("active");
-  window.setTimeout(function(){
-    fixGraphMargins();
-    updateTheme(e.to);
-  }, 250);
-});
-$(".carousel").on("slid.bs.carousel", function (e) {
-  fixGraphMargins();
-})
-
-if (carouselInner.children["real-time-stats"]) {
-  loadRealTimeStats();
-}
-
-displayUploadThumbnails();
-
-window.addEventListener('resize', function () {
-  resizeGraphs();
-  let topTenDashboard = document.getElementById("top-ten");
-  if (topTenDashboard.classList.contains("active")) {
-    let thumbnailContainer =
-        document.getElementById("top-ten-thumbnail-container");
-    thumbnailContainer.style.display = "none";
-    this.window.setTimeout(function () {
-      thumbnailContainer.style.display = "flex";
-    }, 500);
+  for (var i = 0; i < enabledOrder.length; i++) {
+    var dashboardItem = document.getElementById(enabledOrder[i].name);
+    var indicator = document.getElementById("indicator").cloneNode();
+    if (enabledOrder[i].name.includes("top-video-")) {
+      dashboardItem = document.getElementById("top-video-#").cloneNode(true);
+      dashboardText = dashboardItem.outerHTML;
+      dashboardText = dashboardText.replace(/top-video-#/g, enabledOrder[i].name);
+      dashboardText =
+          dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
+      var template = document.createElement("template");
+      template.innerHTML = dashboardText;
+      dashboardItem = template.content.firstChild;
+    } else {
+      dashboardItem.remove();
+    }
+    document.createElement("div",dashboardItem.outerText)
+    dashboardItem.setAttribute("theme", enabledOrder[i].theme);
+    indicator.id = "indicator-" + i;
+    indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
+    indicator.className = enabledOrder[i].icon + " indicator";
+    carouselInner.appendChild(dashboardItem);
+    indicatorList.appendChild(indicator);
+    if (i == 0) {
+      dashboardItem.classList.add("active");
+      indicator.classList.add("active");
+      updateTheme(i);
+    }
   }
-}, true);
+
+  // Handle carousel scrolling
+  document.addEventListener("keydown", function (e) {
+    if (e.key == "ArrowLeft" || e.key == "ArrowUp") {
+      carouselPrev();
+    } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
+      carouselNext();
+    } else if (!isNaN(e.key)) {
+      if (e.ctrlKey || e.altKey) {
+        goToCarouselItem(parseInt(e.key) + 9);
+      } else {
+        goToCarouselItem(parseInt(e.key) - 1);
+      }
+    }
+  });
+  $(".carousel").on("slide.bs.carousel", function (e) {
+    var startIndicator = document.getElementById("indicator-" + e.from);
+    var endIndicator = document.getElementById("indicator-" + e.to);
+    startIndicator.classList.remove("active");
+    endIndicator.classList.add("active");
+    window.setTimeout(function(){
+      fixGraphMargins();
+      updateTheme(e.to);
+    }, 250);
+  });
+  $(".carousel").on("slid.bs.carousel", function (e) {
+    fixGraphMargins();
+  })
+
+  window.addEventListener('resize', function () {
+    resizeGraphs();
+    let topTenDashboard = document.getElementById("top-ten");
+    if (topTenDashboard.classList.contains("active")) {
+      let thumbnailContainer =
+          document.getElementById("top-ten-thumbnail-container");
+      thumbnailContainer.style.display = "none";
+      this.window.setTimeout(function () {
+        thumbnailContainer.style.display = "flex";
+      }, 500);
+    }
+  }, true);
+}
