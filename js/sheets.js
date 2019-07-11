@@ -241,6 +241,10 @@ function recordTopVideoStatsFromSheets() {
     let row = topVideoStatsSheet[i];
     let dashboardId = row[columns["Dashboard ID"]];
     let videoId = row[columns["Video ID"]];
+    let title = row[columns["Title"]];
+    let duration = row[columns["Duration"]];
+    let publishDate = row[columns["Publish Date"]];
+    let thumbnail = row[columns["Thumbnail"]];
     let views = row[columns["Views"]];
     let subscribersGained = row[columns["Subscribers Gained"]];
     let avgViewDuration = row[columns["Average View Duration"]];
@@ -267,7 +271,19 @@ function recordTopVideoStatsFromSheets() {
           ]
         }
       };
-      handleVideoBasicStats(response, dashboardId);
+      
+      document.getElementById(dashboardId + "-title").innerHTML = title;
+      document.getElementById(dashboardId + "-duration").innerHTML =
+          "Duration: " + secondsToDuration(duration);
+      document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
+          duration;
+
+      document.getElementById(dashboardId + "-publish-date").innerHTML =
+          "Published: " + publishDate;
+
+      document.getElementById(dashboardId + "-thumbnail").innerHTML =
+          thumbnail;
+
     } catch (err) {
       console.error(`Dashboard "${dashboardId}" does not exist`, err)
     }
@@ -391,9 +407,9 @@ function saveGraphDataToSheets() {
 // Saves topVideoStats to Google Sheets
 function saveTopVideoStatsToSheets() {
   var values = [
-    ["Dashboard ID", "Video ID", "Views", "Subscribers Gained",
-        "Average View Duration", "Estimated Minutes Watched", "Comments",
-        "Likes", "Dislikes"]
+    ["Dashboard ID", "Video ID", "Title", "Duration", "Publish Date",
+        "Thumbnail", "Views", "Subscribers Gained", "Average View Duration",
+        "Estimated Minutes Watched", "Comments", "Likes", "Dislikes"]
   ];
   let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
   for (var dashboardId in topVideoStats) {
@@ -401,6 +417,10 @@ function saveTopVideoStatsToSheets() {
       var row = [];
       row.push(dashboardId);
       row.push(topVideoStats[dashboardId]["videoId"]);
+      row.push(topVideoStats[dashboardId]["title"]);
+      row.push(topVideoStats[dashboardId]["duration"]);
+      row.push(topVideoStats[dashboardId]["publishDate"]);
+      row.push(topVideoStats[dashboardId]["thumbnail"]);
       row.push(topVideoStats[dashboardId]["views"]);
       row.push(topVideoStats[dashboardId]["subscribersGained"]);
       row.push(topVideoStats[dashboardId]["avgViewDuration"]);

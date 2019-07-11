@@ -759,15 +759,22 @@ function displayTopVideoTitle(videoId, dashboardId) {
   if (statsByVideoId && statsByVideoId[videoId]) {
     videoTitle = statsByVideoId[videoId]["title"];
   }
-  thumbnail.innerHTML = `
+  let thumbnailText = `
     <a href="https://youtu.be/${videoId}" target="_blank"
         onclick="closeFullscreen()" alt="${videoTitle}">
       <img class="top-video-thumbnail"
           src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" 
           title="${videoTitle}">
     </a>`;
+  thumbnail.innerHTML = thumbnailText;
 
-  let videoData = {"videoId": videoId};
+  let videoData = {
+    "videoId": videoId,
+    "title": statsByVideoId[videoId]["title"],
+    "duration": statsByVideoId[videoId]["duration"],
+    "publishDate": publishDate,
+    "thumbnail": thumbnailText
+  };
   recordTopVideoStats(dashboardId, videoData);
 }
 
