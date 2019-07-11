@@ -307,10 +307,10 @@ function recordRealTimeStatsFromSheets() {
     let averageViewDuration = row[columns["Average View Duration"]];
     let netSubscribersGained = row[columns["Subscribers Gained"]];
     realTimeStats[timeRange] = {
-      "views": views,
-      "estimatedMinutesWatched": estimatedMinutesWatched,
-      "averageViewDuration": averageViewDuration,
-      "netSubscribersGained": netSubscribersGained,
+      "views": parseInt(views),
+      "estimatedMinutesWatched": parseInt(estimatedMinutesWatched),
+      "averageViewDuration": parseInt(averageViewDuration),
+      "netSubscribersGained": parseInt(netSubscribersGained),
     };
   }
   localStorage.removeItem("topVideoStatsSheet");
