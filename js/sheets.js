@@ -87,9 +87,6 @@ function recordVideoListData() {
       let categoryString = row[columns["Categories"]];
       categoryString.replace(/\s/g, ''); // Removes whitespace
       let categoryArr = categoryString.split(",");
-      for (var j = 0; j < categoryArr.length; j++) {
-        categoryArr[j] = categoryIds[categoryArr[j]];
-      }
       statsByVideoId[videoId] = {
         "categories": categoryArr,
         "title": title,
@@ -368,7 +365,11 @@ function saveVideoStatsToSheets() {
     row.push(statsByVideoId[videoId]["duration"]);
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
-    row.push(statsByVideoId[videoId]["categories"].join());
+    let categoryArr = statsByVideoId[videoId]["categories"];
+    for (var j = 0; j < categoryArr.length; j++) {
+      categoryArr[j] = categoryIds[categoryArr[j]];
+    }
+    row.push(categoryArr.join());
     values.push(row);
   }
   var body= {
