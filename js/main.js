@@ -647,6 +647,7 @@ function displayTopCategories() {
     responsive: true
   };
 
+  var graphId = "categories-double-views-chart";
   recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
   var currentSettings = JSON.parse(localStorage.getItem("settings"));
@@ -665,8 +666,6 @@ function displayTopCategories() {
     layout["legend"]["bgcolor"] = "#444";
     layout["legend"]["font"]["color"] = "#fff";
   }
-
-  var graphId = "categories-double-views-chart";
 
   Plotly.newPlot(graphId, data, layout, config);
 
