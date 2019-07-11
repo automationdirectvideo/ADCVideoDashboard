@@ -658,6 +658,7 @@ function handleRealTimeStats(response, message) {
     console.log("Real Time Stats: ", stats);
     // message is either "cumulative", "month", or "today"
     if (message == "cumulative") {
+      saveRealTimeStatsToSheets();
       loadRealTimeStats();
     }
   }

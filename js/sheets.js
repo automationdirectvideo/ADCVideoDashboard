@@ -275,6 +275,35 @@ function recordTopVideoStatsFromSheets() {
   localStorage.removeItem("topVideoStatsSheet");
 }
 
+// Records real time stats from Google Sheet to localStorage.realTimeStats
+function recordRealTimeStatsFromSheets() {
+  let realTimeStatsSheet =
+      JSON.parse(localStorage.getItem("realTimeStatsSheet"));
+  let realTimeStats = {};
+  let columns = {};
+  let columnHeaders = realTimeStatsSheet[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  for (let i = 1; i < realTimeStatsSheet.length; i++) {
+    let row = realTimeStatsSheet[i];
+    let timeRange = row[columns["Time Range"]];
+    let views = row[columns["Views"]];
+    let estimatedMinutesWatched = row[columns["Estimated Minutes Watched"]];
+    let averageViewDuration = row[columns["Average View Duration"]];
+    let netSubscribersGained = row[columns["Subscribers Gained"]];
+    realTimeStats[timeRange] = {
+      "views": views,
+      "estimatedMinutesWatched": estimatedMinutesWatched,
+      "averageViewDuration": averageViewDuration,
+      "netSubscribersGained": netSubscribersGained,
+    };
+  }
+  localStorage.removeItem("topVideoStatsSheet");
+  localStorage.setItem(JSON.stringify(realTimeStats));
+  loadRealTimeStats();
+}
+
 // Saves categoryStats to Google Sheets
 function saveCategoryStatsToSheets() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
@@ -387,6 +416,30 @@ function saveTopVideoStatsToSheets() {
   };
   requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
       "Top Video Stats", body);
+}
+
+function saveRealTimeStatsToSheets() {
+  var values = [
+    ["Time Range", "Views", "Estimated Minutes Watched",
+        "Average View Duration", "Subscribers Gained"]
+  ];
+  let realTimeStats = JSON.parse(localStorage.getItem("realTimeStats"));
+  for (var timeRange in realTimeStats) {
+    if (realTimeStats.hasOwnProperty(timeRange)) {
+      var row = [];
+      row.push(timeRange);
+      row.push(realTimeStats[timeRange]["views"]);
+      row.push(realTimeStats[timeRange]["estimatedMinutesWatched"]);
+      row.push(realTimeStats[timeRange]["averageViewDuration"]);
+      row.push(realTimeStats[timeRange]["netSubscribersGained"]);
+      values.push(row);
+    }
+  }
+  var body = {
+    "values": values
+  };
+  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+      "Real Time Stats", body);
 }
 
 // Saves top ten videos by views this month to Google Sheets
