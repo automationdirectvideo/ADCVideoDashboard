@@ -201,12 +201,17 @@ function loadRealTimeStats() {
     localStorage.setItem("secondsPerIncrement",
         JSON.stringify(secondsPerIncrement));
     
+    if (!localStorage.getItem("lastUpdatedOn")) {
+      let lastUpdatedOn = new Date();
+      lastUpdatedOn.setHours(6, 0, 0, 0);
+      localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
+    }
+
     var recordDate = new Date(localStorage.getItem("lastUpdatedOn"));
     var now = new Date();
     var diffInSeconds = Math.round((now - recordDate) / 1000);
     
     var avgDurationOdometer = document.getElementById("stat-avg-duration");
-    var avgPercentageOdometer = document.getElementById("stat-avg-percentage");
     var odometerCategories = {
       "views": ["stat-views-cumulative", "stat-views-month"],
       "estimatedMinutesWatched": ["stat-minutes-cumulative",
