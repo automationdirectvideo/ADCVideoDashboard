@@ -374,16 +374,18 @@ function saveGraphDataToSheets() {
         "Automargin"]
   ];
   var graphData = JSON.parse(localStorage.getItem("graphData"));
-  for (var i = 0; i < graphData.length; i++) {
-    var row = [];
-    row.push(graphData[i]["graphId"]);
-    row.push(JSON.stringify(graphData[i]["data"]));
-    row.push(JSON.stringify(graphData[i]["layout"]));
-    row.push(JSON.stringify(graphData[i]["config"]));
-    row.push(graphData[i]["graphHeight"]);
-    row.push(graphData[i]["graphWidth"]);
-    row.push(JSON.stringify(graphData[i]["automargin"]));
-    values.push(row);
+  for (var graphId in graphData) {
+    if (graphData.hasOwnProperty(graphId)) {
+      var row = [];
+      row.push(graphId);
+      row.push(JSON.stringify(graphData[graphId]["data"]));
+      row.push(JSON.stringify(graphData[graphId]["layout"]));
+      row.push(JSON.stringify(graphData[graphId]["config"]));
+      row.push(graphData[graphId]["graphHeight"]);
+      row.push(graphData[graphId]["graphWidth"]);
+      row.push(JSON.stringify(graphData[graphId]["automargin"]));
+      values.push(row);
+    } 
   }
   var body = {
     "values": values

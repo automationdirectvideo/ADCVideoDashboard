@@ -935,19 +935,26 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
   if (!automargin) {
     automargin = "None";
   }
-  graphData.push({
-    "graphId": graphId,
-    "data": data,
-    "layout": layout,
-    "config": config,
-    "graphHeight": graphHeight,
-    "graphWidth": graphWidth,
-    "automargin": automargin,
-  });
-  localStorage.setItem("graphData", JSON.stringify(graphData));
-  if (graphData.length == totalNumGraphs) {
-    // Record graphData to sheets after all 18 graphs are recorded
+  if (!graphData[graphId]) {
+    graphData[graphId] = {
+      "data": data,
+      "layout": layout,
+      "config": config,
+      "graphHeight": graphHeight,
+      "graphWidth": graphWidth,
+      "automargin": automargin,
+    };
+    if (!graphData["numGraphs"]) {
+      graphData["numGraphs"] = 0;
+    }
+    graphData["numGraphs"] = graphData["numGraphs"] + 1;
+  }
+  if (graphData["numGraphs"] == totalNumGraphs) {
+    delete graphData["numGraphs"];
+    localStorage.setItem("graphData", JSON.stringify(graphData));
     saveGraphDataToSheets();
+  } else  {
+    localStorage.setItem("graphData", JSON.stringify(graphData));
   }
 }
 
