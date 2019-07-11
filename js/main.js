@@ -101,6 +101,10 @@ function loadDashboardsSignedOut() {
     }
     displayUploadThumbnails();
   }
+  if (carouselInner.children["platform"]) {
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Channel Demographics");
+  }
   if (carouselInner.children["top-ten"]) {
     requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
         "Top Ten Videos");

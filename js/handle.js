@@ -175,6 +175,18 @@ function handleChannelDemographics(response) {
     recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
     recordGraphSize(graphId, graphHeight, graphWidth);
+
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      var body = {
+        values: [
+          [
+            JSON.stringify(rows)
+          ]
+        ]
+      }
+      requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+          "Channel Demographics", body);
+    }
   }
 }
 
@@ -1046,6 +1058,14 @@ function handleSpreadsheetData(response, message) {
       localStorage.setItem("realTimeStatsSheet",
           JSON.stringify(response.result.values));
       recordRealTimeStatsFromSheets();
+    } else if (message == "Channel Demographics") {
+      var rows = JSON.parse(response.result.values[0][0]);
+      var newResponse = {
+        "result": {
+          "rows": rows
+        }
+      };
+      handleChannelDemographics(newResponse);
     }
     let date = new Date();
     date.setHours(6, 0, 0, 0);
