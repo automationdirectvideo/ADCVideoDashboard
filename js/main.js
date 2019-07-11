@@ -97,9 +97,10 @@ function loadDashboardsSignedOut() {
       displayUploadThumbnails();
     } catch (err) {
       console.log(err);
+      requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+            "Video Stats");
       window.setTimeout(displayUploadThumbnails, 5000);
     }
-    displayUploadThumbnails();
   }
   if (carouselInner.children["platform"]) {
     requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
