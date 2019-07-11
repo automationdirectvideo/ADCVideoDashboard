@@ -354,6 +354,7 @@ function saveVideoStatsToSheets() {
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  var categoryIds = JSON.parse(localStorage.getItem("categoryIds"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
     var videoId = allVideoStats[i]["videoId"];
