@@ -145,7 +145,7 @@ function updateStats() {
   } else {
     let lastUpdatedOn = new Date();
     lastUpdatedOn.setHours(6, 0, 0, 0);
-    let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
+    let updateCount = Math.floor((new Date() - lastUpdatedOn) / 1000);
     var carouselInner = document.getElementsByClassName("carousel-inner")[0];
     if (carouselInner.children["real-time-stats"]) {
       console.log("Update");
