@@ -998,19 +998,23 @@ function fixGraphMargins() {
 }
 
 function updateTheme(dashboardIndex) {
-  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-    var endDashboard = 
-        document.getElementsByClassName("carousel-item")[dashboardIndex];
-    var body = document.getElementsByTagName("body")[0];
-    if (endDashboard.getAttribute("theme") == "dark") {
-      body.className = "dark";
-      if (endDashboard.id == "platform") {
-        document.getElementsByClassName("demographics-table")[0]
-            .classList.add("table-dark");
+  try {
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      var endDashboard = 
+          document.getElementsByClassName("carousel-item")[dashboardIndex];
+      var body = document.getElementsByTagName("body")[0];
+      if (endDashboard.getAttribute("theme") == "dark") {
+        body.className = "dark";
+        if (endDashboard.id == "platform") {
+          document.getElementsByClassName("demographics-table")[0]
+              .classList.add("table-dark");
+        }
+      } else {
+        body.className = "";
       }
-    } else {
-      body.className = "";
     }
+  } catch (err) {
+    console.error(err);
   }
 }
 
@@ -1081,7 +1085,6 @@ for (var i = 0; i < enabledOrder.length; i++) {
   if (i == 0) {
     dashboardItem.classList.add("active");
     indicator.classList.add("active");
-    updateTheme(i);
   }
 }
 

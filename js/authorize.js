@@ -54,6 +54,7 @@ function loadSigninStatus(isSignedIn) {
     signoutModalButton.style.display = "inline";
     initializeUpdater();
     loadDashboards();
+    updateTheme(0);
   } else {
     signinModalButton.style.display = "inline";
     signoutModalButton.style.display = "none";
