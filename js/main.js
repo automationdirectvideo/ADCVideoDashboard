@@ -647,6 +647,8 @@ function displayTopCategories() {
     responsive: true
   };
 
+  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+
   var currentSettings = JSON.parse(localStorage.getItem("settings"));
   var theme = "";
   var index = 0;
@@ -667,7 +669,6 @@ function displayTopCategories() {
   var graphId = "categories-double-views-chart";
 
   Plotly.newPlot(graphId, data, layout, config);
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
   recordGraphSize(graphId, graphHeight, graphWidth);
 }
