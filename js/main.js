@@ -137,11 +137,20 @@ function updateStats() {
     if (updateCount % 900 == 0) {
       loadDashboards();
     }
-  }
-  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  if (carouselInner.children["real-time-stats"]) {
-    console.log("Update");
-    updateRealTimeStats(updateCount);
+    var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+    if (carouselInner.children["real-time-stats"]) {
+      console.log("Update");
+      updateRealTimeStats(updateCount);
+    }
+  } else {
+    let lastUpdatedOn = new Date();
+    lastUpdatedOn.setHours(6, 0, 0, 0);
+    let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
+    var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+    if (carouselInner.children["real-time-stats"]) {
+      console.log("Update");
+      updateRealTimeStats(updateCount);
+    }
   }
 }
 
@@ -894,10 +903,10 @@ function recordTopVideoStats(dashboardId, data) {
   topVideoStats["numUpdates"] = topVideoStats["numUpdates"] + 1;
   if (topVideoStats["numUpdates"] == 12) {
     delete topVideoStats["numUpdates"];
-    localStorage.setItem(JSON.stringify(topVideoStats));
+    localStorage.setItem("topVideoStats", JSON.stringify(topVideoStats));
     saveTopVideoStatsToSheets();
   } else  {
-    localStorage.setItem(JSON.stringify(topVideoStats));
+    localStorage.setItem("topVideoStats", JSON.stringify(topVideoStats));
   }
 }
 
@@ -919,7 +928,7 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
     "graphWidth": graphWidth,
     "automargin": automargin,
   });
-  localStorage.setItem(JSON.stringify(graphData));
+  localStorage.setItem("graphData", JSON.stringify(graphData));
   if (graphData.length == totalNumGraphs) {
     // Record graphData to sheets after all 18 graphs are recorded
     saveGraphDataToSheets();

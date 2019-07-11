@@ -47,12 +47,12 @@ function initClient() {
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     signinModalButton.style.display = "none";
-    signoutModalButton.style.display = "block";
+    signoutModalButton.style.display = "inline";
     initializeDashboards();
     initializeUpdater();
     loadDashboards();
   } else {
-    signinModalButton.style.display = "block";
+    signinModalButton.style.display = "inline";
     signoutModalButton.style.display = "none";
     initializeDashboards();
     initializeUpdater();

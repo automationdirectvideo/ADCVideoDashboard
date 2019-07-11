@@ -300,7 +300,7 @@ function recordRealTimeStatsFromSheets() {
     };
   }
   localStorage.removeItem("topVideoStatsSheet");
-  localStorage.setItem(JSON.stringify(realTimeStats));
+  localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
   loadRealTimeStats();
 }
 
