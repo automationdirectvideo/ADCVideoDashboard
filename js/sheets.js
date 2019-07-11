@@ -198,12 +198,12 @@ function recordGraphDataFromSheets() {
   for (let i = 1; i < graphDataSheet.length; i++) {
     let row = graphDataSheet[i];
     let graphId = row[columns["Graph ID"]];
-    let data = row[columns["Data"]];
-    let layout = row[columns["Layout"]];
-    let config = row[columns["Config"]];
+    let data = JSON.stringify(row[columns["Data"]]);
+    let layout = JSON.stringify(row[columns["Layout"]]);
+    let config = JSON.stringify(row[columns["Config"]]);
     let graphHeight = row[columns["Graph Height"]];
     let graphWidth = row[columns["Graph Width"]];
-    let automargin = row[columns["Automargin"]];
+    let automargin = JSON.stringify(row[columns["Automargin"]]);
     graphData.push({
       "graphId": graphId,
       "data": data,
@@ -373,12 +373,12 @@ function saveGraphDataToSheets() {
   for (var i = 0; i < graphData.length; i++) {
     var row = [];
     row.push(graphData[i]["graphId"]);
-    row.push(graphData[i]["data"]);
-    row.push(graphData[i]["layout"]);
-    row.push(graphData[i]["config"]);
+    row.push(JSON.stringify(graphData[i]["data"]));
+    row.push(JSON.stringify(graphData[i]["layout"]));
+    row.push(JSON.stringify(graphData[i]["config"]));
     row.push(graphData[i]["graphHeight"]);
     row.push(graphData[i]["graphWidth"]);
-    row.push(graphData[i]["automargin"]);
+    row.push(JSON.stringify(graphData[i]["automargin"]));
     values.push(row);
   }
   var body = {
@@ -418,6 +418,7 @@ function saveTopVideoStatsToSheets() {
       "Top Video Stats", body);
 }
 
+// Saves realTimeStats to Google Sheets
 function saveRealTimeStatsToSheets() {
   var values = [
     ["Time Range", "Views", "Estimated Minutes Watched",
