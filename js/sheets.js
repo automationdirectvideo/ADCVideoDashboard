@@ -5,7 +5,6 @@
 function recordCategoryListData() {
   let categoryList = JSON.parse(localStorage.getItem("categoryListSheet"));
   let categoryTotals = {};
-  let categoryIds = {};
   let columns = {};
   let columnHeaders = categoryList[0];
   for (let i = 0; i < columnHeaders.length; i++) {
@@ -14,7 +13,6 @@ function recordCategoryListData() {
   for (let i = 1; i < categoryList.length; i++) {
     let row = categoryList[i];
     let categoryId = row[columns["Category ID"]];
-    let newCategoryId = row[columns["New Category ID"]];
     let level1 = row[columns["L1 Category"]];
     let level2 = row[columns["L2 Category"]];
     let level3 = row[columns["L3 Category"]];
@@ -23,27 +21,20 @@ function recordCategoryListData() {
     let root = false;
     let leaf = true;
 
-    // Set up name
-    if (level2 == undefined || level2 == "") {
-      name = level1;
-    } else if (level3 == undefined || level3 == "") {
-      name = level1 + "->" + level2;
-    } else {
-      name = level1 + "->" + level2 + "->" + level3;
-    }
     // Set up root and leaf
-    if (categoryId.slice(-4) == "0000") {
+    if (/\d/.test(categoryId)) {
       root = true;
+      name = level1;
     } else {
-      let parentCategoryLvl1 = categoryId.slice(0, -4) + "0000";
+      let parentCategoryLvl1 = categoryId.match(/[A-Z]+/)[0];
       categoryTotals[parentCategoryLvl1].leaf = false;
-      if (categoryId.slice(-2) != "00") {
-        let parentCategoryLvl2 = categoryId.slice(0, -2) + "00";
+      name = categoryTotals[parentCategoryLvl1].name + "->" + level2;
+      if (categoryId.replace(/[A-Z]+[0-9]+/, "") != "") {
+        let parentCategoryLvl2 = categoryId.match(/[A-Z]+[0-9]+/)[0];
         categoryTotals[parentCategoryLvl2].leaf = false;
+        name = categoryTotals[parentCategoryLvl2].name + "->" + level3;
       }
     }
-
-    categoryIds[categoryId] = newCategoryId;
 
     categoryTotals[categoryId] = {
       "shortName": shortName,
@@ -58,7 +49,6 @@ function recordCategoryListData() {
   }
   localStorage.removeItem("categoryListSheet");
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
-  localStorage.setItem("categoryIds", JSON.stringify(categoryIds));
 
   requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
       "Video List");
@@ -68,7 +58,6 @@ function recordCategoryListData() {
 // Initiates displayUploadThumbnails() and getAllVideoStats()
 function recordVideoListData() {
   let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
-  let categoryIds = JSON.parse(localStorage.getItem("categoryIds"));
   let statsByVideoId = {};
   let uploads = [];
   let columns = {};
@@ -86,9 +75,8 @@ function recordVideoListData() {
       let duration = row[columns["Duration"]];
       let categoryString = row[columns["Categories"]];
       categoryString.replace(/\s/g, ''); // Removes whitespace
-      let categoryArr = categoryString.split(",");
       statsByVideoId[videoId] = {
-        "categories": categoryArr,
+        "categories": categoryString.split(","),
         "title": title,
         "publishDate": publishDate,
         "duration": duration
@@ -350,11 +338,10 @@ function saveCategoryStatsToSheets() {
 function saveVideoStatsToSheets() {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-        "Comments", "Publish Date", "Categories"]
+        "Comments", "Publish Date"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  var categoryIds = JSON.parse(localStorage.getItem("categoryIds"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
     var videoId = allVideoStats[i]["videoId"];
@@ -366,11 +353,6 @@ function saveVideoStatsToSheets() {
     row.push(statsByVideoId[videoId]["duration"]);
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
-    let categoryArr = statsByVideoId[videoId]["categories"];
-    for (var j = 0; j < categoryArr.length; j++) {
-      categoryArr[j] = categoryIds[categoryArr[j]];
-    }
-    row.push(categoryArr.join());
     values.push(row);
   }
   var body= {

@@ -61,28 +61,28 @@ function loadTopVideoDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
   if (carouselInner.children["top-video-1"]) {
-    let plcVideo = getTopVideoByCategory("20000", "views")[0];
+    let plcVideo = getTopVideoByCategory("B", "views")[0];
     topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
   }
   if (carouselInner.children["top-video-2"]) {
-    let drivesVideo = getTopVideoByCategory("40000", "views")[0];
+    let drivesVideo = getTopVideoByCategory("C", "views")[0];
     topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
   }
   if (carouselInner.children["top-video-3"]) {
-    let hmiVideo = getTopVideoByCategory("50000", "views")[0];
+    let hmiVideo = getTopVideoByCategory("D", "views")[0];
     topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
   }
   if (carouselInner.children["top-video-4"]) {
-    let motionControlVideo = getTopVideoByCategory("80000", "views")[0];
+    let motionControlVideo = getTopVideoByCategory("F", "views")[0];
     topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
   }
   if (carouselInner.children["top-video-5"]) {
-    let sensorsVideo = getTopVideoByCategory("100000", "views")[0];
+    let sensorsVideo = getTopVideoByCategory("H", "views")[0];
     topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
   }
   if (carouselInner.children["top-video-6"]) {
-    let sensorsVideo = getTopVideoByCategory("120000", "views")[0];
-    topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-6");
+    let motorsVideo = getTopVideoByCategory("I", "views")[0];
+    topVideoCalls(joinDate, todayDate, motorsVideo, "top-video-6");
   }
 }
 
