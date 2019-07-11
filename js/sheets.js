@@ -189,7 +189,6 @@ function recordVideoData() {
 // Displays graphs on dashboards
 function recordGraphDataFromSheets() {
   let graphDataSheet = JSON.parse(localStorage.getItem("graphDataSheet"));
-  let graphData = [];
   let columns = {};
   let columnHeaders = graphDataSheet[0];
   for (let i = 0; i < columnHeaders.length; i++) {
@@ -198,21 +197,12 @@ function recordGraphDataFromSheets() {
   for (let i = 1; i < graphDataSheet.length; i++) {
     let row = graphDataSheet[i];
     let graphId = row[columns["Graph ID"]];
-    let data = JSON.stringify(row[columns["Data"]]);
-    let layout = JSON.stringify(row[columns["Layout"]]);
-    let config = JSON.stringify(row[columns["Config"]]);
+    let data = JSON.parse(row[columns["Data"]]);
+    let layout = JSON.parse(row[columns["Layout"]]);
+    let config = JSON.parse(row[columns["Config"]]);
     let graphHeight = row[columns["Graph Height"]];
     let graphWidth = row[columns["Graph Width"]];
-    let automargin = JSON.stringify(row[columns["Automargin"]]);
-    graphData.push({
-      "graphId": graphId,
-      "data": data,
-      "layout": layout,
-      "config": config,
-      "graphHeight": graphHeight,
-      "graphWidth": graphWidth,
-      "automargin": automargin
-    });
+    let automargin = JSON.parse(row[columns["Automargin"]]);
     // Display graphs
     try {
       Plotly.newPlot(graphId, data, layout, config);
