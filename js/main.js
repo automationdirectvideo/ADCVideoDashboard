@@ -86,6 +86,33 @@ function loadTopVideoDashboards() {
   }
 }
 
+
+function recordTopVideoStats(dashboardId, data) {
+  let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
+  if (!topVideoStats) {
+    topVideoStats = {};
+  }
+  if (!topVideoStats[dashboardId]) {
+    topVideoStats[dashboardId] = {};
+  }
+  for (var key in data) {
+    if (data.hasOwnProperty(key)) {
+      topVideoStats[dashboardId][key] = data[key];
+    }
+  }
+  if (!topVideoStats["numUpdates"]) {
+    topVideoStats["numUpdates"] = 0;
+  }
+  topVideoStats["numUpdates"] = topVideoStats["numUpdates"] + 1;
+  if (topVideoStats["numUpdates"] == 12) {
+    delete topVideoStats["numUpdates"];
+    localStorage.setItem(JSON.stringify(topVideoStats));
+    saveTopVideoStatsToSheets();
+  } else  {
+    localStorage.setItem(JSON.stringify(topVideoStats));
+  }
+}
+
 function initializeUpdater() {
   var updateId = window.setInterval(updateStats, 1000);
 }
