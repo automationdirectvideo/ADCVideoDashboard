@@ -400,6 +400,7 @@ function saveGraphDataToSheets() {
   };
   requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
       "Graph Data", body);
+  localStorage.removeItem("graphData");
 }
 
 // Saves topVideoStats to Google Sheets

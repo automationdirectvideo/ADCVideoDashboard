@@ -920,7 +920,7 @@ function recordTopVideoStats(dashboardId, data) {
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
   let graphData = JSON.parse(localStorage.getItem("graphData"));
-  if (!graphData) {
+  if (!graphData || graphData.length >= totalNumGraphs) {
     graphData = [];
   }
   if (!automargin) {
