@@ -43,7 +43,7 @@ function initClient() {
   });
 }
 
-function updateSignInStatus(isSignedIn) {
+function updateSigninStatus(isSignedIn) {
   window.location.reload();
 }
 
