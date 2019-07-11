@@ -253,7 +253,17 @@ function recordTopVideoStatsFromSheets() {
     let likes = row[columns["Likes"]];
     let dislikes = row[columns["Dislikes"]];
     try {
-      displayTopVideoTitle(videoId, dashboardId);
+      document.getElementById(dashboardId + "-title").innerHTML = title;
+      document.getElementById(dashboardId + "-duration").innerHTML =
+          "Duration: " + secondsToDuration(duration);
+      document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
+          duration;
+
+      document.getElementById(dashboardId + "-publish-date").innerHTML =
+          "Published: " + publishDate;
+
+      document.getElementById(dashboardId + "-thumbnail").innerHTML =
+          thumbnail;
       let response = {
         "result": {
           "rows": [
@@ -271,19 +281,7 @@ function recordTopVideoStatsFromSheets() {
           ]
         }
       };
-      
-      document.getElementById(dashboardId + "-title").innerHTML = title;
-      document.getElementById(dashboardId + "-duration").innerHTML =
-          "Duration: " + secondsToDuration(duration);
-      document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
-          duration;
-
-      document.getElementById(dashboardId + "-publish-date").innerHTML =
-          "Published: " + publishDate;
-
-      document.getElementById(dashboardId + "-thumbnail").innerHTML =
-          thumbnail;
-
+      handleVideoBasicStats(response, dashboardId);
     } catch (err) {
       console.error(`Dashboard "${dashboardId}" does not exist`, err)
     }
