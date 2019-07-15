@@ -75,8 +75,28 @@ function recordVideoListData() {
       let duration = row[columns["Duration"]];
       let categoryString = row[columns["Categories"]];
       categoryString.replace(/\s/g, ''); // Removes whitespace
+      let initialCategories = categoryString.split(",");
+      let allCategories = [];
+      for (let j = 0; j < initialCategories.length; j++) {
+        let categoryId = initialCategories[j];
+        if (allCategories.indexOf(categoryId) == -1) {
+          allCategories.push(categoryId);
+        }
+        if (/\d/.test(categoryId)) {
+          let parentCategoryLvl1 = categoryId.match(/[A-Z]+/)[0];
+          if (allCategories.indexOf(parentCategoryLvl1) == -1) {
+            allCategories.push(parentCategoryLvl1);
+          }
+          if (categoryId.replace(/[A-Z]+[0-9]+/, "") != "") {
+            let parentCategoryLvl2 = categoryId.match(/[A-Z]+[0-9]+/)[0];
+            if (allCategories.indexOf(parentCategoryLvl2) == -1) {
+              allCategories.push(parentCategoryLvl2);
+            }
+          }
+        }
+      }
       statsByVideoId[videoId] = {
-        "categories": categoryString.split(","),
+        "categories": allCategories,
         "title": title,
         "publishDate": publishDate,
         "duration": duration
