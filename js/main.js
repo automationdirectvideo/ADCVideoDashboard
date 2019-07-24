@@ -1043,9 +1043,9 @@ var carouselInner = document.getElementsByClassName("carousel-inner")[0];
 var indicatorList = 
     document.getElementsByClassName("indicator-list")[0];
 const cycleSpeed = currentSettings.cycleSpeed * 1000;
-$(".carousel").carousel({
-  interval: cycleSpeed
-});
+var carousel = document.getElementById("dashboard-carousel");
+carousel.setAttribute("data-interval", cycleSpeed);
+carousel.setAttribute("data-pause", "false");
 
 // Set order of dashboards
 var enabledOrder = new Array(currentSettings.numEnabled);
@@ -1094,6 +1094,15 @@ document.addEventListener("keyup", function (e) {
     carouselPrev();
   } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
     carouselNext();
+  } else if (e.which == 32) {
+    let pauseText = document.getElementById("pause-text");
+    if (pauseText.clientHeight == 0) {
+      $(".carousel").carousel('pause');
+      pauseText.style.display = "initial";
+    } else {
+      $(".carousel").carousel('cycle');
+      pauseText.style.display = "none";
+    }
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);

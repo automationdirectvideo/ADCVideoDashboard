@@ -2,7 +2,7 @@
 
 const defaultSettings = 
 {
-  "cycleSpeed": 10,
+  "cycleSpeed": 15,
   "dashboards": [
     {
       "name": "real-time-stats",
