@@ -1089,12 +1089,12 @@ for (var i = 0; i < enabledOrder.length; i++) {
 }
 
 // Handle carousel scrolling
-document.addEventListener("keydown", function (e) {
+document.addEventListener("keyup", function (e) {
   if (e.key == "ArrowLeft" || e.key == "ArrowUp") {
     carouselPrev();
   } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
     carouselNext();
-  } else if (!isNaN(e.key)) {
+  } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);
     } else {
