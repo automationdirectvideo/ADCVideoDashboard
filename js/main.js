@@ -1026,6 +1026,25 @@ function carouselPrev() {
   $(".carousel").carousel("prev");
 }
 
+function toggleDashboardPause() {
+  let pauseText = document.getElementById("pause-text");
+  let playText = document.getElementById("play-text");
+  if (pauseText.offsetHeight == 0) {
+    $(".carousel").carousel('pause');
+    pauseText.style.display = "initial";
+    playText.style.display = "none";
+  } else {
+    $(".carousel").carousel('cycle');
+    pauseText.style.display = "none";
+    playText.style.display = "initial";
+    setTimeout(function() {
+      if (playText.offsetHeight != 0) {
+        $('#play-text').fadeOut();
+      }
+    }, 2000);
+  }
+}
+
 function goToCarouselItem(index) {
   $(".carousel").carousel(index);
 }
@@ -1095,14 +1114,7 @@ document.addEventListener("keyup", function (e) {
   } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
     carouselNext();
   } else if (e.which == 32) {
-    let pauseText = document.getElementById("pause-text");
-    if (pauseText.clientHeight == 0) {
-      $(".carousel").carousel('pause');
-      pauseText.style.display = "initial";
-    } else {
-      $(".carousel").carousel('cycle');
-      pauseText.style.display = "none";
-    }
+    toggleDashboardPause();
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);

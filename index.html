@@ -41,7 +41,10 @@
               <i class="fas fa-expand-arrows-alt" id="fullscreen-button" title="Toggle Fullscreen"></i>
             </li>
           </ul>
-          <h6 id="pause-text"><i class="fas fa-pause mr-1" style="font-size:1em;"></i>Paused</h6>
+          <div class="cycle-status">
+            <h6 id="pause-text" onclick="toggleDashboardPause()"><i class="fas fa-pause mr-1" style="font-size:1em;"></i>Paused</h6>
+            <h6 id="play-text" onclick="toggleDashboardPause()"><i class="fas fa-play mr-1" style="font-size:1em;"></i>Play</h6>
+          </div>
           <div class="text-center" id="content">
             <div class="carousel slide" id="dashboard-carousel" data-ride="carousel">
               <div class="carousel-inner">

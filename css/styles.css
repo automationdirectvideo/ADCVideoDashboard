@@ -54,12 +54,16 @@ body {
   font-size: 1.75rem;
 }
 
-#pause-text {
-  display: none;
+.cycle-status {
   position: absolute;
-  bottom: 0%;
+  bottom: 0.5%;
   right: 1%;
+  width: 4%;
   z-index: 10;
+}
+
+#pause-text, #play-text {
+  display: none;
 }
 
 .arrow-red {
