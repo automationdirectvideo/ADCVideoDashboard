@@ -159,7 +159,7 @@ body {
   color: white;
 }
 
-.column {
+.column, .label-column {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
@@ -180,27 +180,47 @@ body {
   max-height: 4%;
 }
 
-.column-thumbnail {
+.column-thumbnail, .column-label {
   -ms-flex: 0 0 9.6%;
   flex: 0 0 9.6%;
   max-height: 9.6%;
 }
 
-.top-ten-thumbnail-holder {
+.top-ten-thumbnail-holder, .top-ten-label-holder {
   padding-left: 0;
   padding-right: 0;
   position: relative;
 }
 
-.top-ten-thumbnail {
+.top-ten-thumbnail, .top-ten-label {
   max-height: 100%;
   max-width: 100%;
 }
 
-.thumbnail, .top-ten-thumbnail {
+.thumbnail, .top-ten-thumbnail, .top-ten-label {
   padding: 0.1111rem;
   margin-left: auto;
   margin-right: auto;
+}
+
+.label-column {
+  height: calc(100% - 1rem);
+  width: 2.5%;
+}
+
+.top-ten-label-holder {
+  position: relative;
+}
+
+.top-ten-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 29%;
+}
+
+#top-ten-thumbnail-wrapper {
+  width: 97.5%;
 }
 
 /*----- 1000 Thumbnail Dashboard -----*/
