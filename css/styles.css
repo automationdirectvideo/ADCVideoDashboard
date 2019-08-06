@@ -124,6 +124,14 @@ body {
   overflow-y: scroll;
 }
 
+/*----- Intro Animation -----*/
+
+.video-container {
+  height: 96vh;
+  max-width: 100%;
+  padding-top: 3.5rem;
+}
+
 /*----- Top Ten Dashboard -----*/
 
 .top-ten-title {
