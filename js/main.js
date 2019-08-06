@@ -3,6 +3,17 @@
 function loadDashboards() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
+  if (carouselInner.children["intro-animation"]) {
+    let introVideo = document.getElementById("intro-video");
+    var promise = introVideo.play();
+    if (promise !== undefined) {
+      promise.then(_ => {
+        // Autoplay started!
+      }).catch(error => {
+        introVideo.play();
+      });
+    }
+  }
   if (carouselInner.children["real-time-stats"]) {
     try {
       loadRealTimeStats();
@@ -88,6 +99,17 @@ function loadTopVideoDashboards() {
 
 function loadDashboardsSignedOut() {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  if (carouselInner.children["intro-animation"]) {
+    let introVideo = document.getElementById("intro-video");
+    var promise = introVideo.play();
+    if (promise !== undefined) {
+      promise.then(_ => {
+        // Autoplay started!
+      }).catch(error => {
+        introVideo.play();
+      });
+    }
+  }
   if (carouselInner.children["real-time-stats"]) {
     requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
         "Real Time Stats");
