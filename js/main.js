@@ -10,7 +10,7 @@ function loadDashboards() {
       promise.then(_ => {
         // Autoplay started!
       }).catch(error => {
-        introVideo.play();
+        document.getElementsByClassName("VIDEO")[0].play();
       });
     }
   }
@@ -106,7 +106,7 @@ function loadDashboardsSignedOut() {
       promise.then(_ => {
         // Autoplay started!
       }).catch(error => {
-        introVideo.play();
+        document.getElementsByClassName("VIDEO")[0].play();
       });
     }
   }
