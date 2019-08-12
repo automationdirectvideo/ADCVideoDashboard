@@ -235,7 +235,8 @@ function requestUpdateSheetData(spreadsheetId, range, body) {
     "valueInputOption": "RAW",
     "resource": body
   };
-  callSheetsAPIUpdate(request, "UpdateSheetData:");
+  callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData,
+      range);
 }
 
 /* Multiple Requests Functions */

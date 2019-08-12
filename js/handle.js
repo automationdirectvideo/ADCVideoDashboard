@@ -1084,3 +1084,11 @@ function handleSpreadsheetData(response, message) {
     localStorage.setItem("lastUpdatedOn", date.toString());
   }
 }
+
+function handleUpdateSheetData(response, message) {
+  if (response) {
+    if (message == "Video Stats") {
+      window.location.reload();
+    }
+  }
+}
