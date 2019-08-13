@@ -705,10 +705,13 @@ function displayTopTenThumbnails() {
         output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
       } else {
         var videoId = topTenSheet[j][i];
+        var views = numberWithCommas(topTenSheet[j][i + 10]);
+        var minutesWatched = numberWithCommas(topTenSheet[j][i + 20]);
         var videoTitle = "YouTube Video ID: " + videoId;
         if (statsByVideoId && statsByVideoId[videoId]) {
           videoTitle = statsByVideoId[videoId]["title"];
         }
+        videoTitle += `| ${views} views & ${minutesWatched} minutes watched`;
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
             <a href="https://youtu.be/${videoId}" target="_blank"
