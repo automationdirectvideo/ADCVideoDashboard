@@ -143,7 +143,7 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
     "endDate": endDate,
     "ids": "channel==MINE",
     "maxResults": numVideos,
-    "metrics": "views",
+    "metrics": "views,estimatedMinutesWatched",
     "sort": "-views",
     "startDate": startDate
   };

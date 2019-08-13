@@ -691,15 +691,16 @@ function handleRealTimeStats(response, message) {
 function handleMostWatchedVideos(response, month) {
   if (response) {
     var videos = response.result.rows;
+    let uploads = JSON.parse(localStorage.getItem("uploads"));
     if (month != undefined) {
-      var nonOrganicVideos = ["vio9VoZRkbQ", "dqkUlrFoZY4", "YfrmIjwDvXo",
-          "k40iosW6WWA", "nac3gBfz1W4", "dE2Svgsrex0", "5Ci3PlLr8Oo"];
       var values = [[month]];
       var index = 0;
       var numVideos = 1;
       while (numVideos <= 10) {
-        if (!nonOrganicVideos.includes(videos[index][0])) {
-          values[0].push(videos[index][0]);
+        if (uploads.includes(videos[index][0])) {
+          values[0][numVideos] = videos[index][0];
+          values[0][numVideos + 10] = videos[index][1];
+          values[0][numVideos + 20] = videos[index][2];
           numVideos++;
         }
         index++;
