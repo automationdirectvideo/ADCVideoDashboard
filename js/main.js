@@ -156,12 +156,14 @@ function updateStats() {
     let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
     let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
     if (updateCount >= 86400) {
+      let newUpdate = new Date();
+      newUpdate.setHours(6, 0, 0, 0);
+      localStorage.setItem("lastUpdatedOn", newUpdate.toString());
       updateTopTenVideoSheet();
       realTimeStatsCalls();
-      requestFileModifiedTime("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-          "Video List");
-    }
-    if (updateCount % 900 == 0) {
+      requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
+          "Category List");
+    } else if (updateCount % 900 == 0) {
       loadDashboards();
     }
     var carouselInner = document.getElementsByClassName("carousel-inner")[0];
