@@ -700,7 +700,7 @@ function displayTopTenThumbnails() {
   let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let output = ``;
   for (var j = 1; j < topTenSheet.length; j++) {
-    for (var i = 0; i < topTenSheet[0].length; i++) {
+    for (var i = 0; i < 11; i++) {
       if (i == 0) {
         output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
       } else {
@@ -711,7 +711,7 @@ function displayTopTenThumbnails() {
         if (statsByVideoId && statsByVideoId[videoId]) {
           videoTitle = statsByVideoId[videoId]["title"];
         }
-        videoTitle += `| ${views} views & ${minutesWatched} minutes watched`;
+        videoTitle += ` | ${views} views & ${minutesWatched} minutes watched`;
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
             <a href="https://youtu.be/${videoId}" target="_blank"
