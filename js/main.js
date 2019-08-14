@@ -1142,6 +1142,18 @@ document.addEventListener("keyup", function (e) {
     carouselNext();
   } else if (e.which == 32) {
     toggleDashboardPause();
+  } else if (e.code == "KeyA") {
+    goToCarouselItem(9);
+  } else if (e.code == "KeyB") {
+    goToCarouselItem(10);
+  } else if (e.code == "KeyC") {
+    goToCarouselItem(11);
+  } else if (e.code == "KeyD") {
+    goToCarouselItem(12);
+  } else if (e.code == "KeyE") {
+    goToCarouselItem(13);
+  } else if (e.code == "KeyF") {
+    goToCarouselItem(14);
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);
