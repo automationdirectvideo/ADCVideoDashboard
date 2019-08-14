@@ -373,6 +373,7 @@ function saveVideoStatsToSheets() {
     row.push(statsByVideoId[videoId]["duration"]);
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
+    row.push(statsByVideoId[videoId]["categories"]);
     values.push(row);
   }
   var body= {
