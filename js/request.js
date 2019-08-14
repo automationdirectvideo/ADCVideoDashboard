@@ -250,6 +250,27 @@ function getAllVideoStats(uploads) {
   requestVideoStatisticsOverall(settings);
 }
 
+function getTopTenVideosByMonth(startDate) {
+  startDate = startDate || new Date("2010-07-1");
+  var endDate = new Date();
+  if (endDate - startDate > 0) {
+    let firstDay = getYouTubeDateFormat(startDate);
+    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0));
+    let month = firstDay.substr(0, 7);
+    requestMostWatchedVideos(firstDay, lastDay, 20, month);
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
+    // Space out the calls to Data and Sheets APIs to stay under quota limit
+    setTimeout(function() {
+      getTopTenVideosByMonth(startDate);
+    }, 200);
+  } else {
+    // Wait to reload the page after the last Data API request is called
+    setTimeout(function() {
+      window.location.reload();
+    }, 5000);
+  }
+}
+
 function platformDashboardCalls(startDate, endDate) {
   requestChannelSearchTerms(startDate, endDate);
   requestViewsByDeviceType(startDate, endDate);
