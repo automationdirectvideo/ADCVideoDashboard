@@ -1134,7 +1134,7 @@ for (var i = 0; i < enabledOrder.length; i++) {
   }
 }
 
-// Handle carousel scrolling
+// Handle carousel scrolling and keyboard shortcuts
 document.addEventListener("keyup", function (e) {
   if (e.key == "ArrowLeft" || e.key == "ArrowUp") {
     carouselPrev();
@@ -1142,17 +1142,17 @@ document.addEventListener("keyup", function (e) {
     carouselNext();
   } else if (e.which == 32) {
     toggleDashboardPause();
-  } else if (e.code == "KeyA") {
+  } else if (e.key.toUpperCase() == "A") {
     goToCarouselItem(9);
-  } else if (e.code == "KeyB") {
+  } else if (e.key.toUpperCase() == "B") {
     goToCarouselItem(10);
-  } else if (e.code == "KeyC") {
+  } else if (e.key.toUpperCase() == "C") {
     goToCarouselItem(11);
-  } else if (e.code == "KeyD") {
+  } else if (e.key.toUpperCase() == "D") {
     goToCarouselItem(12);
-  } else if (e.code == "KeyE") {
+  } else if (e.key.toUpperCase() == "E") {
     goToCarouselItem(13);
-  } else if (e.code == "KeyF") {
+  } else if (e.key.toUpperCase() == "F") {
     goToCarouselItem(14);
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
