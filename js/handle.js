@@ -1086,6 +1086,7 @@ function handleSpreadsheetData(response, message) {
   }
 }
 
+// Gets Top Ten Videos stats if "Video Stats" sheet was updated
 function handleUpdateSheetData(response, message) {
   if (response) {
     if (message == "Video Stats") {
