@@ -44,7 +44,7 @@ const defaultSettings =
       "name": "top-ten",
       "icon": "far fa-calendar-alt",
       "index": 5,
-      "scrollSpeed": 40,
+      "scrollSpeed": 0,
       "theme": "light",
       "title": "Top Ten Dashboard"
     },
