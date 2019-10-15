@@ -1124,6 +1124,8 @@ document.addEventListener("keyup", function (e) {
     carouselNext();
   } else if (e.which == 32) {
     toggleDashboardPause();
+  } else if (e.key == "F2") {
+    signIn();
   } else if (e.key.toUpperCase() == "A") {
     goToCarouselItem(9);
   } else if (e.key.toUpperCase() == "B") {

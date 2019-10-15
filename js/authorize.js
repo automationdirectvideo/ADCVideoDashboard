@@ -68,6 +68,13 @@ function handleAuthClick() {
   gapi.auth2.getAuthInstance().signIn();
 }
 
+// Login shortcut
+function signIn() {
+  if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    handleAuthClick();
+  }
+}
+
 // Handle logout
 function handleSignout() {
   gapi.auth2.getAuthInstance().signOut();
