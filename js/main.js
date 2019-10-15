@@ -1152,6 +1152,11 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   window.setTimeout(function(){
     fixGraphMargins();
     updateTheme(e.to);
+    // Scroll top ten dashboard to the end on load
+    let topTenWrapper = document.getElementById("top-ten-thumbnail-wrapper");
+    if (topTenWrapper.scrollLeft != topTenWrapper.scrollWidth) {
+      topTenWrapper.scrollLeft = topTenWrapper.scrollWidth;
+    }
   }, 250);
 });
 $(".carousel").on("slid.bs.carousel", function (e) {
