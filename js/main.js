@@ -774,6 +774,7 @@ function displayTopTenThumbnails() {
     }
     new AutoDivScroll("top-ten-thumbnail-wrapper", speed, 1, 2);
     autoScrollDivs.push("top-ten-thumbnail-wrapper");
+    thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
   }
 }
 

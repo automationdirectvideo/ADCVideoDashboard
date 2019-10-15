@@ -358,7 +358,7 @@ function saveCategoryStatsToSheets() {
 function saveVideoStatsToSheets() {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-        "Comments", "Publish Date"]
+        "Comments", "Publish Date", "Categories"]
   ];
   var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
@@ -373,7 +373,7 @@ function saveVideoStatsToSheets() {
     row.push(statsByVideoId[videoId]["duration"]);
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
-    row.push(statsByVideoId[videoId]["categories"]);
+    row.push(statsByVideoId[videoId]["categories"].join(","));
     values.push(row);
   }
   var body= {
