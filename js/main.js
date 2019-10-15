@@ -157,7 +157,7 @@ function updateStats() {
     let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
     if (updateCount >= 86400) {
       let newUpdate = new Date();
-      newUpdate.setHours(6, 0, 0, 0);
+      newUpdate.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", newUpdate.toString());
       updateTopTenVideoSheet();
       realTimeStatsCalls();
@@ -174,7 +174,7 @@ function updateStats() {
   } else {
     if (!localStorage.getItem("lastUpdatedOn")) {
       let lastUpdatedOn = new Date();
-      lastUpdatedOn.setHours(6, 0, 0, 0);
+      lastUpdatedOn.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
     }
     let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
@@ -227,7 +227,7 @@ function loadRealTimeStats() {
     
     if (!localStorage.getItem("lastUpdatedOn")) {
       let lastUpdatedOn = new Date();
-      lastUpdatedOn.setHours(6, 0, 0, 0);
+      lastUpdatedOn.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
     }
 
