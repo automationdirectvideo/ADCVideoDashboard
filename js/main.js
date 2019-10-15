@@ -5,6 +5,7 @@ function loadDashboards() {
   var todayDate = getTodaysDate();
   if (carouselInner.children["intro-animation"]) {
     let introVideo = document.getElementById("intro-video");
+    introVideo.load();
     var promise = introVideo.play();
     if (promise !== undefined) {
       promise.then(_ => {
