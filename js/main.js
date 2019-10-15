@@ -757,26 +757,6 @@ function displayTopTenThumbnails() {
   thumbnailContainer.innerHTML = output;
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
-  if (!autoScrollDivs.includes("top-ten-thumbnail-wrapper")) {
-    let currentSettings = JSON.parse(localStorage.getItem("settings"));
-    let speed = -1;
-    let index = 0;
-    while (speed == -1 && index <= currentSettings.dashboards.length) {
-      let dashboard = currentSettings.dashboards[index];
-      if (dashboard.name == "top-ten") {
-        speed = dashboard.scrollSpeed;
-      }
-      index++;
-    }
-    if (speed <= 0) {
-      speed = 0;
-    } else {
-      speed = Math.ceil(1000 / speed);
-    }
-    new AutoDivScroll("top-ten-thumbnail-wrapper", speed, 1, 2);
-    autoScrollDivs.push("top-ten-thumbnail-wrapper");
-    thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
-  }
 }
 
 function displayTopVideoTitle(videoId, dashboardId) {
