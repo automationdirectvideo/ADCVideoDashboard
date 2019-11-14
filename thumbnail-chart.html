@@ -1,0 +1,40 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF0000">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>ADC Thumbnail Chart</title>
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <style>
+      @media print {
+        #menu {
+          display: none;
+        }
+      }
+
+      #menu {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .thumbnail-wrapper {
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body style="overflow-y: hidden;">
+    <div class="main-wrapper">
+      <div class="text-center" id="menu">
+        <button class="btn btn-lg btn-primary">Refresh Thumbnails</button>
+      </div>
+      <div class="thumbnail-wrapper">
+        Thumbnails Area
+      </div>
+    </div>
+  </body>
+</html>
