@@ -341,6 +341,7 @@ function recordUploads() {
   }
   localStorage.removeItem("videoListSheet");
   localStorage.setItem("uploads", JSON.stringify(uploads));
+  displayThumbnails();
 }
 
 // Saves categoryStats to Google Sheets
