@@ -6,16 +6,11 @@ function displayThumbnails() {
   } else {
     var uploadThumbnails = "";
     for (var i = 0; i < uploads.length; i++) {
-      var videoTitle = "YouTube Video ID: " + uploads[i];
-      if (statsByVideoId && statsByVideoId[uploads[i]]) {
-        videoTitle = statsByVideoId[uploads[i]]["title"];
-      }
       uploadThumbnails += `
-        <a href="https://youtu.be/${uploads[i]}" target="_blank"
-            onclick="closeFullscreen()" alt="${videoTitle}">
+        <a href="https://youtu.be/${uploads[i]}" target="_blank">
           <img class="thumbnail"
               src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" 
-              alt="thumbnail" title="${videoTitle}">
+              alt="thumbnail">
         </a>`;
     }
     thumbnailContainer.innerHTML = uploadThumbnails;
