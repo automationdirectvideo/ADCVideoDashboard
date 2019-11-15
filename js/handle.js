@@ -1085,7 +1085,7 @@ function handleSpreadsheetData(response, message) {
       recordUploads();
     }
     let date = new Date();
-    date.setHours(6, 0, 0, 0);
+    date.setHours(10, 30, 0, 0);
     localStorage.setItem("lastUpdatedOn", date.toString());
   }
 }

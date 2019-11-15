@@ -5,6 +5,7 @@ function loadDashboards() {
   var todayDate = getTodaysDate();
   if (carouselInner.children["intro-animation"]) {
     let introVideo = document.getElementById("intro-video");
+    introVideo.load();
     var promise = introVideo.play();
     if (promise !== undefined) {
       promise.then(_ => {
@@ -157,7 +158,7 @@ function updateStats() {
     let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
     if (updateCount >= 86400) {
       let newUpdate = new Date();
-      newUpdate.setHours(6, 0, 0, 0);
+      newUpdate.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", newUpdate.toString());
       updateTopTenVideoSheet();
       realTimeStatsCalls();
@@ -174,7 +175,7 @@ function updateStats() {
   } else {
     if (!localStorage.getItem("lastUpdatedOn")) {
       let lastUpdatedOn = new Date();
-      lastUpdatedOn.setHours(6, 0, 0, 0);
+      lastUpdatedOn.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
     }
     let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
@@ -227,7 +228,7 @@ function loadRealTimeStats() {
     
     if (!localStorage.getItem("lastUpdatedOn")) {
       let lastUpdatedOn = new Date();
-      lastUpdatedOn.setHours(6, 0, 0, 0);
+      lastUpdatedOn.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
     }
 
@@ -756,26 +757,6 @@ function displayTopTenThumbnails() {
   thumbnailContainer.innerHTML = output;
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
-  if (!autoScrollDivs.includes("top-ten-thumbnail-wrapper")) {
-    let currentSettings = JSON.parse(localStorage.getItem("settings"));
-    let speed = -1;
-    let index = 0;
-    while (speed == -1 && index <= currentSettings.dashboards.length) {
-      let dashboard = currentSettings.dashboards[index];
-      if (dashboard.name == "top-ten") {
-        speed = dashboard.scrollSpeed;
-      }
-      index++;
-    }
-    if (speed <= 0) {
-      speed = 0;
-    } else {
-      speed = Math.ceil(1000 / speed);
-    }
-    new AutoDivScroll("top-ten-thumbnail-wrapper", speed, 1, 2);
-    autoScrollDivs.push("top-ten-thumbnail-wrapper");
-    thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
-  }
 }
 
 function displayTopVideoTitle(videoId, dashboardId) {
@@ -1143,6 +1124,8 @@ document.addEventListener("keyup", function (e) {
     carouselNext();
   } else if (e.which == 32) {
     toggleDashboardPause();
+  } else if (e.key == "F2") {
+    signIn();
   } else if (e.key.toUpperCase() == "A") {
     goToCarouselItem(9);
   } else if (e.key.toUpperCase() == "B") {
@@ -1171,6 +1154,11 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   window.setTimeout(function(){
     fixGraphMargins();
     updateTheme(e.to);
+    // Scroll top ten dashboard to the end on load
+    let topTenWrapper = document.getElementById("top-ten-thumbnail-wrapper");
+    if (topTenWrapper.scrollLeft != topTenWrapper.scrollWidth) {
+      topTenWrapper.scrollLeft = topTenWrapper.scrollWidth;
+    }
   }, 250);
 });
 $(".carousel").on("slid.bs.carousel", function (e) {
