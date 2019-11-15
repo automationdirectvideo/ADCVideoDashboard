@@ -30,11 +30,21 @@
   <body style="overflow-y: hidden;">
     <div class="main-wrapper">
       <div class="text-center" id="menu">
-        <button class="btn btn-lg btn-primary">Refresh Thumbnails</button>
+        <button class="btn btn-lg btn-primary" id="refresh-btn">Refresh Thumbnails</button>
       </div>
       <div class="thumbnail-wrapper">
         Thumbnails Area
       </div>
     </div>
+    <script src="js/authorize.js"></script>
+    <script src="js/calls.js"></script>
+    <script src="js/handle.js"></script>
+    <script src="js/request.js"></script>
+    <script src="js/sheets.js"></script>
+    <script src="js/thumbnailchart.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
   </body>
 </html>

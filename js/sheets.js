@@ -323,6 +323,26 @@ function recordRealTimeStatsFromSheets() {
   loadRealTimeStats();
 }
 
+function recordUploads() {
+  let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
+  let uploads = [];
+  let columns = {};
+  let columnHeaders = videoList[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  for (let i = 1; i < videoList.length; i++) {
+    let row = videoList[i];
+    let organic = ("TRUE" === row[columns["Organic"]]);
+    if (organic) {
+      let videoId = row[columns["Video ID"]];
+      uploads.push(videoId);
+    }
+  }
+  localStorage.removeItem("videoListSheet");
+  localStorage.setItem("uploads", JSON.stringify(uploads));
+}
+
 // Saves categoryStats to Google Sheets
 function saveCategoryStatsToSheets() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));

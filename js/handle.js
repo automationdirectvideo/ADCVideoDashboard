@@ -1079,6 +1079,10 @@ function handleSpreadsheetData(response, message) {
         }
       };
       handleChannelDemographics(newResponse);
+    } else if (message == "Thumbnail Chart Uploads") {
+      localStorage.setItem("videoListSheet",
+          JSON.stringify(response.result.values));
+      recordUploads();
     }
     let date = new Date();
     date.setHours(6, 0, 0, 0);

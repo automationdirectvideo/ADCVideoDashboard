@@ -220,11 +220,14 @@ function requestFileModifiedTime(fileId, message) {
       message);
 }
 
-function requestSpreadsheetData(spreadsheetId, range) {
+function requestSpreadsheetData(spreadsheetId, range, message) {
   var request = {
     "spreadsheetId": spreadsheetId,
     "range": range
   };
+  if (message != undefined) {
+    range = message
+  }
   callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData, range);
 }
 
