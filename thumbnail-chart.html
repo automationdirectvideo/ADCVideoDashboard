@@ -12,9 +12,32 @@
     <script src="bootstrap/js/bootstrap.js"></script>
     <style>
       @media print {
+        @page {
+          size: 17in 11in;
+          margin: 0.16in;
+        }
+
         #menu {
           display: none;
         }
+
+        .thumbnail {
+          padding: 7px 5px;
+          height: 1.06in;
+        }
+
+        .thumbnail-page {
+          page-break-after: always;
+          page-break-inside: avoid;
+        }
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      #help-text {
+        margin-top: 1rem;
       }
 
       #menu {
@@ -22,7 +45,7 @@
         margin-bottom: 1rem;
       }
 
-      .thumbnail-wrapper {
+      #thumbnail-container {
         text-align: center;
       }
     </style>
@@ -31,6 +54,8 @@
     <div class="main-wrapper">
       <div class="text-center" id="menu">
         <button class="btn btn-lg btn-primary" id="refresh-btn">Refresh Thumbnails</button>
+        <br>
+        <h4 id="help-text">Press Ctrl+P to print. This page is designed to print landscape on 11" x 17" paper.</h4>
       </div>
       <div id="thumbnail-container">
         <h5>No thumbnails are loaded. Press the "Refresh Thumbnails" button to view the thumbnails.</h5>
