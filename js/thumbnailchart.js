@@ -1,5 +1,5 @@
 function displayThumbnails() {
-  let uploads = JSON.parse(localStorage.getItem("uploads"));
+  var uploads = JSON.parse(localStorage.getItem("uploads"));
   var thumbnailContainer = document.getElementById("thumbnail-container");
   if (!uploads) {
     loadUploads();
@@ -22,8 +22,16 @@ function displayThumbnails() {
 }
 
 function loadUploads() {
-  requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-      "Video List", "Thumbnail Chart Uploads");
+  try {
+    requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
+        "Video List", "Thumbnail Chart Uploads");
+    document.getElementById("error-container").className = "d-none"
+  } catch (err) {
+    console.log(err);
+    document.getElementById("thumbnail-container").innerHTML = "";
+    document.getElementById("error-container").className = "d-block";
+    document.getElementById("error-message").innerText = err.message;
+  }
 }
 
 var uploads = JSON.parse(localStorage.getItem("uploads"));

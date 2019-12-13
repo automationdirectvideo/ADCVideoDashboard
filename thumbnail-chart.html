@@ -8,6 +8,7 @@
     <title>ADC Thumbnail Chart</title>
     <link href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap" rel="stylesheet">
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <script src="https://kit.fontawesome.com/f38baca865.js"></script>
     <link href="css/styles.css" rel="stylesheet"/>
     <script src="bootstrap/js/bootstrap.js"></script>
     <style>
@@ -44,21 +45,23 @@
         margin-top: 1rem;
         margin-bottom: 1rem;
       }
-
-      #thumbnail-container {
-        text-align: center;
-      }
     </style>
   </head>
   <body style="overflow-y: hidden;">
-    <div class="main-wrapper">
-      <div class="text-center" id="menu">
+    <div class="main-wrapper text-center">
+      <div id="menu">
         <button class="btn btn-lg btn-primary" id="refresh-btn">Refresh Thumbnails</button>
         <br>
         <h4 id="help-text">Press Ctrl+P to print. This page is designed to print landscape on 11" x 17" paper.</h4>
       </div>
       <div id="thumbnail-container">
         <h5>No thumbnails are loaded. Press the "Refresh Thumbnails" button to view the thumbnails.</h5>
+      </div>
+      <div class="d-none" id="error-container">
+        <div class="alert alert-danger fade show mb-2" role="alert" style="display:inline-block;">
+          <strong><i class="fas fa-exclamation-triangle mr-2"></i> An error occurred while retrieving the thumbnails:</strong>
+          "<span id="error-message"></span>"
+        </div>
       </div>
     </div>
     <script src="js/authorize.js"></script>
