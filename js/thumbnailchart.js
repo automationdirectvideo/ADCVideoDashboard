@@ -26,7 +26,11 @@ function loadSignedIn() {
     `<button class="btn btn-lg btn-primary mt-3" id="refresh-btn">Refresh Thumbnails</button>`;
   document.getElementById("thumbnail-container").innerHTML =
     `<h5>No thumbnails are loaded. Press the "Refresh Thumbnails" button to view the thumbnails.</h5>`;
+  document.getElementById("about-list").innerHTML +=
+    `<li>Thumbnails not loading? Try <a href="" id="signout-text">signing out</a> and signing back in.</li>`;
 
+  var signoutText = document.getElementById("signout-text");
+  signoutText.addEventListener("click", handleSignout);
   var refreshBtn = document.getElementById("refresh-btn");
   refreshBtn.addEventListener("click", loadUploads);
   loadUploads();
@@ -39,7 +43,7 @@ function loadSignedOut() {
     <h5>Sign In with your Google Account (the same account you use to edit the "ADC Video Dashboard Input Data" Google Sheet) to load the thumbnails.</h5>
     <button class="btn btn-lg btn-primary mt-3" id="signin-btn">Sign In</button>
   `;
-  
+
   var signinBtn = document.getElementById("signin-btn");
   signinBtn.addEventListener("click", handleAuthClick);
 }
