@@ -37,22 +37,30 @@
         text-decoration: none;
       }
 
-      #help-text {
-        margin-top: 1rem;
-      }
-
       #menu {
         margin-top: 1rem;
         margin-bottom: 1rem;
       }
+
+      .title {
+        text-decoration: underline;
+        margin-bottom: 1rem;
+      }
     </style>
   </head>
-  <body style="overflow-y: hidden;">
+  <body>
     <div class="main-wrapper text-center">
-      <div id="menu">
-        <button class="btn btn-lg btn-primary" id="refresh-btn">Refresh Thumbnails</button>
-        <br>
-        <h4 id="help-text">Press Ctrl+P to print. This page is designed to print landscape on 11" x 17" paper.</h4>
+      <div class="w-50 ml-auto mr-auto" id="menu">
+        <h3 class="title">AutomationDirect Video Thumbnails</h3>
+        <h5>These are the thumbnails for the 1000+ AutomationDirect videos.</h5>
+        <div class="text-left">
+          <ul style="font-size: larger;">
+            <li>The thumbnails are taken from the list of videos in the "ADC Video Dashboard Input Data" Google Sheet.</li>
+            <li>Press the "Refresh Thumbnails" button below to reload the thumbnails from the Google Sheet.</li>
+            <li>Press Ctrl+P to print. This page is designed to print landscape on 11" x 17" paper.</li>
+          </ul>
+        </div>
+        <button class="btn btn-lg btn-primary mt-3" id="refresh-btn">Refresh Thumbnails</button>
       </div>
       <div id="thumbnail-container">
         <h5>No thumbnails are loaded. Press the "Refresh Thumbnails" button to view the thumbnails.</h5>
