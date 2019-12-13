@@ -21,6 +21,29 @@ function displayThumbnails() {
   }
 }
 
+function loadSignedIn() {
+  document.getElementById("menu").innerHTML +=
+    `<button class="btn btn-lg btn-primary mt-3" id="refresh-btn">Refresh Thumbnails</button>`;
+  document.getElementById("thumbnail-container").innerHTML =
+    `<h5>No thumbnails are loaded. Press the "Refresh Thumbnails" button to view the thumbnails.</h5>`;
+
+  var refreshBtn = document.getElementById("refresh-btn");
+  refreshBtn.addEventListener("click", loadUploads);
+  loadUploads();
+}
+
+function loadSignedOut() {
+  // add hr, sign in text and sign in button
+  document.getElementById("menu").innerHTML += `
+    <hr>
+    <h5>Sign In with your Google Account (the same account you use to edit the "ADC Video Dashboard Input Data" Google Sheet) to load the thumbnails.</h5>
+    <button class="btn btn-lg btn-primary mt-3" id="signin-btn">Sign In</button>
+  `;
+  
+  var signinBtn = document.getElementById("signin-btn");
+  signinBtn.addEventListener("click", handleAuthClick);
+}
+
 function loadUploads() {
   try {
     document.getElementById("thumbnail-container").innerHTML = `
@@ -38,8 +61,3 @@ function loadUploads() {
 }
 
 var uploads = JSON.parse(localStorage.getItem("uploads"));
-
-var refreshBtn = document.getElementById("refresh-btn");
-refreshBtn.addEventListener("click", loadUploads);
-
-displayThumbnails();

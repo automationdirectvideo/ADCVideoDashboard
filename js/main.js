@@ -1058,6 +1058,25 @@ function goToCarouselItem(index) {
   $(".carousel").carousel(index);
 }
 
+function loadSignedIn() {
+  var signinModalButton = document.getElementById("signin-modal-button");
+  var signoutModalButton = document.getElementById("signout-modal-button");
+  signinModalButton.style.display = "none";
+  signoutModalButton.style.display = "inline";
+  initializeUpdater();
+  loadDashboards();
+  updateTheme(0);
+}
+
+function loadSignedOut() {
+  var signinModalButton = document.getElementById("signin-modal-button");
+  var signoutModalButton = document.getElementById("signout-modal-button");
+  signinModalButton.style.display = "inline";
+  signoutModalButton.style.display = "none";
+  initializeUpdater();
+  loadDashboardsSignedOut();
+}
+
 // Get current settings
 if (!localStorage.getItem("settings")) {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));

@@ -18,8 +18,6 @@ const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
 
 const authorizeButton = document.getElementById("authorize-button");
 const signoutButton = document.getElementById("signout-button");
-const signinModalButton = document.getElementById("signin-modal-button");
-const signoutModalButton = document.getElementById("signout-modal-button");
 
 // Load auth2 library
 function handleClientLoad() {
@@ -50,16 +48,9 @@ function updateSigninStatus(isSignedIn) {
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    signinModalButton.style.display = "none";
-    signoutModalButton.style.display = "inline";
-    initializeUpdater();
-    loadDashboards();
-    updateTheme(0);
+    loadSignedIn();
   } else {
-    signinModalButton.style.display = "inline";
-    signoutModalButton.style.display = "none";
-    initializeUpdater();
-    loadDashboardsSignedOut();
+    loadSignedOut();
   }
 }
 
