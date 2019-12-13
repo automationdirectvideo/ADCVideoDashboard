@@ -297,3 +297,14 @@ function topVideoCalls(startDate, endDate, videoId, dashboardId) {
   requestVideoBasicStats(startDate, endDate, videoId, dashboardId);
   displayTopVideoTitle(videoId, dashboardId);
 }
+
+/* Non-dashboard Related Calls */
+
+// Requests description of given video
+function requestVideoDescription(videoId) {
+  var request = {
+    "part": "snippet",
+    "id": videoId
+  };
+  callDataAPIVideos(request, "VideoDescription: ", handleVideoDescription);
+}

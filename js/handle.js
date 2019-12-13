@@ -1098,3 +1098,14 @@ function handleUpdateSheetData(response, message) {
     }
   }
 }
+
+/* Non-dashboard Related Calls */
+
+function handleVideoDescription(response) {
+  if (response) {
+    var videoId = response.result.items[0].id;
+    var description = response.result.items[0].snippet.description;
+    var links = searchForURLs(description);
+    console.log(videoId, links);
+  }
+}
