@@ -375,6 +375,32 @@ function saveCategoryStatsToSheets() {
       "Category Stats", body);
 }
 
+// Saves categoryYearlyStats to Google Sheets
+function saveCategoryYearlyStatsToSheets(year) {
+  let categoryYearlyStats =
+      JSON.parse(localStorage.getItem("categoryYearlyStats"));
+  var values = [
+    ["Category ID", "Short Name", "Views", "Average Video Views",
+    "Number of Videos"]
+  ];
+  for (var i = 0; i < categoryYearlyStats.length; i++) {
+    var row = [];
+    row.push(categoryYearlyStats[i]["categoryId"]);
+    row.push(categoryYearlyStats[i]["shortName"]);
+    row.push(categoryYearlyStats[i]["views"]);
+    row.push(categoryYearlyStats[i]["avgViews"]);
+    row.push(categoryYearlyStats[i]["numVideos"]);
+    values.push(row);
+  }
+  var body = {
+    "values": values
+  };
+  var sheetName = year + " Category Views";
+  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+      sheetName, body);
+  localStorage.removeItem("categoryYearlyStats");
+}
+
 // Saves allVideoStats and statsByVideoId to Google Sheets
 function saveVideoStatsToSheets() {
   var values = [

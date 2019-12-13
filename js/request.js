@@ -25,6 +25,23 @@ function requestVideoStatisticsOverall(settings) {
       settings);
 }
 
+function requestVideoViewsByYear(settings) {
+  var videoId = settings["uploads"][settings["index"]];
+  var year = settings["year"];
+  var startDate = year + "-01-01";
+  var endDate = year + "-12-31";
+  var filters = "video==" + videoId;
+  var request = {
+    "dimensions": "video",
+    "endDate": endDate,
+    "filters": filters,
+    "ids": "channel==MINE",
+    "metrics": "views",
+    "startDate": startDate
+  }
+  callAnalyticsAPI(request, "VideoViewsByYear: ", handleVideoViewsByYear);
+}
+
 
 /* Platform Dashboard Calls */
 
@@ -251,6 +268,29 @@ function getAllVideoStats(uploads) {
   };
   localStorage.setItem("allVideoStats", JSON.stringify([]));
   requestVideoStatisticsOverall(settings);
+}
+
+function getYearlyCategoryViews(year) {
+  let uploads = JSON.parse(localStorage.getItem("uploads"));
+  let settings = {
+    "index": 0,
+    "uploads": uploads,
+    "year": year
+  };
+  let categoryStats = JSON.parse(localStorage.categoryStats);
+  let categoryYearlyTotals = {};
+  for (var i = 0; i < categoryStats.length; i++) {
+    let categoryId = categoryStats[i]["categoryId"];
+    let shortName = categoryStats[i]["shortName"];
+    categoryYearlyTotals[categoryId] = {
+      "numVideos": 0,
+      "shortName": shortName,
+      "views": 0
+    }
+  }
+  localStorage.setItem("categoryYearlyTotals",
+      JSON.stringify(categoryYearlyTotals));
+  requestVideoViewsByYear(settings);
 }
 
 function getTopTenVideosByMonth(startDate) {

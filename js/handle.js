@@ -66,6 +66,37 @@ function handleVideoStatisticsOverall(response, settings) {
   }
 }
 
+function handleVideoViewsByYear(response, settings) {
+  if (response) {
+    let stats = response.result.rows[0];
+    let videoId = stats[0];
+    let viewCount = stats[1];
+    let categoryYearlyTotals =
+        JSON.parse(localStorage.getItem("categoryYearlyTotals"));
+    let categories = statsByVideoId[videoId]["categories"];
+    for (let i = 0; i < categories.length; i++) {
+      let categoryId = categories[i];
+      let categoryViews = parseInt(categoryYearlyTotals[categoryId]["views"]);
+      let categoryNumVideos =
+          parseInt(categoryYearlyTotals[categoryId]["numVideos"]);
+      categoryYearlyTotals[categoryId]["views"] = categoryViews + viewCount;
+      categoryYearlyTotals[categoryId]["numVideos"] = categoryNumVideos + 1;
+    }
+    localStorage.setItem("categoryYearlyTotals",
+        JSON.stringify(categoryYearlyTotals));
+
+    let uploads = settings["uploads"];
+    let index = parseInt(settings["index"]);
+    if (index + 1 < uploads.length) {
+      settings["index"] = index + 1;
+      requestVideoViewsByYear(settings);
+    } else {
+      let year = settings["year"];
+      calcCategoryStatsByYear(year);
+    }
+  }
+}
+
 
 /* Platform Dashboard Calls */
 

@@ -346,6 +346,33 @@ function calcCategoryStats() {
   saveVideoStatsToSheets();
 }
 
+function calcCategoryStatsByYear(year) {
+  let categoryYearlyTotals =
+      JSON.parse(localStorage.getItem("categoryYearlyTotals"));
+  let categoryYearlyStats = [];
+  for (var categoryId in categoryTotals) {
+    if (categoryTotals.hasOwnProperty(categoryId)) {
+      let totals = categoryYearlyTotals[categoryId];
+      let shortName = totals["shortName"];
+      let views = parseInt(totals["views"]);
+      let numVideos = parseInt(totals["numVideos"]);
+      let avgViews = views / numVideos;
+      categoryYearlyStats.push({
+        "avgViews": avgViews,
+        "categoryId": categoryId,
+        "shortName": shortName,
+        "numVideos": numVideos,
+        "views": views
+      });
+    }
+  }
+  localStorage.setItem("categoryYearlyStats",
+      JSON.stringify(categoryYearlyStats));
+  localStorage.removeItem("categoryYearlyTotals");
+  console.log("Category Yearly Stats: ", categoryYearlyStats);
+  saveCategoryYearlyStatsToSheets(year);
+}
+
 function getTopVideoByCategory(categoryId, type, numVideos) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
