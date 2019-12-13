@@ -71,6 +71,7 @@ function handleVideoViewsByYear(response, settings) {
     let stats = response.result.rows[0];
     let videoId = stats[0];
     let viewCount = stats[1];
+    let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
     let categoryYearlyTotals =
         JSON.parse(localStorage.getItem("categoryYearlyTotals"));
     let categories = statsByVideoId[videoId]["categories"];

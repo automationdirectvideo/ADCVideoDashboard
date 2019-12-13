@@ -179,6 +179,7 @@ function recordVideoData() {
     let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
     let publishDate = videoSheet[i][columns["Publish Date"]].substr(0, 10);
+    let categories = videoSheet[i][columns["Categories"]];
     let row = {
       "videoId": videoId,
       "views": viewCount,
@@ -193,6 +194,7 @@ function recordVideoData() {
     statsByVideoId[videoId]["title"] = title;
     statsByVideoId[videoId]["publishDate"] = publishDate;
     statsByVideoId[videoId]["duration"] = duration;
+    statsByVideoId[videoId]["categories"] = categories;
     uploads.push(videoId);
   }
   localStorage.removeItem("videoSheet");
