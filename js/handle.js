@@ -1126,7 +1126,7 @@ function handleSpreadsheetData(response, message) {
 function handleUpdateSheetData(response, message) {
   if (response) {
     if (message == "Video Stats") {
-      getTopTenVideosByMonth();
+      updateTopTenVideoSheet();
     }
   }
 }
