@@ -74,33 +74,39 @@ function loadTopVideoDashboards() {
   var todayDate = getTodaysDate();
   if (carouselInner.children["top-video-1"]) {
     let plcVideo = getTopVideoByCategory("B", "views")[0];
-    console.log("PLC Video: " + plcVideo);
-    topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
+    if (plcVideo != undefined) {
+      topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
+    }
   }
   if (carouselInner.children["top-video-2"]) {
     let drivesVideo = getTopVideoByCategory("C", "views")[0];
-    console.log("Drives Video: " + drivesVideo);
-    topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
+    if (drivesVideo != undefined) {
+      topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
+    }
   }
   if (carouselInner.children["top-video-3"]) {
     let hmiVideo = getTopVideoByCategory("D", "views")[0];
-    console.log("HMI Video: " + hmiVideo);
-    topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
+    if (hmiVideo != undefined) {
+      topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
+    }
   }
   if (carouselInner.children["top-video-4"]) {
     let motionControlVideo = getTopVideoByCategory("F", "views")[0];
-    console.log("Motion Control Video: " + motionControlVideo);
-    topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
+    if (motionControlVideo != undefined) {
+      topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
+    }
   }
   if (carouselInner.children["top-video-5"]) {
     let sensorsVideo = getTopVideoByCategory("H", "views")[0];
-    console.log("Sensors Video: " + sensorsVideo);
-    topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
+    if (sensorsVideo != undefined) {
+      topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
+    }
   }
   if (carouselInner.children["top-video-6"]) {
     let motorsVideo = getTopVideoByCategory("I", "views")[0];
-    console.log("Motors Video: " + motorsVideo);
-    topVideoCalls(joinDate, todayDate, motorsVideo, "top-video-6");
+    if (motorsVideo != undefined) {
+      topVideoCalls(joinDate, todayDate, motorsVideo, "top-video-6");
+    }
   }
 }
 
