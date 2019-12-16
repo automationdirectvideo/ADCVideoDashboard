@@ -21,6 +21,7 @@ function requestVideoStatisticsOverall(settings) {
     "part": "statistics,contentDetails",
     "id": videoId
   };
+  console.log("Getting Video Statistics: " + videoId);
   callDataAPIVideos(request, "VideoStatistics: ", handleVideoStatisticsOverall,
       settings);
 }
