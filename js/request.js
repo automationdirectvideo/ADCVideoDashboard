@@ -272,10 +272,20 @@ function getAllVideoStats(uploads) {
 }
 
 function getYearlyCategoryViews(year) {
-  let uploads = JSON.parse(localStorage.getItem("uploads"));
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  let uploadsByYear = [];
+  for (var videoId in statsByVideoId) {
+    if (statsByVideoId.hasOwnProperty(videoId)) {
+      let publishDate = statsByVideoId[videoId]["publishDate"];
+      let publishYear = publishDate.substr(0,4);
+      if (year >= publishYear) {
+        uploadsByYear.push(videoId);
+      }
+    }
+  }
   let settings = {
     "index": 0,
-    "uploads": uploads,
+    "uploads": uploadsByYear,
     "year": year
   };
   let categoryStats = JSON.parse(localStorage.categoryStats);
