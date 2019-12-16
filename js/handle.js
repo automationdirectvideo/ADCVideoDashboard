@@ -41,7 +41,6 @@ function handleVideoStatisticsOverall(response, settings) {
     let categories = statsByVideoId[videoId]["categories"];
     for (let i = 0; i < categories.length; i++) {
       let categoryId = categories[i];
-      console.log("Video ID: " + videoId + " in Category ID: " + categoryId);
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
       let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);

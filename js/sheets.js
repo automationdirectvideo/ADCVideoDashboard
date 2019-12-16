@@ -74,7 +74,7 @@ function recordVideoListData() {
       let publishDate = row[columns["Publish Date"]];
       let duration = row[columns["Duration"]];
       let categoryString = row[columns["Categories"]];
-      categoryString.replace(/\s/g, ''); // Removes whitespace
+      categoryString = categoryString.replace(/\s/g, ''); // Removes whitespace
       let initialCategories = categoryString.split(",");
       let allCategories = [];
       for (let j = 0; j < initialCategories.length; j++) {
@@ -179,7 +179,7 @@ function recordVideoData() {
     let duration = parseInt(videoSheet[i][columns["Duration (sec)"]]);
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
     let publishDate = videoSheet[i][columns["Publish Date"]].substr(0, 10);
-    let categories = videoSheet[i][columns["Categories"]];
+    let categories = videoSheet[i][columns["Categories"]].replace(/\s/g, '');
     let row = {
       "videoId": videoId,
       "views": viewCount,
