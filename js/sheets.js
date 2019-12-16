@@ -379,28 +379,50 @@ function saveCategoryStatsToSheets() {
 
 // Saves categoryYearlyStats to Google Sheets
 function saveCategoryYearlyStatsToSheets(year) {
-  let categoryYearlyStats =
-      JSON.parse(localStorage.getItem("categoryYearlyStats"));
-  var values = [
-    ["Category ID", "Short Name", "Views", "Average Video Views",
-    "Number of Videos"]
-  ];
-  for (var i = 0; i < categoryYearlyStats.length; i++) {
-    var row = [];
-    row.push(categoryYearlyStats[i]["categoryId"]);
-    row.push(categoryYearlyStats[i]["shortName"]);
-    row.push(categoryYearlyStats[i]["views"]);
-    row.push(categoryYearlyStats[i]["avgViews"]);
-    row.push(categoryYearlyStats[i]["numVideos"]);
-    values.push(row);
-  }
-  var body = {
-    "values": values
+  var categoryYearlyTotals =
+      JSON.parse(localStorage.getItem("categoryYearlyTotals"));
+  
+  var request = {
+    "spreadsheetId": "1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+    "range": "Category Views By Year"
   };
-  var sheetName = year + " Category Views";
-  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      sheetName, body);
-  localStorage.removeItem("categoryYearlyStats");
+  gapi.client.sheets.spreadsheets.values.get(request)
+    .then(response => {
+      if (response) {
+        sheetValues = response.result.values;
+        let columnHeaders = sheetValues[0];
+        let viewsRow = [];
+        viewsRow.push(year + " Views");
+        let avgViewsRow = [];
+        avgViewsRow.push(year + " Avg Views Per Video");
+        for (let i = 1; i < columnHeaders.length; i++) {
+          let categoryId = columnHeaders[i];
+          let totals = categoryYearlyTotals[categoryId];
+          let views = parseInt(totals["views"]);
+          let numVideos = parseInt(totals["numVideos"]);
+          let avgViews = views / numVideos;
+          viewsRow.push(views);
+          avgViewsRow.push(avgViews);
+        }
+        startingRowIndex = (2 * (year - 2010)) + 1;
+        while (sheetValues.length < startingRowIndex + 2) {
+          sheetValues.push([]);
+        }
+        sheetValues[startingRowIndex] = viewsRow;
+        sheetValues[startingRowIndex + 1] = avgViewsRow;
+
+        var body = {
+          "values": sheetValues
+        };
+        var sheetName = "Category Views By Year";
+        requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+            sheetName, body);
+        localStorage.removeItem("categoryYearlyTotals");
+      }
+    })
+    .catch(err => {
+      console.error("Category Views By Year Google Sheet not found", err);
+    });
 }
 
 // Saves allVideoStats and statsByVideoId to Google Sheets

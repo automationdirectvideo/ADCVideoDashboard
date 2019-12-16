@@ -95,7 +95,7 @@ function handleVideoViewsByYear(response, settings) {
       requestVideoViewsByYear(settings);
     } else {
       let year = settings["year"];
-      calcCategoryStatsByYear(year);
+      saveCategoryYearlyStatsToSheets(year);
     }
   }
 }
