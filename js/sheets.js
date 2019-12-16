@@ -350,6 +350,13 @@ function recordYearlyCategoryViews() {
   let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
   let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
   let categoryTraces = {};
+  let years = [];
+  for (var row = 1; row < sheetValues.length; row += 2) {
+    let year = sheetValues[row][0].substr(0,4);
+    years.push(year);
+  }
+  categoryTraces["years"] = years;
+  let yearlyTotals = new Array(years.length).fill(0);
   for (var column = 1; column < sheetValues[0].length; column++) {
     let categoryId = sheetValues[0][column];
     let root = categoryTotals[categoryId]["root"];
@@ -357,6 +364,7 @@ function recordYearlyCategoryViews() {
       let trace = [];
       for (var row = 1; row < sheetValues.length; row += 2) {
         trace.push(sheetValues[row][column]);
+        yearlyTotals[row] += sheetValues[row][column];
       }
       categoryTraces[categoryId] = {
         "name": categoryTotals[categoryId]["shortName"],
@@ -364,12 +372,7 @@ function recordYearlyCategoryViews() {
       };
     }
   }
-  let years = [];
-  for (var row = 1; row < sheetValues.length; row += 2) {
-    let year = sheetValues[row][0].substr(0,4);
-    years.push(year);
-  }
-  categoryTraces["years"] = years;
+  categoryTraces["totals"] = yearlyTotals;
   localStorage.removeItem("yearlyCategorySheet");
   localStorage.setItem("categoryTraces", JSON.stringify(categoryTraces));
 }
