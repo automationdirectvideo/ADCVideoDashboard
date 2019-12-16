@@ -39,7 +39,8 @@ function requestVideoViewsByYear(settings) {
     "metrics": "views",
     "startDate": startDate
   }
-  callAnalyticsAPI(request, "VideoViewsByYear: ", handleVideoViewsByYear);
+  callAnalyticsAPI(request, "VideoViewsByYear: ", handleVideoViewsByYear,
+      settings);
 }
 
 
