@@ -349,8 +349,8 @@ function recordUploads() {
 function recordYearlyCategoryViews() {
   let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
   let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-  let categoryTraces = {};
-  for (var column = 0; column < sheetValues[0].length; column++) {
+  let categoryTraces = [];
+  for (var column = 1; column < sheetValues[0].length; column++) {
     let categoryId = sheetValues[0][column];
     let root = categoryTotals[categoryId]["root"];
     if (root && categoryId != "A") {
@@ -358,10 +358,11 @@ function recordYearlyCategoryViews() {
       for (var row = 1; row < sheetValues.length; row += 2) {
         trace.push(sheetValues[row][column]);
       }
-      categoryTraces[categoryId] = {
+      categoryTraces.push({
+        "categoryId": categoryId,
         "name": categoryTotals[categoryId]["shortName"],
         "trace": trace
-      };
+      });
     }
   }
   let years = [];
@@ -369,7 +370,10 @@ function recordYearlyCategoryViews() {
     let year = sheetValues[row][0].substr(0,4);
     years.push(year);
   }
-  categoryTraces["years"] = years;
+  categoryTraces.push({
+    "name": "years",
+    "trace": trace
+  });
   localStorage.removeItem("yearlyCategorySheet");
   localStorage.setItem("categoryTraces", JSON.stringify(categoryTraces));
 }
