@@ -333,7 +333,7 @@ function recordUploads() {
   for (let i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
-  for (let i = videoList.length - 1; i >= 1; i--) {
+  for (let i = videoList.length - 1; i > 1; i--) {
     let row = videoList[i];
     let videoId = row[columns["Video ID"]];
     uploads.push(videoId);
