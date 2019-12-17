@@ -361,14 +361,41 @@ function recordYearlyCategoryViews() {
     let categoryId = sheetValues[0][column];
     let root = categoryTotals[categoryId]["root"];
     if (root && categoryId != "A") {
-      let trace = [];
+      let viewTrace = [];
+      let avgViewTrace = [];
+      let cumulativeViews = [];
+      let cumulativeAvgViewTrace = [];
       for (var row = 1; row < sheetValues.length; row += 2) {
-        trace.push(sheetValues[row][column]);
-        yearlyTotals[(row - 1) / 2] += parseInt(sheetValues[row][column]);
+        // Get views and numVideos for this year
+        let yearViews = parseInt(sheetValues[row][column]);
+        let numVideos = parseInt(sheetValues[row + 1][column]);
+        viewTrace.push(yearViews);
+        // Calculate cumulative views up to current year
+        let previousSumViews = 0;
+        if (row != 1) {
+          previousSumViews = parseInt(cumulativeViews[((row - 1) / 2) - 1]);
+        }
+        let currentSumViews = previousSumViews + yearViews;
+        cumulativeViews.push(currentSumViews);
+        // Calculate average views for current year & cumulative average view
+        // up to current year
+        let avgView = 0;
+        let cumulativeAvgView = 0;
+        if (numVideos != 0) {
+          avgView = (yearViews / numVideos).toFixed(0);
+          cumulativeAvgView = (currentSumViews / numVideos).toFixed(0);
+        }
+        avgViewTrace.push(avgView);
+        cumulativeAvgViewTrace.push(cumulativeAvgView);
+        // Calculate yearly totals
+        yearlyTotals[(row - 1) / 2] += parseInt(yearViews);
       }
       categoryTraces[categoryId] = {
         "name": categoryTotals[categoryId]["shortName"],
-        "trace": trace
+        "viewTrace": viewTrace,
+        "avgViewTrace": avgViewTrace,
+        "cumulativeViews": cumulativeViews,
+        "cumulativeAvgViewTrace": cumulativeAvgViewTrace
       };
     }
   }
@@ -424,23 +451,22 @@ function saveCategoryYearlyStatsToSheets(year) {
         let columnHeaders = sheetValues[0];
         let viewsRow = [];
         viewsRow.push(year + " Views");
-        let avgViewsRow = [];
-        avgViewsRow.push(year + " Avg Views Per Video");
+        let numVideosRow = [];
+        numVideosRow.push(year + " Number of Videos");
         for (let i = 1; i < columnHeaders.length; i++) {
           let categoryId = columnHeaders[i];
           let totals = categoryYearlyTotals[categoryId];
           let views = parseInt(totals["views"]);
           let numVideos = parseInt(totals["numVideos"]);
-          let avgViews = views / numVideos;
           viewsRow.push(views);
-          avgViewsRow.push(avgViews);
+          numVideosRow.push(numVideos);
         }
         startingRowIndex = (2 * (year - 2010)) + 1;
         while (sheetValues.length < startingRowIndex + 2) {
           sheetValues.push([]);
         }
         sheetValues[startingRowIndex] = viewsRow;
-        sheetValues[startingRowIndex + 1] = avgViewsRow;
+        sheetValues[startingRowIndex + 1] = numVideosRow;
 
         var body = {
           "values": sheetValues
