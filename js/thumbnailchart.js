@@ -51,7 +51,7 @@ function loadSignedOut() {
 function loadUploads() {
   try {
     document.getElementById("thumbnail-container").innerHTML = `
-      <i class="fas fa-cog fa-3x fa-spin"></i>
+      <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
     `;
     requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
         "Video List", "Thumbnail Chart Uploads");
