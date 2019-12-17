@@ -364,7 +364,7 @@ function recordYearlyCategoryViews() {
       let trace = [];
       for (var row = 1; row < sheetValues.length; row += 2) {
         trace.push(sheetValues[row][column]);
-        yearlyTotals[row] += sheetValues[row][column];
+        yearlyTotals[(row - 1) / 2] += parseInt(sheetValues[row][column]);
       }
       categoryTraces[categoryId] = {
         "name": categoryTotals[categoryId]["shortName"],
