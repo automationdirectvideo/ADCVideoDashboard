@@ -409,100 +409,7 @@ function displayTopCategories() {
   var type = "views";
   var cutoff = 0.025;
 
-  var labelConversion = {
-    "Programmable Controllers": {
-      "name": "Programmable<br>Controllers",
-      "color": "#1f77b4",
-    },
-    "Drives": {
-      "name": "Drives",
-      "color": ""
-    },
-    "HMI": {
-      "name": "HMI",
-      "color": "#ff7f0e"
-    },
-    "Process Control & Measurement": {
-      "name": "Process Control<br>& Measurement",
-      "color": "#2ca02c"
-    },
-    "Motion Control": {
-      "name": "Motion Control",
-      "color": "#d62728"
-    },
-    "Cables": {
-      "name": "Cables",
-      "color": "#e77c7c"
-    },
-    "Sensors / Encoders": {
-      "name": "Sensors/Encoders",
-      "color": "#9467bd"
-    },
-    "Motors": {
-      "name": "Motors",
-      "color": "#8c564b"
-    },
-    "Motor Controls": {
-      "name": "Motor Controls",
-      "color": "#e377c2"
-    },
-    "Field I/O": {
-      "name": "Field I/O",
-      "color": ""
-    },
-    "Communications": {
-      "name": "Communications",
-      "color": ""
-    },
-    "Pneumatic Components": {
-      "name": "Pneumatic<br>Components",
-      "color": "#7f7f7f"
-    },
-    "Relays / Timers": {
-      "name": "Relays/Timers",
-      "color": "#c6aedc"
-    },
-    "Stacklights": {
-      "name": "Stacklights",
-      "color": ""
-    },
-    "Power Products": {
-      "name": "Power Products",
-      "color": "#c6aedc"
-    },
-    "Pushbuttons / Switches / Indicators": {
-      "name": "Pushbuttons/<br>Switches/Indicators",
-      "color": "#f4cce8"
-    },
-    "Circuit Protection": {
-      "name": "Circuit<br>Protection",
-      "color": "#f4cce8"
-    },
-    "Safety": {
-      "name": "Safety",
-      "color": "#b2b2b2"
-    },
-    "Tools & Test Equipment": {
-      "name": "Tools & Test<br>Equipment",
-      "color": "#bcbd22"
-    },
-    "Wiring Solutions": {
-      "name": "Wiring Solutions",
-      "color": "#bc8b81"
-    },
-    "Enclosures": {
-      "name": "Enclosures",
-      "color": "#103d5d"
-    },
-    "Terminal Blocks": {
-      "name": "Terminal Blocks",
-      "color": "#ffb574"
-    },
-    "Power Transmission": {
-      "name": "Power<br>Transmission",
-      "color": "#165016"
-    }
-  };
+  var labelConversion = categoryColors;
 
   for (var i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
@@ -534,8 +441,8 @@ function displayTopCategories() {
         otherTotal += value;
       } else {
         values.push(value);
-        labels.push(labelConversion[category.name].name);
-        colors.push(labelConversion[category.name].color);
+        labels.push(labelConversion[category.shortName].name);
+        colors.push(labelConversion[category.shortName].color);
       }
     }
   }
@@ -613,8 +520,8 @@ function displayTopCategories() {
         otherTotal += value;
       } else {
         values.push(value);
-        labels.push(labelConversion[category.name].name);
-        colors.push(labelConversion[category.name].color);
+        labels.push(labelConversion[category.shortName].name);
+        colors.push(labelConversion[category.shortName].color);
       }
     }
   }
