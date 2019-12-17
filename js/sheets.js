@@ -333,13 +333,10 @@ function recordUploads() {
   for (let i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
-  for (let i = 1; i < videoList.length; i++) {
+  for (let i = videoList.length - 1; i >= 1; i--) {
     let row = videoList[i];
-    let organic = ("TRUE" === row[columns["Organic"]]);
-    if (organic) {
-      let videoId = row[columns["Video ID"]];
-      uploads.push(videoId);
-    }
+    let videoId = row[columns["Video ID"]];
+    uploads.push(videoId);
   }
   localStorage.removeItem("videoListSheet");
   localStorage.setItem("uploads", JSON.stringify(uploads));
