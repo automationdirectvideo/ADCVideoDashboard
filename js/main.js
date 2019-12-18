@@ -389,6 +389,260 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
   return topVideos;
 }
 
+function displayCategoryViewsAreaCharts() {
+  let categoryTraces = JSON.parse(localStorage.getItem("categoryTraces"));
+
+  let years = categoryTraces["years"];
+  let numYears = years.length;
+  let yearlyTotals = categoryTraces["totals"];
+  let viewTraces = [];
+  let avgViewTraces = [];
+  let cumulativeViewTraces = [];
+  let cumulativeAvgViewTraces = [];
+
+  for (var categoryId in categoryTraces) {
+    if (categoryTraces.hasOwnProperty(categoryId) && categoryId != "years" &&
+        categoryId != "totals") {
+      let viewTrace = categoryTraces[categoryId]["viewTrace"];
+      let avgViewTrace = categoryTraces[categoryId]["avgViewTrace"];
+      let cumulativeViewTrace = categoryTraces[categoryId]["cumulativeViews"];
+      let cumulativeAvgViewTrace =
+          categoryTraces[categoryId]["cumulativeAvgViewTrace"];
+      let categoryName = categoryTraces[categoryId]["name"];
+      let percentageTrace = [];
+      for (var i = 0; i < viewTrace.length; i++) {
+        let percentage = (100 * (viewTrace[i] / yearlyTotals[i])).toFixed(2);
+        percentageTrace.push(percentage);
+      }
+      let lineColor = categoryColors[categoryName].color;
+      if (lineColor == undefined) {
+        lineColor = "#a0a0a0"
+      }
+      let fillColor = lineColor + "80";
+      viewTraces.push({
+        "x": years,
+        "y": viewTrace,
+        "stackgroup": "one",
+        "fillcolor": fillColor,
+        "line": {
+          "color": lineColor
+        },
+        "hovertemplate": "%{text}% of %{x} views: <i>" + categoryName + "</i><extra></extra>",
+        "name": categoryName,
+        "text": percentageTrace
+      });
+      avgViewTraces.push({
+        "x": years,
+        "y": avgViewTrace,
+        "stackgroup": "one",
+        "fillcolor": fillColor,
+        "line": {
+          "color": lineColor
+        },
+        "hovertemplate": "~%{y:,g} views per video in %{x}: <i>" + categoryName + "</i><extra></extra>",
+        "name": categoryName,
+      });
+      cumulativeViewTraces.push({
+        "x": years,
+        "y": cumulativeViewTrace,
+        "stackgroup": "one",
+        "fillcolor": fillColor,
+        "line": {
+          "color": lineColor
+        },
+        "hovertemplate": "%{y:,g} views: <i>" + categoryName + "</i><extra></extra>",
+        "name": categoryName
+      });
+      cumulativeAvgViewTraces.push({
+        "x": years,
+        "y": cumulativeAvgViewTrace,
+        "stackgroup": "one",
+        "fillcolor": fillColor,
+        "line": {
+          "color": lineColor
+        },
+        "hovertemplate": "~%{y:,g} views per video: <i>" + categoryName + "</i><extra></extra>",
+        "name": categoryName
+      });
+    }
+  }
+  var sortDescByLastY = function(a,b) {
+    return parseInt(b["y"][numYears - 1]) - parseInt(a["y"][numYears - 1]);
+  };
+  viewTraces.sort(sortDescByLastY);
+  avgViewTraces.sort(sortDescByLastY);
+  cumulativeViewTraces.sort(sortDescByLastY);
+  cumulativeAvgViewTraces.sort(sortDescByLastY);
+  console.log("ViewTraces:", viewTraces);
+  console.log("AvgViewTraces:", avgViewTraces);
+  console.log("CumulativeViewTraces:", cumulativeViewTraces);
+  console.log("CumulativeAvgViewTraces:", cumulativeAvgViewTraces);
+
+  var graphHeight = 0.8583;
+  var graphWidth = 0.9528;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var legendFontSize = 
+        Math.floor(0.01 * document.documentElement.clientWidth);
+
+  let viewLayout = {
+    height: height,
+    width: width,
+    hoverdistance: 50,
+    hoverlabel: {
+      font: {
+        size: 20
+      },
+      namelength: -1
+    },
+    hovermode: "x",
+    hovertemplate: "Test",
+    legend: {
+      bgcolor: "#eeeeee",
+      font: {
+        size: legendFontSize
+      },
+      y: 0.5
+    },
+    title: {
+      font: {
+        size: 40
+      },
+      text: "Views By Category"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickfont: {
+        size: 20
+      },
+      ticks: "outside",
+      title: {
+        font: {
+          size: 30
+        },
+        text: "Year"
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickfont: {
+        size: 20
+      },
+      ticks: "outside",
+      tickprefix: "  ", // To give extra space between ticks and axis title
+      title: {
+        font: {
+          size: 30
+        },
+        text: "Yearly Views"
+      }
+    }
+  }
+
+  let config = {
+    scrollZoom: false,
+    displayModeBar: false,
+  }
+
+  let plotViews =
+      document.getElementById("categories-views-chart");
+  let plotViewsNorm 
+      document.getElementById("categories-normal-views-chart");
+  let plotCumViews =
+      document.getElementById("categories-cum-views-chart");
+  let plotCumViewsNorm =
+      document.getElementById("categories-normal-cum-views-chart");
+  let plotAvgViews =
+      document.getElementById("categories-avg-views-chart");
+  let plotAvgViewsNorm =
+      document.getElementById("categories-normal-avg-views-chart");
+  let plotCumAvgViews =
+      document.getElementById("categories-cum-avg-views-chart");
+  let plotCumAvgViewsNorm =
+      document.getElementById("categories-normal-cum-avg-views-chart");
+
+
+  let normalViewTraces = JSON.parse(JSON.stringify(viewTraces));
+  normalViewTraces[0]["groupnorm"] = "percent";
+  let normalViewLayout = JSON.parse(JSON.stringify(viewLayout));
+  normalViewLayout.title.text = "Views By Category, Normalized"
+  normalViewLayout.yaxis.title.text = "Percent Views";
+  normalViewLayout.yaxis.ticksuffix = "%";
+
+
+  let cumulativeViewLayout = JSON.parse(JSON.stringify(viewLayout));
+  cumulativeViewLayout.title.text = "Cumulative Views By Category";
+  cumulativeViewLayout.yaxis.title.text = "Cumulative Views";
+
+  let normalCumulativeViewTraces = JSON.parse(JSON.stringify(cumulativeViewTraces));
+  normalCumulativeViewTraces[0]["groupnorm"] = "percent";
+  let normalCumulativeViewLayout = JSON.parse(JSON.stringify(cumulativeViewLayout));
+  normalCumulativeViewLayout.title.text = "Cumulative Views By Category, Normalized";
+  normalCumulativeViewLayout.yaxis.title.text = "Percent Cumulative Views";
+  normalCumulativeViewLayout.yaxis.ticksuffix = "%";
+  for (var i = 0; i < normalCumulativeViewTraces.length; i++) {
+    var trace = normalCumulativeViewTraces[i];
+    var categoryName = trace.name;
+    trace.hovertemplate = "%{y:.2f}% of total views: <i>" + categoryName + "</i><extra></extra>";
+  }
+
+
+  let avgViewLayout = JSON.parse(JSON.stringify(viewLayout));
+  avgViewLayout.title.text = "Average Views Per Video By Category";
+  avgViewLayout.yaxis.title.text = "Average Views Per Video";
+  avgViewLayout.yaxis.tickformat = ",g";
+
+  let normalAvgViewTraces = JSON.parse(JSON.stringify(avgViewTraces));
+  normalAvgViewTraces[0]["groupnorm"] = "percent";
+  let normalAvgViewLayout = JSON.parse(JSON.stringify(avgViewLayout));
+  normalAvgViewLayout.title.text = "Average Views Per Video By Category, Normalized";
+  normalAvgViewLayout.yaxis.title.text = "Percent Average Views Per Video";
+  normalAvgViewLayout.yaxis.ticksuffix = "%";
+  for (var i = 0; i < normalAvgViewTraces.length; i++) {
+    var trace = normalAvgViewTraces[i];
+    var categoryName = trace.name;
+    trace.hovertemplate = "%{y:.2f}%: <i>" + categoryName + "</i><extra></extra>";
+  }
+
+
+  let cumulativeAvgViewLayout = JSON.parse(JSON.stringify(viewLayout));
+  cumulativeAvgViewLayout.title.text = "Cumulative Average Views Per Video By Category";
+  cumulativeAvgViewLayout.yaxis.title.text = "Average Views Per Video";
+  cumulativeAvgViewLayout.yaxis.tickformat = ",g";
+
+  let normalCumulativeAvgViewTraces = JSON.parse(JSON.stringify(cumulativeAvgViewTraces));
+  normalCumulativeAvgViewTraces[0]["groupnorm"] = "percent";
+  let normalCumulativeAvgViewLayout = JSON.parse(JSON.stringify(cumulativeAvgViewLayout));
+  normalCumulativeAvgViewLayout.title.text = "Cumulative Average Views Per Video By Category, Normalized";
+  normalCumulativeAvgViewLayout.yaxis.title.text = "Percent Average Views Per Video";
+  normalCumulativeAvgViewLayout.yaxis.ticksuffix = "%";
+  for (var i = 0; i < normalCumulativeAvgViewTraces.length; i++) {
+    var trace = normalCumulativeAvgViewTraces[i];
+    var categoryName = trace.name;
+    trace.hovertemplate = "%{y:.2f}%: <i>" + categoryName + "</i><extra></extra>";
+  }
+
+  let plotInfo = [
+    [plotViews, viewTraces, viewLayout],
+    [plotViewsNorm, normalViewTraces, normalViewLayout],
+    [plotCumViews, cumulativeViewTraces, cumulativeViewLayout],
+    [plotCumViewsNorm, normalCumulativeViewTraces, normalCumulativeViewLayout],
+    [plotAvgViews, avgViewTraces, avgViewLayout],
+    [plotAvgViewsNorm, normalAvgViewTraces, normalAvgViewLayout],
+    [plotCumAvgViews, cumulativeAvgViewTraces, cumulativeAvgViewLayout],
+    [plotCumAvgViewsNorm, normalCumulativeAvgViewTraces,
+          normalCumulativeAvgViewLayout],
+  ];
+  for (var i = 0; i < plotInfo.length; i++) {
+    let [graphId, trace, layout] = plotInfo[i];
+    recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
+    Plotly.newPlot(graphId, trace, layout, config);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  }
+}
+
 function displayTopCategories() {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];

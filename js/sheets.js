@@ -399,6 +399,7 @@ function recordYearlyCategoryViews() {
   categoryTraces["totals"] = yearlyTotals;
   localStorage.removeItem("yearlyCategorySheet");
   localStorage.setItem("categoryTraces", JSON.stringify(categoryTraces));
+  displayCategoryViewsAreaCharts();
 }
 
 // Saves categoryStats to Google Sheets
