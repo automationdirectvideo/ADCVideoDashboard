@@ -638,8 +638,8 @@ function displayTopTenThumbnails() {
           <div class="top-ten-thumbnail-holder column-thumbnail">
             <a href="https://youtu.be/${videoId}" target="_blank"
                 onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="top-ten-thumbnail" 
-                  src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" 
+              <img class="top-ten-thumbnail" onload="thumbnailCheck($(this))"
+                  src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg" 
                   alt="thumbnail" title="${videoTitle}">`;
         if (j != 1) {
           var currPosition = i;
@@ -704,9 +704,9 @@ function displayTopVideoTitle(videoId, dashboardId) {
   let thumbnailText = `
     <a href="https://youtu.be/${videoId}" target="_blank"
         onclick="closeFullscreen()" alt="${videoTitle}">
-      <img class="top-video-thumbnail"
-          src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg" alt="thumbnail" 
-          title="${videoTitle}">
+      <img class="top-video-thumbnail" onload="thumbnailCheck($(this), true)"
+          src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+          alt="thumbnail" title="${videoTitle}">
     </a>`;
   thumbnail.innerHTML = thumbnailText;
 
@@ -739,8 +739,8 @@ function displayUploadThumbnails() {
           uploadThumbnails += `
             <a href="https://youtu.be/${uploads[i]}" target="_blank"
                 onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="thumbnail"
-                  src="https://i.ytimg.com/vi/${uploads[i]}/hqdefault.jpg" 
+              <img class="thumbnail" onload="thumbnailCheck($(this))"
+                  src="https://i.ytimg.com/vi/${uploads[i]}/maxresdefault.jpg" 
                   alt="thumbnail" title="${videoTitle}">
             </a>`;
         }
@@ -789,8 +789,8 @@ function displayUserFeedback() {
       <div class="col-4">
         <a href="https://youtu.be/${videoId}" target="_blank"
             onclick="closeFullscreen()" alt="${videoTitle}">
-          <img class="feedback-thumbnail"
-              src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+          <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
+              src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
               alt="thumbnail" title="${videoTitle}">
         </a>
       </div>`;

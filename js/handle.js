@@ -1033,8 +1033,8 @@ function handleVideoSnippet(response, dashboardId) {
     thumbnail.innerHTML = `
       <a href="https://youtu.be/${videoId}" target="_blank"
           onclick="closeFullscreen()" alt="${videoTitle}">
-        <img class="top-video-thumbnail"
-            src="https://i.ytimg.com/vi/${videoId}/hqdefault.jpg"
+        <img class="top-video-thumbnail" onload="thumbnailCheck($(this), true)"
+            src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
             alt="thumbnail" title="${videoTitle}">
       </a>`;
   }

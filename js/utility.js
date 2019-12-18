@@ -86,3 +86,17 @@ function secondsToDurationMinSec(seconds) {
   let durationSeconds = ("00" + seconds % 60).substr(-2);
   return minutes + " min " + durationSeconds + " sec";
 }
+
+// Reloads thumbnail with lower quality if max resolution thumbnail throws 404
+function thumbnailCheck(e, highQuality) {
+  var thumbnailURL = e.attr("src");
+  if (e[0].naturalWidth == 120 && e[0].naturalHeight == 90) {
+    if (highQuality === true) {
+      // Keeps higher resolution but adds black bars across top and bottom
+      e.attr("src", thumbnailURL.replace("maxresdefault", "hqdefault"));
+    } else {
+      // Lower resolution but no black bars
+      e.attr("src", thumbnailURL.replace("maxresdefault", "mqdefault"));
+    }
+  }
+}
