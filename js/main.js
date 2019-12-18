@@ -638,8 +638,8 @@ function displayTopTenThumbnails() {
           <div class="top-ten-thumbnail-holder column-thumbnail">
             <a href="https://youtu.be/${videoId}" target="_blank"
                 onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="top-ten-thumbnail" onload="thumbnailCheck($(this))"
-                  src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg" 
+              <img class="top-ten-thumbnail"
+                  src="https://i.ytimg.com/vi/${videoId}/mqdefault.jpg" 
                   alt="thumbnail" title="${videoTitle}">`;
         if (j != 1) {
           var currPosition = i;
@@ -739,8 +739,8 @@ function displayUploadThumbnails() {
           uploadThumbnails += `
             <a href="https://youtu.be/${uploads[i]}" target="_blank"
                 onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="thumbnail" onload="thumbnailCheck($(this))"
-                  src="https://i.ytimg.com/vi/${uploads[i]}/maxresdefault.jpg" 
+              <img class="thumbnail"
+                  src="https://i.ytimg.com/vi/${uploads[i]}/mqdefault.jpg" 
                   alt="thumbnail" title="${videoTitle}">
             </a>`;
         }
