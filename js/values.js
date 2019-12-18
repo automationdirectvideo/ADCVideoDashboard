@@ -237,4 +237,4 @@ const joinDate = "2008-04-11";
 
 var autoScrollDivs = [];
 
-var totalNumGraphs = 23;
+var totalNumGraphs = 27;

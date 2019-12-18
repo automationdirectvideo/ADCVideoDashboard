@@ -50,6 +50,10 @@ function loadDashboards() {
           "Category Stats");
       window.setTimeout(displayTopCategories, 10000);
     }
+    // Initiate Category Area Charts
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Category Views By Year");
+    
   }
   if (carouselInner.children["top-ten"]) {
     requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
@@ -473,10 +477,6 @@ function displayCategoryViewsAreaCharts() {
   avgViewTraces.sort(sortDescByLastY);
   cumulativeViewTraces.sort(sortDescByLastY);
   cumulativeAvgViewTraces.sort(sortDescByLastY);
-  console.log("ViewTraces:", viewTraces);
-  console.log("AvgViewTraces:", avgViewTraces);
-  console.log("CumulativeViewTraces:", cumulativeViewTraces);
-  console.log("CumulativeAvgViewTraces:", cumulativeAvgViewTraces);
 
   var graphHeight = 0.8583;
   var graphWidth = 0.9528;
@@ -546,22 +546,14 @@ function displayCategoryViewsAreaCharts() {
     displayModeBar: false,
   }
 
-  let plotViews =
-      document.getElementById("categories-views-chart");
-  let plotViewsNorm 
-      document.getElementById("categories-normal-views-chart");
-  let plotCumViews =
-      document.getElementById("categories-cum-views-chart");
-  let plotCumViewsNorm =
-      document.getElementById("categories-normal-cum-views-chart");
-  let plotAvgViews =
-      document.getElementById("categories-avg-views-chart");
-  let plotAvgViewsNorm =
-      document.getElementById("categories-normal-avg-views-chart");
-  let plotCumAvgViews =
-      document.getElementById("categories-cum-avg-views-chart");
-  let plotCumAvgViewsNorm =
-      document.getElementById("categories-normal-cum-avg-views-chart");
+  let plotViews = "categories-views-chart";
+  let plotViewsNorm = "categories-normal-views-chart";
+  let plotCumViews = "categories-cum-views-chart";
+  let plotCumViewsNorm = "categories-normal-cum-views-chart";
+  let plotAvgViews = "categories-avg-views-chart";
+  let plotAvgViewsNorm = "categories-normal-avg-views-chart";
+  let plotCumAvgViews = "categories-cum-avg-views-chart";
+  let plotCumAvgViewsNorm = "categories-normal-cum-avg-views-chart";
 
 
   let normalViewTraces = JSON.parse(JSON.stringify(viewTraces));
@@ -637,9 +629,14 @@ function displayCategoryViewsAreaCharts() {
   ];
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
-    recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
-    Plotly.newPlot(graphId, trace, layout, config);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    try {
+      recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
+      Plotly.newPlot(graphId, trace, layout, config);
+      recordGraphSize(graphId, graphHeight, graphWidth);
+    } catch (err) {
+      console.log("There was an error initiating graph: " + graphId +
+          ", Error: ", err);
+    }
   }
 }
 
