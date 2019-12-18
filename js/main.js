@@ -1166,6 +1166,20 @@ function resizeGraphs() {
   }
 }
 
+function swapNormalCharts() {
+  var activeDashboard =
+      document.getElementsByClassName("carousel-item active")[0].id;
+  var standardChartId = activeDashboard + "-chart";
+  var standardChart = document.getElementById(standardChartId);
+  if (standardChart) {
+    if (standardChart.style.display == "none") {
+      standardChart.style.display = "";
+    } else {
+      standardChart.style.display = "none";
+    }
+  }
+}
+
 function fixGraphMargins() {
   let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
   for (var graphId in graphSizes) {
@@ -1327,6 +1341,8 @@ document.addEventListener("keyup", function (e) {
     goToCarouselItem(13);
   } else if (e.key.toUpperCase() == "F") {
     goToCarouselItem(14);
+  } else if (e.key.toUpperCase() == "N") {
+    swapNormalCharts();
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);
