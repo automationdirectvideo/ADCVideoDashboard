@@ -1118,7 +1118,6 @@ function handleSpreadsheetData(response, message) {
           JSON.stringify(response.result.values));
       recordUploads();
     } else if (message == "Category Views By Year") {
-      debugCategoryCharts("Category Views By Year response from GAPI received");
       localStorage.setItem("yearlyCategorySheet",
           JSON.stringify(response.result.values));
       recordYearlyCategoryViews();

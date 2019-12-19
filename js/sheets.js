@@ -344,20 +344,19 @@ function recordUploads() {
 }
 
 function recordYearlyCategoryViews() {
-  debugCategoryCharts("In recordYearlyCategoryViews");
-  try {
-    let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
-    let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-    let categoryTraces = {};
-    let years = [];
-    for (var row = 1; row < sheetValues.length; row += 2) {
-      let year = sheetValues[row][0].substr(0,4);
-      years.push(year);
-    }
-    categoryTraces["years"] = years;
-    debugCategoryCharts("About to parse through sheetValues");
-    let yearlyTotals = new Array(years.length).fill(0);
-    for (var column = 1; column < sheetValues[0].length; column++) {
+  let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
+  let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
+  let categoryTraces = {};
+  let years = [];
+  for (var row = 1; row < sheetValues.length; row += 2) {
+    let year = sheetValues[row][0].substr(0,4);
+    years.push(year);
+  }
+  categoryTraces["years"] = years;
+  debugCategoryCharts("About to parse through sheetValues");
+  let yearlyTotals = new Array(years.length).fill(0);
+  for (var column = 1; column < sheetValues[0].length; column++) {
+    try {
       let categoryId = sheetValues[0][column];
       let root = categoryTotals[categoryId]["root"];
       if (root && categoryId != "A") {
@@ -365,6 +364,7 @@ function recordYearlyCategoryViews() {
         let avgViewTrace = [];
         let cumulativeViews = [];
         let cumulativeAvgViewTrace = [];
+        debugCategoryCharts("Column " + column + " variables initiated");
         for (var row = 1; row < sheetValues.length; row += 2) {
           // Get views and numVideos for this year
           let yearViews = parseInt(sheetValues[row][column]);
@@ -390,6 +390,7 @@ function recordYearlyCategoryViews() {
           // Calculate yearly totals
           yearlyTotals[(row - 1) / 2] += parseInt(yearViews);
         }
+        debugCategoryCharts("Second for loop complete for column " + column);
         categoryTraces[categoryId] = {
           "name": categoryTotals[categoryId]["shortName"],
           "viewTrace": viewTrace,
@@ -398,7 +399,11 @@ function recordYearlyCategoryViews() {
           "cumulativeAvgViewTrace": cumulativeAvgViewTrace
         };
       }
+    } catch (err) {
+      debugCategoryCharts("Error occured in first for block with column = " + column + ": " + err);
     }
+  }
+  try {
     debugCategoryCharts("Traces calcuated");
     categoryTraces["totals"] = yearlyTotals;
     localStorage.removeItem("yearlyCategorySheet");
