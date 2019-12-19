@@ -46,9 +46,9 @@
             <h6 id="pause-text" onclick="toggleDashboardPause()"><i class="fas fa-pause mr-1" style="font-size:1em;"></i>Paused</h6>
             <h6 id="play-text" onclick="toggleDashboardPause()"><i class="fas fa-play mr-1" style="font-size:1em;"></i>Play</h6>
           </div>
-          <div class="text-center" id="content">
+          <div class="text-center carousel-container active" id="content">
             <div class="carousel slide" id="dashboard-carousel" data-ride="carousel">
-              <div class="carousel-inner">
+              <div class="carousel-inner" id="main-carousel-inner">
               </div>
             </div>
             <div class="d-none" id="dashboard-holder">
@@ -468,72 +468,90 @@
                   </div>
                 </div>
               </div>
-              <div class="carousel-item" id="categories-views">
-                <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/13/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="h-100 w-100 mb-2" id="categories-views-chart"></div>
-                          <div class="h-100 w-100" id="categories-normal-views-chart"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="categories-cum-views">
-                <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/13/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="h-100 w-100 mb-2" id="categories-cum-views-chart"></div>
-                          <div class="h-100 w-100" id="categories-normal-cum-views-chart"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="categories-avg-views">
-                <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/13/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="h-100 w-100 mb-2" id="categories-avg-views-chart"></div>
-                          <div class="h-100 w-100" id="categories-normal-avg-views-chart"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="categories-cum-avg-views">
-                <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/13/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="h-100 w-100 mb-2" id="categories-cum-avg-views-chart"></div>
-                          <div class="h-100 w-100" id="categories-normal-cum-avg-views-chart"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
               <i class="fas fa-circle indicator" data-target="#dashboard-carousel" id="indicator"></i>
             </div>
             <div class="row justify-content-center">
               <div class="col-8">
                 <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
-                <div class="indicator-list"></div>
+                <div class="indicator-list" id="main-indicator-list"></div>
+                <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
+              </div>
+            </div>
+          </div>
+          <div class="text-center carousel-container" id="category-stats-content">
+            <div class="carousel slide" id="category-stats-carousel" data-ride="carousel">
+              <div class="carousel-inner" id="category-stats-carousel-inner">
+                <div class="carousel-item" id="categories-views">
+                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                      <div class="grid-item" style="grid-area: 1/1/13/13;">
+                        <div class="row align-content-around h-100">
+                          <div class="col-12 h-100">
+                            <div class="h-100 w-100 mb-2" id="categories-views-chart"></div>
+                            <div class="h-100 w-100" id="categories-normal-views-chart"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item" id="categories-cum-views">
+                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                      <div class="grid-item" style="grid-area: 1/1/13/13;">
+                        <div class="row align-content-around h-100">
+                          <div class="col-12 h-100">
+                            <div class="h-100 w-100 mb-2" id="categories-cum-views-chart"></div>
+                            <div class="h-100 w-100" id="categories-normal-cum-views-chart"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item" id="categories-avg-views">
+                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                      <div class="grid-item" style="grid-area: 1/1/13/13;">
+                        <div class="row align-content-around h-100">
+                          <div class="col-12 h-100">
+                            <div class="h-100 w-100 mb-2" id="categories-avg-views-chart"></div>
+                            <div class="h-100 w-100" id="categories-normal-avg-views-chart"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item" id="categories-cum-avg-views">
+                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                      <div class="grid-item" style="grid-area: 1/1/13/13;">
+                        <div class="row align-content-around h-100">
+                          <div class="col-12 h-100">
+                            <div class="h-100 w-100 mb-2" id="categories-cum-avg-views-chart"></div>
+                            <div class="h-100 w-100" id="categories-normal-cum-avg-views-chart"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-8">
+                <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
+                <div class="indicator-list" id="category-stats-indicator-list">
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+                </div>
                 <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
               </div>
             </div>

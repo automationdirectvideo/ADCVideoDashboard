@@ -1212,11 +1212,11 @@ function updateTheme(dashboardIndex) {
 }
 
 function carouselNext() {
-  $(".carousel").carousel("next");
+  $(".carousel-container.active > .carousel").carousel("next");
 }
 
 function carouselPrev() {
-  $(".carousel").carousel("prev");
+  $(".carousel-container.active > .carousel").carousel("prev");
 }
 
 function toggleDashboardPause() {
@@ -1239,7 +1239,16 @@ function toggleDashboardPause() {
 }
 
 function goToCarouselItem(index) {
-  $(".carousel").carousel(index);
+  $(".carousel-container.active > .carousel").carousel(index);
+}
+
+function swapCarousels() {
+  let activeCarouselContainer = $(".carousel-container.active");
+  let inactiveCarouselContainer = $(".carousel-container:not(.active)");
+  let activeCarousel = $(".carousel-container.active > .carousel");
+  activeCarousel.carousel("pause");
+  activeCarouselContainer.removeClass("active");
+  inactiveCarouselContainer.addClass("active");
 }
 
 function loadSignedIn() {
@@ -1269,13 +1278,16 @@ var currentSettings = JSON.parse(localStorage.getItem("settings"));
 console.log("Current Settings: ", currentSettings);
 
 
-// Initialize carousel
-var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-var indicatorList = 
-    document.getElementsByClassName("indicator-list")[0];
+// Initialize carousels
+var carouselInner = document.getElementById("main-carousel-inner");
+var indicatorList = document.getElementById("main-indicator-list");
 const cycleSpeed = currentSettings.cycleSpeed * 1000;
 var carousel = document.getElementById("dashboard-carousel");
 carousel.setAttribute("data-interval", cycleSpeed);
+carousel.setAttribute("data-pause", "false");
+
+var categoryStatsCarousel = document.getElementById("category-stats-carousel");
+carousel.setAttribute("data-interval", 0);
 carousel.setAttribute("data-pause", "false");
 
 // Set order of dashboards
@@ -1321,10 +1333,12 @@ for (var i = 0; i < enabledOrder.length; i++) {
 
 // Handle carousel scrolling and keyboard shortcuts
 document.addEventListener("keyup", function (e) {
-  if (e.key == "ArrowLeft" || e.key == "ArrowUp") {
+  if (e.key == "ArrowLeft") {
     carouselPrev();
-  } else if (e.key == "ArrowRight" || e.key == "ArrowDown") {
+  } else if (e.key == "ArrowRight") {
     carouselNext();
+  } else if (e.key == "ArrowUp" || e.key == "ArrowDown") {
+    swapCarousels();
   } else if (e.which == 32) {
     toggleDashboardPause();
   } else if (e.key == "F2") {
@@ -1351,7 +1365,8 @@ document.addEventListener("keyup", function (e) {
     }
   }
 });
-$(".carousel").on("slide.bs.carousel", function (e) {
+$(".carousel-container.active > .carousel").on("slide.bs.carousel",
+    function (e) {
   var startIndicator = document.getElementById("indicator-" + e.from);
   var endIndicator = document.getElementById("indicator-" + e.to);
   startIndicator.classList.remove("active");
@@ -1366,7 +1381,8 @@ $(".carousel").on("slide.bs.carousel", function (e) {
     }
   }, 250);
 });
-$(".carousel").on("slid.bs.carousel", function (e) {
+$(".carousel-container.active > .carousel").on("slid.bs.carousel",
+    function (e) {
   fixGraphMargins();
 })
 

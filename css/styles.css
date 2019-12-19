@@ -88,6 +88,14 @@ body {
   max-width: 100%;
 }
 
+.carousel-container {
+  display: none;
+}
+
+.carousel-container.active {
+  display: block;
+}
+
 .indicator-list {
   display: inline;
 }
