@@ -1367,7 +1367,7 @@ document.addEventListener("keyup", function (e) {
 });
 $(".carousel").on("slide.bs.carousel", function (e) {
   var carouselName = e.target.getAttribute("name");
-  var indicatorName = carouselName + "indicator-";
+  var indicatorName = carouselName + "-indicator-";
   var startIndicator = document.getElementById(indicatorName + e.from);
   var endIndicator = document.getElementById(indicatorName + e.to);
   startIndicator.classList.remove("active");
