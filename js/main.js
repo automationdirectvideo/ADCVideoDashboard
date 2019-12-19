@@ -393,8 +393,6 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
 }
 
 function displayCategoryViewsAreaCharts() {
-  debugCategoryCharts("Start displayCategoryViewsAreaCharts");
-
   let categoryTraces = JSON.parse(localStorage.getItem("categoryTraces"));
 
   let years = categoryTraces["years"];
@@ -471,8 +469,6 @@ function displayCategoryViewsAreaCharts() {
       });
     }
   }
-  debugCategoryCharts("Traces Created");
-
   var sortDescByLastY = function(a,b) {
     return parseInt(b["y"][numYears - 1]) - parseInt(a["y"][numYears - 1]);
   };
@@ -487,14 +483,18 @@ function displayCategoryViewsAreaCharts() {
   var width = graphWidth * document.documentElement.clientWidth;
   var legendFontSize = 
         Math.floor(0.01 * document.documentElement.clientWidth);
+  var tickSize = Math.floor(0.0104 * document.documentElement.clientWidth);
+  var axisTitleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
+  var titleSize = Math.floor(0.0208 * document.documentElement.clientWidth);
+  var hoverDistance = Math.floor(0.0260 * document.documentElement.clientWidth);
 
   let viewLayout = {
     height: height,
     width: width,
-    hoverdistance: 50,
+    hoverdistance: hoverDistance,
     hoverlabel: {
       font: {
-        size: 20
+        size: tickSize
       },
       namelength: -1
     },
@@ -510,7 +510,7 @@ function displayCategoryViewsAreaCharts() {
     paper_bgcolor: "rgba(0,0,0,0)",
     title: {
       font: {
-        size: 40
+        size: titleSize
       },
       text: "Views By Category"
     },
@@ -518,12 +518,12 @@ function displayCategoryViewsAreaCharts() {
       automargin: true,
       fixedrange: true,
       tickfont: {
-        size: 20
+        size: tickSize
       },
       ticks: "outside",
       title: {
         font: {
-          size: 30
+          size: axisTitleSize
         },
         text: "Year"
       }
@@ -532,13 +532,13 @@ function displayCategoryViewsAreaCharts() {
       automargin: true,
       fixedrange: true,
       tickfont: {
-        size: 20
+        size: tickSize
       },
       ticks: "outside",
       tickprefix: "  ", // To give extra space between ticks and axis title
       title: {
         font: {
-          size: 30
+          size: axisTitleSize
         },
         text: "Yearly Views"
       }
@@ -549,8 +549,6 @@ function displayCategoryViewsAreaCharts() {
     scrollZoom: false,
     displayModeBar: false,
   }
-
-  debugCategoryCharts("Layout and config created");
 
   let plotViews = "categories-views-chart";
   let plotViewsNorm = "categories-normal-views-chart";
@@ -621,8 +619,6 @@ function displayCategoryViewsAreaCharts() {
     var categoryName = trace.name;
     trace.hovertemplate = "%{y:.2f}%: <i>" + categoryName + "</i><extra></extra>";
   }
-
-  debugCategoryCharts("All layouts and normalized views created");
   
   let plotInfo = [
     [plotViews, viewTraces, viewLayout],
@@ -637,9 +633,7 @@ function displayCategoryViewsAreaCharts() {
   ];
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
-    debugCategoryCharts("In plotInfo for loop: creating graphs");
     try {
-      document.getElementById(graphId).innerHTML = "";
       recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
       Plotly.newPlot(graphId, trace, layout, config);
       recordGraphSize(graphId, graphHeight, graphWidth);
@@ -1231,22 +1225,33 @@ function carouselPrev() {
   $(".carousel-container.active > .carousel").carousel("prev");
 }
 
-function toggleDashboardPause() {
+function pauseDashboard() {
   let pauseText = document.getElementById("pause-text");
   let playText = document.getElementById("play-text");
+  $("#dashboard-carousel").carousel('pause');
+  pauseText.style.display = "initial";
+  playText.style.display = "none";
+}
+
+function playDashboard() {
+  let pauseText = document.getElementById("pause-text");
+  let playText = document.getElementById("play-text");
+  $("#dashboard-carousel").carousel('cycle');
+  pauseText.style.display = "none";
+  playText.style.display = "initial";
+  setTimeout(function() {
+    if (playText.offsetHeight != 0) {
+      $('#play-text').fadeOut();
+    }
+  }, 2000);
+}
+
+function toggleDashboardPause() {
+  let pauseText = document.getElementById("pause-text");
   if (pauseText.offsetHeight == 0) {
-    $(".carousel").carousel('pause');
-    pauseText.style.display = "initial";
-    playText.style.display = "none";
+    pauseDashboard();
   } else {
-    $(".carousel").carousel('cycle');
-    pauseText.style.display = "none";
-    playText.style.display = "initial";
-    setTimeout(function() {
-      if (playText.offsetHeight != 0) {
-        $('#play-text').fadeOut();
-      }
-    }, 2000);
+    playDashboard();
   }
 }
 
@@ -1257,8 +1262,7 @@ function goToCarouselItem(index) {
 function swapCarousels() {
   let activeCarouselContainer = $(".carousel-container.active");
   let inactiveCarouselContainer = $(".carousel-container:not(.active)");
-  let activeCarousel = $(".carousel-container.active > .carousel");
-  activeCarousel.carousel("pause");
+  pauseDashboard();
   activeCarouselContainer.removeClass("active");
   inactiveCarouselContainer.addClass("active");
 }
@@ -1282,21 +1286,9 @@ function loadSignedOut() {
   loadDashboardsSignedOut();
 }
 
-function debugCategoryCharts(message) {
-  let chart = document.getElementById("categories-views-chart");
-  chart.innerHTML += "<br>";
-  chart.innerHTML += message;
-}
-
 function loadCategoryCharts() {
-  try {
-    document.getElementById("categories-views-chart").innerHTML = "";
-    debugCategoryCharts("In loadCategoryCharts. Requesting Category Views data");
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Category Views By Year");
-  } catch (err) {
-    debugCategoryCharts("Error occured in loadCategoryCharts: " + err);
-  }
+  requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+      "Category Views By Year");
 }
 
 // Get current settings
