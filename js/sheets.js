@@ -345,7 +345,7 @@ function recordUploads() {
 
 function recordYearlyCategoryViews() {
   let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
-  let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
+  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let categoryTraces = {};
   let years = [];
   for (var row = 1; row < sheetValues.length; row += 2) {
@@ -358,7 +358,15 @@ function recordYearlyCategoryViews() {
   for (var column = 1; column < sheetValues[0].length; column++) {
     try {
       let categoryId = sheetValues[0][column];
-      let root = categoryTotals[categoryId]["root"];
+      let categoryInfo = false;
+      var index = 0;
+      while (categoryInfo == false && index < categoryStats.length) {
+        if (categoryStats[index]["categoryId"] == categoryId) {
+          categoryInfo = categoryStats[index];
+        }
+        index++;
+      }
+      let root = categoryInfo["root"];
       if (root && categoryId != "A") {
         let viewTrace = [];
         let avgViewTrace = [];
@@ -392,7 +400,7 @@ function recordYearlyCategoryViews() {
         }
         debugCategoryCharts("Second for loop complete for column " + column);
         categoryTraces[categoryId] = {
-          "name": categoryTotals[categoryId]["shortName"],
+          "name": categoryInfo["shortName"],
           "viewTrace": viewTrace,
           "avgViewTrace": avgViewTrace,
           "cumulativeViews": cumulativeViews,
