@@ -96,37 +96,9 @@ const defaultSettings =
       "index": 12,
       "theme": "light",
       "title": "Motors - Most Watched Video"
-    },
-    {
-      "name": "categories-views",
-      "icon": "fas fa-chart-area",
-      "index": 13,
-      "theme": "light",
-      "title": "Chart: Views By Category"
-    },
-    {
-      "name": "categories-cum-views",
-      "icon": "fas fa-chart-area",
-      "index": 14,
-      "theme": "light",
-      "title": "Chart: Cumulative Views By Category"
-    },
-    {
-      "name": "categories-avg-views",
-      "icon": "fas fa-chart-area",
-      "index": 15,
-      "theme": "light",
-      "title": "Chart: Average Views By Category"
-    },
-    {
-      "name": "categories-cum-avg-views",
-      "icon": "fas fa-chart-area",
-      "index": 16,
-      "theme": "light",
-      "title": "Chart: Cumulative Average Views By Category"
     }
   ],
-  "numEnabled": 17
+  "numEnabled": 13
 };
 
 const categoryColors = {
