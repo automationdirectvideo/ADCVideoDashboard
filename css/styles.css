@@ -417,6 +417,28 @@ body {
   max-width: 80%;
 }
 
+/*----- Category Stats Chart Dashboards -----*/
+
+#category-stats-carousel .outer-shell {
+  background-color: powderblue;
+}
+
+.category-stats-chart {
+  height: 100%;
+  pointer-events: none;
+  width: 100%;
+}
+
+.swap-carousel-btn {
+  position: absolute;
+  top: 9.5vh;
+  right: 2.5vw;
+}
+
+.button-icon {
+  margin-right: 0.5rem;
+}
+
 /*----- Settings page -----*/
 
 .cursor-grab {

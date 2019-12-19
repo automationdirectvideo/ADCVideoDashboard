@@ -504,6 +504,7 @@ function displayCategoryViewsAreaCharts() {
       },
       y: 0.5
     },
+    paper_bgcolor: "rgba(0,0,0,0)",
     title: {
       font: {
         size: 40
@@ -818,6 +819,8 @@ function displayTopCategories() {
     font: {size: labelFontSize},
     automargin: true,
     autosize: true,
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
     legend: {
       bgcolor: "#eeeeee",
       font: {
