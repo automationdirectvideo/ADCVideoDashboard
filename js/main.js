@@ -1168,7 +1168,7 @@ function resizeGraphs() {
 
 function swapNormalCharts() {
   var activeDashboard =
-      document.getElementsByClassName("carousel-item active")[0].id;
+      $(".carousel-container.active >>> .carousel-item.active")[0].id;
   var standardChartId = activeDashboard + "-chart";
   var standardChart = document.getElementById(standardChartId);
   if (standardChart) {
@@ -1287,8 +1287,8 @@ carousel.setAttribute("data-interval", cycleSpeed);
 carousel.setAttribute("data-pause", "false");
 
 var categoryStatsCarousel = document.getElementById("category-stats-carousel");
-carousel.setAttribute("data-interval", 0);
-carousel.setAttribute("data-pause", "false");
+categoryStatsCarousel.setAttribute("data-interval", 0);
+categoryStatsCarousel.setAttribute("data-pause", "false");
 
 // Set order of dashboards
 var enabledOrder = new Array(currentSettings.numEnabled);
@@ -1320,7 +1320,7 @@ for (var i = 0; i < enabledOrder.length; i++) {
   }
   document.createElement("div",dashboardItem.outerText)
   dashboardItem.setAttribute("theme", enabledOrder[i].theme);
-  indicator.id = "indicator-" + i;
+  indicator.id = "main-indicator-" + i;
   indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
   indicator.className = enabledOrder[i].icon + " indicator";
   carouselInner.appendChild(dashboardItem);
@@ -1365,10 +1365,11 @@ document.addEventListener("keyup", function (e) {
     }
   }
 });
-$(".carousel-container.active > .carousel").on("slide.bs.carousel",
-    function (e) {
-  var startIndicator = document.getElementById("indicator-" + e.from);
-  var endIndicator = document.getElementById("indicator-" + e.to);
+$(".carousel").on("slide.bs.carousel", function (e) {
+  var carouselName = e.target.getAttribute("name");
+  var indicatorName = carouselName + "indicator-";
+  var startIndicator = document.getElementById(indicatorName + e.from);
+  var endIndicator = document.getElementById(indicatorName + e.to);
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
   window.setTimeout(function(){
@@ -1381,8 +1382,7 @@ $(".carousel-container.active > .carousel").on("slide.bs.carousel",
     }
   }, 250);
 });
-$(".carousel-container.active > .carousel").on("slid.bs.carousel",
-    function (e) {
+$(".carousel").on("slid.bs.carousel", function (e) {
   fixGraphMargins();
 })
 

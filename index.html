@@ -47,7 +47,7 @@
             <h6 id="play-text" onclick="toggleDashboardPause()"><i class="fas fa-play mr-1" style="font-size:1em;"></i>Play</h6>
           </div>
           <div class="text-center carousel-container active" id="content">
-            <div class="carousel slide" id="dashboard-carousel" data-ride="carousel">
+            <div class="carousel slide" id="dashboard-carousel" data-ride="carousel" name="main">
               <div class="carousel-inner" id="main-carousel-inner">
               </div>
             </div>
@@ -479,9 +479,9 @@
             </div>
           </div>
           <div class="text-center carousel-container" id="category-stats-content">
-            <div class="carousel slide" id="category-stats-carousel" data-ride="carousel">
+            <div class="carousel slide" id="category-stats-carousel" data-ride="carousel" name="cat-stats">
               <div class="carousel-inner" id="category-stats-carousel-inner">
-                <div class="carousel-item" id="categories-views">
+                <div class="carousel-item active" id="categories-views">
                   <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                   <div class="outer-shell container mb-1">
                     <div class="grid-container">
@@ -547,10 +547,10 @@
               <div class="col-8">
                 <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
                 <div class="indicator-list" id="category-stats-indicator-list">
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
                 </div>
                 <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
               </div>
