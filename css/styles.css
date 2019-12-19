@@ -425,7 +425,6 @@ body {
 
 .category-stats-chart {
   height: 100%;
-  pointer-events: none;
   width: 100%;
 }
 
@@ -437,6 +436,10 @@ body {
 
 .button-icon {
   margin-right: 0.5rem;
+}
+
+.click-though {
+  pointer-events: none;
 }
 
 /*----- Settings page -----*/
