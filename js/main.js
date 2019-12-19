@@ -51,8 +51,7 @@ function loadDashboards() {
       window.setTimeout(displayTopCategories, 10000);
     }
     // Initiate Category Area Charts
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Category Views By Year");
+    loadCategoryCharts();
     
   }
   if (carouselInner.children["top-ten"]) {
@@ -394,6 +393,8 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
 }
 
 function displayCategoryViewsAreaCharts() {
+  debugCategoryCharts("Start displayCategoryViewsAreaCharts");
+
   let categoryTraces = JSON.parse(localStorage.getItem("categoryTraces"));
 
   let years = categoryTraces["years"];
@@ -470,6 +471,8 @@ function displayCategoryViewsAreaCharts() {
       });
     }
   }
+  debugCategoryCharts("Traces Created");
+
   var sortDescByLastY = function(a,b) {
     return parseInt(b["y"][numYears - 1]) - parseInt(a["y"][numYears - 1]);
   };
@@ -547,6 +550,8 @@ function displayCategoryViewsAreaCharts() {
     displayModeBar: false,
   }
 
+  debugCategoryCharts("Layout and config created");
+
   let plotViews = "categories-views-chart";
   let plotViewsNorm = "categories-normal-views-chart";
   let plotCumViews = "categories-cum-views-chart";
@@ -617,6 +622,8 @@ function displayCategoryViewsAreaCharts() {
     trace.hovertemplate = "%{y:.2f}%: <i>" + categoryName + "</i><extra></extra>";
   }
 
+  debugCategoryCharts("All layouts and normalized views created");
+  
   let plotInfo = [
     [plotViews, viewTraces, viewLayout],
     [plotViewsNorm, normalViewTraces, normalViewLayout],
@@ -630,7 +637,9 @@ function displayCategoryViewsAreaCharts() {
   ];
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
+    debugCategoryCharts("In plotInfo for loop: creating graphs");
     try {
+      document.getElementById(graphId).innerHTML = "";
       recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
       Plotly.newPlot(graphId, trace, layout, config);
       recordGraphSize(graphId, graphHeight, graphWidth);
@@ -1273,6 +1282,23 @@ function loadSignedOut() {
   loadDashboardsSignedOut();
 }
 
+function debugCategoryCharts(message) {
+  let chart = document.getElementById("categories-views-chart");
+  chart.innerHTML += "<br>";
+  chart.innerHTML += message;
+}
+
+function loadCategoryCharts() {
+  try {
+    document.getElementById("categories-views-chart").innerHTML = "";
+    debugCategoryCharts("In loadCategoryCharts. Requesting Category Views data");
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Category Views By Year");
+  } catch (err) {
+    debugCategoryCharts("Error occured in loadCategoryCharts: " + err);
+  }
+}
+
 // Get current settings
 if (!localStorage.getItem("settings")) {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
@@ -1360,6 +1386,8 @@ document.addEventListener("keyup", function (e) {
     goToCarouselItem(14);
   } else if (e.key.toUpperCase() == "N") {
     swapNormalCharts();
+  } else if (e.key.toUpperCase() == "R") {
+    loadCategoryCharts();
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);

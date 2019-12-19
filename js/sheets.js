@@ -344,62 +344,69 @@ function recordUploads() {
 }
 
 function recordYearlyCategoryViews() {
-  let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
-  let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-  let categoryTraces = {};
-  let years = [];
-  for (var row = 1; row < sheetValues.length; row += 2) {
-    let year = sheetValues[row][0].substr(0,4);
-    years.push(year);
-  }
-  categoryTraces["years"] = years;
-  let yearlyTotals = new Array(years.length).fill(0);
-  for (var column = 1; column < sheetValues[0].length; column++) {
-    let categoryId = sheetValues[0][column];
-    let root = categoryTotals[categoryId]["root"];
-    if (root && categoryId != "A") {
-      let viewTrace = [];
-      let avgViewTrace = [];
-      let cumulativeViews = [];
-      let cumulativeAvgViewTrace = [];
-      for (var row = 1; row < sheetValues.length; row += 2) {
-        // Get views and numVideos for this year
-        let yearViews = parseInt(sheetValues[row][column]);
-        let numVideos = parseInt(sheetValues[row + 1][column]);
-        viewTrace.push(yearViews);
-        // Calculate cumulative views up to current year
-        let previousSumViews = 0;
-        if (row != 1) {
-          previousSumViews = parseInt(cumulativeViews[((row - 1) / 2) - 1]);
-        }
-        let currentSumViews = previousSumViews + yearViews;
-        cumulativeViews.push(currentSumViews);
-        // Calculate average views for current year & cumulative average view
-        // up to current year
-        let avgView = 0;
-        let cumulativeAvgView = 0;
-        if (numVideos != 0) {
-          avgView = (yearViews / numVideos).toFixed(0);
-          cumulativeAvgView = (currentSumViews / numVideos).toFixed(0);
-        }
-        avgViewTrace.push(avgView);
-        cumulativeAvgViewTrace.push(cumulativeAvgView);
-        // Calculate yearly totals
-        yearlyTotals[(row - 1) / 2] += parseInt(yearViews);
-      }
-      categoryTraces[categoryId] = {
-        "name": categoryTotals[categoryId]["shortName"],
-        "viewTrace": viewTrace,
-        "avgViewTrace": avgViewTrace,
-        "cumulativeViews": cumulativeViews,
-        "cumulativeAvgViewTrace": cumulativeAvgViewTrace
-      };
+  debugCategoryCharts("In recordYearlyCategoryViews");
+  try {
+    let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
+    let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
+    let categoryTraces = {};
+    let years = [];
+    for (var row = 1; row < sheetValues.length; row += 2) {
+      let year = sheetValues[row][0].substr(0,4);
+      years.push(year);
     }
+    categoryTraces["years"] = years;
+    debugCategoryCharts("About to parse through sheetValues");
+    let yearlyTotals = new Array(years.length).fill(0);
+    for (var column = 1; column < sheetValues[0].length; column++) {
+      let categoryId = sheetValues[0][column];
+      let root = categoryTotals[categoryId]["root"];
+      if (root && categoryId != "A") {
+        let viewTrace = [];
+        let avgViewTrace = [];
+        let cumulativeViews = [];
+        let cumulativeAvgViewTrace = [];
+        for (var row = 1; row < sheetValues.length; row += 2) {
+          // Get views and numVideos for this year
+          let yearViews = parseInt(sheetValues[row][column]);
+          let numVideos = parseInt(sheetValues[row + 1][column]);
+          viewTrace.push(yearViews);
+          // Calculate cumulative views up to current year
+          let previousSumViews = 0;
+          if (row != 1) {
+            previousSumViews = parseInt(cumulativeViews[((row - 1) / 2) - 1]);
+          }
+          let currentSumViews = previousSumViews + yearViews;
+          cumulativeViews.push(currentSumViews);
+          // Calculate average views for current year & cumulative average view
+          // up to current year
+          let avgView = 0;
+          let cumulativeAvgView = 0;
+          if (numVideos != 0) {
+            avgView = (yearViews / numVideos).toFixed(0);
+            cumulativeAvgView = (currentSumViews / numVideos).toFixed(0);
+          }
+          avgViewTrace.push(avgView);
+          cumulativeAvgViewTrace.push(cumulativeAvgView);
+          // Calculate yearly totals
+          yearlyTotals[(row - 1) / 2] += parseInt(yearViews);
+        }
+        categoryTraces[categoryId] = {
+          "name": categoryTotals[categoryId]["shortName"],
+          "viewTrace": viewTrace,
+          "avgViewTrace": avgViewTrace,
+          "cumulativeViews": cumulativeViews,
+          "cumulativeAvgViewTrace": cumulativeAvgViewTrace
+        };
+      }
+    }
+    debugCategoryCharts("Traces calcuated");
+    categoryTraces["totals"] = yearlyTotals;
+    localStorage.removeItem("yearlyCategorySheet");
+    localStorage.setItem("categoryTraces", JSON.stringify(categoryTraces));
+    displayCategoryViewsAreaCharts();
+  } catch (err) {
+    debugCategoryCharts("Error occured in recordYearlyCategoryViews: " + err);
   }
-  categoryTraces["totals"] = yearlyTotals;
-  localStorage.removeItem("yearlyCategorySheet");
-  localStorage.setItem("categoryTraces", JSON.stringify(categoryTraces));
-  displayCategoryViewsAreaCharts();
 }
 
 // Saves categoryStats to Google Sheets
