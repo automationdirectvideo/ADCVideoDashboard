@@ -718,7 +718,7 @@ function displayCardPerformanceCharts() {
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
   var legendFontSize = 
-        Math.floor(0.0078 * document.documentElement.clientHeight);
+        Math.floor(0.0125 * document.documentElement.clientHeight);
   var tickSize = Math.floor(0.0094 * document.documentElement.clientWidth);
   var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
   var titleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
