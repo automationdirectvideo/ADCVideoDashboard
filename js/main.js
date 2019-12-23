@@ -63,7 +63,7 @@ function loadDashboards() {
         "User Feedback List");
   }
   if (carouselInner.children["card-performance"]) {
-    platformDashboardCalls(joinDate, todayDate);
+    getCardPerformanceByMonth();
   }
   try {
     loadTopVideoDashboards();
