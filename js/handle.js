@@ -1046,6 +1046,47 @@ function handleVideoSnippet(response, dashboardId) {
 }
 
 
+/* Card Performance Calls */
+
+function handleCardPerformance(response, endOfMonth) {
+  if (response) {
+    let month = endOfMonth.substr(0, 7);
+    let monthData = [month, 0, 0, 0, 0];
+    try {
+      let responseRow = response.result.rows[0];
+      let cardImpressions = parseInt(responseRow[0]);
+      let cardCTR = parseFloat(responseRow[1]).toFixed(4);
+      let cardTeaserImpressions = parseInt(responseRow[2]);
+      let cardTeaserCTR = parseFloat(responseRow[3]).toFixed(4);
+      monthData[1] = cardImpressions;
+      monthData[2] = cardCTR;
+      monthData[3] = cardTeaserImpressions;
+      monthData[4] = cardTeaserCTR;
+    } catch (err) {
+      console.log("No card data exists for month: " + month);
+    }
+    let cardData = JSON.parse(localStorage.getItem("cardData"));
+    cardData.push(monthData);
+    localStorage.setItem("cardData", JSON.stringify(cardData));
+
+    // Initiate next requestCardPerformance call
+    let endOfMonthDate = new Date(endOfMonth);
+    let now = new Date();
+    if (endOfMonthDate - now > 0) {
+      // Call displayCardPerformance
+      console.log("Done gathering card data");
+    } else {
+      let startDate = new Date(endOfMonthDate.getFullYear(),
+          endOfMonthDate.getMonth() + 1, 1);
+      let endDate = getYouTubeDateFormat(new Date(startDate.getFullYear(),
+          startDate.getMonth() + 1, 0));
+      startDate = getYouTubeDateFormat(startDate);
+      requestCardPerformance(startDate, endDate);
+    }
+  }
+}
+
+
 /* Google Sheets/Drive Calls */
 
 // Requests spreadsheet data based on when sheet was last modified

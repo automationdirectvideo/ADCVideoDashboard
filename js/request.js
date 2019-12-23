@@ -227,6 +227,21 @@ function requestVideoSnippet(videoId, dashboardId) {
 }
 
 
+/* Card Performance Calls */
+
+function requestCardPerformance(startDate, endDate) {
+  var request = {
+    "endDate": endDate,
+    "ids": "channel==MINE",
+    "metrics": "cardImpressions,cardClickRate," +
+        "cardTeaserImpressions,cardTeaserClickRate",
+    "startDate": startDate
+  };
+  callAnalyticsAPI(request, "CardPerformance: ", handleCardPerformance,
+      endDate);
+}
+
+
 /* Google Sheets/Drive Calls */
 
 function requestFileModifiedTime(fileId, message) {
@@ -302,6 +317,13 @@ function getYearlyCategoryViews(year) {
   localStorage.setItem("categoryYearlyTotals",
       JSON.stringify(categoryYearlyTotals));
   requestVideoViewsByYear(settings);
+}
+
+function getCardPerformanceByMonth() {
+  // Oct. 2017 was the first month the ADC YT channel used impressions
+  let cardData = [];
+  localStorage.setItem("cardData", JSON.stringify(cardData));
+  requestCardPerformance("2017-10-01", "2017-10-31");
 }
 
 function getTopTenVideosByMonth(startDate) {
