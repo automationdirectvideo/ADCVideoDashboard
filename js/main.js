@@ -482,11 +482,13 @@ function displayCategoryViewsAreaCharts() {
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
   var legendFontSize = 
-        Math.floor(0.01 * document.documentElement.clientHeight);
+        Math.floor(0.017 * document.documentElement.clientHeight);
   var tickSize = Math.floor(0.0104 * document.documentElement.clientWidth);
   var axisTitleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
   var titleSize = Math.floor(0.0208 * document.documentElement.clientWidth);
   var hoverDistance = Math.floor(0.0260 * document.documentElement.clientWidth);
+  var topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
+  var bottomMargin = Math.floor(0.0104 * document.documentElement.clientWidth);
 
   let viewLayout = {
     height: height,
@@ -506,6 +508,10 @@ function displayCategoryViewsAreaCharts() {
         size: legendFontSize
       },
       y: 0.5
+    },
+    margin: {
+      b: bottomMargin,
+      t: topMargin
     },
     paper_bgcolor: "rgba(0,0,0,0)",
     title: {
