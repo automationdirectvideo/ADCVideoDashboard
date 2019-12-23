@@ -62,6 +62,9 @@ function loadDashboards() {
     requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
         "User Feedback List");
   }
+  if (carouselInner.children["card-performance"]) {
+    platformDashboardCalls(joinDate, todayDate);
+  }
   try {
     loadTopVideoDashboards();
   } catch (err) {
@@ -648,6 +651,165 @@ function displayCategoryViewsAreaCharts() {
           ", Error: ", err);
     }
   }
+}
+
+function displayCardPerformanceCharts() {
+  let cardData = JSON.parse(localStorage.getItem("cardData"));
+
+  let months = [];
+  let cardImpressions = [];
+  let cardCTR = [];
+  let cardTeaserImpressions = [];
+  let cardTeaserCTR = [];
+
+  for (var i = 0; i < cardData.length; i++) {
+    months.push(cardData[i][0]);
+    cardImpressions.push(cardData[i][1]);
+    cardCTR.push(cardData[i][2] * 100);
+    cardTeaserImpressions.push(cardData[i][3]);
+    cardTeaserCTR.push(cardData[i][4] * 100);
+  }
+
+  var impressionsTrace = {
+    "x": months,
+    "y": cardImpressions,
+    "type": "bar",
+    "hovertemplate": "%{y} Impressions<extra></extra>",
+    "name": "Card Impressions"
+  };
+
+  var ctrTrace = {
+    "x": months,
+    "y": cardCTR,
+    "type": "scatter",
+    "hovertemplate": "%{y} Click Rate<extra></extra>",
+    "line": {
+      "width": 4,
+    },
+    "name": "Card Click Rate",
+    "yaxis": "y2"
+  };
+
+  var teaserImpressionsTrace = {
+    "x": months,
+    "y": cardTeaserImpressions,
+    "type": "bar",
+    "hovertemplate": "%{y:,g} Teaser Impressions<extra></extra>",
+    "name": "Card Teaser Impressions"
+  };
+
+  var teaserCTRTrace = {
+    "x": months,
+    "y": cardTeaserCTR,
+    "type": "scatter",
+    "hovertemplate": "%{y} Teaser Click Rate<extra></extra>",
+    "line": {
+      "width": 4,
+    },
+    "name": "Card Teaser Click Rate",
+    "yaxis": "y2"
+  };
+
+  var cardTraces = [impressionsTrace, ctrTrace];
+  var cardTeaserTraces = [teaserImpressionsTrace, teaserCTRTrace];
+
+  var graphHeight = 0.4159;
+  var graphWidth = 0.9528;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var legendFontSize = 
+        Math.floor(0.0078 * document.documentElement.clientHeight);
+  var tickSize = Math.floor(0.0094 * document.documentElement.clientWidth);
+  var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
+  var titleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
+
+  var cardLayout = {
+    height: height,
+    width: width,
+    legend: {
+      bgcolor: "#eeeeee",
+      font: {
+        size: legendFontSize
+      },
+      x: 1.1,
+      y: 0.5
+    },
+    title: {
+      font: {
+        size: titleSize
+      },
+      text: "Card Performance"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      hoverformat: "%b %Y",
+      tickformat: "%b<br>%Y",
+      tickfont: {
+        size: tickSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Month"
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickfont: {
+        size: tickSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Card Impressions"
+      }
+    },
+    yaxis2: {
+      automargin: true,
+      fixedrange: true,
+      showgrid: false,
+      tickfont: {
+        size: tickSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Card Click Rate"
+      },
+      overlaying: "y",
+      side: "right",
+      ticksuffix: "%"
+    }
+  };
+
+  let config = {
+    scrollZoom: false,
+    displayModeBar: false,
+  }
+
+  let teaserLayout = JSON.parse(JSON.stringify(cardLayout));
+  teaserLayout.title.text = "Card Teaser Performance";
+  teaserLayout.yaxis.title.text = "Card Teaser Impressions";
+
+  let cardTeaserGraph = "card-teaser-performance-chart";
+  let cardGraph = "card-performance-chart";
+
+  recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
+      graphHeight, graphWidth);
+  Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
+  recordGraphSize(cardTeaserGraph, graphHeight, graphWidth);
+
+  recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
+      graphWidth);
+  Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
+  recordGraphSize(cardGraph, graphHeight, graphWidth);
+
+  localStorage.removeItem("cardData");
 }
 
 function displayTopCategories() {

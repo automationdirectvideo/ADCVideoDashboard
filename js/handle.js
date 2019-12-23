@@ -1073,7 +1073,8 @@ function handleCardPerformance(response, endOfMonth) {
     let endOfMonthDate = new Date(endOfMonth);
     let now = new Date();
     if (endOfMonthDate - now > 0) {
-      // Call displayCardPerformance
+      // Reached current month - display data in charts
+      displayCardPerformanceCharts();
       console.log("Done gathering card data");
     } else {
       let startDate = new Date(endOfMonthDate.getFullYear(),

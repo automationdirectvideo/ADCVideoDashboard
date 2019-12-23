@@ -96,9 +96,16 @@ const defaultSettings =
       "index": 12,
       "theme": "light",
       "title": "Motors - Most Watched Video"
+    },
+    {
+      "name": "card-performance",
+      "icon": "fas fa-info-circle",
+      "index": 13,
+      "theme": "light",
+      "title": "Card Performance Dashboard"
     }
   ],
-  "numEnabled": 13
+  "numEnabled": 14
 };
 
 const categoryColors = {
@@ -209,4 +216,4 @@ const joinDate = "2008-04-11";
 
 var autoScrollDivs = [];
 
-var totalNumGraphs = 27;
+var totalNumGraphs = 29;
