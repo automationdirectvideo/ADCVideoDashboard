@@ -139,8 +139,9 @@ function handleChannelDemographics(response) {
     maleTotal = Math.round(maleTotal * 10) / 10;
     femaleTotal = Math.round(femaleTotal * 10) / 10;
     if (maleTotal + femaleTotal != 100) {
-      let diff = 1 - (maleTotal + femaleTotal);
+      let diff = 100 - (maleTotal + femaleTotal);
       femaleTotal += diff;
+      femaleTotal = Math.round(femaleTotal * 10) / 10;
     }
     document.getElementById("male-title").innerHTML = `
       <i class="fas fa-male" style="font-size:3rem"></i>
