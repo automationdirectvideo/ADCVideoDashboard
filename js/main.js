@@ -482,7 +482,7 @@ function displayCategoryViewsAreaCharts() {
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
   var legendFontSize = 
-        Math.floor(0.017 * document.documentElement.clientHeight);
+        Math.floor(0.01 * document.documentElement.clientHeight);
   var tickSize = Math.floor(0.0104 * document.documentElement.clientWidth);
   var axisTitleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
   var titleSize = Math.floor(0.0208 * document.documentElement.clientWidth);
