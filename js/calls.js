@@ -62,16 +62,3 @@ function callSheetsAPIUpdate(request, source, callback, message) {
       console.error("Google Sheets API call error", err);
     });
 }
-
-// Calls the Drive API for getting files with a request and returns response to
-// callback
-function callDriveAPIFiles(request, source, callback, message) {
-  gapi.client.drive.files.get(request)
-    .then(response => {
-      console.log(source, response);
-      callback(response, message);
-    })
-    .catch(err => {
-      console.error("Google Sheets API call error", err);
-    });
-}

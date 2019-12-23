@@ -242,16 +242,7 @@ function requestCardPerformance(startDate, endDate) {
 }
 
 
-/* Google Sheets/Drive Calls */
-
-function requestFileModifiedTime(fileId, message) {
-  var request = {
-    "fileId": fileId,
-    "fields": "modifiedTime"
-  };
-  callDriveAPIFiles(request, "FileModifiedTime:", handleFileModifiedTime,
-      message);
-}
+/* Google Sheets Calls */
 
 function requestSpreadsheetData(spreadsheetId, range, message) {
   var request = {

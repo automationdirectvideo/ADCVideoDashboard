@@ -1087,30 +1087,7 @@ function handleCardPerformance(response, endOfMonth) {
 }
 
 
-/* Google Sheets/Drive Calls */
-
-// Requests spreadsheet data based on when sheet was last modified
-function handleFileModifiedTime(response, message) {
-  if (response) {
-    var modifiedTime = new Date(response.result.modifiedTime);
-    var lastUpdatedOn = new Date(localStorage.getItem("lastUpdatedOn"));
-    console.log(message + " was last modified on " + modifiedTime.toString());
-    if (message == "Video List") {
-      if (lastUpdatedOn - modifiedTime < 0) {
-        requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-            "Category List");
-      } else {
-        requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-            "Video Stats");
-        requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-            "Category Stats");
-        requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-            "Top Ten Videos");
-      }
-    }
-
-  }
-}
+/* Google Sheets Calls */
 
 // Calls different functions based on what sheet data was requested
 function handleSpreadsheetData(response, message) {

@@ -7,14 +7,12 @@ const CLIENT_ID = "440646774290-ism1om8j8hnp1js8tsc9603ogo6uvhco" +
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest',
   'https://youtubeanalytics.googleapis.com/$discovery/rest?version=v2',
-  'https://sheets.googleapis.com/$discovery/rest?version=v4',
-  'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
+  'https://sheets.googleapis.com/$discovery/rest?version=v4'
 ];
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
     'https://www.googleapis.com/auth/yt-analytics.readonly ' +
     'https://www.googleapis.com/auth/spreadsheets.readonly ' +
-    'https://www.googleapis.com/auth/spreadsheets ' +
-    'https://www.googleapis.com/auth/drive.metadata.readonly';
+    'https://www.googleapis.com/auth/spreadsheets';
 
 const authorizeButton = document.getElementById("authorize-button");
 const signoutButton = document.getElementById("signout-button");
