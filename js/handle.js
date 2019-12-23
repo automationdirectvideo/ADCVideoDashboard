@@ -139,7 +139,7 @@ function handleChannelDemographics(response) {
     maleTotal = Math.round(maleTotal * 10) / 10;
     femaleTotal = Math.round(femaleTotal * 10) / 10;
     if (maleTotal + femaleTotal != 100) {
-      let diff = maleTotal - femaleTotal;
+      let diff = 1 - (maleTotal + femaleTotal);
       femaleTotal += diff;
     }
     document.getElementById("male-title").innerHTML = `
