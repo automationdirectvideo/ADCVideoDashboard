@@ -1144,7 +1144,12 @@ function handleSpreadsheetData(response, message) {
     } else if (message == "Category Views By Year") {
       localStorage.setItem("yearlyCategorySheet",
           JSON.stringify(response.result.values));
-      recordYearlyCategoryViews();
+      try {
+        recordYearlyCategoryViews();
+      } catch (err)  {
+        console.log(err);
+        window.setTimeout(recordYearlyCategoryViews, 5000);
+      }
     }
     let date = new Date();
     date.setHours(10, 30, 0, 0);
