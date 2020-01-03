@@ -519,3 +519,38 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
 }
+
+/*----- Icons -----*/
+
+/* Taken from Open Iconic */
+.oi {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-family: 'Icons';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.oi-arrow-thick-bottom:before {
+  content: url(../icons/arrow-thick-bottom.svg);
+}
+
+.oi-arrow-thick-top:before {
+  content: url(../icons/arrow-thick-top.svg);
+}
+
+.oi-caret-bottom:before {
+  content: url(../icons/caret-bottom.svg);
+}
+
+.oi-caret-top:before {
+  content: url(../icons/caret-top.svg);
+}
+
+.oi-menu:before {
+  content: url(../icons/menu.svg);
+}
