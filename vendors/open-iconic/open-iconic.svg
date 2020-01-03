@@ -1,9 +1,0 @@
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 8 8" style="display:none;">
-  <defs>
-    <path d="M3 0v5h-2l3.031 3 2.969-3h-2v-5h-2z" id="arrow-thick-bottom"></path>
-    <path d="M3.969 0l-2.969 3h2v5h2v-5h2l-3.031-3z" id="arrow-thick-top"></path>
-    <path d="M0 2l4 4 4-4h-8z" id="caret-bottom"></path>
-    <path d="M4 2l-4 4h8l-4-4z" id="caret-top"></path>
-    <path d="M0 1v1h8v-1h-8zm0 2.969v1h8v-1h-8zm0 3v1h8v-1h-8z" id="menu"></path>
-  </defs>
-</svg>
