@@ -721,9 +721,11 @@ function displayCardPerformanceCharts() {
   var cardTeaserTraces = [teaserImpressionsTrace, teaserCTRTrace];
 
   var graphHeight = 0.4159;
-  var graphWidth = 0.9528;
+  var graphWidth = 0.9192;
+  var teaserGraphWidth = 0.9528;
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
+  var teaserWidth = teaserGraphWidth * document.documentElement.clientWidth;
   var legendFontSize = 
         Math.floor(0.017 * document.documentElement.clientHeight);
   var tickSize = Math.floor(0.0094 * document.documentElement.clientWidth);
@@ -809,6 +811,7 @@ function displayCardPerformanceCharts() {
   let teaserLayout = JSON.parse(JSON.stringify(cardLayout));
   teaserLayout.title.text = "Card Teaser Performance";
   teaserLayout.yaxis.title.text = "Card Teaser Impressions";
+  teaserLayout.width = teaserWidth;
 
   let cardTeaserGraph = "card-teaser-performance-chart";
   let cardGraph = "card-performance-chart";
@@ -816,7 +819,7 @@ function displayCardPerformanceCharts() {
   recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
       graphHeight, graphWidth);
   Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
-  recordGraphSize(cardTeaserGraph, graphHeight, graphWidth);
+  recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
 
   recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
       graphWidth);
