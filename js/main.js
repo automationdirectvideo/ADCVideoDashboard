@@ -178,6 +178,11 @@ function updateStats() {
       let newUpdate = new Date();
       newUpdate.setHours(10, 30, 0, 0);
       localStorage.setItem("lastUpdatedOn", newUpdate.toString());
+      if (newUpdate.getMonth() == 0 && newUpdate.getDate() >= 10 &&
+          newUpdate.getDate <= 20) {
+        let lastYear = newUpdate.getFullYear() - 1;
+        getYearlyCategoryViews(lastYear);
+      }
       updateTopTenVideoSheet();
       realTimeStatsCalls();
       requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
