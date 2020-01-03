@@ -662,7 +662,14 @@ function displayCardPerformanceCharts() {
   let cardTeaserImpressions = [];
   let cardTeaserCTR = [];
 
-  for (var i = 0; i < cardData.length; i++) {
+  // If the last month has no data (all zeros), omit it from the graph
+  let numMonths = cardData.length;
+  let lastMonth = cardData[cardData.length - 1];
+  if (lastMonth[1] == 0 && lastMonth[3] == 0) {
+    numMonths--;
+  }
+
+  for (var i = 0; i < numMonths; i++) {
     months.push(cardData[i][0]);
     cardImpressions.push(cardData[i][1]);
     cardCTR.push(cardData[i][2] * 100);
@@ -789,7 +796,8 @@ function displayCardPerformanceCharts() {
       },
       overlaying: "y",
       side: "right",
-      ticksuffix: "%"
+      ticksuffix: "%",
+      zeroline: false
     }
   };
 
