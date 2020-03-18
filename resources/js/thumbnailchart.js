@@ -58,7 +58,7 @@ function loadUploads() {
         "Video List", "Thumbnail Chart Uploads");
     document.getElementById("error-container").className = "d-none"
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     document.getElementById("thumbnail-container").innerHTML = "";
     document.getElementById("error-container").className = "d-block";
     document.getElementById("error-message").innerText = err.message;
