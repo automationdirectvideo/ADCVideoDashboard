@@ -714,7 +714,7 @@ function handleRealTimeStats(response, message) {
     stats[message] = realTimeStats;
     localStorage.setItem("realTimeStats", JSON.stringify(stats));
 
-    console.log("Real Time Stats: ", stats);
+    //console.log("Real Time Stats: ", stats);
     // message is either "cumulative", "month", or "today"
     if (message == "cumulative") {
       saveRealTimeStatsToSheets();
@@ -1063,7 +1063,7 @@ function handleCardPerformance(response, endOfMonth) {
       monthData[3] = cardTeaserImpressions;
       monthData[4] = cardTeaserCTR;
     } catch (err) {
-      console.log("No card data exists for month: " + month);
+      //console.log("No card data exists for month: " + month);
     }
     let cardData = JSON.parse(localStorage.getItem("cardData"));
     cardData.push(monthData);
@@ -1075,7 +1075,7 @@ function handleCardPerformance(response, endOfMonth) {
     if (endOfMonthDate - now > 0) {
       // Reached current month - display data in charts
       displayCardPerformanceCharts();
-      console.log("Done gathering card data");
+      //console.log("Done gathering card data");
     } else {
       let startDate = new Date(endOfMonthDate.getFullYear(),
           endOfMonthDate.getMonth() + 1, 1);
@@ -1147,7 +1147,7 @@ function handleSpreadsheetData(response, message) {
       try {
         recordYearlyCategoryViews();
       } catch (err)  {
-        console.log(err);
+        //console.log(err);
         window.setTimeout(recordYearlyCategoryViews, 5000);
       }
     }
@@ -1173,6 +1173,6 @@ function handleVideoDescription(response) {
     var videoId = response.result.items[0].id;
     var description = response.result.items[0].snippet.description;
     var links = searchForURLs(description);
-    console.log(videoId, links);
+    //console.log(videoId, links);
   }
 }
