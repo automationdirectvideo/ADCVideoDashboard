@@ -19,7 +19,7 @@ function loadDashboards() {
     try {
       loadRealTimeStats();
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       realTimeStatsCalls();
     }
   }
@@ -27,13 +27,13 @@ function loadDashboards() {
     try {
       requestChannelNumVideos();
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       window.setTimeout(requestChannelNumVideos, 5000);
     }
     try {
       displayUploadThumbnails();
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       window.setTimeout(displayUploadThumbnails, 5000);
     }
     displayUploadThumbnails();
@@ -68,7 +68,7 @@ function loadDashboards() {
   try {
     loadTopVideoDashboards();
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
         "Video Stats");
     window.setTimeout(loadTopVideoDashboards, 5000);
@@ -139,7 +139,7 @@ function loadDashboardsSignedOut() {
             "Video Stats");
       displayUploadThumbnails();
     } catch (err) {
-      console.log(err);
+      //console.log(err);
       window.setTimeout(displayUploadThumbnails, 5000);
     }
   }
@@ -192,7 +192,7 @@ function updateStats() {
     }
     var carouselInner = document.getElementsByClassName("carousel-inner")[0];
     if (carouselInner.children["real-time-stats"]) {
-      console.log("Update");
+      //console.log("Update");
       updateRealTimeStats(updateCount);
     }
   } else {
@@ -205,7 +205,7 @@ function updateStats() {
     let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
     var carouselInner = document.getElementsByClassName("carousel-inner")[0];
     if (carouselInner.children["real-time-stats"]) {
-      console.log("Update");
+      //console.log("Update");
       updateRealTimeStats(updateCount);
     }
   }
@@ -237,7 +237,7 @@ function loadRealTimeStats() {
   let stats = JSON.parse(localStorage.getItem("realTimeStats"));
   if (stats.cumulative && stats.month && stats.today) {
 
-    console.log("Real Time Stats: ", stats);
+    //console.log("Real Time Stats: ", stats);
     
     var secondsPerIncrement = {};
     for (var key in stats.today) {
@@ -245,7 +245,7 @@ function loadRealTimeStats() {
         secondsPerIncrement[key] = Math.round(43200 / stats.today[key]);
       }
     }
-    console.log(secondsPerIncrement);
+    //console.log(secondsPerIncrement);
     localStorage.setItem("secondsPerIncrement",
         JSON.stringify(secondsPerIncrement));
     
@@ -364,7 +364,7 @@ function calcCategoryStats() {
   }
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
 
-  console.log("Category Stats: ", categoryStats);
+  //console.log("Category Stats: ", categoryStats);
   saveCategoryStatsToSheets();
   saveVideoStatsToSheets();
 }
@@ -652,7 +652,7 @@ function displayCategoryViewsAreaCharts() {
       Plotly.newPlot(graphId, trace, layout, config);
       recordGraphSize(graphId, graphHeight, graphWidth);
     } catch (err) {
-      console.log("There was an error initiating graph: " + graphId +
+      //console.log("There was an error initiating graph: " + graphId +
           ", Error: ", err);
     }
   }
@@ -1216,7 +1216,7 @@ function displayUploadThumbnails() {
       }
     }
   } catch (err) {
-    console.log(err);
+    //console.log(err);
     window.setTimeout(displayUploadThumbnails, 5000);
   }
 }
@@ -1347,7 +1347,7 @@ function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
 }
 
 function resizeGraphs() {
-  this.console.log("Resize");
+  this.//console.log("Resize");
   let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
   let viewportHeight = document.documentElement.clientHeight;
   let viewportWidth = document.documentElement.clientWidth;
@@ -1486,7 +1486,7 @@ if (!localStorage.getItem("settings")) {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
 }
 var currentSettings = JSON.parse(localStorage.getItem("settings"));
-console.log("Current Settings: ", currentSettings);
+//console.log("Current Settings: ", currentSettings);
 
 
 // Initialize carousels
