@@ -652,8 +652,7 @@ function displayCategoryViewsAreaCharts() {
       Plotly.newPlot(graphId, trace, layout, config);
       recordGraphSize(graphId, graphHeight, graphWidth);
     } catch (err) {
-      //console.log("There was an error initiating graph: " + graphId +
-          ", Error: ", err);
+      //console.log("There was an error initiating graph: " + graphId + ", Error: ", err);
     }
   }
 }
