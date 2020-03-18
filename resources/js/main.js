@@ -1346,7 +1346,7 @@ function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
 }
 
 function resizeGraphs() {
-  this.//console.log("Resize");
+  //console.log("Resize");
   let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
   let viewportHeight = document.documentElement.clientHeight;
   let viewportWidth = document.documentElement.clientWidth;
