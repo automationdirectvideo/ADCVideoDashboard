@@ -1599,7 +1599,7 @@ $(".carousel").on("slid.bs.carousel", function (e) {
 })
 
 window.addEventListener('resize', function () {
-  resizeGraphs();
+  //resizeGraphs();
   let topTenDashboard = document.getElementById("top-ten");
   if (topTenDashboard.classList.contains("active")) {
     let thumbnailContainer =
