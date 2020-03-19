@@ -35,7 +35,7 @@ function requestVideoViewsByYear(settings) {
     "dimensions": "video",
     "endDate": endDate,
     "filters": filters,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views",
     "startDate": startDate
   }
@@ -51,7 +51,7 @@ function requestChannelDemographics(startDate, endDate) {
   var request = {
     "dimensions": "ageGroup,gender",
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "viewerPercentage",
     "sort": "gender,ageGroup",
     "startDate": startDate
@@ -64,7 +64,7 @@ function requestChannelSearchTerms(startDate, endDate) {
     "dimensions": "insightTrafficSourceDetail",
     "endDate": endDate,
     "filters": "insightTrafficSourceType==YT_SEARCH",
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "maxResults": 5,
     "metrics": "views",
     "sort": "-views",
@@ -78,7 +78,7 @@ function requestMinutesSubscribedStatus(startDate, endDate) {
   var request = {
     "dimensions": "subscriberCount",
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "estimatedMinutesWatched",
     "startDate": startDate
   };
@@ -90,7 +90,7 @@ function requestViewsByDeviceType(startDate, endDate) {
   var request = {
     "dimensions": "deviceType",
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views",
     "sort": "-views",
     "startDate": startDate
@@ -103,7 +103,7 @@ function requestViewsByState(startDate, endDate) {
     "dimensions": "province",
     "endDate": endDate,
     "filters": "country==US",
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views",
     "sort": "province",
     "startDate": startDate
@@ -115,7 +115,7 @@ function requestViewsByTrafficSource(startDate, endDate) {
   var request = {
     "dimensions": "insightTrafficSourceType",
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views",
     "sort": "-views",
     "startDate": startDate
@@ -130,7 +130,7 @@ function requestViewsByTrafficSource(startDate, endDate) {
 function requestRealTimeStats(startDate, endDate, message) {
   var request = {
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views,subscribersGained,subscribersLost," +
         "estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
@@ -159,7 +159,7 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
   var request = {
     "dimensions": "video",
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "maxResults": numVideos,
     "metrics": "views,estimatedMinutesWatched",
     "sort": "-views",
@@ -178,7 +178,7 @@ function requestVideoBasicStats(startDate, endDate, videoId, dashboardId) {
     "dimensions": "video",
     "endDate": endDate,
     "filters": stringVideoId,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched," +
         "averageViewDuration,subscribersGained,subscribersLost",
     "startDate": startDate
@@ -193,7 +193,7 @@ function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
     "dimensions": "day",
     "endDate": endDate,
     "filters": filters,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views",
     "sort": "day",
     "startDate": startDate
@@ -208,7 +208,7 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
     "dimensions": "insightTrafficSourceDetail",
     "endDate": endDate,
     "filters": filters,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "maxResults": 10,
     "metrics": "views",
     "sort": "-views",
@@ -232,7 +232,7 @@ function requestVideoSnippet(videoId, dashboardId) {
 function requestCardPerformance(startDate, endDate) {
   var request = {
     "endDate": endDate,
-    "ids": "channel==MINE",
+    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "cardImpressions,cardClickRate," +
         "cardTeaserImpressions,cardTeaserClickRate",
     "startDate": startDate
