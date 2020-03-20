@@ -349,6 +349,7 @@ function platformDashboardCalls(startDate, endDate) {
 
 // Requests data for real time stats dashboard
 function realTimeStatsCalls() {
+  console.log( "Real Time Stats Calls" );
   requestRealTimeStatsMonth();
   requestRealTimeStatsToday();
   requestRealTimeStatsCumulative();
