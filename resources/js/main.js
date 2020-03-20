@@ -1,6 +1,7 @@
 /* Load and display dashboards */
 
-function loadDashboards() {
+function loadDashboards( insteadOfRealTime=false ) {
+  console.log( "loadDashboards run instead of realTimeStatsCalls in updateStats function? ", insteadOfRealTime )
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
   if (carouselInner.children["intro-animation"]) {
@@ -188,7 +189,7 @@ function updateStats() {
       requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
           "Category List");
     } else if (updateCount % 900 == 0) {
-      loadDashboards();
+      loadDashboards(true);
     }
     var carouselInner = document.getElementsByClassName("carousel-inner")[0];
     if (carouselInner.children["real-time-stats"]) {
@@ -1346,7 +1347,7 @@ function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
 }
 
 function resizeGraphs() {
-  //console.log("Resize");
+  //this.//console.log("Resize");
   let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
   let viewportHeight = document.documentElement.clientHeight;
   let viewportWidth = document.documentElement.clientWidth;
@@ -1599,7 +1600,7 @@ $(".carousel").on("slid.bs.carousel", function (e) {
 })
 
 window.addEventListener('resize', function () {
-  //resizeGraphs();
+  resizeGraphs();
   let topTenDashboard = document.getElementById("top-ten");
   if (topTenDashboard.classList.contains("active")) {
     let thumbnailContainer =
