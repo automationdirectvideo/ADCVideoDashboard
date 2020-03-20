@@ -600,6 +600,7 @@ function saveRealTimeStatsToSheets() {
   var body = {
     "values": values
   };
+  console.log( "Real Time Stats Values: ", body )
   requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
       "Real Time Stats", body);
 }
