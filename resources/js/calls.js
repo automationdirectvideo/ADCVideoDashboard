@@ -4,7 +4,7 @@
 function callAnalyticsAPI(request, source, callback, message) {
   gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
-      //console.log(source, response);
+      console.log(source, response);
       callback(response, message);
     })
     .catch(err => {
@@ -17,7 +17,7 @@ function callAnalyticsAPI(request, source, callback, message) {
 function callDataAPIChannels(request, source, callback) {
   gapi.client.youtube.channels.list(request)
     .then(response => {
-      //console.log(source, response);
+      console.log(source, response);
       callback(response);
     })
     .catch(err => {
@@ -29,11 +29,11 @@ function callDataAPIChannels(request, source, callback) {
 function callDataAPIVideos(request, source, callback, message) {
   gapi.client.youtube.videos.list(request)
     .then(response => {
-      //console.log(source, response);
+      console.log(source, response);
       callback(response, message);
     })
     .catch(err => {
-      //console.error("Data API call error", err);
+      console.error("Data API call error", err);
     });
 }
 
@@ -42,7 +42,7 @@ function callDataAPIVideos(request, source, callback, message) {
 function callSheetsAPIGet(request, source, callback, message) {
   gapi.client.sheets.spreadsheets.values.get(request)
     .then(response => {
-      //console.log(source, response);
+      console.log(source, response);
       callback(response, message);
     })
     .catch(err => {
@@ -55,7 +55,7 @@ function callSheetsAPIGet(request, source, callback, message) {
 function callSheetsAPIUpdate(request, source, callback, message) {
   gapi.client.sheets.spreadsheets.values.update(request)
     .then(response => {
-      //console.log(source, response);
+      console.log(source, response);
       callback(response, message);
     })
     .catch(err => {
