@@ -1358,7 +1358,7 @@ function resizeGraphs() {
       height: height,
       width: width
     };
-    console.log("Resizing graph: " + graphId);
+    // console.log("Resizing graph: " + graphId);
     Plotly.relayout(graphId, update);
   }
 }
@@ -1382,7 +1382,7 @@ function fixGraphMargins() {
   for (var graphId in graphSizes) {
     let automargin = graphSizes[graphId]["automargin"];
     if (automargin) {
-      console.log("Fixing margins for graph: " + graphId);
+      // console.log("Fixing margins for graph: " + graphId);
       Plotly.relayout(graphId, automargin);
     }
   }

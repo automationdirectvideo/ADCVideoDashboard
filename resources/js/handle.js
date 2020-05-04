@@ -43,6 +43,7 @@ function handleVideoStatisticsOverall(response, settings) {
       let categoryId = categories[i];
       if (categoryTotals[categoryId] == undefined) {
         categoryTotals[categoryId] = {};
+        categoryTotals[categoryId]["videos"] = [];
       }
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
