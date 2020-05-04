@@ -76,7 +76,7 @@ function requestChannelSearchTerms(startDate, endDate) {
 
 function requestMinutesSubscribedStatus(startDate, endDate) {
   var request = {
-    "dimensions": "subscriberCount",
+    "dimensions": "subscribedStatus",
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "estimatedMinutesWatched",
