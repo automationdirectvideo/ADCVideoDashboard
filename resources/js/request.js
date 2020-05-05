@@ -321,7 +321,7 @@ function getCardPerformanceByMonth(startDate) {
     newStartDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
     // Space out the calls to Data and Sheets APIs to stay under quota limit
     setTimeout(function() {
-      getTopTenVideosByMonth(newStartDate);
+      getCardPerformanceByMonth(newStartDate);
     }, 300);
   } else {
     // Wait to reload the page after the last Data API request is called
