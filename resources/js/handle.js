@@ -1052,9 +1052,8 @@ function handleVideoSnippet(response, dashboardId) {
 
 /* Card Performance Calls */
 
-function handleCardPerformance(response, endOfMonth) {
+function handleCardPerformance(response, month) {
   if (response) {
-    let month = endOfMonth.substr(0, 7);
     let monthData = [month, 0, 0, 0, 0];
     try {
       let responseRow = response.result.rows[0];
@@ -1066,27 +1065,16 @@ function handleCardPerformance(response, endOfMonth) {
       monthData[2] = cardCTR;
       monthData[3] = cardTeaserImpressions;
       monthData[4] = cardTeaserCTR;
+      let values = [monthData];
+      let body = {
+        "values": values
+      };
+      var row = 3 + monthDiff(new Date(2017, 9), new Date(month));
+      var sheet = "Card Performance!A" + row;
+      requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+          sheet, body);
     } catch (err) {
-      //console.log("No card data exists for month: " + month);
-    }
-    let cardData = JSON.parse(localStorage.getItem("cardData"));
-    cardData.push(monthData);
-    localStorage.setItem("cardData", JSON.stringify(cardData));
-
-    // Initiate next requestCardPerformance call
-    let endOfMonthDate = new Date(endOfMonth);
-    let now = new Date();
-    if (endOfMonthDate - now > 0) {
-      // Reached current month - display data in charts
-      displayCardPerformanceCharts();
-      //console.log("Done gathering card data");
-    } else {
-      let startDate = new Date(endOfMonthDate.getFullYear(),
-          endOfMonthDate.getMonth() + 1, 1);
-      let endDate = getYouTubeDateFormat(new Date(startDate.getFullYear(),
-          startDate.getMonth() + 1, 0));
-      startDate = getYouTubeDateFormat(startDate);
-      requestCardPerformance(startDate, endDate);
+      console.log("No card data exists for month: " + month);
     }
   }
 }
@@ -1154,6 +1142,10 @@ function handleSpreadsheetData(response, message) {
         //console.log(err);
         window.setTimeout(recordYearlyCategoryViews, 5000);
       }
+    } else if (message == "Card Performance") {
+      localStorage.setItem("cardDataSheet",
+          JSON.stringify(response.result.values));
+      displayCardPerformanceCharts();
     }
     let date = new Date();
     date.setHours(10, 30, 0, 0);

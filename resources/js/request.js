@@ -229,7 +229,7 @@ function requestVideoSnippet(videoId, dashboardId) {
 
 /* Card Performance Calls */
 
-function requestCardPerformance(startDate, endDate) {
+function requestCardPerformance(startDate, endDate, month) {
   var request = {
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
@@ -237,8 +237,7 @@ function requestCardPerformance(startDate, endDate) {
         "cardTeaserImpressions,cardTeaserClickRate",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "CardPerformance: ", handleCardPerformance,
-      endDate);
+  callAnalyticsAPI(request, "CardPerformance: ", handleCardPerformance, month);
 }
 
 
@@ -310,11 +309,27 @@ function getYearlyCategoryViews(year) {
   requestVideoViewsByYear(settings);
 }
 
-function getCardPerformanceByMonth() {
+function getCardPerformanceByMonth(startDate) {
   // Oct. 2017 was the first month the ADC YT channel used impressions
-  let cardData = [];
-  localStorage.setItem("cardData", JSON.stringify(cardData));
-  requestCardPerformance("2017-10-01", "2017-10-31");
+  startDate = startDate || new Date("2017-10-1");
+  var endDate = new Date();
+  if (endDate - startDate > 0) {
+    let firstDay = getYouTubeDateFormat(startDate);
+    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0));
+    let month = firstDay.substr(0, 7);
+    requestCardPerformance(firstDay, lastDay, month);
+    newStartDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
+    // Space out the calls to Data and Sheets APIs to stay under quota limit
+    setTimeout(function() {
+      getTopTenVideosByMonth(newStartDate);
+    }, 300);
+  } else {
+    // Wait to reload the page after the last Data API request is called
+    // TODO: look into reload timing/necessity
+    // setTimeout(function() {
+    //   window.location.reload();
+    // }, 5000);
+  }
 }
 
 function getTopTenVideosByMonth(startDate) {
@@ -325,13 +340,14 @@ function getTopTenVideosByMonth(startDate) {
     let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0));
     let month = firstDay.substr(0, 7);
     requestMostWatchedVideos(firstDay, lastDay, 20, month);
-    startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
+    newStartDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
     // Space out the calls to Data and Sheets APIs to stay under quota limit
     setTimeout(function() {
-      getTopTenVideosByMonth(startDate);
-    }, 200);
+      getTopTenVideosByMonth(newStartDate);
+    }, 300);
   } else {
     // Wait to reload the page after the last Data API request is called
+    // TODO: look into reload timing/necessity
     setTimeout(function() {
       window.location.reload();
     }, 5000);

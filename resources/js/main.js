@@ -64,7 +64,8 @@ function loadDashboards( insteadOfRealTime=false ) {
         "User Feedback List");
   }
   if (carouselInner.children["card-performance"]) {
-    getCardPerformanceByMonth();
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Card Performance");
   }
   try {
     loadTopVideoDashboards();
@@ -156,6 +157,10 @@ function loadDashboardsSignedOut() {
     requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
         "User Feedback List");
   }
+  if (carouselInner.children["card-performance"]) {
+    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+        "Card Performance");
+  }
   requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
         "Graph Data");
   requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
@@ -185,6 +190,7 @@ function updateStats() {
         getYearlyCategoryViews(lastYear);
       }
       updateTopTenVideoSheet();
+      updateCardPerformanceSheet();
       realTimeStatsCalls();
       requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
           "Category List");
@@ -659,7 +665,7 @@ function displayCategoryViewsAreaCharts() {
 }
 
 function displayCardPerformanceCharts() {
-  let cardData = JSON.parse(localStorage.getItem("cardData"));
+  let cardData = JSON.parse(localStorage.getItem("cardDataSheet"));
 
   let months = [];
   let cardImpressions = [];
@@ -831,7 +837,7 @@ function displayCardPerformanceCharts() {
   Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
   recordGraphSize(cardGraph, graphHeight, graphWidth);
 
-  localStorage.removeItem("cardData");
+  localStorage.removeItem("cardDataSheet");
 }
 
 function displayTopCategories() {
