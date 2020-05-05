@@ -40,7 +40,18 @@ function initClient() {
 }
 
 function updateSigninStatus(isSignedIn) {
-  window.location.reload();
+  if (isSignedIn) {
+    const currUserId = gapi.auth2.getAuthInstance().currentUser.get().getId();
+    const userIdADC = "106069978891008555071";
+    if (currUserId != userIdADC) {
+      console.log("Error: You are not ADC");
+      console.log("User ID: " + currUserId);
+      gapi.auth2.getAuthInstance().currentUser.get().disconnect();
+      $("#invalid-account-alert").show()
+    } else {
+      window.location.reload();
+    }
+  }
 }
 
 // Load page based on sign in state
@@ -54,6 +65,7 @@ function loadSigninStatus(isSignedIn) {
 
 // Handle login
 function handleAuthClick() {
+  $("#invalid-account-alert").hide()
   gapi.auth2.getAuthInstance().signIn();
 }
 

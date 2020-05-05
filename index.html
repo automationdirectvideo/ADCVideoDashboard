@@ -609,6 +609,10 @@
           </div>
           <div class="modal-body">
             <p>Sign In with the AutomationDirect YouTube account to enter Display Mode where dashboards update automatically!</p>
+            <div class="alert alert-danger fade show mb-2 text-center" role="alert" id="invalid-account-alert" style="display:none;">
+              <strong><i class="fas fa-exclamation-triangle"></i> Invalid Account:</strong> You have
+              logged in with an invalid Google account. You must log in with the <strong>AutomationDirect YouTube account</strong>.
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -619,24 +623,24 @@
     </div>
     <!-- Sign Out Modal-->
     <div class="modal fade" id="signoutModal" tabindex="-1" role="dialog" aria-labelledby="signoutModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="signoutModalLabel">Sign Out</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>Are you sure you want to sign out?</p>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger" id="signout-button">Sign Out</button>
-            </div>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="signoutModalLabel">Sign Out</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure you want to sign out?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" id="signout-button">Sign Out</button>
           </div>
         </div>
       </div>
+    </div>
     <script type="text/javascript" src="resources/js/authorize.js"></script>
     <script type="text/javascript" src="resources/js/calls.js"></script>
     <script type="text/javascript" src="resources/js/handle.js"></script>
