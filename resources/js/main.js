@@ -666,6 +666,7 @@ function displayCategoryViewsAreaCharts() {
 
 function displayCardPerformanceCharts() {
   let cardData = JSON.parse(localStorage.getItem("cardDataSheet"));
+  cardData.shift(); // Remove the headers from the sheet
 
   let months = [];
   let cardImpressions = [];
