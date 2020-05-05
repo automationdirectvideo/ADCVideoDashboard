@@ -1,5 +1,4 @@
-function displayThumbnails() {
-  var uploads = JSON.parse(localStorage.getItem("uploads"));
+function displayThumbnails(uploads) {
   var thumbnailContainer = document.getElementById("thumbnail-container");
   if (!uploads) {
     loadUploads();

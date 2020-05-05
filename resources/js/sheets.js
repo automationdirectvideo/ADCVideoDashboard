@@ -336,8 +336,7 @@ function recordUploads() {
     uploads.push(videoId);
   }
   localStorage.removeItem("videoListSheet");
-  localStorage.setItem("uploads", JSON.stringify(uploads));
-  displayThumbnails();
+  displayThumbnails(uploads);
 }
 
 function recordYearlyCategoryViews() {
