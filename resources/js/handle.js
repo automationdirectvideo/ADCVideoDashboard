@@ -1135,7 +1135,7 @@ function handleSpreadsheetData(response, message) {
       try {
         recordYearlyCategoryViews();
       } catch (err)  {
-        //console.log(err);
+        console.log(err);
         window.setTimeout(recordYearlyCategoryViews, 5000);
       }
     } else if (message == "Category Area Charts") {
@@ -1157,10 +1157,6 @@ function handleUpdateSheetData(response, message) {
   if (response) {
     if (message == "Video Stats") {
       updateTopTenVideoSheet();
-    }
-    if (message ="Category Views By Year") {
-      // Recreate the category area charts after the sheet data has been updated
-      requestSpreadsheetData("Stats", "Category Views By Year");
     }
   }
 }
