@@ -243,26 +243,32 @@ function requestCardPerformance(startDate, endDate, month) {
 
 /* Google Sheets Calls */
 
-function requestSpreadsheetData(spreadsheetId, range, message) {
-  var request = {
-    "spreadsheetId": spreadsheetId,
-    "range": range
-  };
-  if (message != undefined) {
-    range = message
+function requestSpreadsheetData(sheetName, range, message) {
+  var spreadsheetId = sheetNameToId(sheetName);
+  if (spreadsheetId != "") {
+    var request = {
+      "spreadsheetId": spreadsheetId,
+      "range": range
+    };
+    if (message != undefined) {
+      range = message
+    }
+    callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData, range);
   }
-  callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData, range);
 }
 
-function requestUpdateSheetData(spreadsheetId, range, body) {
-  var request = {
-    "spreadsheetId": spreadsheetId,
-    "range": range,
-    "valueInputOption": "RAW",
-    "resource": body
-  };
-  callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData,
-      range);
+function requestUpdateSheetData(sheetName, range, body) {
+  var spreadsheetId = sheetNameToId(sheetName);
+  if (spreadsheetId != "") {
+    var request = {
+      "spreadsheetId": spreadsheetId,
+      "range": range,
+      "valueInputOption": "RAW",
+      "resource": body
+    };
+    callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData,
+        range);
+  }
 }
 
 /* Multiple Requests Functions */

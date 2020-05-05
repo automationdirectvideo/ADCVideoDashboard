@@ -87,6 +87,16 @@ function secondsToDurationMinSec(seconds) {
   return minutes + " min " + durationSeconds + " sec";
 }
 
+function sheetNameToId(sheetName) {
+  if (sheetName == "Stats") {
+    return "1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ";
+  } else if (sheetName == "Input Data") {
+    return "1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg";
+  } else {
+    return "";
+  }
+}
+
 // Reloads thumbnail with lower quality if max resolution thumbnail throws 404
 function thumbnailCheck(e, highQuality) {
   var thumbnailURL = e.attr("src");

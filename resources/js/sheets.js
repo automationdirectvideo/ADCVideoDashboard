@@ -50,8 +50,7 @@ function recordCategoryListData() {
   localStorage.removeItem("categoryListSheet");
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
 
-  requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-      "Video List");
+  requestSpreadsheetData("Input Data", "Video List");
 }
 
 // Records video IDs from Google Sheet
@@ -437,17 +436,16 @@ function saveCategoryStatsToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      "Category Stats", body);
+  requestUpdateSheetData("Stats", "Category Stats", body);
 }
 
 // Saves categoryYearlyStats to Google Sheets
 function saveCategoryYearlyStatsToSheets(year) {
   var categoryYearlyTotals =
       JSON.parse(localStorage.getItem("categoryYearlyTotals"));
-  
+  var spreadsheetId = sheetNameToId("Stats");
   var request = {
-    "spreadsheetId": "1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
+    "spreadsheetId": spreadsheetId,
     "range": "Category Views By Year"
   };
   gapi.client.sheets.spreadsheets.values.get(request)
@@ -478,8 +476,7 @@ function saveCategoryYearlyStatsToSheets(year) {
           "values": sheetValues
         };
         var sheetName = "Category Views By Year";
-        requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-            sheetName, body);
+        requestUpdateSheetData("Stats", sheetName, body);
         localStorage.removeItem("categoryYearlyTotals");
       }
     })
@@ -513,8 +510,7 @@ function saveVideoStatsToSheets() {
   var body= {
     "values": values
   };
-  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      "Video Stats", body);
+  requestUpdateSheetData("Stats", "Video Stats", body);
 }
 
 // Saves graphData to Google Sheets
@@ -540,8 +536,7 @@ function saveGraphDataToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      "Graph Data", body);
+  requestUpdateSheetData("Stats", "Graph Data", body);
   localStorage.removeItem("graphData");
 }
 
@@ -575,8 +570,7 @@ function saveTopVideoStatsToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      "Top Video Stats", body);
+  requestUpdateSheetData("Stats", "Top Video Stats", body);
 }
 
 // Saves realTimeStats to Google Sheets
@@ -600,8 +594,7 @@ function saveRealTimeStatsToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      "Real Time Stats", body);
+  requestUpdateSheetData("Stats", "Real Time Stats", body);
 }
 
 function updateCardPerformanceSheet() {

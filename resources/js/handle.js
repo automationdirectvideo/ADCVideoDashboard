@@ -230,8 +230,7 @@ function handleChannelDemographics(response) {
           ]
         ]
       }
-      requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-          "Channel Demographics", body);
+      requestUpdateSheetData("Stats", "Channel Demographics", body);
     }
   }
 }
@@ -753,8 +752,7 @@ function handleMostWatchedVideos(response, month) {
       };
       var row = 3 + monthDiff(new Date(2010, 6), new Date(month));
       var sheet = "Top Ten Videos!A" + row;
-      requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-          sheet, body);
+      requestUpdateSheetData("Stats", sheet, body);
     }
   }
 }
@@ -1071,8 +1069,7 @@ function handleCardPerformance(response, month) {
       };
       var row = 3 + monthDiff(new Date(2017, 9), new Date(month));
       var sheet = "Card Performance!A" + row;
-      requestUpdateSheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-          sheet, body);
+      requestUpdateSheetData("Stats", sheet, body);
     } catch (err) {
       console.log("No card data exists for month: " + month);
     }

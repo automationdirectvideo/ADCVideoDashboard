@@ -47,8 +47,7 @@ function loadDashboards( insteadOfRealTime=false ) {
       displayTopCategories();
     } catch (TypeError) {
       console.error(TypeError);
-      requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-          "Category Stats");
+      requestSpreadsheetData("Stats", "Category Stats");
       window.setTimeout(displayTopCategories, 10000);
     }
     // Initiate Category Area Charts
@@ -56,23 +55,19 @@ function loadDashboards( insteadOfRealTime=false ) {
     
   }
   if (carouselInner.children["top-ten"]) {
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Top Ten Videos");
+    requestSpreadsheetData("Stats", "Top Ten Videos");
   }
   if (carouselInner.children["feedback"]) {
-    requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-        "User Feedback List");
+    requestSpreadsheetData("Input Data", "User Feedback List");
   }
   if (carouselInner.children["card-performance"]) {
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Card Performance");
+    requestSpreadsheetData("Stats", "Card Performance");
   }
   try {
     loadTopVideoDashboards();
   } catch (err) {
     //console.log(err);
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Video Stats");
+    requestSpreadsheetData("Stats", "Video Stats");
     window.setTimeout(loadTopVideoDashboards, 5000);
   }
 }
@@ -132,13 +127,11 @@ function loadDashboardsSignedOut() {
     }
   }
   if (carouselInner.children["real-time-stats"]) {
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Real Time Stats");
+    requestSpreadsheetData("Stats", "Real Time Stats");
   }
   if (carouselInner.children["thumbnails"]) {
     try {
-      requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-            "Video Stats");
+      requestSpreadsheetData("Stats", "Video Stats");
       displayUploadThumbnails();
     } catch (err) {
       //console.log(err);
@@ -146,25 +139,19 @@ function loadDashboardsSignedOut() {
     }
   }
   if (carouselInner.children["platform"]) {
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Channel Demographics");
+    requestSpreadsheetData("Stats", "Channel Demographics");
   }
   if (carouselInner.children["top-ten"]) {
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Top Ten Videos");
+    requestSpreadsheetData("Stats", "Top Ten Videos");
   }
   if (carouselInner.children["feedback"]) {
-    requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-        "User Feedback List");
+    requestSpreadsheetData("Input Data", "User Feedback List");
   }
   if (carouselInner.children["card-performance"]) {
-    requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Card Performance");
+    requestSpreadsheetData("Stats", "Card Performance");
   }
-  requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Graph Data");
-  requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-        "Top Video Stats");
+  requestSpreadsheetData("Stats", "Graph Data");
+  requestSpreadsheetData("Stats", "Top Video Stats");
 }
 
 function initializeUpdater() {
@@ -192,8 +179,7 @@ function updateStats() {
       updateTopTenVideoSheet();
       updateCardPerformanceSheet();
       realTimeStatsCalls();
-      requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-          "Category List");
+      requestSpreadsheetData("Input Data", "Category List");
     } else if (updateCount % 900 == 0) {
       loadDashboards(true);
     }
@@ -1486,8 +1472,7 @@ function loadSignedOut() {
 }
 
 function loadCategoryCharts() {
-  requestSpreadsheetData("1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ",
-      "Category Views By Year");
+  requestSpreadsheetData("Stats", "Category Views By Year");
 }
 
 // Get current settings

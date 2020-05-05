@@ -54,8 +54,8 @@ function loadUploads() {
     document.getElementById("thumbnail-container").innerHTML = `
       <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
     `;
-    requestSpreadsheetData("1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg",
-        "Video List", "Thumbnail Chart Uploads");
+    requestSpreadsheetData("Input Data", "Video List",
+        "Thumbnail Chart Uploads");
     document.getElementById("error-container").className = "d-none"
   } catch (err) {
     //console.log(err);
