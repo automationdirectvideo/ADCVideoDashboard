@@ -638,16 +638,26 @@ function displayCategoryViewsAreaCharts() {
     [plotCumAvgViewsNorm, normalCumulativeAvgViewTraces,
           normalCumulativeAvgViewLayout],
   ];
+  categoryGraphData = {};
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
     try {
       recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
       Plotly.newPlot(graphId, trace, layout, config);
       recordGraphSize(graphId, graphHeight, graphWidth);
+      categoryGraphData[graphId] = {
+        "data": trace,
+        "layout": layout,
+        "config": config,
+        "graphHeight": graphHeight,
+        "graphWidth": graphWidth,
+        "automargin": "None",
+      };
     } catch (err) {
-      //console.log("There was an error initiating graph: " + graphId + ", Error: ", err);
+      console.log("There was an error initiating graph: " + graphId + ", Error: ", err);
     }
   }
+  saveGraphDataToSheets(categoryGraphData, "Category Area Charts");
 }
 
 function displayCardPerformanceCharts() {
@@ -1301,6 +1311,7 @@ function recordTopVideoStats(dashboardId, data) {
 
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
+  totalNumGraphs = document.querySelectorAll('.js-plotly-plot .plotly').length;
   let graphData = JSON.parse(localStorage.getItem("graphData"));
   if (!graphData || Object.keys(graphData).length >= totalNumGraphs) {
     graphData = {};
@@ -1472,7 +1483,7 @@ function loadSignedOut() {
 }
 
 function loadCategoryCharts() {
-  requestSpreadsheetData("Stats", "Category Views By Year");
+  requestSpreadsheetData("Stats", "Category Area Charts");
 }
 
 // Get current settings

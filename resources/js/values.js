@@ -215,5 +215,3 @@ const categoryColors = {
 const joinDate = "2008-04-11";
 
 var autoScrollDivs = [];
-
-var totalNumGraphs = 29;

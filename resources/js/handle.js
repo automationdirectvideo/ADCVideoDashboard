@@ -1107,9 +1107,8 @@ function handleSpreadsheetData(response, message) {
           JSON.stringify(response.result.values));
       displayUserFeedback();
     } else if (message == "Graph Data") {
-      localStorage.setItem("graphDataSheet",
-          JSON.stringify(response.result.values));
-      recordGraphDataFromSheets();
+      let graphData = response.result.values;
+      recordGraphDataFromSheets(graphData);
     } else if (message == "Top Video Stats") {
       localStorage.setItem("topVideoStatsSheet",
           JSON.stringify(response.result.values));
@@ -1139,6 +1138,9 @@ function handleSpreadsheetData(response, message) {
         //console.log(err);
         window.setTimeout(recordYearlyCategoryViews, 5000);
       }
+    } else if (message == "Category Area Charts") {
+      let graphData = response.result.values;
+      recordGraphDataFromSheets(graphData);
     } else if (message == "Card Performance") {
       localStorage.setItem("cardDataSheet",
           JSON.stringify(response.result.values));
@@ -1155,6 +1157,10 @@ function handleUpdateSheetData(response, message) {
   if (response) {
     if (message == "Video Stats") {
       updateTopTenVideoSheet();
+    }
+    if (message ="Category Views By Year") {
+      // Recreate the category area charts after the sheet data has been updated
+      requestSpreadsheetData("Stats", "Category Views By Year");
     }
   }
 }

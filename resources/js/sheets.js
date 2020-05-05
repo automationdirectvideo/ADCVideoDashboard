@@ -203,15 +203,14 @@ function recordVideoData() {
 }
 
 // Displays graphs on dashboards
-function recordGraphDataFromSheets() {
-  let graphDataSheet = JSON.parse(localStorage.getItem("graphDataSheet"));
+function recordGraphDataFromSheets(graphData) {
   let columns = {};
-  let columnHeaders = graphDataSheet[0];
+  let columnHeaders = graphData[0];
   for (let i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
-  for (let i = 1; i < graphDataSheet.length; i++) {
-    let row = graphDataSheet[i];
+  for (let i = 1; i < graphData.length; i++) {
+    let row = graphData[i];
     let graphId = row[columns["Graph ID"]];
     let data = JSON.parse(row[columns["Data"]]);
     let layout = JSON.parse(row[columns["Layout"]]);
@@ -231,7 +230,6 @@ function recordGraphDataFromSheets() {
       console.error(err);
     }
   }
-  localStorage.removeItem("graphDataSheet");
 }
 
 // Displays top video stats on dashboards
@@ -514,12 +512,17 @@ function saveVideoStatsToSheets() {
 }
 
 // Saves graphData to Google Sheets
-function saveGraphDataToSheets() {
+function saveGraphDataToSheets(graphData, sheetName) {
+  var removeItem = false;
+  if (graphData == undefined) {
+    graphData = JSON.parse(localStorage.getItem("graphData"));
+    var removeItem = true;
+  }
+  sheetName = sheetName || "Graph Data";
   var values = [
     ["Graph ID", "Data", "Layout", "Config", "Graph Height", "Graph Width",
         "Automargin"]
   ];
-  var graphData = JSON.parse(localStorage.getItem("graphData"));
   for (var graphId in graphData) {
     if (graphData.hasOwnProperty(graphId)) {
       var row = [];
@@ -536,8 +539,10 @@ function saveGraphDataToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("Stats", "Graph Data", body);
-  localStorage.removeItem("graphData");
+  requestUpdateSheetData("Stats", sheetName, body);
+  if (removeItem) {
+    localStorage.removeItem("graphData");
+  }
 }
 
 // Saves topVideoStats to Google Sheets
