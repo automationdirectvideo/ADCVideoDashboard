@@ -1323,11 +1323,7 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
     "graphWidth": graphWidth,
     "automargin": automargin,
   };
-  console.log("Recording Graph Data for: " + graphId +
-      "TotalNumGraphs: " + totalNumGraphs);
   if (Object.keys(graphData).length == totalNumGraphs) {
-    console.log("Saving graphData to Sheets. TotalNumGraphs: " +
-        totalNumGraphs);
     localStorage.setItem("graphData", JSON.stringify(graphData));
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
       saveGraphDataToSheets();
