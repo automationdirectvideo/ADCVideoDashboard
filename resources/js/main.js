@@ -1326,7 +1326,9 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
   };
   if (Object.keys(graphData).length == totalNumGraphs) {
     localStorage.setItem("graphData", JSON.stringify(graphData));
-    saveGraphDataToSheets();
+    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      saveGraphDataToSheets();
+    }
   } else {
     localStorage.setItem("graphData", JSON.stringify(graphData));
   }
@@ -1379,15 +1381,14 @@ function swapNormalCharts() {
 }
 
 function fixGraphMargins() {
-  console.log("fixGraphMargins");
-  // let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
-  // for (var graphId in graphSizes) {
-  //   let automargin = graphSizes[graphId]["automargin"];
-  //   if (automargin) {
-  //     // console.log("Fixing margins for graph: " + graphId);
-  //     Plotly.relayout(graphId, automargin);
-  //   }
-  // }
+  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
+  for (var graphId in graphSizes) {
+    let automargin = graphSizes[graphId]["automargin"];
+    if (automargin) {
+      // console.log("Fixing margins for graph: " + graphId);
+      Plotly.relayout(graphId, automargin);
+    }
+  }
 }
 
 function updateTheme(dashboardIndex) {
@@ -1589,7 +1590,6 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
   window.setTimeout(function(){
-    fixGraphMargins();
     updateTheme(e.to);
     // Scroll top ten dashboard to the end on load
     let topTenWrapper = document.getElementById("top-ten-thumbnail-wrapper");
@@ -1598,9 +1598,6 @@ $(".carousel").on("slide.bs.carousel", function (e) {
     }
   }, 250);
 });
-$(".carousel").on("slid.bs.carousel", function (e) {
-  fixGraphMargins();
-})
 
 window.addEventListener('resize', function () {
   resizeGraphs();
