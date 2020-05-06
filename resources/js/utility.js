@@ -110,3 +110,17 @@ function thumbnailCheck(e, highQuality) {
     }
   }
 }
+
+/* Error Handling Functions */
+
+function retry(fn, maxRetries) {
+  fn().catch(function (err) {
+    if (maxRetries <= 0) {
+      throw err;
+    } else {
+      window.setTimeout(function () {
+        retry(fn, maxRetries - 1);
+      }, 1500);
+    }
+  });
+}
