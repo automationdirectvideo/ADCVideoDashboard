@@ -324,7 +324,6 @@ function recordUploads(videoList) {
 }
 
 function recordYearlyCategoryViews(sheetValues) {
-  let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let categoryTraces = {};
   let years = [];
@@ -385,7 +384,6 @@ function recordYearlyCategoryViews(sheetValues) {
     }
   }
   categoryTraces["totals"] = yearlyTotals;
-  localStorage.removeItem("yearlyCategorySheet");
   saveCategoryTracesToSheets(categoryTraces);
   // Move displayCategoryViewsAreaCharts() to handleSpreadsheetData -> "Category Traces"
   displayCategoryViewsAreaCharts(categoryTraces);
