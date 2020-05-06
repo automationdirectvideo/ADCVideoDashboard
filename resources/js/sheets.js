@@ -2,8 +2,7 @@
 
 // Records category IDs/names from Google Sheet
 // Eventually initiates recordVideoListData()
-function recordCategoryListData() {
-  let categoryList = JSON.parse(localStorage.getItem("categoryListSheet"));
+function recordCategoryListData(categoryList) {
   let categoryTotals = {};
   let columns = {};
   let columnHeaders = categoryList[0];
@@ -47,7 +46,6 @@ function recordCategoryListData() {
       "videos": []
     };
   }
-  localStorage.removeItem("categoryListSheet");
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
 
   requestSpreadsheetData("Input Data", "Video List");
@@ -55,8 +53,7 @@ function recordCategoryListData() {
 
 // Records video IDs from Google Sheet
 // Initiates displayUploadThumbnails() and getAllVideoStats()
-function recordVideoListData() {
-  let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
+function recordVideoListData(videoList) {
   let statsByVideoId = {};
   let uploads = [];
   let columns = {};
@@ -104,7 +101,6 @@ function recordVideoListData() {
       uploads.push(videoId);
     }
   }
-  localStorage.removeItem("videoListSheet");
   localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
 
@@ -113,8 +109,7 @@ function recordVideoListData() {
 }
 
 // Records category data from Google Sheet to localStorage.categoryStats
-function recordCategoryData() {
-  let categoriesSheet = JSON.parse(localStorage.getItem("categoriesSheet"));
+function recordCategoryData(categoriesSheet) {
   let columns = {};
   let columnHeaders = categoriesSheet[0];
   for (var i = 0; i < columnHeaders.length; i++) {
@@ -153,14 +148,12 @@ function recordCategoryData() {
       "leaf": leaf,
     });
   }
-  localStorage.removeItem("categoriesSheet");
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
 }
 
 // Records video data from Google Sheet to localStorage.allVideoStats, .uploads,
 // and .statsByVideoId
-function recordVideoData() {
-  let videoSheet = JSON.parse(localStorage.getItem("videoSheet"));
+function recordVideoData(videoSheet) {
   let columns = {};
   let columnHeaders = videoSheet[0];
   for (var i = 0; i < columnHeaders.length; i++) {
@@ -196,7 +189,6 @@ function recordVideoData() {
     statsByVideoId[videoId]["categories"] = categories;
     uploads.push(videoId);
   }
-  localStorage.removeItem("videoSheet");
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
   localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
@@ -233,9 +225,7 @@ function recordGraphDataFromSheets(graphData) {
 }
 
 // Displays top video stats on dashboards
-function recordTopVideoStatsFromSheets() {
-  let topVideoStatsSheet = 
-      JSON.parse(localStorage.getItem("topVideoStatsSheet"));
+function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
   let columns = {};
   let columnHeaders = topVideoStatsSheet[0];
   for (let i = 0; i < columnHeaders.length; i++) {
@@ -290,13 +280,10 @@ function recordTopVideoStatsFromSheets() {
       console.error(`Dashboard "${dashboardId}" does not exist`, err)
     }
   }
-  localStorage.removeItem("topVideoStatsSheet");
 }
 
 // Records real time stats from Google Sheet to localStorage.realTimeStats
-function recordRealTimeStatsFromSheets() {
-  let realTimeStatsSheet =
-      JSON.parse(localStorage.getItem("realTimeStatsSheet"));
+function recordRealTimeStatsFromSheets(realTimeStatsSheet) {
   let realTimeStats = {};
   let columns = {};
   let columnHeaders = realTimeStatsSheet[0];
@@ -317,13 +304,11 @@ function recordRealTimeStatsFromSheets() {
       "netSubscribersGained": parseInt(netSubscribersGained),
     };
   }
-  localStorage.removeItem("topVideoStatsSheet");
   localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
   loadRealTimeStats();
 }
 
-function recordUploads() {
-  let videoList = JSON.parse(localStorage.getItem("videoListSheet"));
+function recordUploads(videoList) {
   let uploads = [];
   let columns = {};
   let columnHeaders = videoList[0];
@@ -335,11 +320,10 @@ function recordUploads() {
     let videoId = row[columns["Video ID"]];
     uploads.push(videoId);
   }
-  localStorage.removeItem("videoListSheet");
   displayThumbnails(uploads);
 }
 
-function recordYearlyCategoryViews() {
+function recordYearlyCategoryViews(sheetValues) {
   let sheetValues = JSON.parse(localStorage.getItem("yearlyCategorySheet"));
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let categoryTraces = {};

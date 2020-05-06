@@ -1075,40 +1075,32 @@ function handleCardPerformance(response, month) {
 function handleSpreadsheetData(response, message) {
   if (response) {
     if (message == "Category List") {
-      localStorage.setItem("categoryListSheet",
-          JSON.stringify(response.result.values));
-      recordCategoryListData();
+      let categoryList = response.result.values;
+      recordCategoryListData(categoryList);
     } else if (message == "Video List") {
-      localStorage.setItem("videoListSheet",
-          JSON.stringify(response.result.values));
-      recordVideoListData();
+      let videoList = response.result.values;
+      recordVideoListData(videoList);
     } else if (message == "Video Stats") {
-      localStorage.setItem("videoSheet",
-          JSON.stringify(response.result.values));
-      recordVideoData();
+      let videoSheet = response.result.values;
+      recordVideoData(videoSheet);
     } else if (message == "Category Stats") {
-      localStorage.setItem("categoriesSheet",
-          JSON.stringify(response.result.values));
-      recordCategoryData();
+      let categoriesSheet = response.result.values;
+      recordCategoryData(categoriesSheet);
     } else if (message == "Top Ten Videos") {
-      localStorage.setItem("topTenSheet",
-          JSON.stringify(response.result.values));
-      displayTopTenThumbnails();
+      let topTenSheet = response.result.values;
+      displayTopTenThumbnails(topTenSheet);
     } else if (message == "User Feedback List") {
-      localStorage.setItem("feedbackSheet",
-          JSON.stringify(response.result.values));
-      displayUserFeedback();
+      let feedbackSheet = response.result.values;
+      displayUserFeedback(feedbackSheet);
     } else if (message == "Graph Data") {
       let graphData = response.result.values;
       recordGraphDataFromSheets(graphData);
     } else if (message == "Top Video Stats") {
-      localStorage.setItem("topVideoStatsSheet",
-          JSON.stringify(response.result.values));
-      recordTopVideoStatsFromSheets();
+      let topVideoStatsSheet = response.result.values;
+      recordTopVideoStatsFromSheets(topVideoStatsSheet);
     } else if (message == "Real Time Stats") {
-      localStorage.setItem("realTimeStatsSheet",
-          JSON.stringify(response.result.values));
-      recordRealTimeStatsFromSheets();
+      let realTimeStatsSheet = response.result.values;
+      recordRealTimeStatsFromSheets(realTimeStatsSheet);
     } else if (message == "Channel Demographics") {
       var rows = JSON.parse(response.result.values[0][0]);
       var newResponse = {
@@ -1118,25 +1110,24 @@ function handleSpreadsheetData(response, message) {
       };
       handleChannelDemographics(newResponse);
     } else if (message == "Thumbnail Chart Uploads") {
-      localStorage.setItem("videoListSheet",
-          JSON.stringify(response.result.values));
-      recordUploads();
+      let videoList = response.result.values;
+      recordUploads(videoList);
     } else if (message == "Category Views By Year") {
-      localStorage.setItem("yearlyCategorySheet",
-          JSON.stringify(response.result.values));
+      let yearlyCategorySheet = response.result.values;
       try {
-        recordYearlyCategoryViews();
+        recordYearlyCategoryViews(yearlyCategorySheet);
       } catch (err)  {
         console.log(err);
-        window.setTimeout(recordYearlyCategoryViews, 5000);
+        window.setTimeout(function () {
+          recordYearlyCategoryViews(yearlyCategorySheet);
+        }, 5000);
       }
     } else if (message == "Category Traces") {
       let categoryTraces = JSON.parse(response.result.values[0][0]);
       displayCategoryViewsAreaCharts(categoryTraces);
     } else if (message == "Card Performance") {
-      localStorage.setItem("cardDataSheet",
-          JSON.stringify(response.result.values));
-      displayCardPerformanceCharts();
+      let cardData = response.result.values;
+      displayCardPerformanceCharts(cardData);
     }
     let date = new Date();
     date.setHours(10, 30, 0, 0);

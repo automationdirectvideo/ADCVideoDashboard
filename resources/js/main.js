@@ -664,8 +664,7 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
   }
 }
 
-function displayCardPerformanceCharts() {
-  let cardData = JSON.parse(localStorage.getItem("cardDataSheet"));
+function displayCardPerformanceCharts(cardData) {
   cardData.shift(); // Remove the headers from the sheet
 
   let months = [];
@@ -837,8 +836,6 @@ function displayCardPerformanceCharts() {
   recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
       graphWidth);
   recordGraphSize(cardGraph, graphHeight, graphWidth);
-
-  localStorage.removeItem("cardDataSheet");
 }
 
 function displayTopCategories() {
@@ -1071,8 +1068,7 @@ function displayTopCategories() {
 }
 
 // Displays thumbnails with arrows on Top Ten Dashboard
-function displayTopTenThumbnails() {
-  let topTenSheet = JSON.parse(localStorage.getItem("topTenSheet"));
+function displayTopTenThumbnails(topTenSheet) {
   let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let output = ``;
   for (var j = 1; j < topTenSheet.length; j++) {
@@ -1228,8 +1224,7 @@ function displayUploadThumbnails() {
   }
 }
 
-function displayUserFeedback() {
-  let feedbackSheet = JSON.parse(localStorage.getItem("feedbackSheet"));
+function displayUserFeedback(feedbackSheet) {
   let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let output = ``;
   for (var i = 1; i < feedbackSheet.length; i++) {
