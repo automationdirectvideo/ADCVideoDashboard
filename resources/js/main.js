@@ -1310,7 +1310,7 @@ function recordTopVideoStats(dashboardId, data) {
 
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
-  totalNumGraphs = document.querySelectorAll('.js-plotly-plot .plotly').length;
+  totalNumGraphs = document.querySelectorAll('.graph-container').length;
   let graphData = JSON.parse(localStorage.getItem("graphData"));
   if (!automargin) {
     automargin = "None";
