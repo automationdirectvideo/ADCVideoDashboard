@@ -1594,6 +1594,8 @@ document.addEventListener("keyup", function (e) {
 });
 $(".carousel").on("slide.bs.carousel", function (e) {
   console.log("Start slide");
+  var loadingText = document.getElementById("loading-area");
+  loadingText.style.display = "initial";
   var carouselName = e.target.getAttribute("name");
   var indicatorName = carouselName + "-indicator-";
   var startIndicator = document.getElementById(indicatorName + e.from);
@@ -1612,6 +1614,8 @@ $(".carousel").on("slide.bs.carousel", function (e) {
 
 $(".carousel").on("slid.bs.carousel", function (e){
   console.log("End slide");
+  var loadingText = document.getElementById("loading-area");
+  loadingText.style.display = "none";
 });
 
 window.addEventListener('resize', function () {
