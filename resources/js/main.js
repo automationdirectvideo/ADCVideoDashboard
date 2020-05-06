@@ -6,16 +6,7 @@ function loadDashboards( insteadOfRealTime=false ) {
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
   if (carouselInner.children["intro-animation"]) {
-    let introVideo = document.getElementById("intro-video");
-    introVideo.load();
-    var promise = introVideo.play();
-    if (promise !== undefined) {
-      promise.then(_ => {
-        // Autoplay started!
-      }).catch(error => {
-        document.getElementsByClassName("VIDEO")[0].play();
-      });
-    }
+    loadIntroAnimation();
   }
   if (carouselInner.children["real-time-stats"]) {
     try {
@@ -118,15 +109,7 @@ function loadDashboardsSignedOut() {
   resetGraphData();
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children["intro-animation"]) {
-    let introVideo = document.getElementById("intro-video");
-    var promise = introVideo.play();
-    if (promise !== undefined) {
-      promise.then(_ => {
-        // Autoplay started!
-      }).catch(error => {
-        document.getElementsByClassName("VIDEO")[0].play();
-      });
-    }
+    loadIntroAnimation();
   }
   if (carouselInner.children["real-time-stats"]) {
     requestSpreadsheetData("Stats", "Real Time Stats");
@@ -296,6 +279,28 @@ function loadRealTimeStats() {
   }
 
   
+}
+
+function loadIntroAnimation() {
+  let introImage = document.getElementById("intro-img");
+  let introVideo = document.getElementById("intro-video");
+  if (introVideo.readyState != 4) {
+    introVideo.load();
+  }
+  if (introVideo.paused) {
+    var promise = introVideo.play();
+    if (promise !== undefined) {
+      promise.then(_ => {
+        // Autoplay started!
+        introImage.style.display = "none";
+        introVideo.style.display = "initial";
+      }).catch(error => {
+        document.getElementsByClassName("VIDEO")[0].play();
+        introImage.style.display = "none";
+        introVideo.style.display = "initial";
+      });
+    }
+  }
 }
 
 function calcAvgVideoDuration() {
@@ -1588,6 +1593,7 @@ document.addEventListener("keyup", function (e) {
   }
 });
 $(".carousel").on("slide.bs.carousel", function (e) {
+  console.log("Start slide");
   var carouselName = e.target.getAttribute("name");
   var indicatorName = carouselName + "-indicator-";
   var startIndicator = document.getElementById(indicatorName + e.from);
@@ -1602,6 +1608,10 @@ $(".carousel").on("slide.bs.carousel", function (e) {
       topTenWrapper.scrollLeft = topTenWrapper.scrollWidth;
     }
   }, 250);
+});
+
+$(".carousel").on("slid.bs.carousel", function (e){
+  console.log("End slide");
 });
 
 window.addEventListener('resize', function () {
