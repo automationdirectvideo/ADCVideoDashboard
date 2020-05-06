@@ -54,6 +54,14 @@ body {
   font-size: 1.75rem;
 }
 
+.loading-area {
+  position: absolute;
+  bottom: 0%;
+  left: 1%;
+  width: 5%;
+  z-index: 10;
+}
+
 .cycle-status {
   position: absolute;
   bottom: 0.5%;
