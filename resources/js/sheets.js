@@ -215,8 +215,8 @@ function recordGraphDataFromSheets(graphData) {
     let data = JSON.parse(row[columns["Data"]]);
     let layout = JSON.parse(row[columns["Layout"]]);
     let config = JSON.parse(row[columns["Config"]]);
-    let graphHeight = row[columns["Graph Height"]];
-    let graphWidth = row[columns["Graph Width"]];
+    let graphHeight = parseFloat(row[columns["Graph Height"]]);
+    let graphWidth = parseFloat(row[columns["Graph Width"]]);
     let automargin = JSON.parse(row[columns["Automargin"]]);
     // Display graphs
     try {
