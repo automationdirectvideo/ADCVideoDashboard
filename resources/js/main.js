@@ -642,8 +642,8 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
     try {
-      recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
       Plotly.newPlot(graphId, trace, layout, config);
+      recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
       recordGraphSize(graphId, graphHeight, graphWidth);
       categoryGraphData[graphId] = {
         "data": trace,
@@ -823,14 +823,14 @@ function displayCardPerformanceCharts() {
   let cardTeaserGraph = "card-teaser-performance-chart";
   let cardGraph = "card-performance-chart";
 
+  Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
   recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
       graphHeight, graphWidth);
-  Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
   recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
 
+  Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
   recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
       graphWidth);
-  Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
   recordGraphSize(cardGraph, graphHeight, graphWidth);
 
   localStorage.removeItem("cardDataSheet");
@@ -1041,7 +1041,6 @@ function displayTopCategories() {
   };
 
   var graphId = "categories-double-views-chart";
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
   var currentSettings = JSON.parse(localStorage.getItem("settings"));
   var theme = "";
@@ -1062,6 +1061,7 @@ function displayTopCategories() {
 
   Plotly.newPlot(graphId, data, layout, config);
 
+  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
   recordGraphSize(graphId, graphHeight, graphWidth);
 }
 

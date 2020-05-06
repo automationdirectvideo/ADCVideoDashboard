@@ -196,8 +196,6 @@ function handleChannelDemographics(response) {
       staticPlot: true
     };
 
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
       var currentSettings = JSON.parse(localStorage.getItem("settings"));
       var theme = "";
@@ -220,6 +218,7 @@ function handleChannelDemographics(response) {
 
     Plotly.newPlot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
     recordGraphSize(graphId, graphHeight, graphWidth);
 
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
@@ -300,9 +299,6 @@ function handleChannelSearchTerms(response) {
       responsive: true
     };
 
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-      automargin);
-
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
     var index = 0;
@@ -323,6 +319,8 @@ function handleChannelSearchTerms(response) {
     
     Plotly.newPlot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
@@ -400,9 +398,6 @@ function handleMinutesSubscribedStatus(response) {
       responsive: true
     };
 
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-      automargin);
-
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
     var index = 0;
@@ -422,7 +417,9 @@ function handleMinutesSubscribedStatus(response) {
     }
     
     Plotly.newPlot(graphId, data, layout, config);
-    
+
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
@@ -487,8 +484,6 @@ function handleViewsByDeviceType(response) {
       responsive: true
     };
 
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
     var index = 0;
@@ -506,6 +501,7 @@ function handleViewsByDeviceType(response) {
     
     Plotly.newPlot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
@@ -573,8 +569,6 @@ function handleViewsByState(response) {
       responsive: true
     };
 
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
     var index = 0;
@@ -598,6 +592,7 @@ function handleViewsByState(response) {
 
     Plotly.plot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
@@ -669,8 +664,6 @@ function handleViewsByTrafficSource(response) {
       staticPlot: true,
       responsive: true
     };
-    
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
 
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
@@ -689,6 +682,7 @@ function handleViewsByTrafficSource(response) {
     
     Plotly.newPlot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
     recordGraphSize(graphId, graphHeight, graphWidth);
   }
 }
@@ -883,9 +877,6 @@ function handleVideoDailyViews(response, dashboardId) {
       responsive: true
     };
 
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-      automargin);
-
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
     var index = 0;
@@ -911,6 +902,8 @@ function handleVideoDailyViews(response, dashboardId) {
     
     Plotly.newPlot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
@@ -980,9 +973,6 @@ function handleVideoSearchTerms(response, dashboardId) {
       staticPlot: true,
       responsive: true
     };
-    
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-      automargin);
 
     var currentSettings = JSON.parse(localStorage.getItem("settings"));
     var theme = "";
@@ -1004,6 +994,8 @@ function handleVideoSearchTerms(response, dashboardId) {
     
     Plotly.newPlot(graphId, data, layout, config);
 
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   }
 }
