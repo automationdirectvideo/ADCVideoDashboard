@@ -1605,7 +1605,7 @@ $(".carousel").on("slide.bs.carousel", function (e) {
 });
 
 window.addEventListener('resize', function () {
-  retry(resizeGraphs, 5);
+  retry(resizeGraphs, 5, 5000);
   let topTenDashboard = document.getElementById("top-ten");
   if (topTenDashboard.classList.contains("active")) {
     let thumbnailContainer =

@@ -113,7 +113,7 @@ function thumbnailCheck(e, highQuality) {
 
 /* Error Handling Functions */
 
-function retry(fn, maxRetries) {
+function retry(fn, maxRetries, timeout) {
   try {
     fn();
   } catch (err) {
@@ -121,8 +121,8 @@ function retry(fn, maxRetries) {
       throw err;
     } else {
       window.setTimeout(function () {
-        retry(fn, maxRetries - 1);
-      }, 1500);
+        retry(fn, maxRetries - 1, timeout);
+      }, timeout);
     }
   }
 }
