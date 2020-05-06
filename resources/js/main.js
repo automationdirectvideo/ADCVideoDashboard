@@ -820,8 +820,8 @@ function displayCardPerformanceCharts() {
   teaserLayout.yaxis.title.text = "Card Teaser Impressions";
   teaserLayout.width = teaserWidth;
 
-  let cardTeaserGraph = "card-teaser-performance-chart";
-  let cardGraph = "card-performance-chart";
+  let cardTeaserGraph = "card-teaser-performance-graph";
+  let cardGraph = "card-performance-graph";
 
   Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
   recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
