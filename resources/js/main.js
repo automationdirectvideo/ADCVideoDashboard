@@ -2,6 +2,7 @@
 
 function loadDashboards( insteadOfRealTime=false ) {
   console.log( "loadDashboards run instead of realTimeStatsCalls in updateStats function? ", insteadOfRealTime )
+  resetGraphData();
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   var todayDate = getTodaysDate();
   if (carouselInner.children["intro-animation"]) {
@@ -1310,9 +1311,6 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
         automargin) {
   totalNumGraphs = document.querySelectorAll('.js-plotly-plot .plotly').length;
   let graphData = JSON.parse(localStorage.getItem("graphData"));
-  if (!graphData || Object.keys(graphData).length >= totalNumGraphs) {
-    graphData = {};
-  }
   if (!automargin) {
     automargin = "None";
   }
@@ -1324,7 +1322,9 @@ function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
     "graphWidth": graphWidth,
     "automargin": automargin,
   };
+  console.log("Recording Graph Data for: " + graphId);
   if (Object.keys(graphData).length == totalNumGraphs) {
+    console.log("Saving graphData to Sheets. TotalNumGraphs: " + totalNumGraphs);
     localStorage.setItem("graphData", JSON.stringify(graphData));
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
       saveGraphDataToSheets();
@@ -1347,6 +1347,11 @@ function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
     graphSizes[graphId]["automargin"] = automargin;
   }
   localStorage.setItem("graphSizes", JSON.stringify(graphSizes));
+}
+
+// Empties localStorage.graphData
+function resetGraphData() {
+  localStorage.setItem("graphData", "{}");
 }
 
 function resizeGraphs() {
