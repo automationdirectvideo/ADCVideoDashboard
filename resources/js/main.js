@@ -1553,6 +1553,7 @@ for (var i = 0; i < enabledOrder.length; i++) {
     indicator.classList.add("active");
   }
 }
+document.getElementById("top-video-#").remove();
 
 // Handle carousel scrolling and keyboard shortcuts
 document.addEventListener("keyup", function (e) {
