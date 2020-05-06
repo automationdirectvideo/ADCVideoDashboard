@@ -402,8 +402,9 @@ function recordYearlyCategoryViews() {
   }
   categoryTraces["totals"] = yearlyTotals;
   localStorage.removeItem("yearlyCategorySheet");
-  localStorage.setItem("categoryTraces", JSON.stringify(categoryTraces));
-  displayCategoryViewsAreaCharts();
+  saveCategoryTracesToSheets(categoryTraces);
+  // Move displayCategoryViewsAreaCharts() to handleSpreadsheetData -> "Category Traces"
+  displayCategoryViewsAreaCharts(categoryTraces);
 }
 
 // Saves categoryStats to Google Sheets
@@ -434,6 +435,18 @@ function saveCategoryStatsToSheets() {
     "values": values
   };
   requestUpdateSheetData("Stats", "Category Stats", body);
+}
+
+// Saves categoryTraces for the Category Area Charts to Google Sheets
+function saveCategoryTracesToSheets(categoryTraces) {
+  var body = {
+    values: [
+      [
+        JSON.stringify(categoryTraces)
+      ]
+    ]
+  };
+  requestUpdateSheetData("Stats", "Category Traces", body);
 }
 
 // Saves categoryYearlyStats to Google Sheets

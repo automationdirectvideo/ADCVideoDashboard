@@ -393,9 +393,7 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
   return topVideos;
 }
 
-function displayCategoryViewsAreaCharts() {
-  let categoryTraces = JSON.parse(localStorage.getItem("categoryTraces"));
-
+function displayCategoryViewsAreaCharts(categoryTraces) {
   let years = categoryTraces["years"];
   let numYears = years.length;
   let yearlyTotals = categoryTraces["totals"];
@@ -657,7 +655,6 @@ function displayCategoryViewsAreaCharts() {
       console.log("There was an error initiating graph: " + graphId + ", Error: ", err);
     }
   }
-  saveGraphDataToSheets(categoryGraphData, "Category Area Charts");
 }
 
 function displayCardPerformanceCharts() {
@@ -1483,7 +1480,7 @@ function loadSignedOut() {
 }
 
 function loadCategoryCharts() {
-  requestSpreadsheetData("Stats", "Category Area Charts");
+  requestSpreadsheetData("Stats", "Category Traces");
 }
 
 // Get current settings

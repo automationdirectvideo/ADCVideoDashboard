@@ -1138,9 +1138,9 @@ function handleSpreadsheetData(response, message) {
         console.log(err);
         window.setTimeout(recordYearlyCategoryViews, 5000);
       }
-    } else if (message == "Category Area Charts") {
-      let graphData = response.result.values;
-      recordGraphDataFromSheets(graphData);
+    } else if (message == "Category Traces") {
+      let categoryTraces = response.result.values[0][0];
+      displayCategoryViewsAreaCharts(categoryTraces);
     } else if (message == "Card Performance") {
       localStorage.setItem("cardDataSheet",
           JSON.stringify(response.result.values));
