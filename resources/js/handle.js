@@ -1139,7 +1139,7 @@ function handleSpreadsheetData(response, message) {
         window.setTimeout(recordYearlyCategoryViews, 5000);
       }
     } else if (message == "Category Traces") {
-      let categoryTraces = response.result.values[0][0];
+      let categoryTraces = JSON.parse(response.result.values[0][0]);
       displayCategoryViewsAreaCharts(categoryTraces);
     } else if (message == "Card Performance") {
       localStorage.setItem("cardDataSheet",
