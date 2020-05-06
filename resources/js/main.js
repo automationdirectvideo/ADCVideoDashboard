@@ -1379,14 +1379,15 @@ function swapNormalCharts() {
 }
 
 function fixGraphMargins() {
-  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
-  for (var graphId in graphSizes) {
-    let automargin = graphSizes[graphId]["automargin"];
-    if (automargin) {
-      // console.log("Fixing margins for graph: " + graphId);
-      Plotly.relayout(graphId, automargin);
-    }
-  }
+  console.log("fixGraphMargins");
+  // let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
+  // for (var graphId in graphSizes) {
+  //   let automargin = graphSizes[graphId]["automargin"];
+  //   if (automargin) {
+  //     // console.log("Fixing margins for graph: " + graphId);
+  //     Plotly.relayout(graphId, automargin);
+  //   }
+  // }
 }
 
 function updateTheme(dashboardIndex) {
