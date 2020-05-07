@@ -47,8 +47,7 @@ function recordCategoryListData(categoryList) {
     };
   }
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
-
-  requestSpreadsheetData("Input Data", "Video List");
+  return categoryTotals;
 }
 
 // Records video IDs from Google Sheet
@@ -102,13 +101,11 @@ function recordVideoListData(videoList) {
   }
   localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
   localStorage.setItem("uploads", JSON.stringify(uploads));
-
-  displayUploadThumbnails();
-  getVideoStats(uploads);
+  return [statsByVideoId, uploads];
 }
 
 // Records category data from Google Sheet to localStorage.categoryStats
-function recordCategoryData(categoriesSheet) {
+function recordCategoryStats(categoriesSheet) {
   let columns = {};
   let columnHeaders = categoriesSheet[0];
   for (var i = 0; i < columnHeaders.length; i++) {
@@ -148,6 +145,7 @@ function recordCategoryData(categoriesSheet) {
     });
   }
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  return categoryStats;
 }
 
 // Records video data from Google Sheet to localStorage.allVideoStats, .uploads,
@@ -304,7 +302,7 @@ function recordRealTimeStatsFromSheets(realTimeStatsSheet) {
     };
   }
   localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
-  loadRealTimeStats();
+  return realTimeStats;
 }
 
 function recordUploads(videoList) {
@@ -384,7 +382,6 @@ function recordYearlyCategoryViews(sheetValues) {
   }
   categoryTraces["totals"] = yearlyTotals;
   saveCategoryTracesToSheets(categoryTraces);
-  // Move displayCategoryViewsAreaCharts() to handleSpreadsheetData -> "Category Traces"
   displayCategoryViewsAreaCharts(categoryTraces);
 }
 

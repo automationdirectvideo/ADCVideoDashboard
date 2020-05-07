@@ -10,7 +10,8 @@ function loadDashboards( insteadOfRealTime=false ) {
   }
   if (carouselInner.children["real-time-stats"]) {
     try {
-      loadRealTimeStats();
+      // QUESTION: when are realTimeStats updated/initialized when logged in?
+      displayRealTimeStats();
     } catch (err) {
       //console.log(err);
       realTimeStatsCalls();
@@ -39,28 +40,28 @@ function loadDashboards( insteadOfRealTime=false ) {
       displayTopCategories();
     } catch (TypeError) {
       console.error(TypeError);
-      requestSpreadsheetData("Stats", "Category Stats");
-      window.setTimeout(displayTopCategories, 10000);
+      getCategoryStats()
+        .then(categoryStats => displayTopCategories(categoryStats));
     }
     // Initiate Category Area Charts
     loadCategoryCharts();
     
   }
   if (carouselInner.children["top-ten"]) {
-    requestSpreadsheetData("Stats", "Top Ten Videos");
+    loadTopTenDashboard();
   }
   if (carouselInner.children["feedback"]) {
-    requestSpreadsheetData("Input Data", "User Feedback List");
+    loadUserFeedbackDashboard();
   }
   if (carouselInner.children["card-performance"]) {
-    requestSpreadsheetData("Stats", "Card Performance");
+    loadCardPerformanceDashboard();
   }
   try {
     loadTopVideoDashboards();
   } catch (err) {
     //console.log(err);
-    requestSpreadsheetData("Stats", "Video Stats");
-    window.setTimeout(loadTopVideoDashboards, 5000);
+    getVideoStats()
+      .then(loadTopVideoDashboards);
   }
 }
 
@@ -112,31 +113,31 @@ function loadDashboardsSignedOut() {
     loadIntroAnimation();
   }
   if (carouselInner.children["real-time-stats"]) {
-    requestSpreadsheetData("Stats", "Real Time Stats");
+    loadRealTimeStatsDashboard();
   }
   if (carouselInner.children["thumbnails"]) {
     try {
-      requestSpreadsheetData("Stats", "Video Stats");
-      displayUploadThumbnails();
+      getVideoStats()
+        .then(displayUploadThumbnails);
     } catch (err) {
       //console.log(err);
       window.setTimeout(displayUploadThumbnails, 5000);
     }
   }
   if (carouselInner.children["platform"]) {
-    requestSpreadsheetData("Stats", "Channel Demographics");
+    loadChannelDemographics();
   }
   if (carouselInner.children["top-ten"]) {
-    requestSpreadsheetData("Stats", "Top Ten Videos");
+    loadTopTenDashboard();
   }
   if (carouselInner.children["feedback"]) {
-    requestSpreadsheetData("Input Data", "User Feedback List");
+    loadUserFeedbackDashboard();
   }
   if (carouselInner.children["card-performance"]) {
-    requestSpreadsheetData("Stats", "Card Performance");
+    loadCardPerformanceDashboard();
   }
-  requestSpreadsheetData("Stats", "Graph Data");
-  requestSpreadsheetData("Stats", "Top Video Stats");
+  loadGraphsFromSheets();
+  loadTopVideoStats();
 }
 
 function initializeUpdater() {
@@ -164,7 +165,7 @@ function updateStats() {
       updateTopTenVideoSheet();
       updateCardPerformanceSheet();
       realTimeStatsCalls();
-      requestSpreadsheetData("Input Data", "Category List");
+      updateVideoAndCategoryStats();
     } else if (updateCount % 900 == 0) {
       loadDashboards(true);
     }
@@ -211,8 +212,8 @@ function updateRealTimeStats(updateCount) {
 }
 
 // Initialize real time stats in real time stats dashboard
-function loadRealTimeStats() {
-  let stats = JSON.parse(localStorage.getItem("realTimeStats"));
+function displayRealTimeStats(stats) {
+  let stats = stats || JSON.parse(localStorage.getItem("realTimeStats"));
   if (stats.cumulative && stats.month && stats.today) {
 
     //console.log("Real Time Stats: ", stats);
@@ -797,8 +798,9 @@ function displayCardPerformanceCharts(cardData) {
   recordGraphSize(cardGraph, graphHeight, graphWidth);
 }
 
-function displayTopCategories() {
-  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+function displayTopCategories(categoryStats) {
+  let categoryStats = categoryStats ||
+      JSON.parse(localStorage.getItem("categoryStats"));
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   var total = 0;
@@ -1443,10 +1445,6 @@ function loadSignedOut() {
   signoutModalButton.style.display = "none";
   initializeUpdater();
   loadDashboardsSignedOut();
-}
-
-function loadCategoryCharts() {
-  requestSpreadsheetData("Stats", "Category Traces");
 }
 
 // Get current settings

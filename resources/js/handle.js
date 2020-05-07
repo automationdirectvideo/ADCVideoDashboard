@@ -108,7 +108,7 @@ function handleVideoViewsByYear(response, settings) {
 /* Platform Dashboard Calls */
 
 // Loads demographics table in platform dashboard
-function handleChannelDemographics(response) {
+function displayChannelDemographics(response) {
   if (response) {
     var rows = response.result.rows;
     let maleTotal = 0;
@@ -715,7 +715,7 @@ function handleRealTimeStats(response, message) {
     // message is either "cumulative", "month", or "today"
     if (message == "cumulative") {
       saveRealTimeStatsToSheets();
-      loadRealTimeStats();
+      displayRealTimeStats();
     }
   }
 }
@@ -1085,7 +1085,7 @@ function handleSpreadsheetData(response, message) {
       recordVideoData(videoSheet);
     } else if (message == "Category Stats") {
       let categoriesSheet = response.result.values;
-      recordCategoryData(categoriesSheet);
+      recordCategoryStats(categoriesSheet);
     } else if (message == "Top Ten Videos") {
       let topTenSheet = response.result.values;
       displayTopTenThumbnails(topTenSheet);
@@ -1108,7 +1108,7 @@ function handleSpreadsheetData(response, message) {
           "rows": rows
         }
       };
-      handleChannelDemographics(newResponse);
+      displayChannelDemographics(newResponse);
     } else if (message == "Thumbnail Chart Uploads") {
       let videoList = response.result.values;
       recordUploads(videoList);

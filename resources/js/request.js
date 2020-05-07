@@ -56,7 +56,7 @@ function requestChannelDemographics(startDate, endDate) {
     "sort": "gender,ageGroup",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ChannelDemographics: ", handleChannelDemographics);
+  callAnalyticsAPI(request, "ChannelDemographics: ", displayChannelDemographics);
 }
 
 function requestChannelSearchTerms(startDate, endDate) {
@@ -243,18 +243,39 @@ function requestCardPerformance(startDate, endDate, month) {
 
 /* Google Sheets Calls */
 
-function requestSpreadsheetData(sheetName, range, message) {
+// QUESTION: should this be an async function?
+function requestSpreadsheetData(sheetName, range) {
   var spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
     var request = {
       "spreadsheetId": spreadsheetId,
       "range": range
     };
-    if (message != undefined) {
-      range = message
-    }
-    callSheetsAPIGet(request, "SpreadsheetData: ", handleSpreadsheetData, range);
+    var sheetPromise = gapi.client.sheets.spreadsheets.values.get(request)
+      .then(response => {
+        console.log(`SpreadsheetData: ${range}`);
+        return Promise.resolve(response.result.values);
+      })
+      .catch(err => {
+        console.error(`Unable to get sheet: "${range}"`, err);
+        // TODO: Throw error & wrap function in retry block
+        // throw err;
+      });
+    return sheetPromise;
+  } else {
+    console.error(`No spreadsheet exists with sheetName: "${sheetName}"`);
   }
+}
+
+function callSheetsAPIGet(request, source, callback, message) {
+  gapi.client.sheets.spreadsheets.values.get(request)
+    .then(response => {
+      console.log(source, response);
+      callback(response, message);
+    })
+    .catch(err => {
+      console.error("Google Sheets API call error", err);
+    });
 }
 
 // QUESTION: should this be an async function?

@@ -72,3 +72,102 @@ function calcCategoryStats(categoryTotals) {
   
   return categoryStats;
 }
+
+function updateVideoAndCategoryStats() {
+  const categoryPromise = getCategoryList();
+  const videoPromise = getVideoList();
+  Promise.all([categoryPromise, videoPromise])
+    .then(response => {
+      console.log(JSON.stringify(response));
+      let categoryTotals = response[0][0];
+      let statsByVideoId = mergedResponse[1][0];
+      let uploads = mergedResponse[1][1];
+      // displayUploadThumbnails();
+      // getVideoStats(uploads);
+    });
+}
+
+function getCategoryList() {
+  return requestSpreadsheetData("Input Data", "Category List")
+    .then(categoryList => {
+      let categoryTotals = recordCategoryListData(categoryList);
+      return categoryTotals;
+    });
+}
+
+function getVideoList() {
+  return requestSpreadsheetData("Input Data", "Video List")
+    .then(videoList => {
+      // returns [statsByVideoId, uploads]
+      return recordVideoListData(videoList);
+    });
+}
+
+function getCategoryStats() {
+  return requestSpreadsheetData("Stats", "Category Stats")
+    .then(categoriesSheet => {
+      let categoryStats = recordCategoryStats(categoriesSheet);
+      return categoryStats;
+    });
+}
+
+function getVideoStats() {
+  return requestSpreadsheetData("Stats", "Video Stats")
+    .then(videoSheet => recordVideoData(videoSheet));
+}
+
+function loadChannelDemographics() {
+  return requestSpreadsheetData("Stats", "Channel Demographics")
+    .then(response => {
+      var rows = JSON.parse(response[0][0]);
+      var newResponse = {
+        "result": {
+          "rows": rows
+        }
+      };
+      displayChannelDemographics(newResponse);
+    });
+}
+
+function loadTopTenDashboard() {
+  return requestSpreadsheetData("Stats", "Top Ten Videos")
+    .then(topTenSheet => displayTopTenThumbnails(topTenSheet));
+}
+
+function loadUserFeedbackDashboard() {
+  return requestSpreadsheetData("Input Data", "User Feedback List")
+    .then(feedbackSheet => displayUserFeedback(feedbackSheet));
+}
+
+function loadCardPerformanceDashboard() {
+  return requestSpreadsheetData("Stats", "Card Performance")
+    .then(cardData => displayCardPerformanceCharts(cardData));
+}
+
+function loadRealTimeStatsDashboard() {
+  return requestSpreadsheetData("Stats", "Real Time Stats")
+    .then(realTimeStatsSheet => {
+      let realTimeStats = recordRealTimeStatsFromSheets(realTimeStatsSheet);
+      displayRealTimeStats(realTimeStats);
+    });
+}
+
+function loadGraphsFromSheets() {
+  return requestSpreadsheetData("Stats", "Graph Data")
+    .then(graphData => recordGraphDataFromSheets(graphData));
+}
+
+function loadTopVideoStats() {
+  return requestSpreadsheetData("Stats", "Top Video Stats")
+    .then(topVideoStatsSheet => {
+      recordTopVideoStatsFromSheets(topVideoStatsSheet);
+    });
+}
+
+function loadCategoryCharts() {
+  return requestSpreadsheetData("Stats", "Category Traces")
+    .then(response => {
+      let categoryTraces = JSON.parse(response.result.values[0][0]);
+      displayCategoryViewsAreaCharts(categoryTraces);
+    });
+}

@@ -54,7 +54,8 @@ function loadUploads() {
       <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
     `;
     requestSpreadsheetData("Input Data", "Video List",
-        "Thumbnail Chart Uploads");
+        "Thumbnail Chart Uploads")
+      .then(videoList => recordUploads(videoList));
     document.getElementById("error-container").className = "d-none"
   } catch (err) {
     //console.log(err);
