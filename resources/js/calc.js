@@ -78,12 +78,14 @@ function updateVideoAndCategoryStats() {
   const videoPromise = getVideoList();
   Promise.all([categoryPromise, videoPromise])
     .then(response => {
-      console.log(JSON.stringify(response));
-      let categoryTotals = response[0][0];
-      let statsByVideoId = mergedResponse[1][0];
-      let uploads = mergedResponse[1][1];
-      // displayUploadThumbnails();
-      // getVideoStats(uploads);
+      let categoryTotals = response[0];
+      let statsByVideoId = response[1][0];
+      let uploads = response[1][1];
+      console.log("categoryTotals:", categoryTotals);
+      console.log("statsByVideoId:", statsByVideoId);
+      console.log("uploads:", uploads);
+      displayUploadThumbnails();
+      getVideoStats(uploads);
     });
 }
 

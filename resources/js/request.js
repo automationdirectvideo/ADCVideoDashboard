@@ -363,7 +363,7 @@ function getVideoStats(videos) {
     requests.push(request);
   }
 
-  Promise.all(requests)
+  let getVideoRequest = Promise.all(requests)
     .then(response => {
       console.log(response);
       let allVideoStats = [].concat.apply([], response);
@@ -377,7 +377,6 @@ function getVideoStats(videos) {
     })
     .catch(err => console.log(`Promise.all error: ${err}`));
     
-  // let getVideoRequest = 
   // TODO: Maybe remove this catch block. Needs more research
   // https://javascript.info/promise-chaining
 
