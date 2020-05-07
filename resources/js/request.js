@@ -307,16 +307,16 @@ function updateSheetData(sheetName, range, body) {
 /* Multiple Requests Functions */
 
 // TODO: Delete this function and functions only used by its
-function getAllVideoStats(uploads) {
-  var settings = {
-    "uploads": uploads,
-    "index": 0
-  };
-  localStorage.setItem("allVideoStats", JSON.stringify([]));
-  requestVideoStatisticsOverall(settings);
-}
+// function getAllVideoStats(uploads) {
+//   var settings = {
+//     "uploads": uploads,
+//     "index": 0
+//   };
+//   localStorage.setItem("allVideoStats", JSON.stringify([]));
+//   requestVideoStatisticsOverall(settings);
+// }
 
-function getVideoStats(videos) {
+function getAllVideoStats(videos) {
   var requests = [];
   for (let i = 0; i < videos.length; i += 50) {
     const fiftyVideos = videos.slice(i, i + 50);

@@ -85,7 +85,7 @@ function updateVideoAndCategoryStats() {
       console.log("statsByVideoId:", statsByVideoId);
       console.log("uploads:", uploads);
       displayUploadThumbnails();
-      getVideoStats(uploads);
+      getAllVideoStats(uploads);
     });
 }
 
