@@ -9,9 +9,15 @@ function requestChannelNumVideos() {
     part: "statistics",
     forUsername: "automationdirect"
   };
-  callDataAPIChannels(request, "ChannelInfo: ", handleChannelNumVideos);
+  return gapi.client.youtube.channels.list(request)
+    .then(response => {
+      let numVideos = response.result.items[0].statistics.videoCount;
+      document.getElementById("num-videos").innerText = numVideos;
+    })
+    .catch(err => {
+      console.error("Unable to get number of channel videos:", err);
+    });
 }
-
 
 /* Get All Video Stats Calls */
 

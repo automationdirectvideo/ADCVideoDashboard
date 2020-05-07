@@ -1,17 +1,6 @@
 /* Handles responses of API calls */
 
 
-/* 1000 Thumbnail Dashboard Calls */
-
-// Displays the number of videos the channel has
-function handleChannelNumVideos(response) {
-  if (response) {
-    let numVideos = response.result.items[0].statistics.videoCount;
-    document.getElementById("num-videos").innerText = numVideos;
-  }
-}
-
-
 /* Get All Video Stats Calls */
 
 function handleVideoViewsByYear(response, settings) {
