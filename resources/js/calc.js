@@ -167,7 +167,7 @@ function loadTopVideoStats() {
 function loadCategoryCharts() {
   return requestSpreadsheetData("Stats", "Category Traces")
     .then(response => {
-      let categoryTraces = JSON.parse(response.result.values[0][0]);
+      let categoryTraces = JSON.parse(response[0][0]);
       displayCategoryViewsAreaCharts(categoryTraces);
     });
 }
