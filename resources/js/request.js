@@ -336,7 +336,7 @@ function getAllVideoStats(videos) {
           const video = videoItems[index];
           const videoId = video.id;
           const videoStats = video.statistics;
-          const durationStr = response.result.items[0].contentDetails.duration;
+          const durationStr = video.contentDetails.duration;
           const duration = parseInt(isoDurationToSeconds(durationStr));
           const viewCount = parseInt(videoStats.viewCount);
           const likeCount = parseInt(videoStats.likeCount);
