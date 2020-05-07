@@ -213,7 +213,7 @@ function updateRealTimeStats(updateCount) {
 
 // Initialize real time stats in real time stats dashboard
 function displayRealTimeStats(stats) {
-  let stats = stats || JSON.parse(localStorage.getItem("realTimeStats"));
+  stats = stats || JSON.parse(localStorage.getItem("realTimeStats"));
   if (stats.cumulative && stats.month && stats.today) {
 
     //console.log("Real Time Stats: ", stats);
