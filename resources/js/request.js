@@ -257,7 +257,8 @@ function requestSpreadsheetData(sheetName, range, message) {
   }
 }
 
-function requestUpdateSheetData(sheetName, range, body) {
+// QUESTION: should this be an async function?
+function updateSheetData(sheetName, range, body) {
   var spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
     var request = {
@@ -266,8 +267,19 @@ function requestUpdateSheetData(sheetName, range, body) {
       "valueInputOption": "RAW",
       "resource": body
     };
-    callSheetsAPIUpdate(request, "UpdateSheetData:", handleUpdateSheetData,
-        range);
+    var updatePromise = gapi.client.sheets.spreadsheets.values.update(request)
+      .then(response => {
+        console.log(`UpdateSheetData: ${range}`);
+        return Promise.resolve(response);
+      })
+      .catch(err => {
+        console.error(`Unable to update sheet: "${range}"`, err);
+        // TODO: Throw error & wrap function in retry block
+        // throw err;
+      });
+    return updatePromise;
+  } else {
+    console.error(`No spreadsheet exists with sheetName: "${sheetName}"`);
   }
 }
 
@@ -335,11 +347,11 @@ function getVideoStats(videos) {
       console.log(response);
       let allVideoStats = [].concat.apply([], response);
       localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
-      let categoryTotals = calcCategoryTotals(allVideoStats);
+      let categoryTotals = updateCategoryTotals(allVideoStats);
       let categoryStats = calcCategoryStats(categoryTotals);
-      
-      saveCategoryStatsToSheets(categoryStats); // TODO: should this return a promise?
-      saveVideoStatsToSheets(allVideoStats); // TODO: should this return a promise?
+
+      saveCategoryStatsToSheets(categoryStats); // QUESTION: should this return a promise?
+      saveVideoStatsToSheets(allVideoStats); // QUESTION: should this return a promise?
       updateTopTenVideoSheet();
     })
     .catch(err => console.log(`Promise.all error: ${err}`));

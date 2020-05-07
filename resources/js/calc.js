@@ -1,5 +1,5 @@
-// Calculates total views, likes, etc. for each category given all video stats
-function calcCategoryTotals(allVideoStats) {
+// Updates total views, likes, etc. for each category given all video stats
+function updateCategoryTotals(allVideoStats) {
   let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
 

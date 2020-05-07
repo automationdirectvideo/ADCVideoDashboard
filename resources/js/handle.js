@@ -229,7 +229,7 @@ function handleChannelDemographics(response) {
           ]
         ]
       }
-      requestUpdateSheetData("Stats", "Channel Demographics", body);
+      updateSheetData("Stats", "Channel Demographics", body);
     }
   }
 }
@@ -746,7 +746,7 @@ function handleMostWatchedVideos(response, month) {
       };
       var row = 3 + monthDiff(new Date(2010, 6), new Date(month));
       var sheet = "Top Ten Videos!A" + row;
-      requestUpdateSheetData("Stats", sheet, body);
+      updateSheetData("Stats", sheet, body);
     }
   }
 }
@@ -1061,7 +1061,7 @@ function handleCardPerformance(response, month) {
       };
       var row = 3 + monthDiff(new Date(2017, 9), new Date(month));
       var sheet = "Card Performance!A" + row;
-      requestUpdateSheetData("Stats", sheet, body);
+      updateSheetData("Stats", sheet, body);
     } catch (err) {
       console.log("No card data exists for month: " + month);
     }
@@ -1132,15 +1132,6 @@ function handleSpreadsheetData(response, message) {
     let date = new Date();
     date.setHours(10, 30, 0, 0);
     localStorage.setItem("lastUpdatedOn", date.toString());
-  }
-}
-
-// Gets Top Ten Videos stats if "Video Stats" sheet was updated
-function handleUpdateSheetData(response, message) {
-  if (response) {
-    if (message == "Video Stats") {
-      updateTopTenVideoSheet();
-    }
   }
 }
 

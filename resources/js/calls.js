@@ -49,16 +49,3 @@ function callSheetsAPIGet(request, source, callback, message) {
       console.error("Google Sheets API call error", err);
     });
 }
-
-// Calls the Sheets API for updating values with a request and returns response
-// to callback
-function callSheetsAPIUpdate(request, source, callback, message) {
-  gapi.client.sheets.spreadsheets.values.update(request)
-    .then(response => {
-      console.log(source, response);
-      callback(response, message);
-    })
-    .catch(err => {
-      console.error("Google Sheets API call error", err);
-    });
-}

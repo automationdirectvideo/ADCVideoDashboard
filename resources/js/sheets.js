@@ -414,7 +414,7 @@ function saveCategoryStatsToSheets(categoryStats) {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("Stats", "Category Stats", body);
+  var updatePromise = updateSheetData("Stats", "Category Stats", body);
 }
 
 // Saves categoryTraces for the Category Area Charts to Google Sheets
@@ -426,7 +426,7 @@ function saveCategoryTracesToSheets(categoryTraces) {
       ]
     ]
   };
-  requestUpdateSheetData("Stats", "Category Traces", body);
+  updateSheetData("Stats", "Category Traces", body);
 }
 
 // Saves categoryYearlyStats to Google Sheets
@@ -466,7 +466,7 @@ function saveCategoryYearlyStatsToSheets(year) {
           "values": sheetValues
         };
         var sheetName = "Category Views By Year";
-        requestUpdateSheetData("Stats", sheetName, body);
+        updateSheetData("Stats", sheetName, body);
         localStorage.removeItem("categoryYearlyTotals");
       }
     })
@@ -499,7 +499,7 @@ function saveVideoStatsToSheets(allVideoStats) {
   var body= {
     "values": values
   };
-  requestUpdateSheetData("Stats", "Video Stats", body);
+  var updatePromise = updateSheetData("Stats", "Video Stats", body);
 }
 
 // Saves graphData to Google Sheets
@@ -530,7 +530,7 @@ function saveGraphDataToSheets(graphData, sheetName) {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("Stats", sheetName, body);
+  updateSheetData("Stats", sheetName, body);
   if (removeItem) {
     localStorage.removeItem("graphData");
   }
@@ -566,7 +566,7 @@ function saveTopVideoStatsToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("Stats", "Top Video Stats", body);
+  updateSheetData("Stats", "Top Video Stats", body);
 }
 
 // Saves realTimeStats to Google Sheets
@@ -590,7 +590,7 @@ function saveRealTimeStatsToSheets() {
   var body = {
     "values": values
   };
-  requestUpdateSheetData("Stats", "Real Time Stats", body);
+  updateSheetData("Stats", "Real Time Stats", body);
 }
 
 function updateCardPerformanceSheet() {
