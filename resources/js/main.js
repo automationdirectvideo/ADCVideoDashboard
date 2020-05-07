@@ -799,7 +799,7 @@ function displayCardPerformanceCharts(cardData) {
 }
 
 function displayTopCategories(categoryStats) {
-  let categoryStats = categoryStats ||
+  categoryStats = categoryStats ||
       JSON.parse(localStorage.getItem("categoryStats"));
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
