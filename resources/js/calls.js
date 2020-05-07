@@ -36,16 +36,3 @@ function callDataAPIVideos(request, source, callback, message) {
       console.error("Data API call error", err);
     });
 }
-
-// Calls the Sheets API for getting values with a request and returns response
-// to callback
-function callSheetsAPIGet(request, source, callback, message) {
-  gapi.client.sheets.spreadsheets.values.get(request)
-    .then(response => {
-      console.log(source, response);
-      callback(response, message);
-    })
-    .catch(err => {
-      console.error("Google Sheets API call error", err);
-    });
-}

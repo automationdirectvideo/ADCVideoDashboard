@@ -14,62 +14,6 @@ function handleChannelNumVideos(response) {
 
 /* Get All Video Stats Calls */
 
-// Saves video stats to allVideoStats and categoryTotals
-// Semi-recursively calls requestVideoStatisticsOverall for all uploads
-function handleVideoStatisticsOverall(response, settings) {
-  if (response) {
-    let videoId = response.result.items[0].id;
-    let videoStats = response.result.items[0].statistics;
-    let durationStr = response.result.items[0].contentDetails.duration;
-    let duration = parseInt(isoDurationToSeconds(durationStr));
-    let viewCount = parseInt(videoStats.viewCount);
-    let likeCount = parseInt(videoStats.likeCount);
-    let dislikeCount = parseInt(videoStats.dislikeCount);
-    let commentCount = parseInt(videoStats.commentCount);
-    let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-    let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-    let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-    let row = {
-      "videoId": videoId,
-      "views": viewCount,
-      "likes": likeCount,
-      "dislikes": dislikeCount,
-      "comments": commentCount
-    };
-    allVideoStats.push(row);
-    statsByVideoId[videoId]["duration"] = duration;
-    let categories = statsByVideoId[videoId]["categories"];
-    for (let i = 0; i < categories.length; i++) {
-      let categoryId = categories[i];
-      if (categoryTotals[categoryId] == undefined) {
-        categoryTotals[categoryId] = {};
-        categoryTotals[categoryId]["videos"] = [];
-      }
-      let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
-      let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
-      let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
-      let categoryVideos = categoryTotals[categoryId]["videos"];
-      categoryVideos.push(videoId);
-      categoryTotals[categoryId]["views"] = categoryViews + viewCount;
-      categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
-      categoryTotals[categoryId]["duration"] = categoryDuration + duration;
-      categoryTotals[categoryId]["videos"] = categoryVideos;
-    }
-    localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
-    localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
-    localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
-
-    let uploads = settings["uploads"];
-    let index = parseInt(settings["index"]);
-    if (index + 1 < uploads.length) {
-      settings["index"] = index + 1;
-      requestVideoStatisticsOverall(settings);
-    } else {
-      calcCategoryStats();
-    }
-  }
-}
-
 function handleVideoViewsByYear(response, settings) {
   if (response) {
     let stats = response.result.rows[0];
@@ -1068,72 +1012,6 @@ function handleCardPerformance(response, month) {
   }
 }
 
-
-/* Google Sheets Calls */
-
-// Calls different functions based on what sheet data was requested
-function handleSpreadsheetData(response, message) {
-  if (response) {
-    if (message == "Category List") {
-      let categoryList = response.result.values;
-      recordCategoryListData(categoryList);
-    } else if (message == "Video List") {
-      let videoList = response.result.values;
-      recordVideoListData(videoList);
-    } else if (message == "Video Stats") {
-      let videoSheet = response.result.values;
-      recordVideoData(videoSheet);
-    } else if (message == "Category Stats") {
-      let categoriesSheet = response.result.values;
-      recordCategoryStats(categoriesSheet);
-    } else if (message == "Top Ten Videos") {
-      let topTenSheet = response.result.values;
-      displayTopTenThumbnails(topTenSheet);
-    } else if (message == "User Feedback List") {
-      let feedbackSheet = response.result.values;
-      displayUserFeedback(feedbackSheet);
-    } else if (message == "Graph Data") {
-      let graphData = response.result.values;
-      recordGraphDataFromSheets(graphData);
-    } else if (message == "Top Video Stats") {
-      let topVideoStatsSheet = response.result.values;
-      recordTopVideoStatsFromSheets(topVideoStatsSheet);
-    } else if (message == "Real Time Stats") {
-      let realTimeStatsSheet = response.result.values;
-      recordRealTimeStatsFromSheets(realTimeStatsSheet);
-    } else if (message == "Channel Demographics") {
-      var rows = JSON.parse(response.result.values[0][0]);
-      var newResponse = {
-        "result": {
-          "rows": rows
-        }
-      };
-      displayChannelDemographics(newResponse);
-    } else if (message == "Thumbnail Chart Uploads") {
-      let videoList = response.result.values;
-      recordUploads(videoList);
-    } else if (message == "Category Views By Year") {
-      let yearlyCategorySheet = response.result.values;
-      try {
-        recordYearlyCategoryViews(yearlyCategorySheet);
-      } catch (err)  {
-        console.log(err);
-        window.setTimeout(function () {
-          recordYearlyCategoryViews(yearlyCategorySheet);
-        }, 5000);
-      }
-    } else if (message == "Category Traces") {
-      let categoryTraces = JSON.parse(response.result.values[0][0]);
-      displayCategoryViewsAreaCharts(categoryTraces);
-    } else if (message == "Card Performance") {
-      let cardData = response.result.values;
-      displayCardPerformanceCharts(cardData);
-    }
-    let date = new Date();
-    date.setHours(10, 30, 0, 0);
-    localStorage.setItem("lastUpdatedOn", date.toString());
-  }
-}
 
 /* Non-dashboard Related Calls */
 
