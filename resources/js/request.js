@@ -25,7 +25,6 @@ function getAllVideoStats(videos) {
   var requests = [];
   for (let i = 0; i < videos.length; i += 50) {
     const fiftyVideos = videos.slice(i, i + 50);
-    console.log(fiftyVideos);
     const fiftyVideosStr = fiftyVideos.join(",");
     var gapiRequest = {
       "part": "statistics,contentDetails",
@@ -33,8 +32,7 @@ function getAllVideoStats(videos) {
     };
     const request = gapi.client.youtube.videos.list(gapiRequest)
       .then(response => {
-        console.log(`Video Request`);
-        console.log(response);
+        console.log(`Video Request`, response);
         let stats = [];
         const videoItems = response.result.items;
         for (let index = 0; index < videoItems.length; index++) {
@@ -88,22 +86,71 @@ function getAllVideoStats(videos) {
   return getVideoRequest;
 }
 
-function requestVideoViewsByYear(settings) {
-  var videoId = settings["uploads"][settings["index"]];
-  var year = settings["year"];
-  var startDate = year + "-01-01";
-  var endDate = year + "-12-31";
-  var filters = "video==" + videoId;
-  var request = {
-    "dimensions": "video",
-    "endDate": endDate,
-    "filters": filters,
-    "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
-    "metrics": "views",
-    "startDate": startDate
+function requestVideoViewsByYear(uploads, year) {
+  var requests = [];
+  const startDate = year + "-01-01";
+  const endDate = year + "-12-31";
+
+  for (let i = 0; i < uploads.length; i += 50) {
+    const fiftyVideos = uploads.slice(i, i + 50);
+    const fiftyVideosStr = fiftyVideos.join(",");
+    const filters = "video==" + fiftyVideosStr;
+    const gapiRequest = {
+      "dimensions": "video",
+      "endDate": endDate,
+      "filters": filters,
+      "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
+      "metrics": "views",
+      "startDate": startDate
+    };
+    const request = gapi.client.youtubeAnalytics.reports.query(gapiRequest)
+      .then(response => {
+        return response.result.rows;
+      })
+      .catch(err => {
+        const errorMsg = `Error in fetching stats for video group` +
+          ` ${i} - ${i + 49}: ${err}`;
+        console.error(errorMsg, err);
+        return errorMsg;
+      });
+    requests.push(request);
   }
-  callAnalyticsAPI(request, "VideoViewsByYear: ", handleVideoViewsByYear,
-      settings);
+
+  const viewsRequest = Promise.all(requests)
+    .then(response => {
+      const allVideoViews = [].concat.apply([], response);
+      console.log(`${year} Views by Video:`, allVideoViews);
+      const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+      const categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+      let categoryYearlyTotals = {};
+      for (let i = 0; i < categoryStats.length; i++) {
+        const categoryId = categoryStats[i]["categoryId"];
+        const shortName = categoryStats[i]["shortName"];
+        categoryYearlyTotals[categoryId] = {
+          "numVideos": 0,
+          "shortName": shortName,
+          "views": 0
+        }
+      }
+
+      allVideoViews.forEach(video => {
+        const videoId = video[0];
+        const viewCount = video[1];
+        const categories = statsByVideoId[videoId]["categories"];
+        for (let i = 0; i < categories.length; i++) {
+          const categoryId = categories[i];
+          const categoryViews = parseInt(categoryYearlyTotals[categoryId]["views"]);
+          const categoryNumVideos =
+              parseInt(categoryYearlyTotals[categoryId]["numVideos"]);
+          categoryYearlyTotals[categoryId]["views"] = categoryViews + viewCount;
+          categoryYearlyTotals[categoryId]["numVideos"] = categoryNumVideos + 1;
+        }
+
+      });
+      return saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year);
+    })
+    .catch(err => console.error("Unable to get video views by year", err));
+  return viewsRequest;
 }
 
 
@@ -359,36 +406,19 @@ function updateSheetData(sheetName, range, body) {
 /* Multiple Requests Functions */
 
 function getYearlyCategoryViews(year) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let uploadsByYear = [];
   for (var videoId in statsByVideoId) {
     if (statsByVideoId.hasOwnProperty(videoId)) {
-      let publishDate = statsByVideoId[videoId]["publishDate"];
-      let publishYear = publishDate.substr(0,4);
+      const publishDate = statsByVideoId[videoId]["publishDate"];
+      const publishYear = publishDate.substr(0,4);
       if (year >= publishYear) {
         uploadsByYear.push(videoId);
       }
     }
   }
-  let settings = {
-    "index": 0,
-    "uploads": uploadsByYear,
-    "year": year
-  };
-  let categoryStats = JSON.parse(localStorage.categoryStats);
-  let categoryYearlyTotals = {};
-  for (var i = 0; i < categoryStats.length; i++) {
-    let categoryId = categoryStats[i]["categoryId"];
-    let shortName = categoryStats[i]["shortName"];
-    categoryYearlyTotals[categoryId] = {
-      "numVideos": 0,
-      "shortName": shortName,
-      "views": 0
-    }
-  }
-  localStorage.setItem("categoryYearlyTotals",
-      JSON.stringify(categoryYearlyTotals));
-  requestVideoViewsByYear(settings);
+  
+  return requestVideoViewsByYear(uploadsByYear, year);
 }
 
 function getCardPerformanceByMonth(startDate) {

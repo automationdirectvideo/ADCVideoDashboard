@@ -427,15 +427,13 @@ function saveCategoryTracesToSheets(categoryTraces) {
 }
 
 // Saves categoryYearlyStats to Google Sheets
-function saveCategoryYearlyStatsToSheets(year) {
-  var categoryYearlyTotals =
-      JSON.parse(localStorage.getItem("categoryYearlyTotals"));
+function saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year) {
   var spreadsheetId = sheetNameToId("Stats");
   var request = {
     "spreadsheetId": spreadsheetId,
     "range": "Category Views By Year"
   };
-  gapi.client.sheets.spreadsheets.values.get(request)
+  return gapi.client.sheets.spreadsheets.values.get(request)
     .then(response => {
       if (response) {
         sheetValues = response.result.values;
@@ -464,7 +462,6 @@ function saveCategoryYearlyStatsToSheets(year) {
         };
         var sheetName = "Category Views By Year";
         updateSheetData("Stats", sheetName, body);
-        localStorage.removeItem("categoryYearlyTotals");
       }
     })
     .catch(err => {
