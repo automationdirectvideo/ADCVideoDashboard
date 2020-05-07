@@ -273,6 +273,7 @@ function requestUpdateSheetData(sheetName, range, body) {
 
 /* Multiple Requests Functions */
 
+// TODO: Delete this function and functions only used by its
 function getAllVideoStats(uploads) {
   var settings = {
     "uploads": uploads,
@@ -280,6 +281,74 @@ function getAllVideoStats(uploads) {
   };
   localStorage.setItem("allVideoStats", JSON.stringify([]));
   requestVideoStatisticsOverall(settings);
+}
+
+function getVideoStats(videos) {
+  var requests = [];
+  for (let i = 0; i < videos.length; i += 50) {
+    const fiftyVideos = videos.slice(i, i + 50);
+    console.log(fiftyVideos);
+    const fiftyVideosStr = fiftyVideos.join(",");
+    var gapiRequest = {
+      "part": "statistics,contentDetails",
+      "id": fiftyVideosStr
+    };
+    const request = gapi.client.youtube.videos.list(gapiRequest)
+      .then(response => {
+        console.log(`Video Request`);
+        console.log(response);
+        let stats = [];
+        const videoItems = response.result.items;
+        for (let index = 0; index < videoItems.length; index++) {
+          const video = videoItems[index];
+          const videoId = video.id;
+          const videoStats = video.statistics;
+          const durationStr = response.result.items[0].contentDetails.duration;
+          const duration = parseInt(isoDurationToSeconds(durationStr));
+          const viewCount = parseInt(videoStats.viewCount);
+          const likeCount = parseInt(videoStats.likeCount);
+          const dislikeCount = parseInt(videoStats.dislikeCount);
+          const commentCount = parseInt(videoStats.commentCount);
+          stats.push({
+            "videoId": videoId,
+            "views": viewCount,
+            "likes": likeCount,
+            "dislikes": dislikeCount,
+            "comments": commentCount,
+            "duration": duration
+          });
+        }
+        // Return for post-processing of the data elsewhere
+        return stats;
+      })
+      .catch(err => {
+        const errorMsg = `Error in fetching stats for video group` +
+          ` ${i} - ${i + 49}: ${err}`;
+        console.log(errorMsg);
+        return errorMsg;
+      });
+    requests.push(request);
+  }
+
+  Promise.all(requests)
+    .then(response => {
+      console.log(response);
+      let allVideoStats = [].concat.apply([], response);
+      localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+      let categoryTotals = calcCategoryTotals(allVideoStats);
+      let categoryStats = calcCategoryStats(categoryTotals);
+      
+      saveCategoryStatsToSheets(categoryStats); // TODO: should this return a promise?
+      saveVideoStatsToSheets(allVideoStats); // TODO: should this return a promise?
+      updateTopTenVideoSheet();
+    })
+    .catch(err => console.log(`Promise.all error: ${err}`));
+    
+  // let getVideoRequest = 
+  // TODO: Maybe remove this catch block. Needs more research
+  // https://javascript.info/promise-chaining
+
+  return getVideoRequest;
 }
 
 function getYearlyCategoryViews(year) {

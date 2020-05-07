@@ -52,7 +52,6 @@ function recordCategoryListData(categoryList) {
 }
 
 // Records video IDs from Google Sheet
-// Initiates displayUploadThumbnails() and getAllVideoStats()
 function recordVideoListData(videoList) {
   let statsByVideoId = {};
   let uploads = [];
@@ -105,7 +104,7 @@ function recordVideoListData(videoList) {
   localStorage.setItem("uploads", JSON.stringify(uploads));
 
   displayUploadThumbnails();
-  getAllVideoStats(uploads);
+  getVideoStats(uploads);
 }
 
 // Records category data from Google Sheet to localStorage.categoryStats
@@ -390,8 +389,7 @@ function recordYearlyCategoryViews(sheetValues) {
 }
 
 // Saves categoryStats to Google Sheets
-function saveCategoryStatsToSheets() {
-  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+function saveCategoryStatsToSheets(categoryStats) {
   var values = [
     ["Category ID", "Name", "Short Name", "Views", "Likes", "Duration (sec)",
     "Average Video Views", "Average Video Likes", "Average Video Duration",
@@ -478,12 +476,11 @@ function saveCategoryYearlyStatsToSheets(year) {
 }
 
 // Saves allVideoStats and statsByVideoId to Google Sheets
-function saveVideoStatsToSheets() {
+function saveVideoStatsToSheets(allVideoStats) {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
         "Comments", "Publish Date", "Categories"]
   ];
-  var allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
   var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];

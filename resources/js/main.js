@@ -328,47 +328,6 @@ function calcAvgVideoDuration() {
   }
 }
 
-function calcCategoryStats() {
-  let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-  let categoryStats = [];
-  for (var categoryId in categoryTotals) {
-    if (categoryTotals.hasOwnProperty(categoryId)) {
-      let totals = categoryTotals[categoryId];
-      let shortName = totals["shortName"];
-      let name = totals["name"];
-      let root = totals["root"];
-      let leaf = totals["leaf"];
-      let views = parseInt(totals["views"]);
-      let likes = parseInt(totals["likes"]);
-      let duration = parseInt(totals["duration"]);
-      let videos = totals["videos"];
-      let numVideos = videos.length;
-      let avgViews = views / numVideos;
-      let avgLikes = likes / numVideos;
-      let avgDuration = duration / numVideos;
-      categoryStats.push({
-        "avgDuration": avgDuration,
-        "avgLikes": avgLikes,
-        "avgViews": avgViews,
-        "categoryId": categoryId,
-        "duration": duration,
-        "leaf": leaf,
-        "likes": likes,
-        "name": name,
-        "root": root,
-        "shortName": shortName,
-        "videos": videos,
-        "views": views
-      });
-    }
-  }
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-
-  //console.log("Category Stats: ", categoryStats);
-  saveCategoryStatsToSheets();
-  saveVideoStatsToSheets();
-}
-
 function getTopVideoByCategory(categoryId, type, numVideos) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
@@ -1220,6 +1179,7 @@ function displayUploadThumbnails() {
     }
   } catch (err) {
     //console.log(err);
+    // TODO: Stop retrying after X attempts
     window.setTimeout(displayUploadThumbnails, 5000);
   }
 }
