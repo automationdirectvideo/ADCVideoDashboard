@@ -169,132 +169,16 @@ function requestChannelDemographics(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(`Channel Demographics`, response);
-      const rows = response.result.rows;
-      let maleTotal = 0;
-      let femaleTotal = 0;
-      let maleMax = 0;
-      let femaleMax = 0;
-      for (var i = 0; i < rows.length; i++) {
-        const percentage = parseFloat(rows[i][2]);
-        if (rows[i][1] == "female") {
-          femaleTotal += percentage;
-          if (percentage > femaleMax) {
-            femaleMax = percentage;
-          }
-        } else {
-          maleTotal += percentage;
-          if (percentage > maleMax) {
-            maleMax = percentage;
-          }
-        }
-      }
-      for (var i = 0; i < rows.length; i++) {
-        const range = rows[i][0].substr(3);
-        const percentage = rows[i][2];
-        let cell = document.getElementById(rows[i][1] + "-" + range);
-        cell.innerHTML = `<span>${percentage}</span>%`;
-        if (rows[i][1] == "female") {
-          cell.style.opacity = ((parseFloat(percentage) / femaleMax) + 1.5) / 2.5;
-        } else {
-          cell.style.opacity = ((parseFloat(percentage) / maleMax) + 1.5) / 2.5;
-        }
-      }
-      maleTotal = Math.round(maleTotal * 10) / 10;
-      femaleTotal = Math.round(femaleTotal * 10) / 10;
-      if (maleTotal + femaleTotal != 100) {
-        const diff = 100 - (maleTotal + femaleTotal);
-        femaleTotal += diff;
-        femaleTotal = Math.round(femaleTotal * 10) / 10;
-      }
-      document.getElementById("male-title").innerHTML = `
-        <i class="fas fa-male" style="font-size:3rem"></i>
-        <br>
-        <span style="font-size:2rem">${maleTotal}</span>
-        %
-      `;
-      document.getElementById("female-title").innerHTML = `
-        <i class="fas fa-female" style="font-size:3rem"></i>
-        <br>
-        <span style="font-size:2rem">${femaleTotal}</span>
-        %
-      `;
-  
-      const graphId = "demographics-graph";
-      const graphHeight = 0.0875;
-      const graphWidth = 0.0500;
-      const height = graphHeight * document.documentElement.clientHeight;
-      const width = graphWidth * document.documentElement.clientWidth;
-  
-      const values = [maleTotal, femaleTotal];
-      const labels = ["Male", "Female"];
-      const data = [{
-        values: values,
-        labels: labels,
-        textinfo: "none",
-        hoverinfo: "none",
-        marker: {
-          colors: ["rgb(84, 157, 209)", "rgb(146, 111, 209)"]
-        },
-        type: 'pie',
-      }];
-  
-      const layout = {
-        height: height,
-        weight: width,
-        showlegend: false,
-        margin: {
-          l: 0,
-          r: 0,
-          t: 0,
-          b: 0,
-          pad: 4
-        }
-      };
-  
-      const config = {
-        staticPlot: true
-      };
-  
-      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        var currentSettings = JSON.parse(localStorage.getItem("settings"));
-        var theme = "";
-        var index = 0;
-        while (index < currentSettings.dashboards.length && theme == "") {
-          if (currentSettings.dashboards[index].name == "platform") {
-            theme = currentSettings.dashboards[index].theme;
-          }
-          index++;
-        }
-        if (theme == "dark") {
-          layout["plot_bgcolor"] = "#222";
-          layout["paper_bgcolor"] = "#222";
-        }
-      }
-  
-      var graphContainer = document.getElementById(graphId);
-      graphContainer.style.height = width + "px";
-      graphContainer.style.width = width + "px";
-  
-      Plotly.newPlot(graphId, data, layout, config);
-  
-      recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-      recordGraphSize(graphId, graphHeight, graphWidth);
-  
-      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-        const body = {
-          values: [
-            [
-              JSON.stringify(rows)
-            ]
-          ]
-        }
-        return updateSheetData("Stats", "Channel Demographics", body);
-      }
-      // QUESTION: Should function return a promise if not signed in?
+      return response;
     })
     .catch(err => {
       console.error("Error fetching Channel Demographics", err);
-      return err;
+    })
+    .then(response => {
+      return displayChannelDemographics(response);
+    })
+    .catch(err => {
+      console.error("Error displaying Channel Demographics", err);
     });
 }
 
@@ -309,24 +193,48 @@ function requestChannelSearchTerms(startDate, endDate) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ChannelSearchTerms: ", handleChannelSearchTerms);
-  
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log(`Channel Search Terms`, response);
+      return response;
+    })
+    .catch(err => {
+      console.error("Error getting Channel Search Terms", err);
+    })
+    .then(response => {
+      return displayChannelSearchTerms(response);
+    })
+    .catch(err => {
+      console.error("Error displaying Channel Search Terms", err);
+    });
 }
 
-function requestMinutesSubscribedStatus(startDate, endDate) {
-  var request = {
+function requestWatchTimeBySubscribedStatus(startDate, endDate) {
+  const request = {
     "dimensions": "subscribedStatus",
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "estimatedMinutesWatched",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MinutesSubscribedStatus: ",
-      handleMinutesSubscribedStatus);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log(`Watch Time By Subscribed Status`, response);
+      return response;
+    })
+    .catch(err => {
+      console.error("Error getting Watch Time By Subscribed Status", err);
+    })
+    .then(response => {
+      return displayWatchTimeBySubscribedStatus(response);
+    })
+    .catch(err => {
+      console.error("Error displaying Watch Time By Subscribed Status", err);
+    });
 }
 
 function requestViewsByDeviceType(startDate, endDate) {
-  var request = {
+  const request = {
     "dimensions": "deviceType",
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
@@ -334,11 +242,24 @@ function requestViewsByDeviceType(startDate, endDate) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ViewsByDeviceType: ", handleViewsByDeviceType);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Views By Device Type", response);
+      return response;
+    })
+    .catch(err => {
+      console.error("Error getting Views By Device Type", err);
+    })
+    .then(response => {
+      return displayViewsByDeviceType(response);
+    })
+    .catch(err => {
+      console.error("Error displaying Views By Device Type", err);
+    });
 }
 
 function requestViewsByState(startDate, endDate) {
-  var request = {
+  const request = {
     "dimensions": "province",
     "endDate": endDate,
     "filters": "country==US",
@@ -347,11 +268,24 @@ function requestViewsByState(startDate, endDate) {
     "sort": "province",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ViewsByTrafficSource: ", handleViewsByState);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Views By State", response);
+      return response;
+    })
+    .catch(err => {
+      console.error("Error getting Views By State", err);
+    })
+    .then(response => {
+      return displayViewsByState(response);
+    })
+    .catch(err => {
+      console.error("Error displaying Views By State", err);
+    });
 }
 
 function requestViewsByTrafficSource(startDate, endDate) {
-  var request = {
+  const request = {
     "dimensions": "insightTrafficSourceType",
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
@@ -359,8 +293,20 @@ function requestViewsByTrafficSource(startDate, endDate) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ViewsByTrafficSource: ",
-      handleViewsByTrafficSource);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Views By Traffic Source", response);
+      return response;
+    })
+    .catch(err => {
+      console.error("Error getting Views By Traffic Source", err);
+    })
+    .then(response => {
+      return displayViewsByTrafficSource(response);
+    })
+    .catch(err => {
+      console.error("Error displaying Views By Traffic Source", err);
+    });
 }
 
 
@@ -596,12 +542,20 @@ function getTopTenVideosByMonth(startDate) {
 }
 
 function platformDashboardCalls(startDate, endDate) {
-  requestChannelSearchTerms(startDate, endDate);
-  requestViewsByDeviceType(startDate, endDate);
-  requestViewsByTrafficSource(startDate, endDate);
-  requestViewsByState(startDate, endDate);
-  requestChannelDemographics(startDate, endDate);
-  requestMinutesSubscribedStatus(startDate, endDate);
+  let requests = [];
+  requests.push(requestChannelSearchTerms(startDate, endDate));
+  requests.push(requestViewsByDeviceType(startDate, endDate));
+  requests.push(requestViewsByTrafficSource(startDate, endDate));
+  requests.push(requestViewsByState(startDate, endDate));
+  requests.push(requestChannelDemographics(startDate, endDate));
+  requests.push(requestWatchTimeBySubscribedStatus(startDate, endDate));
+  return Promise.all(requests)
+    .then(response => {
+      console.log("Platform Dashboard Calls Successful", response);
+    })
+    .catch(err => {
+      console.error("Error occurred Platform Dashboard Calls", err);
+    });
 }
 
 // Requests data for real time stats dashboard
