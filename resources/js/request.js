@@ -158,7 +158,7 @@ function requestVideoViewsByYear(uploads, year) {
 
 // Request age group and gender of channel views
 function requestChannelDemographics(startDate, endDate) {
-  var request = {
+  const request = {
     "dimensions": "ageGroup,gender",
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
@@ -166,7 +166,136 @@ function requestChannelDemographics(startDate, endDate) {
     "sort": "gender,ageGroup",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "ChannelDemographics: ", displayChannelDemographics);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log(`Channel Demographics`, response);
+      const rows = response.result.rows;
+      let maleTotal = 0;
+      let femaleTotal = 0;
+      let maleMax = 0;
+      let femaleMax = 0;
+      for (var i = 0; i < rows.length; i++) {
+        const percentage = parseFloat(rows[i][2]);
+        if (rows[i][1] == "female") {
+          femaleTotal += percentage;
+          if (percentage > femaleMax) {
+            femaleMax = percentage;
+          }
+        } else {
+          maleTotal += percentage;
+          if (percentage > maleMax) {
+            maleMax = percentage;
+          }
+        }
+      }
+      for (var i = 0; i < rows.length; i++) {
+        const range = rows[i][0].substr(3);
+        const percentage = rows[i][2];
+        let cell = document.getElementById(rows[i][1] + "-" + range);
+        cell.innerHTML = `<span>${percentage}</span>%`;
+        if (rows[i][1] == "female") {
+          cell.style.opacity = ((parseFloat(percentage) / femaleMax) + 1.5) / 2.5;
+        } else {
+          cell.style.opacity = ((parseFloat(percentage) / maleMax) + 1.5) / 2.5;
+        }
+      }
+      maleTotal = Math.round(maleTotal * 10) / 10;
+      femaleTotal = Math.round(femaleTotal * 10) / 10;
+      if (maleTotal + femaleTotal != 100) {
+        const diff = 100 - (maleTotal + femaleTotal);
+        femaleTotal += diff;
+        femaleTotal = Math.round(femaleTotal * 10) / 10;
+      }
+      document.getElementById("male-title").innerHTML = `
+        <i class="fas fa-male" style="font-size:3rem"></i>
+        <br>
+        <span style="font-size:2rem">${maleTotal}</span>
+        %
+      `;
+      document.getElementById("female-title").innerHTML = `
+        <i class="fas fa-female" style="font-size:3rem"></i>
+        <br>
+        <span style="font-size:2rem">${femaleTotal}</span>
+        %
+      `;
+  
+      const graphId = "demographics-graph";
+      const graphHeight = 0.0875;
+      const graphWidth = 0.0500;
+      const height = graphHeight * document.documentElement.clientHeight;
+      const width = graphWidth * document.documentElement.clientWidth;
+  
+      const values = [maleTotal, femaleTotal];
+      const labels = ["Male", "Female"];
+      const data = [{
+        values: values,
+        labels: labels,
+        textinfo: "none",
+        hoverinfo: "none",
+        marker: {
+          colors: ["rgb(84, 157, 209)", "rgb(146, 111, 209)"]
+        },
+        type: 'pie',
+      }];
+  
+      const layout = {
+        height: height,
+        weight: width,
+        showlegend: false,
+        margin: {
+          l: 0,
+          r: 0,
+          t: 0,
+          b: 0,
+          pad: 4
+        }
+      };
+  
+      const config = {
+        staticPlot: true
+      };
+  
+      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        var currentSettings = JSON.parse(localStorage.getItem("settings"));
+        var theme = "";
+        var index = 0;
+        while (index < currentSettings.dashboards.length && theme == "") {
+          if (currentSettings.dashboards[index].name == "platform") {
+            theme = currentSettings.dashboards[index].theme;
+          }
+          index++;
+        }
+        if (theme == "dark") {
+          layout["plot_bgcolor"] = "#222";
+          layout["paper_bgcolor"] = "#222";
+        }
+      }
+  
+      var graphContainer = document.getElementById(graphId);
+      graphContainer.style.height = width + "px";
+      graphContainer.style.width = width + "px";
+  
+      Plotly.newPlot(graphId, data, layout, config);
+  
+      recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+      recordGraphSize(graphId, graphHeight, graphWidth);
+  
+      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        const body = {
+          values: [
+            [
+              JSON.stringify(rows)
+            ]
+          ]
+        }
+        return updateSheetData("Stats", "Channel Demographics", body);
+      }
+      // QUESTION: Should function return a promise if not signed in?
+    })
+    .catch(err => {
+      console.error("Error fetching Channel Demographics", err);
+      return err;
+    });
 }
 
 function requestChannelSearchTerms(startDate, endDate) {

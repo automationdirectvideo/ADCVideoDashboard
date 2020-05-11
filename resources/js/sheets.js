@@ -412,6 +412,7 @@ function saveCategoryStatsToSheets(categoryStats) {
     "values": values
   };
   var updatePromise = updateSheetData("Stats", "Category Stats", body);
+  return updatePromise;
 }
 
 // Saves categoryTraces for the Category Area Charts to Google Sheets
@@ -494,6 +495,7 @@ function saveVideoStatsToSheets(allVideoStats) {
     "values": values
   };
   var updatePromise = updateSheetData("Stats", "Video Stats", body);
+  return updatePromise;
 }
 
 // Saves graphData to Google Sheets
