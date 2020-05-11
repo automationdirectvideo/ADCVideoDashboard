@@ -618,39 +618,6 @@ function displayViewsByTrafficSource(response) {
 }
 
 
-/* Real Time Stats Calls */
-
-// Saves stats to realTimeStats then loads them
-function handleRealTimeStats(response, message) {
-  if (response) {
-    if (!localStorage.getItem("realTimeStats")) {
-      localStorage.setItem("realTimeStats", JSON.stringify({}));
-    }
-    let stats = JSON.parse(localStorage.getItem("realTimeStats"));
-    
-    let realTimeStats = {};
-    let headers = response.result.columnHeaders;
-    let row = response.result.rows[0];
-    for (let i = 0; i < row.length; i++) {
-      realTimeStats[headers[i].name] = row[i];
-    }
-    realTimeStats["netSubscribersGained"] = realTimeStats.subscribersGained -
-        realTimeStats.subscribersLost;
-    delete realTimeStats.subscribersGained;
-    delete realTimeStats.subscribersLost;
-    stats[message] = realTimeStats;
-    localStorage.setItem("realTimeStats", JSON.stringify(stats));
-
-    //console.log("Real Time Stats: ", stats);
-    // message is either "cumulative", "month", or "today"
-    if (message == "cumulative") {
-      saveRealTimeStatsToSheets();
-      displayRealTimeStats();
-    }
-  }
-}
-
-
 /* Top Ten Dashboard Calls */
 
 // Saves most watched videos by month to a Google Sheet

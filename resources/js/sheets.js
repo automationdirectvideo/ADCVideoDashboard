@@ -411,7 +411,7 @@ function saveCategoryStatsToSheets(categoryStats) {
   var body = {
     "values": values
   };
-  var updatePromise = updateSheetData("Stats", "Category Stats", body);
+  const updatePromise = updateSheetData("Stats", "Category Stats", body);
   return updatePromise;
 }
 
@@ -494,7 +494,7 @@ function saveVideoStatsToSheets(allVideoStats) {
   var body= {
     "values": values
   };
-  var updatePromise = updateSheetData("Stats", "Video Stats", body);
+  const updatePromise = updateSheetData("Stats", "Video Stats", body);
   return updatePromise;
 }
 
@@ -566,13 +566,12 @@ function saveTopVideoStatsToSheets() {
 }
 
 // Saves realTimeStats to Google Sheets
-function saveRealTimeStatsToSheets() {
+function saveRealTimeStatsToSheets(realTimeStats) {
   var values = [
     ["Time Range", "Views", "Estimated Minutes Watched",
         "Average View Duration", "Subscribers Gained"]
   ];
-  let realTimeStats = JSON.parse(localStorage.getItem("realTimeStats"));
-  for (var timeRange in realTimeStats) {
+  for (const timeRange in realTimeStats) {
     if (realTimeStats.hasOwnProperty(timeRange)) {
       var row = [];
       row.push(timeRange);
@@ -583,10 +582,11 @@ function saveRealTimeStatsToSheets() {
       values.push(row);
     }
   }
-  var body = {
+  const body = {
     "values": values
   };
-  updateSheetData("Stats", "Real Time Stats", body);
+  const updatePromise = updateSheetData("Stats", "Real Time Stats", body);
+  return updatePromise;
 }
 
 function updateCardPerformanceSheet() {

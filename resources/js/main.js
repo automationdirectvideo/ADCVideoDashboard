@@ -278,8 +278,6 @@ function displayRealTimeStats(stats) {
     avgDurationOdometer.value = stats.cumulative.averageViewDuration;
     calcAvgVideoDuration(stats.cumulative.averageViewDuration);
   }
-
-  
 }
 
 function loadIntroAnimation() {

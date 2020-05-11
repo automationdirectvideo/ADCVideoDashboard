@@ -276,28 +276,47 @@ function requestViewsByTrafficSource(startDate, endDate) {
 
 /* Real Time Stats Calls */
 
-function requestRealTimeStats(startDate, endDate, message) {
-  var request = {
+function requestRealTimeStats(startDate, endDate) {
+  const request = {
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views,subscribersGained,subscribersLost," +
         "estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "RealTimeStats: ", handleRealTimeStats, message);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Real Time Stats", response);
+
+      let realTimeStats = {};
+      const headers = response.result.columnHeaders;
+      const row = response.result.rows[0];
+      for (let i = 0; i < row.length; i++) {
+        realTimeStats[headers[i].name] = row[i];
+      }
+      realTimeStats["netSubscribersGained"] = realTimeStats.subscribersGained -
+          realTimeStats.subscribersLost;
+      delete realTimeStats.subscribersGained;
+      delete realTimeStats.subscribersLost;
+      return realTimeStats;
+    })
+    .catch(err => {
+      console.error("Error getting Real Time Stats", err);
+      throw err;
+    });
 }
 
 function requestRealTimeStatsCumulative() {
-  requestRealTimeStats(joinDate, getDateFromDaysAgo(4), "cumulative");
+  return requestRealTimeStats(joinDate, getDateFromDaysAgo(4));
 }
 
 function requestRealTimeStatsMonth() {
-  requestRealTimeStats(getDateFromDaysAgo(34), getDateFromDaysAgo(4), "month");
+  return requestRealTimeStats(getDateFromDaysAgo(34), getDateFromDaysAgo(4));
 }
 
 function requestRealTimeStatsToday() {
-  var date = getDateFromDaysAgo(3);
-  requestRealTimeStats(date, date, "today");
+  const date = getDateFromDaysAgo(3);
+  return requestRealTimeStats(date, date);
 }
 
 
@@ -525,10 +544,29 @@ function platformDashboardCalls(startDate, endDate) {
 
 // Requests data for real time stats dashboard
 function realTimeStatsCalls() {
-  console.log( "Real Time Stats Calls" );
-  requestRealTimeStatsMonth();
-  requestRealTimeStatsToday();
-  requestRealTimeStatsCumulative();
+  let requests = [];
+  requests.push(requestRealTimeStatsToday());
+  requests.push(requestRealTimeStatsMonth());
+  requests.push(requestRealTimeStatsCumulative());
+  return Promise.all(requests)
+    .then(response => {
+      console.log("Real Time Stats Result", response);
+      const realTimeStats = {
+        "today": response[0],
+        "month": response[1],
+        "cumulative": response[2]
+      };
+      console.log("New* Real Time Stats: ", realTimeStats)
+      localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
+      displayRealTimeStats(realTimeStats);
+      return saveRealTimeStatsToSheets(realTimeStats);
+    })
+    .then(response => {
+      return "Real Time Stats Completed";
+    })
+    .catch(err => {
+      console.error("Error occurred in Real Time Stats Calls", err);
+    });
 }
 
 // Makes requests data for top video dashboard
