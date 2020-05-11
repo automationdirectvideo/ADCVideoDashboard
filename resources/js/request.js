@@ -550,13 +550,11 @@ function realTimeStatsCalls() {
   requests.push(requestRealTimeStatsCumulative());
   return Promise.all(requests)
     .then(response => {
-      console.log("Real Time Stats Result", response);
       const realTimeStats = {
         "today": response[0],
         "month": response[1],
         "cumulative": response[2]
       };
-      console.log("New* Real Time Stats: ", realTimeStats)
       localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
       displayRealTimeStats(realTimeStats);
       return saveRealTimeStatsToSheets(realTimeStats);
