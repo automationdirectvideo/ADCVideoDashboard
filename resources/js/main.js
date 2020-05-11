@@ -162,7 +162,7 @@ function updateStats() {
         let lastYear = newUpdate.getFullYear() - 1;
         getYearlyCategoryViews(lastYear);
       }
-      updateTopTenVideoSheet();
+      getTopTenVideosForCurrMonth();
       updateCardPerformanceSheet();
       realTimeStatsCalls();
       updateVideoAndCategoryStats();

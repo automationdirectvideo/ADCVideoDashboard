@@ -76,7 +76,7 @@ function getAllVideoStats(videos) {
 
       saveCategoryStatsToSheets(categoryStats); // QUESTION: should this return a promise?
       saveVideoStatsToSheets(allVideoStats); // QUESTION: should this return a promise?
-      updateTopTenVideoSheet();
+      getTopTenVideosForCurrMonth();
     })
     .catch(err => console.log(`Promise.all error: ${err}`));
     
@@ -324,7 +324,7 @@ function requestRealTimeStatsToday() {
 
 // Requests the numVideos most watched videos from startDate to endDate
 function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
-  var request = {
+  const request = {
     "dimensions": "video",
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
@@ -333,8 +333,31 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "MostWatchedVideos: ", handleMostWatchedVideos,
-      month);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Most Watched Videos", response);
+      const videos = response.result.rows;
+      const uploads = JSON.parse(localStorage.getItem("uploads"));
+      if (month == undefined) {
+        throw new Error("Month is undefined");
+      }
+      var values = [[month]];
+      var index = 0;
+      var numVideos = 1;
+      while (numVideos <= 10) {
+        if (uploads.includes(videos[index][0])) {
+          values[0][numVideos] = videos[index][0];
+          values[0][numVideos + 10] = videos[index][1];
+          values[0][numVideos + 20] = videos[index][2];
+          numVideos++;
+        }
+        index++;
+      }
+      return values;
+    })
+    .catch(err => {
+      console.error("Error getting Most Watched Videos", err);
+    });
 }
 
 
@@ -502,26 +525,35 @@ function getCardPerformanceByMonth(startDate) {
   }
 }
 
-function getTopTenVideosByMonth(startDate) {
+function getTopTenVideosByMonthSince(startDate) {
   startDate = startDate || new Date("2010-07-1");
-  var endDate = new Date();
-  if (endDate - startDate > 0) {
+  let requests = [];
+  let firstMonth = undefined;
+  const endDate = new Date();
+  while (endDate - startDate > 0) {
     let firstDay = getYouTubeDateFormat(startDate);
-    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0));
+    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(),
+      startDate.getMonth() + 1, 0));
     let month = firstDay.substr(0, 7);
-    requestMostWatchedVideos(firstDay, lastDay, 20, month);
-    newStartDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
-    // Space out the calls to Data and Sheets APIs to stay under quota limit
-    setTimeout(function() {
-      getTopTenVideosByMonth(newStartDate);
-    }, 300);
-  } else {
-    // Wait to reload the page after the last Data API request is called
-    // TODO: look into reload timing/necessity
-    setTimeout(function() {
-      window.location.reload();
-    }, 5000);
+    if (firstMonth == undefined){
+      firstMonth = month;
+    }
+    requests.push(requestMostWatchedVideos(firstDay, lastDay, 20, month));
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
   }
+  return Promise.all(requests)
+    .then(response => {
+      const values = [].concat.apply([], response);
+      const body = {
+        "values": values
+      };
+      const row = 3 + monthDiff(new Date(2010, 6), new Date(firstMonth));
+      const sheet = "Top Ten Videos!A" + row;
+      return updateSheetData("Stats", sheet, body);
+    })
+    .catch(err => {
+      console.error("Error occurred getting Top Ten Videos By Month", err);
+    });
 }
 
 function platformDashboardCalls(startDate, endDate) {
