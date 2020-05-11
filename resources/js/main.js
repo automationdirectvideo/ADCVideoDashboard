@@ -296,7 +296,7 @@ function loadIntroAnimation() {
         introImage.style.display = "none";
         introVideo.style.display = "initial";
       }).catch(error => {
-        document.getElementsByClassName("VIDEO")[0].play();
+        document.getElementsByTagName("VIDEO")[0].play();
         introImage.style.display = "none";
         introVideo.style.display = "initial";
       });
