@@ -169,16 +169,10 @@ function requestChannelDemographics(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(`Channel Demographics`, response);
-      return response;
-    })
-    .catch(err => {
-      console.error("Error fetching Channel Demographics", err);
-    })
-    .then(response => {
       return displayChannelDemographics(response);
     })
     .catch(err => {
-      console.error("Error displaying Channel Demographics", err);
+      console.error("Error getting Channel Demographics", err);
     });
 }
 
@@ -196,16 +190,10 @@ function requestChannelSearchTerms(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(`Channel Search Terms`, response);
-      return response;
-    })
-    .catch(err => {
-      console.error("Error getting Channel Search Terms", err);
-    })
-    .then(response => {
       return displayChannelSearchTerms(response);
     })
     .catch(err => {
-      console.error("Error displaying Channel Search Terms", err);
+      console.error("Error getting Channel Search Terms", err);
     });
 }
 
@@ -220,16 +208,10 @@ function requestWatchTimeBySubscribedStatus(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(`Watch Time By Subscribed Status`, response);
-      return response;
-    })
-    .catch(err => {
-      console.error("Error getting Watch Time By Subscribed Status", err);
-    })
-    .then(response => {
       return displayWatchTimeBySubscribedStatus(response);
     })
     .catch(err => {
-      console.error("Error displaying Watch Time By Subscribed Status", err);
+      console.error("Error getting Watch Time By Subscribed Status", err);
     });
 }
 
@@ -245,16 +227,10 @@ function requestViewsByDeviceType(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log("Views By Device Type", response);
-      return response;
-    })
-    .catch(err => {
-      console.error("Error getting Views By Device Type", err);
-    })
-    .then(response => {
       return displayViewsByDeviceType(response);
     })
     .catch(err => {
-      console.error("Error displaying Views By Device Type", err);
+      console.error("Error getting Views By Device Type", err);
     });
 }
 
@@ -271,16 +247,10 @@ function requestViewsByState(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log("Views By State", response);
-      return response;
-    })
-    .catch(err => {
-      console.error("Error getting Views By State", err);
-    })
-    .then(response => {
       return displayViewsByState(response);
     })
     .catch(err => {
-      console.error("Error displaying Views By State", err);
+      console.error("Error getting Views By State", err);
     });
 }
 
@@ -296,16 +266,10 @@ function requestViewsByTrafficSource(startDate, endDate) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log("Views By Traffic Source", response);
-      return response;
-    })
-    .catch(err => {
-      console.error("Error getting Views By Traffic Source", err);
-    })
-    .then(response => {
       return displayViewsByTrafficSource(response);
     })
     .catch(err => {
-      console.error("Error displaying Views By Traffic Source", err);
+      console.error("Error getting Views By Traffic Source", err);
     });
 }
 
@@ -551,10 +515,11 @@ function platformDashboardCalls(startDate, endDate) {
   requests.push(requestWatchTimeBySubscribedStatus(startDate, endDate));
   return Promise.all(requests)
     .then(response => {
-      console.log("Platform Dashboard Calls Successful", response);
+      console.log("Platform Dashboard Calls Status:", response);
+      return "Platform Dashboard Calls";
     })
     .catch(err => {
-      console.error("Error occurred Platform Dashboard Calls", err);
+      console.error("Error occurred in Platform Dashboard Calls", err);
     });
 }
 

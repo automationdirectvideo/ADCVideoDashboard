@@ -161,7 +161,10 @@ function displayChannelDemographics(response) {
         ]
       ]
     }
-    return updateSheetData("Stats", "Channel Demographics", body);
+    return updateSheetData("Stats", "Channel Demographics", body)
+      .then(response => {
+        return "Displayed Channel Demographics";
+      });
   }
   return Promise.resolve("Displayed Channel Demographics");
 }
