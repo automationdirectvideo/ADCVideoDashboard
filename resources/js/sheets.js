@@ -228,22 +228,23 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
   for (let i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
+  let dashboardIds = {};
   let rows = [];
   for (let i = 1; i < topVideoStatsSheet.length; i++) {
-    let row = topVideoStatsSheet[i];
-    let videoId = row[columns["Video ID"]];
-    let dashboardId = row[columns["Dashboard ID"]];
-    let title = row[columns["Title"]];
-    let duration = row[columns["Duration"]];
-    let publishDate = row[columns["Publish Date"]];
-    let thumbnail = row[columns["Thumbnail"]];
-    let views = row[columns["Views"]];
-    let subscribersGained = row[columns["Subscribers Gained"]];
-    let avgViewDuration = row[columns["Average View Duration"]];
-    let minutesWatched = row[columns["Estimated Minutes Watched"]];
-    let comments = row[columns["Comments"]];
-    let likes = parseInt(row[columns["Likes"]]);
-    let dislikes = parseInt(row[columns["Dislikes"]]);
+    const row = topVideoStatsSheet[i];
+    const videoId = row[columns["Video ID"]];
+    const dashboardId = row[columns["Dashboard ID"]];
+    const title = row[columns["Title"]];
+    const duration = row[columns["Duration"]];
+    const publishDate = row[columns["Publish Date"]];
+    const thumbnail = row[columns["Thumbnail"]];
+    const views = row[columns["Views"]];
+    const subscribersGained = row[columns["Subscribers Gained"]];
+    const avgViewDuration = row[columns["Average View Duration"]];
+    const minutesWatched = row[columns["Estimated Minutes Watched"]];
+    const comments = row[columns["Comments"]];
+    const likes = parseInt(row[columns["Likes"]]);
+    const dislikes = parseInt(row[columns["Dislikes"]]);
     try {
       document.getElementById(dashboardId + "-title").innerHTML = title;
       document.getElementById(dashboardId + "-duration").innerHTML =
@@ -256,7 +257,7 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
 
       document.getElementById(dashboardId + "-thumbnail").innerHTML =
           thumbnail;
-      let row = [
+      const row = [
         videoId,
         views,
         comments,
@@ -268,16 +269,17 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
         0
       ];
       rows.push(row);
+      dashboardIds[videoId] = dashboardId;
     } catch (err) {
       console.error(`Dashboard "${dashboardId}" does not exist`, err)
     }
   }
-  let response = {
+  const response = {
     "result": {
       "rows": rows
     }
   };
-  handleVideoBasicStats(response, dashboardId);
+  handleVideoBasicStats(response, dashboardIds);
 }
 
 // Records real time stats from Google Sheet to localStorage.realTimeStats
