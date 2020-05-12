@@ -363,8 +363,9 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
 
 /* Top Video Calls */
 
-function requestVideoBasicStats(startDate, endDate, videoId, dashboardId) {
-  var stringVideoId = "video==" + videoId;
+function requestVideoBasicStats(startDate, endDate, videoId, dashboardIds,
+    videoData) {
+  const stringVideoId = "video==" + videoId;
   const request = {
     "dimensions": "video",
     "endDate": endDate,
@@ -374,12 +375,22 @@ function requestVideoBasicStats(startDate, endDate, videoId, dashboardId) {
         "averageViewDuration,subscribersGained,subscribersLost",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoBasicStats: ", handleVideoBasicStats,
-      dashboardId);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Top Video Basic Stats", response);
+      const updatedVideoData = handleVideoBasicStats(response, dashboardIds,
+        videoData);
+      const sheetsPromise = saveTopVideoStatsToSheets(updatedVideoData);
+      return "Displayed Top Video Basic Stats";
+    })
+    .catch(err => {
+      console.error(`Error getting basic stats for video: ${videoId}`, err);
+      throw new Error("Error in requestVideoBasicStats");
+    });
 }
 
 function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
-  var filters = "video==" + videoId;
+  const filters = "video==" + videoId;
   const request = {
     "dimensions": "day",
     "endDate": endDate,
@@ -389,12 +400,20 @@ function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
     "sort": "day",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoDailyViews: ", handleVideoDailyViews,
-      dashboardId);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log("Top Video Daily Views", response);
+      handleVideoDailyViews(response, dashboardId);
+      return Promise.resolve(`Displayed Daily Views: ${videoId}`);
+    })
+    .catch(err => {
+      console.error(`Error getting daily views for video: ${videoId}`, err);
+      throw new Error("Error in requestVideoDailyViews");
+    });
 }
 
 function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
-  var filters = "video==" + videoId + ";insightTrafficSourceType==YT_SEARCH";
+  const filters = "video==" + videoId + ";insightTrafficSourceType==YT_SEARCH";
   const request = {
     "dimensions": "insightTrafficSourceDetail",
     "endDate": endDate,
@@ -405,16 +424,16 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
     "sort": "-views",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "VideoSearchTerms: ", handleVideoSearchTerms,
-      dashboardId);
-}
-
-function requestVideoSnippet(videoId, dashboardId) {
-  var request = {
-    "part": "snippet,contentDetails",
-    "id": videoId
-  };
-  callDataAPIVideos(request, "VideoSnippet: ", handleVideoSnippet, dashboardId);
+  return gapi.client.youtubeAnalytics.reports.query(request)
+      .then(response => {
+        console.log("Top Video Search Terms", response);
+        handleVideoSearchTerms(response, dashboardId);
+        return Promise.resolve(`Displayed Search Terms: ${videoId}`);
+      })
+      .catch(err => {
+        console.error(`Error getting search terms for video: ${videoId}`, err);
+        throw new Error("Error in requestVideoSearchTerms");
+      });
 }
 
 
@@ -600,11 +619,30 @@ function realTimeStatsCalls() {
 }
 
 // Makes requests data for top video dashboard
-function topVideoCalls(startDate, endDate, videoId, dashboardId) {
-  requestVideoSearchTerms(startDate, endDate, videoId, dashboardId);
-  requestVideoDailyViews(getDateFromDaysAgo(32), endDate, videoId, dashboardId);
-  requestVideoBasicStats(startDate, endDate, videoId, dashboardId);
-  displayTopVideoTitle(videoId, dashboardId);
+function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
+  var requests = [];
+  const videoData = displayTopVideoTitles(videoId, dashboardIds);
+
+  requests.push(requestVideoBasicStats(startDate, endDate, videoId,
+    dashboardIds, videoData));
+  for (const videoId in dashboardIds) {
+    if (dashboardIds.hasOwnProperty(videoId)) {
+      const dashboardId = dashboardIds[videoId];
+      requests.push(requestVideoSearchTerms(startDate, endDate, videoId,
+        dashboardId));
+      requests.push(requestVideoDailyViews(getDateFromDaysAgo(32), endDate,
+        videoId, dashboardId));
+    }
+  }
+  
+  return Promise.all(requests)
+    .then(response => {
+      console.log("Top Video Calls Result", response);
+      return Promise.resolve("Top Video Calls completed");
+    })
+    .catch(err => {
+      console.error(`Error making Top Video Calls for video: ${videoId}`, err);
+    });
 }
 
 /* Non-dashboard Related Calls */

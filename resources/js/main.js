@@ -66,44 +66,57 @@ function loadDashboards( insteadOfRealTime=false ) {
 }
 
 function loadTopVideoDashboards() {
-  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  var todayDate = getTodaysDate();
+  const carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  const todayDate = getTodaysDate();
+  let topVideoList = []
+  let dashboardIds = {};
   if (carouselInner.children["top-video-1"]) {
     let plcVideo = getTopVideoByCategory("B", "views")[0];
     if (plcVideo != undefined) {
-      topVideoCalls(joinDate, todayDate, plcVideo, "top-video-1");
+        dashboardIds[plcVideo] = "top-video-1";
+        topVideoList.push(plcVideo);
     }
   }
   if (carouselInner.children["top-video-2"]) {
     let drivesVideo = getTopVideoByCategory("C", "views")[0];
     if (drivesVideo != undefined) {
-      topVideoCalls(joinDate, todayDate, drivesVideo, "top-video-2");
+        dashboardIds[drivesVideo] = "top-video-2";
+        topVideoList.push(drivesVideo);
     }
   }
   if (carouselInner.children["top-video-3"]) {
     let hmiVideo = getTopVideoByCategory("D", "views")[0];
     if (hmiVideo != undefined) {
-      topVideoCalls(joinDate, todayDate, hmiVideo, "top-video-3");
+        dashboardIds[hmiVideo] = "top-video-3";
+        topVideoList.push(hmiVideo);
     }
   }
   if (carouselInner.children["top-video-4"]) {
     let motionControlVideo = getTopVideoByCategory("F", "views")[0];
     if (motionControlVideo != undefined) {
-      topVideoCalls(joinDate, todayDate, motionControlVideo, "top-video-4");
+        dashboardIds[motionControlVideo] = "top-video-4";
+        topVideoList.push(motionControlVideo);
     }
   }
   if (carouselInner.children["top-video-5"]) {
     let sensorsVideo = getTopVideoByCategory("H", "views")[0];
     if (sensorsVideo != undefined) {
-      topVideoCalls(joinDate, todayDate, sensorsVideo, "top-video-5");
+        dashboardIds[sensorsVideo] = "top-video-5";
+        topVideoList.push(sensorsVideo);
     }
   }
   if (carouselInner.children["top-video-6"]) {
     let motorsVideo = getTopVideoByCategory("I", "views")[0];
     if (motorsVideo != undefined) {
-      topVideoCalls(joinDate, todayDate, motorsVideo, "top-video-6");
+        dashboardIds[motorsVideo] = "top-video-6";
+        topVideoList.push(motorsVideo);
     }
   }
+  if (topVideoList.length == 0) {
+    return null;
+  }
+  const topVideosStr = topVideoList.join(",");
+  return topVideoCalls(joinDate, todayDate, topVideosStr, dashboardIds);
 }
 
 function loadDashboardsSignedOut() {
@@ -1087,46 +1100,52 @@ function displayTopTenThumbnails(topTenSheet) {
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
 }
 
-function displayTopVideoTitle(videoId, dashboardId) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  let title = document.getElementById(dashboardId + "-title");
-  title.innerHTML = statsByVideoId[videoId]["title"];
-  let duration = statsByVideoId[videoId]["duration"];
-  document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
-      secondsToDuration(duration);
-  document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
-      duration;
-
-  let publishDateText = document.getElementById(dashboardId + "-publish-date");
-  let publishDate = statsByVideoId[videoId]["publishDate"];
-  let year = publishDate.slice(0, 4);
-  let month = publishDate.slice(5, 7);
-  let day = publishDate.slice(8, 10);
-  publishDate = month + "/" + day + "/" + year;
-  publishDateText.innerHTML = "Published: " + publishDate;
-
-  let thumbnail = document.getElementById(dashboardId + "-thumbnail");
-  let videoTitle = "YouTube Video ID: " + videoId;
-  if (statsByVideoId && statsByVideoId[videoId]) {
-    videoTitle = statsByVideoId[videoId]["title"];
+function displayTopVideoTitles(dashboardIds) {
+  let videoData = {};
+  for (const videoId in dashboardIds) {
+    if (dashboardIds.hasOwnProperty(videoId)) {
+      const dashboardId = dashboardIds[videoId];
+      
+      const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+      let title = document.getElementById(dashboardId + "-title");
+      title.innerHTML = statsByVideoId[videoId]["title"];
+      const duration = statsByVideoId[videoId]["duration"];
+      document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
+          secondsToDuration(duration);
+      document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
+          duration;
+    
+      let publishDateText = document.getElementById(dashboardId + "-publish-date");
+      let publishDate = statsByVideoId[videoId]["publishDate"];
+      const year = publishDate.slice(0, 4);
+      const month = publishDate.slice(5, 7);
+      const day = publishDate.slice(8, 10);
+      publishDate = month + "/" + day + "/" + year;
+      publishDateText.innerHTML = "Published: " + publishDate;
+    
+      let thumbnail = document.getElementById(dashboardId + "-thumbnail");
+      let videoTitle = "YouTube Video ID: " + videoId;
+      if (statsByVideoId && statsByVideoId[videoId]) {
+        videoTitle = statsByVideoId[videoId]["title"];
+      }
+      let thumbnailText = `
+        <a href="https://youtu.be/${videoId}" target="_blank"
+            onclick="closeFullscreen()" alt="${videoTitle}">
+          <img class="top-video-thumbnail" onload="thumbnailCheck($(this), true)"
+              src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+              alt="thumbnail" title="${videoTitle}">
+        </a>`;
+      thumbnail.innerHTML = thumbnailText;
+    
+      videoData[videoId] = {
+        "title": statsByVideoId[videoId]["title"],
+        "duration": statsByVideoId[videoId]["duration"],
+        "publishDate": publishDate,
+        "thumbnail": thumbnailText
+      };
+    }
   }
-  let thumbnailText = `
-    <a href="https://youtu.be/${videoId}" target="_blank"
-        onclick="closeFullscreen()" alt="${videoTitle}">
-      <img class="top-video-thumbnail" onload="thumbnailCheck($(this), true)"
-          src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
-          alt="thumbnail" title="${videoTitle}">
-    </a>`;
-  thumbnail.innerHTML = thumbnailText;
-
-  let videoData = {
-    "videoId": videoId,
-    "title": statsByVideoId[videoId]["title"],
-    "duration": statsByVideoId[videoId]["duration"],
-    "publishDate": publishDate,
-    "thumbnail": thumbnailText
-  };
-  recordTopVideoStats(dashboardId, videoData);
+  return videoData;
 }
 
 // Load thumbnails in 1000 thumbnail dashboard
@@ -1240,32 +1259,6 @@ function displayUserFeedback(feedbackSheet) {
     autoScrollDivs.push("feedback-wrapper");
   }
   
-}
-
-function recordTopVideoStats(dashboardId, data) {
-  let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
-  if (!topVideoStats) {
-    topVideoStats = {};
-  }
-  if (!topVideoStats[dashboardId]) {
-    topVideoStats[dashboardId] = {};
-  }
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      topVideoStats[dashboardId][key] = data[key];
-    }
-  }
-  if (!topVideoStats["numUpdates"]) {
-    topVideoStats["numUpdates"] = 0;
-  }
-  topVideoStats["numUpdates"] = topVideoStats["numUpdates"] + 1;
-  if (topVideoStats["numUpdates"] == 12) {
-    delete topVideoStats["numUpdates"];
-    localStorage.setItem("topVideoStats", JSON.stringify(topVideoStats));
-    saveTopVideoStatsToSheets();
-  } else  {
-    localStorage.setItem("topVideoStats", JSON.stringify(topVideoStats));
-  }
 }
 
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,

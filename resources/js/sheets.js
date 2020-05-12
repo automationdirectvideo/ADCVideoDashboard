@@ -228,6 +228,7 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
   for (let i = 0; i < columnHeaders.length; i++) {
     columns[columnHeaders[i]] = i;
   }
+  let rows = [];
   for (let i = 1; i < topVideoStatsSheet.length; i++) {
     let row = topVideoStatsSheet[i];
     let dashboardId = row[columns["Dashboard ID"]];
@@ -255,28 +256,28 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
 
       document.getElementById(dashboardId + "-thumbnail").innerHTML =
           thumbnail;
-      let response = {
-        "result": {
-          "rows": [
-            [
-              0,
-              views,
-              comments,
-              likes,
-              dislikes,
-              minutesWatched,
-              avgViewDuration,
-              subscribersGained,
-              0
-            ]
-          ]
-        }
-      };
-      handleVideoBasicStats(response, dashboardId);
+      let row = [
+        videoId,
+        views,
+        comments,
+        likes,
+        dislikes,
+        minutesWatched,
+        avgViewDuration,
+        subscribersGained,
+        0
+      ];
+      rows.push(row);
     } catch (err) {
       console.error(`Dashboard "${dashboardId}" does not exist`, err)
     }
   }
+  let response = {
+    "result": {
+      "rows": rows
+    }
+  };
+  handleVideoBasicStats(response, dashboardId);
 }
 
 // Records real time stats from Google Sheet to localStorage.realTimeStats
@@ -533,13 +534,12 @@ function saveGraphDataToSheets(graphData, sheetName) {
 }
 
 // Saves topVideoStats to Google Sheets
-function saveTopVideoStatsToSheets() {
+function saveTopVideoStatsToSheets(topVideoStats) {
   var values = [
     ["Dashboard ID", "Video ID", "Title", "Duration", "Publish Date",
         "Thumbnail", "Views", "Subscribers Gained", "Average View Duration",
         "Estimated Minutes Watched", "Comments", "Likes", "Dislikes"]
   ];
-  let topVideoStats = JSON.parse(localStorage.getItem("topVideoStats"));
   for (var dashboardId in topVideoStats) {
     if (topVideoStats.hasOwnProperty(dashboardId)) {
       var row = [];
@@ -559,10 +559,11 @@ function saveTopVideoStatsToSheets() {
       values.push(row);
     }
   }
-  var body = {
+  const body = {
     "values": values
   };
-  updateSheetData("Stats", "Top Video Stats", body);
+  const updatePromise = updateSheetData("Stats", "Top Video Stats", body);
+  return updatePromise;
 }
 
 // Saves realTimeStats to Google Sheets

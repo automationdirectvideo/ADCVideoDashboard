@@ -652,10 +652,14 @@ function handleMostWatchedVideos(response, month) {
 /* Top Video Calls */
 
 // Displays video views, likes, comments, etc. in top video dashboard
-function handleVideoBasicStats(response, dashboardId) {
-  if (response) {
-    let stats = response.result.rows[0];
-
+function handleVideoBasicStats(response, dashboardIds, videoData) {
+  const rows = response.result.rows;
+  for (let index = 0; index < rows.length; index++) {
+    const stats = rows[index];
+    
+    const videoId = stats[0];
+    const dashboardId = dashboardIds[videoId];
+    
     let views = document.getElementById(dashboardId + "-views");
     views.innerHTML = numberWithCommas(stats[1]);
 
@@ -665,7 +669,7 @@ function handleVideoBasicStats(response, dashboardId) {
     let likeRatioElem = document.getElementById(dashboardId + "-like-ratio");
     let likes = document.getElementById(dashboardId + "-likes");
     let likeBar = document.getElementById(dashboardId + "-like-bar");
-    let likeRatio = decimalToPercent(stats[3] / (stats[3] + stats[4]));
+    const likeRatio = decimalToPercent(stats[3] / (stats[3] + stats[4]));
     likeRatioElem.innerHTML = likeRatio + "%";
     likes.innerHTML = numberWithCommas(stats[3]) + " Likes";
     likeBar.style.width = likeRatio + "%";
@@ -679,12 +683,12 @@ function handleVideoBasicStats(response, dashboardId) {
 
     let avgViewDuration =
         document.getElementById(dashboardId + "-avg-view-duration");
-    let avd = stats[6];
+    const avd = stats[6];
     avgViewDuration.innerHTML = secondsToDuration(avd);
-    let videoDuration =
+    const videoDuration =
         document.getElementById(dashboardId + "-duration-seconds").innerHTML;
 
-    let avp = decimalToPercent(avd / videoDuration);
+    const avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
         document.getElementById(dashboardId + "-avg-view-percentage");
     avgViewPercentage.innerHTML = " (" + avp + "%)";
@@ -693,19 +697,20 @@ function handleVideoBasicStats(response, dashboardId) {
         document.getElementById(dashboardId + "-minutes-watched");
     estimatedMinutesWatched.innerHTML = numberWithCommas(stats[5]);
 
-    let videoData = {
-      "views": stats[1],
-      "subscribersGained": stats[7] - stats[8],
-      "avgViewDuration": stats[6],
-      "minutesWatched": stats[5],
-      "comments": stats[2],
-      "likes": stats[3],
-      "dislikes": stats[4]
-    };
-    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      recordTopVideoStats(dashboardId, videoData);
+    if (videoData != undefined) {
+      videoData[videoId]["views"] = stats[1];
+      videoData[videoId]["subscribersGained"] = stats[7] - stats[8];
+      videoData[videoId]["avgViewDuration"] = stats[6];
+      videoData[videoId]["minutesWatched"] = stats[5];
+      videoData[videoId]["comments"] = stats[2];
+      videoData[videoId]["likes"] = stats[3];
+      videoData[videoId]["dislikes"] = stats[4];
     }
   }
+  if (videoData == undefined) {
+    return null;
+  }
+  return videoData;
 }
 
 // Creates daily views graph for a video in top video dashboard
@@ -894,45 +899,6 @@ function handleVideoSearchTerms(response, dashboardId) {
     recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
       automargin);
     recordGraphSize(graphId, graphHeight, graphWidth, automargin);
-  }
-}
-
-// Displays video title, duration, publish date, and thumbnail in top video
-// dashboard
-function handleVideoSnippet(response, dashboardId) {
-  if (response) {
-    let title = document.getElementById(dashboardId + "-title");
-    title.innerHTML = response.result.items[0].snippet.title;
-    duration = response.result.items[0].contentDetails.duration;
-    let videoDuration = isoDurationToSeconds(duration);
-    document.getElementById(dashboardId + "-duration").innerHTML =
-        "Duration: " + secondsToDuration(videoDuration);
-    document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
-        videoDuration;
-
-    let publishDateText =
-        document.getElementById(dashboardId + "-publish-date");
-    let publishDate = response.result.items[0].snippet.publishedAt;
-    let year = publishDate.slice(0, 4);
-    let month = publishDate.slice(5, 7);
-    let day = publishDate.slice(8, 10);
-    publishDate = month + "/" + day + "/" + year;
-    publishDateText.innerHTML = "Published: " + publishDate;
-
-    let thumbnail = document.getElementById(dashboardId + "-thumbnail");
-    let videoId = response.result.items[0].id;
-    let videoTitle = "YouTube Video ID: " + videoId;
-    let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-    if (statsByVideoId && statsByVideoId[videoId]) {
-      videoTitle = statsByVideoId[videoId]["title"];
-    }
-    thumbnail.innerHTML = `
-      <a href="https://youtu.be/${videoId}" target="_blank"
-          onclick="closeFullscreen()" alt="${videoTitle}">
-        <img class="top-video-thumbnail" onload="thumbnailCheck($(this), true)"
-            src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
-            alt="thumbnail" title="${videoTitle}">
-      </a>`;
   }
 }
 
