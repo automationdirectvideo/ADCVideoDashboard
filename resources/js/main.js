@@ -37,19 +37,6 @@ function loadDashboards( insteadOfRealTime=false ) {
   if (carouselInner.children["platform"]) {
     requests.push(platformDashboardCalls(joinDate, todayDate));
   }
-  if (carouselInner.children["product-categories"]) {
-    try {
-      requests.push(displayTopCategories());
-    } catch (TypeError) {
-      console.error(TypeError);
-      const retryPromise = getCategoryStats()
-        .then(categoryStats => displayTopCategories(categoryStats));
-      requests.push(retryPromise);
-    }
-    // Initiate Category Area Charts
-    requests.push(loadCategoryCharts());
-    
-  }
   if (carouselInner.children["top-ten"]) {
     requests.push(loadTopTenDashboard());
   }
@@ -67,17 +54,29 @@ function loadDashboards( insteadOfRealTime=false ) {
       .then(loadTopVideoDashboards);
     requests.push(retryPromise);
   }
+  if (carouselInner.children["product-categories"]) {
+    try {
+      requests.push(displayTopCategories());
+    } catch (TypeError) {
+      console.error(TypeError);
+      const retryPromise = getCategoryStats()
+        .then(categoryStats => displayTopCategories(categoryStats));
+      requests.push(retryPromise);
+    }
+    // Initiate Category Area Charts
+    requests.push(loadCategoryCharts());
+    
+  }
   console.log("Starting Load Dashboards Requests");
-  var loadingText = document.getElementById("loading-text");
-  loadingText.style.display = "initial";
+  showLoadingText();
   Promise.all(requests)
     .then(response => {
       console.log("Load Dashboards Complete", response);
-      loadingText.style.display = "none";
+      hideLoadingText();
     })
     .catch(err => {
       console.error("Error occurred loading dashboards", err);
-      loadingText.style.display = "none";
+      hideLoadingText();
     });
 }
 
@@ -137,36 +136,50 @@ function loadTopVideoDashboards() {
 
 function loadDashboardsSignedOut() {
   resetGraphData();
-  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  const carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  let requests = [];
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
   }
   if (carouselInner.children["real-time-stats"]) {
-    loadRealTimeStatsDashboard();
+    requests.push(loadRealTimeStatsDashboard());
   }
   if (carouselInner.children["thumbnails"]) {
     try {
-      getVideoStats()
+      const thumbnailPromise = getVideoStats()
         .then(displayUploadThumbnails);
+      requests.push(thumbnailPromise);
     } catch (err) {
       //console.log(err);
       window.setTimeout(displayUploadThumbnails, 5000);
     }
   }
   if (carouselInner.children["platform"]) {
-    loadChannelDemographics();
+    requests.push(loadChannelDemographics());
   }
   if (carouselInner.children["top-ten"]) {
-    loadTopTenDashboard();
+    requests.push(loadTopTenDashboard());
   }
   if (carouselInner.children["feedback"]) {
-    loadUserFeedbackDashboard();
+    requests.push(loadUserFeedbackDashboard());
   }
   if (carouselInner.children["card-performance"]) {
-    loadCardPerformanceDashboard();
+    requests.push(loadCardPerformanceDashboard());
   }
-  loadGraphsFromSheets();
-  loadTopVideoStats();
+  requests.push(loadGraphsFromSheets());
+  requests.push(loadTopVideoStats());
+
+  console.log("Starting Load Dashboards Requests");
+  showLoadingText();
+  Promise.all(requests)
+    .then(response => {
+      console.log("Load Dashboards Complete", response);
+      hideLoadingText();
+    })
+    .catch(err => {
+      console.error("Error occurred loading dashboards", err);
+      hideLoadingText();
+    });
 }
 
 function initializeUpdater() {
@@ -1454,6 +1467,16 @@ function loadSignedOut() {
   loadDashboardsSignedOut();
 }
 
+function hideLoadingText() {
+  var loadingText = document.getElementById("loading-text");
+  loadingText.style.display = "none";
+}
+
+function showLoadingText() {
+  var loadingText = document.getElementById("loading-text");
+  loadingText.style.display = "initial";
+}
+
 // Get current settings
 if (!localStorage.getItem("settings")) {
   localStorage.setItem("settings", JSON.stringify(defaultSettings));
@@ -1553,8 +1576,7 @@ document.addEventListener("keyup", function (e) {
   }
 });
 $(".carousel").on("slide.bs.carousel", function (e) {
-  var loadingText = document.getElementById("loading-text");
-  loadingText.style.display = "initial";
+  // showLoadingText();
   var carouselName = e.target.getAttribute("name");
   var indicatorName = carouselName + "-indicator-";
   var startIndicator = document.getElementById(indicatorName + e.from);
@@ -1571,10 +1593,7 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   }, 250);
 });
 
-$(".carousel").on("slid.bs.carousel", function (e){
-  var loadingText = document.getElementById("loading-text");
-  loadingText.style.display = "none";
-});
+// $(".carousel").on("slid.bs.carousel", hideLoadingText);
 
 window.addEventListener('resize', function () {
   retry(resizeGraphs, 5, 5000);
