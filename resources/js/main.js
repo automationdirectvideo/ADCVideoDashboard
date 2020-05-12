@@ -68,12 +68,16 @@ function loadDashboards( insteadOfRealTime=false ) {
     requests.push(retryPromise);
   }
   console.log("Starting Load Dashboards Requests");
+  var loadingText = document.getElementById("loading-text");
+  loadingText.style.display = "initial";
   Promise.all(requests)
     .then(response => {
       console.log("Load Dashboards Complete", response);
+      loadingText.style.display = "none";
     })
     .catch(err => {
       console.error("Error occurred loading dashboards", err);
+      loadingText.style.display = "none";
     });
 }
 
