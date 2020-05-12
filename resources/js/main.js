@@ -1,7 +1,8 @@
 /* Load and display dashboards */
 
 function loadDashboards( insteadOfRealTime=false ) {
-  console.log( "loadDashboards run instead of realTimeStatsCalls in updateStats function? ", insteadOfRealTime )
+  console.log( "loadDashboards run instead of realTimeStatsCalls in updateStats function? ", insteadOfRealTime );
+  showLoadingText();
   resetGraphData();
   const carouselInner = document.getElementsByClassName("carousel-inner")[0];
   const todayDate = getTodaysDate();
@@ -68,7 +69,6 @@ function loadDashboards( insteadOfRealTime=false ) {
     
   }
   console.log("Starting Load Dashboards Requests");
-  showLoadingText();
   Promise.all(requests)
     .then(response => {
       console.log("Load Dashboards Complete", response);
@@ -135,6 +135,7 @@ function loadTopVideoDashboards() {
 }
 
 function loadDashboardsSignedOut() {
+  showLoadingText();
   resetGraphData();
   const carouselInner = document.getElementsByClassName("carousel-inner")[0];
   let requests = [];
@@ -170,7 +171,6 @@ function loadDashboardsSignedOut() {
   requests.push(loadTopVideoStats());
 
   console.log("Starting Load Dashboards Requests");
-  showLoadingText();
   Promise.all(requests)
     .then(response => {
       console.log("Load Dashboards Complete", response);

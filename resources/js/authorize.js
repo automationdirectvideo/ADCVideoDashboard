@@ -56,6 +56,7 @@ function updateSigninStatus(isSignedIn) {
 
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
+  showLoadingText();
   if (isSignedIn) {
     loadSignedIn();
   } else {
