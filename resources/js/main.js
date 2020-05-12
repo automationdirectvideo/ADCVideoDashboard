@@ -1167,6 +1167,7 @@ function displayTopVideoTitles(dashboardIds) {
       thumbnail.innerHTML = thumbnailText;
     
       videoData[videoId] = {
+        "dashboardId": dashboardId,
         "title": statsByVideoId[videoId]["title"],
         "duration": statsByVideoId[videoId]["duration"],
         "publishDate": publishDate,

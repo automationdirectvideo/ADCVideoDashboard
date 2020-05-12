@@ -231,8 +231,8 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
   let rows = [];
   for (let i = 1; i < topVideoStatsSheet.length; i++) {
     let row = topVideoStatsSheet[i];
-    let dashboardId = row[columns["Dashboard ID"]];
     let videoId = row[columns["Video ID"]];
+    let dashboardId = row[columns["Dashboard ID"]];
     let title = row[columns["Title"]];
     let duration = row[columns["Duration"]];
     let publishDate = row[columns["Publish Date"]];
@@ -536,26 +536,27 @@ function saveGraphDataToSheets(graphData, sheetName) {
 // Saves topVideoStats to Google Sheets
 function saveTopVideoStatsToSheets(topVideoStats) {
   var values = [
-    ["Dashboard ID", "Video ID", "Title", "Duration", "Publish Date",
+    ["Video ID", "Dashboard ID", "Title", "Duration", "Publish Date",
         "Thumbnail", "Views", "Subscribers Gained", "Average View Duration",
         "Estimated Minutes Watched", "Comments", "Likes", "Dislikes"]
   ];
-  for (var dashboardId in topVideoStats) {
-    if (topVideoStats.hasOwnProperty(dashboardId)) {
+  for (const videoId in topVideoStats) {
+    if (topVideoStats.hasOwnProperty(videoId)) {
+      const videoStats = topVideoStats[videoId];
       var row = [];
-      row.push(dashboardId);
-      row.push(topVideoStats[dashboardId]["videoId"]);
-      row.push(topVideoStats[dashboardId]["title"]);
-      row.push(topVideoStats[dashboardId]["duration"]);
-      row.push(topVideoStats[dashboardId]["publishDate"]);
-      row.push(topVideoStats[dashboardId]["thumbnail"]);
-      row.push(topVideoStats[dashboardId]["views"]);
-      row.push(topVideoStats[dashboardId]["subscribersGained"]);
-      row.push(topVideoStats[dashboardId]["avgViewDuration"]);
-      row.push(topVideoStats[dashboardId]["minutesWatched"]);
-      row.push(topVideoStats[dashboardId]["comments"]);
-      row.push(topVideoStats[dashboardId]["likes"]);
-      row.push(topVideoStats[dashboardId]["dislikes"]);
+      row.push(videoId);
+      row.push(videoStats["dashboardId"]);
+      row.push(videoStats["title"]);
+      row.push(videoStats["duration"]);
+      row.push(videoStats["publishDate"]);
+      row.push(videoStats["thumbnail"]);
+      row.push(videoStats["views"]);
+      row.push(videoStats["subscribersGained"]);
+      row.push(videoStats["avgViewDuration"]);
+      row.push(videoStats["minutesWatched"]);
+      row.push(videoStats["comments"]);
+      row.push(videoStats["likes"]);
+      row.push(videoStats["dislikes"]);
       values.push(row);
     }
   }
