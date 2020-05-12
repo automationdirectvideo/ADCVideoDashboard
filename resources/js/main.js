@@ -3,8 +3,9 @@
 function loadDashboards( insteadOfRealTime=false ) {
   console.log( "loadDashboards run instead of realTimeStatsCalls in updateStats function? ", insteadOfRealTime )
   resetGraphData();
-  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  var todayDate = getTodaysDate();
+  const carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  const todayDate = getTodaysDate();
+  var requests = [];
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
   }
@@ -14,14 +15,15 @@ function loadDashboards( insteadOfRealTime=false ) {
       displayRealTimeStats();
     } catch (err) {
       //console.log(err);
-      realTimeStatsCalls();
+      requests.push(realTimeStatsCalls());
     }
   }
   if (carouselInner.children["thumbnails"]) {
     try {
-      requestChannelNumVideos();
+      requests.push(requestChannelNumVideos());
     } catch (err) {
       //console.log(err);
+      // FIXME: Change error handling to retry X times
       window.setTimeout(requestChannelNumVideos, 5000);
     }
     try {
@@ -33,36 +35,46 @@ function loadDashboards( insteadOfRealTime=false ) {
     displayUploadThumbnails();
   }
   if (carouselInner.children["platform"]) {
-    platformDashboardCalls(joinDate, todayDate);
+    requests.push(platformDashboardCalls(joinDate, todayDate));
   }
   if (carouselInner.children["product-categories"]) {
     try {
-      displayTopCategories();
+      requests.push(displayTopCategories());
     } catch (TypeError) {
       console.error(TypeError);
-      getCategoryStats()
+      const retryPromise = getCategoryStats()
         .then(categoryStats => displayTopCategories(categoryStats));
+      requests.push(retryPromise);
     }
     // Initiate Category Area Charts
-    loadCategoryCharts();
+    requests.push(loadCategoryCharts());
     
   }
   if (carouselInner.children["top-ten"]) {
-    loadTopTenDashboard();
+    requests.push(loadTopTenDashboard());
   }
   if (carouselInner.children["feedback"]) {
-    loadUserFeedbackDashboard();
+    requests.push(loadUserFeedbackDashboard());
   }
   if (carouselInner.children["card-performance"]) {
-    loadCardPerformanceDashboard();
+    requests.push(loadCardPerformanceDashboard());
   }
   try {
-    loadTopVideoDashboards();
+    requests.push(loadTopVideoDashboards());
   } catch (err) {
     //console.log(err);
-    getVideoStats()
+    const retryPromise = getVideoStats()
       .then(loadTopVideoDashboards);
+    requests.push(retryPromise);
   }
+  console.log("Starting Load Dashboards Requests");
+  Promise.all(requests)
+    .then(response => {
+      console.log("Load Dashboards Complete", response);
+    })
+    .catch(err => {
+      console.error("Error occurred loading dashboards", err);
+    });
 }
 
 function loadTopVideoDashboards() {
