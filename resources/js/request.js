@@ -638,7 +638,7 @@ function realTimeStatsCalls() {
 // Makes requests data for top video dashboard
 function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
   var requests = [];
-  const videoData = displayTopVideoTitles(videoId, dashboardIds);
+  const videoData = displayTopVideoTitles(dashboardIds);
 
   requests.push(requestVideoBasicStats(startDate, endDate, videoId,
     dashboardIds, videoData));
