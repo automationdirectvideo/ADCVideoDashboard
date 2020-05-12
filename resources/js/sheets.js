@@ -590,6 +590,7 @@ function saveRealTimeStatsToSheets(realTimeStats) {
   return updatePromise;
 }
 
+// TODO: Reorganize this function like the one below
 function updateCardPerformanceSheet() {
   let now = new Date();
   let firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);

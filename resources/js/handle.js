@@ -918,15 +918,10 @@ function handleCardPerformance(response, month) {
       monthData[2] = cardCTR;
       monthData[3] = cardTeaserImpressions;
       monthData[4] = cardTeaserCTR;
-      let values = [monthData];
-      let body = {
-        "values": values
-      };
-      var row = 3 + monthDiff(new Date(2017, 9), new Date(month));
-      var sheet = "Card Performance!A" + row;
-      updateSheetData("Stats", sheet, body);
     } catch (err) {
       console.log("No card data exists for month: " + month);
+    } finally {
+      return monthData;
     }
   }
 }

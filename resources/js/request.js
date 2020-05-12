@@ -440,14 +440,22 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
 /* Card Performance Calls */
 
 function requestCardPerformance(startDate, endDate, month) {
-  var request = {
+  const request = {
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "cardImpressions,cardClickRate," +
         "cardTeaserImpressions,cardTeaserClickRate",
     "startDate": startDate
   };
-  callAnalyticsAPI(request, "CardPerformance: ", handleCardPerformance, month);
+   return gapi.client.youtubeAnalytics.reports.query(request)
+    .then(response => {
+      console.log(`Card Performance for month: ${month}`, response);
+      const cardData = handleCardPerformance(response, month);
+      return cardData;
+    })
+    .catch(err => {
+      console.error(`Error getting card performance for month: ${month}`, err);
+    });
 }
 
 
@@ -521,27 +529,36 @@ function getYearlyCategoryViews(year) {
   return requestVideoViewsByYear(uploadsByYear, year);
 }
 
-function getCardPerformanceByMonth(startDate) {
+function getCardPerformanceByMonthSince(startDate) {
   // Oct. 2017 was the first month the ADC YT channel used impressions
   startDate = startDate || new Date("2017-10-1");
-  var endDate = new Date();
-  if (endDate - startDate > 0) {
+  let requests = [];
+  let firstMonth = undefined;
+  const endDate = new Date();
+  while (endDate - startDate > 0) {
     let firstDay = getYouTubeDateFormat(startDate);
-    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0));
+    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(),
+      startDate.getMonth() + 1, 0));
     let month = firstDay.substr(0, 7);
-    requestCardPerformance(firstDay, lastDay, month);
-    newStartDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
-    // Space out the calls to Data and Sheets APIs to stay under quota limit
-    setTimeout(function() {
-      getCardPerformanceByMonth(newStartDate);
-    }, 300);
-  } else {
-    // Wait to reload the page after the last Data API request is called
-    // TODO: look into reload timing/necessity
-    // setTimeout(function() {
-    //   window.location.reload();
-    // }, 5000);
+    if (firstMonth == undefined){
+      firstMonth = month;
+    }
+    requests.push(requestCardPerformance(firstDay, lastDay, month));
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
   }
+  return Promise.all(requests)
+    .then(response => {
+      const cardData = [].concat.apply([], response);
+      const body = {
+        "values": cardData
+      };
+      const row = 3 + monthDiff(new Date(2017, 9), new Date(firstMonth));
+      const sheet = "Card Performance!A" + row;
+      return updateSheetData("Stats", sheet, body);
+    })
+    .catch(err => {
+      console.error("Error occurred getting Card Performance By Month", err);
+    });
 }
 
 function getTopTenVideosByMonthSince(startDate) {
