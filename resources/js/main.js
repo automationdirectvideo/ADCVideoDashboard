@@ -195,7 +195,7 @@ function updateStats() {
     }
     let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
     let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
-    if (updateCount >= 3600) {
+    if (updateCount % 3600 == 0) {
       console.log("Update Dashboards");
       let newUpdate = new Date();
       newUpdate.setHours(10, 30, 0, 0);
