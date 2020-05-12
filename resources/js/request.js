@@ -649,9 +649,21 @@ function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
 
 // Requests description of given video
 function requestVideoDescription(videoId) {
-  var request = {
+  const request = {
     "part": "snippet",
     "id": videoId
   };
-  callDataAPIVideos(request, "VideoDescription: ", handleVideoDescription);
+  return gapi.client.youtube.videos.list(request)
+    .then(response => {
+      console.log(`Video Description for video: ${videoId}`, response);
+
+      var videoId = response.result.items[0].id;
+      var description = response.result.items[0].snippet.description;
+      var links = searchForURLs(description);
+      console.log(videoId, links);
+    })
+    .catch(err => {
+      console.error(`Error getting video decription for video: ${videoId}`,
+        err);
+    });
 }
