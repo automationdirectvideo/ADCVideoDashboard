@@ -83,7 +83,7 @@ function updateDashboards() {
     requests.push(getYearlyCategoryViews(lastYear));
   }
   requests.push(getTopTenVideosForCurrMonth());
-  requests.push(updateCardPerformanceSheet());
+  requests.push(getCardPerformanceForCurrMonth());
   requests.push(realTimeStatsCalls());
   requests.push(updateVideoAndCategoryStats());
   return Promise.all(requests)
