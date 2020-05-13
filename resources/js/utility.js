@@ -10,6 +10,27 @@ function decimalToPercent(decimal) {
   return Math.round(decimal * 1000) / 10;
 }
 
+// Get month data for the most recent month with data in the YouTube API which
+// is usually the current month
+function getCurrMonth() {
+  let now = new Date();
+  let firstDayOfMonth = undefined;
+  let lastDayOfMonth = undefined;
+  if (now - firstDayOfMonth > 432000000) {
+    // Update for current month
+    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  } else {
+    // Update for previous month
+    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
+    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+  }
+  let startDate = getYouTubeDateFormat(firstDayOfMonth);
+  let endDate = getYouTubeDateFormat(lastDayOfMonth);
+  let month = startDate.substr(0, 7);
+  return [startDate, endDate, month];
+}
+
 // Get date from numDaysAgo from today in the form YYYY-MM-DD
 function getDateFromDaysAgo(numDaysAgo) {
   var today = new Date();

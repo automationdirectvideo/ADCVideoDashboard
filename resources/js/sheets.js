@@ -593,45 +593,22 @@ function saveRealTimeStatsToSheets(realTimeStats) {
   return updatePromise;
 }
 
-// TODO: Reorganize this function like the one below
-function updateCardPerformanceSheet() {
-  let now = new Date();
-  let firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  if (now - firstDayOfMonth > 432000000) {
-    // Update for current month
-    let lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-    let startDate = getYouTubeDateFormat(firstDayOfMonth);
-    let endDate = getYouTubeDateFormat(lastDayOfMonth);
-    let month = startDate.substr(0, 7);
-    requestCardPerformance(startDate, endDate, month);
-  } else {
-    // Update for previous month
-    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
-    let lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-    let startDate = getYouTubeDateFormat(firstDayOfMonth);
-    let endDate = getYouTubeDateFormat(lastDayOfMonth);
-    let month = startDate.substr(0, 7);
-    requestCardPerformance(startDate, endDate, month);
-  }
+function getCardPerformanceForCurrMonth() {
+  const [startDate, endDate, month] = getCurrMonth();
+  const request = requestCardPerformance(startDate, endDate, month);
+  return request.then(cardData => {
+    const body = {
+      "values": [cardData]
+    };
+    const row = 3 + monthDiff(new Date(2017, 9), new Date(month));
+    const sheet = "Card Performance!A" + row;
+    return updateSheetData("Stats", sheet, body);
+  });
 }
 
 // Saves top ten videos by views this month to Google Sheets
 function getTopTenVideosForCurrMonth() {
-  let now = new Date();
-  let firstDayOfMonth = undefined;
-  let lastDayOfMonth = undefined;
-  if (now - firstDayOfMonth > 432000000) {
-    // Update for current month
-    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-  } else {
-    // Update for previous month
-    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
-    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-  }
-  let startDate = getYouTubeDateFormat(firstDayOfMonth);
-  let endDate = getYouTubeDateFormat(lastDayOfMonth);
-  let month = startDate.substr(0, 7);
+  const [startDate, endDate, month] = getCurrMonth();
   const request = requestMostWatchedVideos(startDate, endDate, 20, month);
   return request.then(response => {
     const body = {
