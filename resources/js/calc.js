@@ -91,7 +91,7 @@ function updateDashboards() {
     .then(response => {
       console.log("Update Dashboards Complete", response);
       hideUpdatingText();
-      loadDashboards();
+      return loadDashboards();
     })
     .catch(err => {
       console.error("Error occurred updating dashboards", err);
