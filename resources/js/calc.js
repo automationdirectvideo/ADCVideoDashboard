@@ -73,10 +73,33 @@ function calcCategoryStats(categoryTotals) {
   return categoryStats;
 }
 
+function updateDashboards() {
+  const now = new Date();
+  let requests = [];
+  // checks that today is between Jan 10-20 ish
+  if (now.getMonth() == 0 && now.getDate() >= 10 &&
+      now.getDate <= 20) {
+    let lastYear = now.getFullYear() - 1;
+    requests.push(getYearlyCategoryViews(lastYear));
+  }
+  requests.push(getTopTenVideosForCurrMonth());
+  requests.push(updateCardPerformanceSheet());
+  requests.push(realTimeStatsCalls());
+  requests.push(updateVideoAndCategoryStats());
+  return Promise.all(requests)
+    .then(response => {
+      console.log("Update Dashboards Complete", response);
+      loadDashboards();
+    })
+    .catch(err => {
+      console.error("Error occurred updating dashboards", err);
+    });
+}
+
 function updateVideoAndCategoryStats() {
   const categoryPromise = getCategoryList();
   const videoPromise = getVideoList();
-  Promise.all([categoryPromise, videoPromise])
+  return Promise.all([categoryPromise, videoPromise])
     .then(response => {
       let categoryTotals = response[0];
       let statsByVideoId = response[1][0];

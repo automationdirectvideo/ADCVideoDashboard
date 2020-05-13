@@ -1,18 +1,16 @@
 /* Load and display dashboards */
 
-function loadDashboards( insteadOfRealTime=false ) {
-  console.log( "loadDashboards run instead of realTimeStatsCalls in updateStats function? ", insteadOfRealTime );
+function loadDashboards() {
   showLoadingText();
   resetGraphData();
   const carouselInner = document.getElementsByClassName("carousel-inner")[0];
   const todayDate = getTodaysDate();
-  var requests = [];
+  let requests = [];
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
   }
   if (carouselInner.children["real-time-stats"]) {
     try {
-      // QUESTION: when are realTimeStats updated/initialized when logged in?
       displayRealTimeStats();
     } catch (err) {
       //console.log(err);
@@ -69,15 +67,14 @@ function loadDashboards( insteadOfRealTime=false ) {
     
   }
   console.log("Starting Load Dashboards Requests");
-  Promise.all(requests)
+  return Promise.all(requests)
     .then(response => {
       console.log("Load Dashboards Complete", response);
-      hideLoadingText();
     })
     .catch(err => {
       console.error("Error occurred loading dashboards", err);
-      hideLoadingText();
-    });
+    })
+    .finally(hideLoadingText);
 }
 
 function loadTopVideoDashboards() {
@@ -171,66 +168,40 @@ function loadDashboardsSignedOut() {
   requests.push(loadTopVideoStats());
 
   console.log("Starting Load Dashboards Requests");
-  Promise.all(requests)
+  return Promise.all(requests)
     .then(response => {
       console.log("Load Dashboards Complete", response);
-      hideLoadingText();
     })
     .catch(err => {
       console.error("Error occurred loading dashboards", err);
-      hideLoadingText();
-    });
+    })
+    .finally(hideLoadingText);
 }
 
 function initializeUpdater() {
-  var updateId = window.setInterval(updateStats, 1000);
-}
+  let midnight = new Date();
+  midnight.setHours(0, 0, 0, 0);
+  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
 
-function updateStats() {
-  let isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-  if (isSignedIn) {
-    if (!localStorage.getItem("lastUpdatedOn")) {
-      let oldDate = new Date(0);
-      localStorage.setItem("lastUpdatedOn", oldDate.toString());
-    }
-    let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
-    let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
-    if (updateCount % 3600 == 0) {
-      console.log("Update Dashboards");
-      let newUpdate = new Date();
-      newUpdate.setHours(10, 30, 0, 0);
-      localStorage.setItem("lastUpdatedOn", newUpdate.toString());
-      if (newUpdate.getMonth() == 0 && newUpdate.getDate() >= 10 &&
-          newUpdate.getDate <= 20) {
-        let lastYear = newUpdate.getFullYear() - 1;
-        getYearlyCategoryViews(lastYear);
+  var updateId = window.setInterval(() => {
+    const now = new Date();
+    // updateCount calculates the seconds since midnight
+    let updateCount = Math.floor((now - midnight) / 1000);
+    if (isSignedIn) {
+      if (updateCount % 3600 == 0) {
+        updateDashboards();
+        
+      } else if (updateCount % 900 == 0) {
+        loadDashboards();
       }
-      getTopTenVideosForCurrMonth();
-      updateCardPerformanceSheet();
-      realTimeStatsCalls();
-      updateVideoAndCategoryStats();
-    } else if (updateCount % 900 == 0) {
-      loadDashboards(true);
     }
-    var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+    const carouselInner = document.getElementsByClassName("carousel-inner")[0];
     if (carouselInner.children["real-time-stats"]) {
       //console.log("Update");
       updateRealTimeStats(updateCount);
     }
-  } else {
-    if (!localStorage.getItem("lastUpdatedOn")) {
-      let lastUpdatedOn = new Date();
-      lastUpdatedOn.setHours(10, 30, 0, 0);
-      localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
-    }
-    let lastUpdatedOn = localStorage.getItem("lastUpdatedOn");
-    let updateCount = Math.floor((new Date() - new Date(lastUpdatedOn)) / 1000);
-    var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-    if (carouselInner.children["real-time-stats"]) {
-      //console.log("Update");
-      updateRealTimeStats(updateCount);
-    }
-  }
+  }, 1000);
+  return updateId;
 }
 
 // Update odometers in real time stats dashboard
@@ -258,28 +229,21 @@ function updateRealTimeStats(updateCount) {
 function displayRealTimeStats(stats) {
   stats = stats || JSON.parse(localStorage.getItem("realTimeStats"));
   if (stats.cumulative && stats.month && stats.today) {
-
-    //console.log("Real Time Stats: ", stats);
     
     var secondsPerIncrement = {};
-    for (var key in stats.today) {
+    for (const key in stats.today) {
       if (stats.today.hasOwnProperty(key) && key != "averageViewDuration") {
         secondsPerIncrement[key] = Math.round(43200 / stats.today[key]);
       }
     }
-    //console.log(secondsPerIncrement);
     localStorage.setItem("secondsPerIncrement",
         JSON.stringify(secondsPerIncrement));
-    
-    if (!localStorage.getItem("lastUpdatedOn")) {
-      let lastUpdatedOn = new Date();
-      lastUpdatedOn.setHours(10, 30, 0, 0);
-      localStorage.setItem("lastUpdatedOn", lastUpdatedOn.toString());
-    }
 
-    var recordDate = new Date(localStorage.getItem("lastUpdatedOn"));
-    var now = new Date();
-    var diffInSeconds = Math.round((now - recordDate) / 1000);
+    let startHour = new Date();
+    startHour.setHours(6, 0, 0, 0);
+    const now = new Date();
+    // Calculates the seconds since startHour
+    const diffInSeconds = Math.round((now - startHour) / 1000);
     
     var avgDurationOdometer = document.getElementById("stat-avg-duration");
     var odometerCategories = {
@@ -303,8 +267,8 @@ function displayRealTimeStats(stats) {
     
     // Load data into odometers
     ["cumulative", "month"].forEach(category => {
-      var odometers = odometerCategories[category];
-      for (var key in odometers) {
+      const odometers = odometerCategories[category];
+      for (const key in odometers) {
         if (odometers.hasOwnProperty(key)) {
           var odometer = odometers[key];
           var elemOdometer = document.getElementById(odometer);
@@ -315,7 +279,7 @@ function displayRealTimeStats(stats) {
         }
       }
     });
-    var avgDurationCumulative =
+    const avgDurationCumulative =
         secondsToDurationMinSec(stats.cumulative.averageViewDuration);
     avgDurationOdometer.innerHTML = avgDurationCumulative;
     avgDurationOdometer.value = stats.cumulative.averageViewDuration;
