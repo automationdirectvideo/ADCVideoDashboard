@@ -66,7 +66,7 @@ function getAllVideoStats(videos) {
     requests.push(request);
   }
 
-  let getVideoRequest = Promise.all(requests)
+  return Promise.all(requests)
     .then(response => {
       console.log(response);
       let allVideoStats = [].concat.apply([], response);
@@ -74,16 +74,11 @@ function getAllVideoStats(videos) {
       let categoryTotals = updateCategoryTotals(allVideoStats);
       let categoryStats = calcCategoryStats(categoryTotals);
 
-      saveCategoryStatsToSheets(categoryStats); // QUESTION: should this return a promise?
-      saveVideoStatsToSheets(allVideoStats); // QUESTION: should this return a promise?
-      getTopTenVideosForCurrMonth();
-    })
-    .catch(err => console.log(`Promise.all error: ${err}`));
-    
-  // TODO: Maybe remove this catch block. Needs more research
-  // https://javascript.info/promise-chaining
-
-  return getVideoRequest;
+      const catRequest = saveCategoryStatsToSheets(categoryStats);
+      const videoRequest = saveVideoStatsToSheets(allVideoStats);
+      const topTenRequest = getTopTenVideosForCurrMonth();
+      return Promise.all([catRequest, videoRequest, topTenRequest]);
+    });
 }
 
 function requestVideoViewsByYear(uploads, year) {
