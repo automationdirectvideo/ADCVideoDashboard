@@ -1434,13 +1434,23 @@ function loadSignedOut() {
 }
 
 function hideLoadingText() {
-  var loadingText = document.getElementById("loading-text");
+  const loadingText = document.getElementById("loading-text");
   loadingText.style.display = "none";
 }
 
 function showLoadingText() {
-  var loadingText = document.getElementById("loading-text");
+  const loadingText = document.getElementById("loading-text");
   loadingText.style.display = "initial";
+}
+
+function hideUpdatingText() {
+  const updatingText = document.getElementById("updating-text");
+  updatingText.style.display = "none";
+}
+
+function showUpdatingText() {
+  const updatingText = document.getElementById("updating-text");
+  updatingText.style.display = "initial";
 }
 
 // Get current settings

@@ -74,6 +74,7 @@ function calcCategoryStats(categoryTotals) {
 }
 
 function updateDashboards() {
+  showUpdatingText();
   const now = new Date();
   let requests = [];
   // checks that today is between Jan 10-20 ish
@@ -89,11 +90,13 @@ function updateDashboards() {
   return Promise.all(requests)
     .then(response => {
       console.log("Update Dashboards Complete", response);
+      hideUpdatingText();
       loadDashboards();
     })
     .catch(err => {
       console.error("Error occurred updating dashboards", err);
-    });
+    })
+    .finally(hideUpdatingText);
 }
 
 function updateVideoAndCategoryStats() {
