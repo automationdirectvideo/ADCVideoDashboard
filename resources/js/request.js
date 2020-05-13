@@ -373,7 +373,7 @@ function requestVideoBasicStats(startDate, endDate, videoId, dashboardIds,
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log("Top Video Basic Stats", response);
-      const updatedVideoData = handleVideoBasicStats(response, dashboardIds,
+      const updatedVideoData = displayVideoBasicStats(response, dashboardIds,
         videoData);
       const sheetsPromise = saveTopVideoStatsToSheets(updatedVideoData);
       return "Displayed Top Video Basic Stats";
@@ -398,7 +398,7 @@ function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
   return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log("Top Video Daily Views", response);
-      handleVideoDailyViews(response, dashboardId);
+      displayVideoDailyViews(response, dashboardId);
       return Promise.resolve(`Displayed Daily Views: ${videoId}`);
     })
     .catch(err => {
@@ -422,7 +422,7 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
   return gapi.client.youtubeAnalytics.reports.query(request)
       .then(response => {
         console.log("Top Video Search Terms", response);
-        handleVideoSearchTerms(response, dashboardId);
+        displayVideoSearchTerms(response, dashboardId);
         return Promise.resolve(`Displayed Search Terms: ${videoId}`);
       })
       .catch(err => {
@@ -445,7 +445,7 @@ function requestCardPerformance(startDate, endDate, month) {
    return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(`Card Performance for month: ${month}`, response);
-      const cardData = handleCardPerformance(response, month);
+      const cardData = parseCardPerformance(response, month);
       return cardData;
     })
     .catch(err => {
@@ -456,7 +456,6 @@ function requestCardPerformance(startDate, endDate, month) {
 
 /* Google Sheets Calls */
 
-// QUESTION: should this be an async function?
 function requestSpreadsheetData(sheetName, range) {
   var spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
@@ -480,7 +479,6 @@ function requestSpreadsheetData(sheetName, range) {
   }
 }
 
-// QUESTION: should this be an async function?
 function updateSheetData(sheetName, range, body) {
   var spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {

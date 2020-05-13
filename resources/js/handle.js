@@ -1,43 +1,6 @@
 /* Handles responses of API calls */
 
 
-/* Get All Video Stats Calls */
-
-function handleVideoViewsByYear(response, settings) {
-  if (response) {
-    let stats = response.result.rows[0];
-    if (stats) {
-      let videoId = stats[0];
-      let viewCount = stats[1];
-      let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-      let categoryYearlyTotals =
-          JSON.parse(localStorage.getItem("categoryYearlyTotals"));
-      let categories = statsByVideoId[videoId]["categories"];
-      for (let i = 0; i < categories.length; i++) {
-        let categoryId = categories[i];
-        let categoryViews = parseInt(categoryYearlyTotals[categoryId]["views"]);
-        let categoryNumVideos =
-            parseInt(categoryYearlyTotals[categoryId]["numVideos"]);
-        categoryYearlyTotals[categoryId]["views"] = categoryViews + viewCount;
-        categoryYearlyTotals[categoryId]["numVideos"] = categoryNumVideos + 1;
-      }
-      localStorage.setItem("categoryYearlyTotals",
-          JSON.stringify(categoryYearlyTotals));
-    }
-
-    let uploads = settings["uploads"];
-    let index = parseInt(settings["index"]);
-    if (index + 1 < uploads.length) {
-      settings["index"] = index + 1;
-      requestVideoViewsByYear(settings);
-    } else {
-      let year = settings["year"];
-      saveCategoryYearlyStatsToSheets(year);
-    }
-  }
-}
-
-
 /* Platform Dashboard Calls */
 
 // Loads demographics table in platform dashboard
@@ -618,41 +581,10 @@ function displayViewsByTrafficSource(response) {
 }
 
 
-/* Top Ten Dashboard Calls */
-
-// Saves most watched videos by month to a Google Sheet
-function handleMostWatchedVideos(response, month) {
-  if (response) {
-    var videos = response.result.rows;
-    let uploads = JSON.parse(localStorage.getItem("uploads"));
-    if (month != undefined) {
-      var values = [[month]];
-      var index = 0;
-      var numVideos = 1;
-      while (numVideos <= 10) {
-        if (uploads.includes(videos[index][0])) {
-          values[0][numVideos] = videos[index][0];
-          values[0][numVideos + 10] = videos[index][1];
-          values[0][numVideos + 20] = videos[index][2];
-          numVideos++;
-        }
-        index++;
-      }
-      var body = {
-        "values": values
-      };
-      var row = 3 + monthDiff(new Date(2010, 6), new Date(month));
-      var sheet = "Top Ten Videos!A" + row;
-      updateSheetData("Stats", sheet, body);
-    }
-  }
-}
-
-
 /* Top Video Calls */
 
 // Displays video views, likes, comments, etc. in top video dashboard
-function handleVideoBasicStats(response, dashboardIds, videoData) {
+function displayVideoBasicStats(response, dashboardIds, videoData) {
   const rows = response.result.rows;
   for (let index = 0; index < rows.length; index++) {
     const stats = rows[index];
@@ -714,7 +646,7 @@ function handleVideoBasicStats(response, dashboardIds, videoData) {
 }
 
 // Creates daily views graph for a video in top video dashboard
-function handleVideoDailyViews(response, dashboardId) {
+function displayVideoDailyViews(response, dashboardId) {
   if (response) {
     let rows = response.result.rows;
     var xValues = [];
@@ -811,7 +743,7 @@ function handleVideoDailyViews(response, dashboardId) {
 }
 
 // Creates top search terms graph for a video in top video dashboard
-function handleVideoSearchTerms(response, dashboardId) {
+function displayVideoSearchTerms(response, dashboardId) {
   if (response) {
     let searchTerms = response.result.rows;
     let xValues = [];
@@ -905,7 +837,7 @@ function handleVideoSearchTerms(response, dashboardId) {
 
 /* Card Performance Calls */
 
-function handleCardPerformance(response, month) {
+function parseCardPerformance(response, month) {
   if (response) {
     let monthData = [month, 0, 0, 0, 0];
     try {

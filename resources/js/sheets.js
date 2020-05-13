@@ -279,7 +279,7 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
       "rows": rows
     }
   };
-  handleVideoBasicStats(response, dashboardIds);
+  displayVideoBasicStats(response, dashboardIds);
 }
 
 // Records real time stats from Google Sheet to localStorage.realTimeStats
