@@ -978,7 +978,7 @@ function displayTopTenThumbnails(topTenSheet) {
         output += `
           <div class="top-ten-thumbnail-holder column-thumbnail">
             <a href="https://youtu.be/${videoId}" target="_blank"
-                onclick="closeFullscreen()" alt="${videoTitle}">
+                alt="${videoTitle}">
               <img class="top-ten-thumbnail"
                   src="https://i.ytimg.com/vi/${videoId}/mqdefault.jpg" 
                   alt="thumbnail" title="${videoTitle}">`;
@@ -1049,7 +1049,7 @@ function displayTopVideoTitles(dashboardIds) {
       }
       let thumbnailText = `
         <a href="https://youtu.be/${videoId}" target="_blank"
-            onclick="closeFullscreen()" alt="${videoTitle}">
+            alt="${videoTitle}">
           <img class="top-video-thumbnail" onload="thumbnailCheck($(this), true)"
               src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
               alt="thumbnail" title="${videoTitle}">
@@ -1085,7 +1085,7 @@ function displayUploadThumbnails() {
       }
       uploadThumbnails += `
         <a href="https://youtu.be/${uploads[i]}" target="_blank"
-            onclick="closeFullscreen()" alt="${videoTitle}">
+            alt="${videoTitle}">
           <img class="thumbnail"
               src="https://i.ytimg.com/vi/${uploads[i]}/mqdefault.jpg" 
               alt="thumbnail" title="${videoTitle}">
@@ -1130,7 +1130,7 @@ function displayUserFeedback(feedbackSheet) {
     var thumbnail = `
       <div class="col-4">
         <a href="https://youtu.be/${videoId}" target="_blank"
-            onclick="closeFullscreen()" alt="${videoTitle}">
+            alt="${videoTitle}">
           <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
               src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
               alt="thumbnail" title="${videoTitle}">
