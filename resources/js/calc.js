@@ -69,7 +69,7 @@ function calcCategoryStats(categoryTotals) {
     }
   }
   localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-  
+
   return categoryStats;
 }
 
@@ -79,7 +79,7 @@ function updateDashboards() {
   let requests = [];
   // checks that today is between Jan 10-20 ish
   if (now.getMonth() == 0 && now.getDate() >= 10 &&
-      now.getDate <= 20) {
+    now.getDate <= 20) {
     let lastYear = now.getFullYear() - 1;
     requests.push(getYearlyCategoryViews(lastYear));
   }
@@ -238,12 +238,12 @@ function loadThumbnailDashboard() {
 
 function loadTopVideoDashboards() {
   return loadVideoDashboards()
-  .catch(err => {
-    return getVideoStats()
-    .then(loadVideoDashboards);
-  })
+    .catch(err => {
+      return getVideoStats()
+        .then(loadVideoDashboards);
+    })
 
-  function loadVideoDashboards () {
+  function loadVideoDashboards() {
     const carouselInner = document.getElementsByClassName("carousel-inner")[0];
     const todayDate = getTodaysDate();
     let topVideoList = [];
@@ -251,43 +251,43 @@ function loadTopVideoDashboards() {
     if (carouselInner.children["top-video-1"]) {
       let plcVideo = getTopVideoByCategory("B", "views")[0];
       if (plcVideo != undefined) {
-          dashboardIds[plcVideo] = "top-video-1";
-          topVideoList.push(plcVideo);
+        dashboardIds[plcVideo] = "top-video-1";
+        topVideoList.push(plcVideo);
       }
     }
     if (carouselInner.children["top-video-2"]) {
       let drivesVideo = getTopVideoByCategory("C", "views")[0];
       if (drivesVideo != undefined) {
-          dashboardIds[drivesVideo] = "top-video-2";
-          topVideoList.push(drivesVideo);
+        dashboardIds[drivesVideo] = "top-video-2";
+        topVideoList.push(drivesVideo);
       }
     }
     if (carouselInner.children["top-video-3"]) {
       let hmiVideo = getTopVideoByCategory("D", "views")[0];
       if (hmiVideo != undefined) {
-          dashboardIds[hmiVideo] = "top-video-3";
-          topVideoList.push(hmiVideo);
+        dashboardIds[hmiVideo] = "top-video-3";
+        topVideoList.push(hmiVideo);
       }
     }
     if (carouselInner.children["top-video-4"]) {
       let motionControlVideo = getTopVideoByCategory("F", "views")[0];
       if (motionControlVideo != undefined) {
-          dashboardIds[motionControlVideo] = "top-video-4";
-          topVideoList.push(motionControlVideo);
+        dashboardIds[motionControlVideo] = "top-video-4";
+        topVideoList.push(motionControlVideo);
       }
     }
     if (carouselInner.children["top-video-5"]) {
       let sensorsVideo = getTopVideoByCategory("H", "views")[0];
       if (sensorsVideo != undefined) {
-          dashboardIds[sensorsVideo] = "top-video-5";
-          topVideoList.push(sensorsVideo);
+        dashboardIds[sensorsVideo] = "top-video-5";
+        topVideoList.push(sensorsVideo);
       }
     }
     if (carouselInner.children["top-video-6"]) {
       let motorsVideo = getTopVideoByCategory("I", "views")[0];
       if (motorsVideo != undefined) {
-          dashboardIds[motorsVideo] = "top-video-6";
-          topVideoList.push(motorsVideo);
+        dashboardIds[motorsVideo] = "top-video-6";
+        topVideoList.push(motorsVideo);
       }
     }
     if (topVideoList.length == 0) {

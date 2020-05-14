@@ -120,11 +120,11 @@ function recordCategoryStats(categoriesSheet) {
     let likes = parseInt(categoriesSheet[i][columns["Likes"]]);
     let duration = parseInt(categoriesSheet[i][columns["Duration (sec)"]]);
     let avgViews =
-        parseFloat(categoriesSheet[i][columns["Average Video Views"]]);
+      parseFloat(categoriesSheet[i][columns["Average Video Views"]]);
     let avgLikes =
-        parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
+      parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
     let avgDuration =
-        parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
+      parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
     let videosString = categoriesSheet[i][columns["Videos"]];
     let videos = videosString.split(",");
     let root = ("TRUE" === categoriesSheet[i][columns["Root"]]);
@@ -248,15 +248,13 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
     try {
       document.getElementById(dashboardId + "-title").innerHTML = title;
       document.getElementById(dashboardId + "-duration").innerHTML =
-          "Duration: " + secondsToDuration(duration);
-      document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
-          duration;
-
+        "Duration: " + secondsToDuration(duration);
+      document.getElementById(dashboardId + "-duration-seconds").innerHTML =
+        duration;
       document.getElementById(dashboardId + "-publish-date").innerHTML =
-          "Published: " + publishDate;
-
+        "Published: " + publishDate;
       document.getElementById(dashboardId + "-thumbnail").innerHTML =
-          thumbnail;
+        thumbnail;
       const row = [
         videoId,
         views,
@@ -328,7 +326,7 @@ function recordYearlyCategoryViews(sheetValues) {
   let categoryTraces = {};
   let years = [];
   for (var row = 1; row < sheetValues.length; row += 2) {
-    let year = sheetValues[row][0].substr(0,4);
+    let year = sheetValues[row][0].substr(0, 4);
     years.push(year);
   }
   categoryTraces["years"] = years;
@@ -392,8 +390,9 @@ function recordYearlyCategoryViews(sheetValues) {
 function saveCategoryStatsToSheets(categoryStats) {
   var values = [
     ["Category ID", "Name", "Short Name", "Views", "Likes", "Duration (sec)",
-    "Average Video Views", "Average Video Likes", "Average Video Duration",
-    "Videos", "Root", "Leaf"]
+      "Average Video Views", "Average Video Likes", "Average Video Duration",
+      "Videos", "Root", "Leaf"
+    ]
   ];
   for (var i = 0; i < categoryStats.length; i++) {
     var row = [];
@@ -477,9 +476,10 @@ function saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year) {
 function saveVideoStatsToSheets(allVideoStats) {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-        "Comments", "Publish Date", "Categories"]
+      "Comments", "Publish Date", "Categories"
+    ]
   ];
-  var statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   for (var i = 0; i < allVideoStats.length; i++) {
     var row = [];
     var videoId = allVideoStats[i]["videoId"];
@@ -494,7 +494,7 @@ function saveVideoStatsToSheets(allVideoStats) {
     row.push(statsByVideoId[videoId]["categories"].join(","));
     values.push(row);
   }
-  var body= {
+  const body = {
     "values": values
   };
   const updatePromise = updateSheetData("Stats", "Video Stats", body);
@@ -511,7 +511,8 @@ function saveGraphDataToSheets(graphData, sheetName) {
   sheetName = sheetName || "Graph Data";
   var values = [
     ["Graph ID", "Data", "Layout", "Config", "Graph Height", "Graph Width",
-        "Automargin"]
+      "Automargin"
+    ]
   ];
   for (var graphId in graphData) {
     if (graphData.hasOwnProperty(graphId)) {
@@ -524,9 +525,9 @@ function saveGraphDataToSheets(graphData, sheetName) {
       row.push(graphData[graphId]["graphWidth"]);
       row.push(JSON.stringify(graphData[graphId]["automargin"]));
       values.push(row);
-    } 
+    }
   }
-  var body = {
+  const body = {
     "values": values
   };
   updateSheetData("Stats", sheetName, body);
@@ -539,8 +540,9 @@ function saveGraphDataToSheets(graphData, sheetName) {
 function saveTopVideoStatsToSheets(topVideoStats) {
   var values = [
     ["Video ID", "Dashboard ID", "Title", "Duration", "Publish Date",
-        "Thumbnail", "Views", "Subscribers Gained", "Average View Duration",
-        "Estimated Minutes Watched", "Comments", "Likes", "Dislikes"]
+      "Thumbnail", "Views", "Subscribers Gained", "Average View Duration",
+      "Estimated Minutes Watched", "Comments", "Likes", "Dislikes"
+    ]
   ];
   for (const videoId in topVideoStats) {
     if (topVideoStats.hasOwnProperty(videoId)) {
@@ -573,7 +575,8 @@ function saveTopVideoStatsToSheets(topVideoStats) {
 function saveRealTimeStatsToSheets(realTimeStats) {
   var values = [
     ["Time Range", "Views", "Estimated Minutes Watched",
-        "Average View Duration", "Subscribers Gained"]
+      "Average View Duration", "Subscribers Gained"
+    ]
   ];
   for (const timeRange in realTimeStats) {
     if (realTimeStats.hasOwnProperty(timeRange)) {

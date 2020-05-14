@@ -5,13 +5,13 @@
 
 // Request number of videos the channel has
 function requestChannelNumVideos() {
-  var request = {
+  let request = {
     part: "statistics",
     forUsername: "automationdirect"
   };
   return gapi.client.youtube.channels.list(request)
     .then(response => {
-      let numVideos = response.result.items[0].statistics.videoCount;
+      const numVideos = response.result.items[0].statistics.videoCount;
       document.getElementById("num-videos").innerText = numVideos;
     })
     .catch(err => {
@@ -22,11 +22,11 @@ function requestChannelNumVideos() {
 /* Get All Video Stats Calls */
 
 function getAllVideoStats(videos) {
-  var requests = [];
+  let requests = [];
   for (let i = 0; i < videos.length; i += 50) {
     const fiftyVideos = videos.slice(i, i + 50);
     const fiftyVideosStr = fiftyVideos.join(",");
-    var gapiRequest = {
+    const gapiRequest = {
       "part": "statistics,contentDetails",
       "id": fiftyVideosStr
     };
@@ -82,7 +82,7 @@ function getAllVideoStats(videos) {
 }
 
 function requestVideoViewsByYear(uploads, year) {
-  var requests = [];
+  let requests = [];
   const startDate = year + "-01-01";
   const endDate = year + "-12-31";
 
@@ -136,7 +136,7 @@ function requestVideoViewsByYear(uploads, year) {
           const categoryId = categories[i];
           const categoryViews = parseInt(categoryYearlyTotals[categoryId]["views"]);
           const categoryNumVideos =
-              parseInt(categoryYearlyTotals[categoryId]["numVideos"]);
+            parseInt(categoryYearlyTotals[categoryId]["numVideos"]);
           categoryYearlyTotals[categoryId]["views"] = categoryViews + viewCount;
           categoryYearlyTotals[categoryId]["numVideos"] = categoryNumVideos + 1;
         }
@@ -276,7 +276,7 @@ function requestRealTimeStats(startDate, endDate) {
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views,subscribersGained,subscribersLost," +
-        "estimatedMinutesWatched,averageViewDuration",
+      "estimatedMinutesWatched,averageViewDuration",
     "startDate": startDate
   };
   return gapi.client.youtubeAnalytics.reports.query(request)
@@ -290,7 +290,7 @@ function requestRealTimeStats(startDate, endDate) {
         realTimeStats[headers[i].name] = row[i];
       }
       realTimeStats["netSubscribersGained"] = realTimeStats.subscribersGained -
-          realTimeStats.subscribersLost;
+        realTimeStats.subscribersLost;
       delete realTimeStats.subscribersGained;
       delete realTimeStats.subscribersLost;
       return realTimeStats;
@@ -336,7 +336,9 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
       if (month == undefined) {
         throw new Error("Month is undefined");
       }
-      var values = [[month]];
+      var values = [
+        [month]
+      ];
       var index = 0;
       var numVideos = 1;
       while (numVideos <= 10) {
@@ -359,7 +361,7 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
 /* Top Video Calls */
 
 function requestVideoBasicStats(startDate, endDate, videoId, dashboardIds,
-    videoData) {
+  videoData) {
   const stringVideoId = "video==" + videoId;
   const request = {
     "dimensions": "video",
@@ -367,7 +369,7 @@ function requestVideoBasicStats(startDate, endDate, videoId, dashboardIds,
     "filters": stringVideoId,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "views,comments,likes,dislikes,estimatedMinutesWatched," +
-        "averageViewDuration,subscribersGained,subscribersLost",
+      "averageViewDuration,subscribersGained,subscribersLost",
     "startDate": startDate
   };
   return gapi.client.youtubeAnalytics.reports.query(request)
@@ -420,15 +422,15 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
     "startDate": startDate
   };
   return gapi.client.youtubeAnalytics.reports.query(request)
-      .then(response => {
-        console.log("Top Video Search Terms", response);
-        displayVideoSearchTerms(response, dashboardId);
-        return Promise.resolve(`Displayed Search Terms: ${videoId}`);
-      })
-      .catch(err => {
-        console.error(`Error getting search terms for video: ${videoId}`, err);
-        throw new Error("Error in requestVideoSearchTerms");
-      });
+    .then(response => {
+      console.log("Top Video Search Terms", response);
+      displayVideoSearchTerms(response, dashboardId);
+      return Promise.resolve(`Displayed Search Terms: ${videoId}`);
+    })
+    .catch(err => {
+      console.error(`Error getting search terms for video: ${videoId}`, err);
+      throw new Error("Error in requestVideoSearchTerms");
+    });
 }
 
 
@@ -439,10 +441,10 @@ function requestCardPerformance(startDate, endDate, month) {
     "endDate": endDate,
     "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
     "metrics": "cardImpressions,cardClickRate," +
-        "cardTeaserImpressions,cardTeaserClickRate",
+      "cardTeaserImpressions,cardTeaserClickRate",
     "startDate": startDate
   };
-   return gapi.client.youtubeAnalytics.reports.query(request)
+  return gapi.client.youtubeAnalytics.reports.query(request)
     .then(response => {
       console.log(`Card Performance for month: ${month}`, response);
       const cardData = parseCardPerformance(response, month);
@@ -457,13 +459,13 @@ function requestCardPerformance(startDate, endDate, month) {
 /* Google Sheets Calls */
 
 function requestSpreadsheetData(sheetName, range) {
-  var spreadsheetId = sheetNameToId(sheetName);
+  const spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
-    var request = {
+    const request = {
       "spreadsheetId": spreadsheetId,
       "range": range
     };
-    var sheetPromise = gapi.client.sheets.spreadsheets.values.get(request)
+    const sheetPromise = gapi.client.sheets.spreadsheets.values.get(request)
       .then(response => {
         console.log(`SpreadsheetData: ${range}`);
         return Promise.resolve(response.result.values);
@@ -480,15 +482,15 @@ function requestSpreadsheetData(sheetName, range) {
 }
 
 function updateSheetData(sheetName, range, body) {
-  var spreadsheetId = sheetNameToId(sheetName);
+  const spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
-    var request = {
+    const request = {
       "spreadsheetId": spreadsheetId,
       "range": range,
       "valueInputOption": "RAW",
       "resource": body
     };
-    var updatePromise = gapi.client.sheets.spreadsheets.values.update(request)
+    const updatePromise = gapi.client.sheets.spreadsheets.values.update(request)
       .then(response => {
         console.log(`UpdateSheetData: ${range}`);
         return Promise.resolve(response);
@@ -509,16 +511,15 @@ function updateSheetData(sheetName, range, body) {
 function getYearlyCategoryViews(year) {
   const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let uploadsByYear = [];
-  for (var videoId in statsByVideoId) {
+  for (const videoId in statsByVideoId) {
     if (statsByVideoId.hasOwnProperty(videoId)) {
       const publishDate = statsByVideoId[videoId]["publishDate"];
-      const publishYear = publishDate.substr(0,4);
+      const publishYear = publishDate.substr(0, 4);
       if (year >= publishYear) {
         uploadsByYear.push(videoId);
       }
     }
   }
-  
   return requestVideoViewsByYear(uploadsByYear, year);
 }
 
@@ -529,11 +530,11 @@ function getCardPerformanceByMonthSince(startDate) {
   let firstMonth = undefined;
   const endDate = new Date();
   while (endDate - startDate > 0) {
-    let firstDay = getYouTubeDateFormat(startDate);
-    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(),
+    const firstDay = getYouTubeDateFormat(startDate);
+    const lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(),
       startDate.getMonth() + 1, 0));
-    let month = firstDay.substr(0, 7);
-    if (firstMonth == undefined){
+    const month = firstDay.substr(0, 7);
+    if (firstMonth == undefined) {
       firstMonth = month;
     }
     requests.push(requestCardPerformance(firstDay, lastDay, month));
@@ -560,11 +561,11 @@ function getTopTenVideosByMonthSince(startDate) {
   let firstMonth = undefined;
   const endDate = new Date();
   while (endDate - startDate > 0) {
-    let firstDay = getYouTubeDateFormat(startDate);
-    let lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(),
+    const firstDay = getYouTubeDateFormat(startDate);
+    const lastDay = getYouTubeDateFormat(new Date(startDate.getFullYear(),
       startDate.getMonth() + 1, 0));
-    let month = firstDay.substr(0, 7);
-    if (firstMonth == undefined){
+    const month = firstDay.substr(0, 7);
+    if (firstMonth == undefined) {
       firstMonth = month;
     }
     requests.push(requestMostWatchedVideos(firstDay, lastDay, 20, month));
@@ -630,7 +631,7 @@ function realTimeStatsCalls() {
 
 // Makes requests data for top video dashboard
 function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
-  var requests = [];
+  let requests = [];
   const videoData = displayTopVideoTitles(dashboardIds);
 
   requests.push(requestVideoBasicStats(startDate, endDate, videoId,
@@ -644,7 +645,6 @@ function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
         videoId, dashboardId));
     }
   }
-  
   return Promise.all(requests)
     .then(response => {
       console.log("Top Video Calls Result", response);

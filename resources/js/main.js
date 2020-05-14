@@ -111,7 +111,7 @@ function initializeUpdater() {
     if (isSignedIn) {
       if (updateCount % 3600 == 0) {
         updateDashboards();
-        
+
       } else if (updateCount % 900 == 0) {
         loadDashboards();
       }
@@ -127,10 +127,10 @@ function initializeUpdater() {
 
 // Update odometers in real time stats dashboard
 function updateRealTimeStats(updateCount) {
-  let secondsPerIncrement = 
-      JSON.parse(localStorage.getItem("secondsPerIncrement"));
-  let odometerCategories = 
-      JSON.parse(localStorage.getItem("odometerCategories"));
+  let secondsPerIncrement =
+    JSON.parse(localStorage.getItem("secondsPerIncrement"));
+  let odometerCategories =
+    JSON.parse(localStorage.getItem("odometerCategories"));
   for (var key in secondsPerIncrement) {
     if (secondsPerIncrement.hasOwnProperty(key)) {
       if (updateCount % secondsPerIncrement[key] == 0) {
@@ -150,7 +150,6 @@ function updateRealTimeStats(updateCount) {
 function displayRealTimeStats(stats) {
   stats = stats || JSON.parse(localStorage.getItem("realTimeStats"));
   if (stats.cumulative && stats.month && stats.today) {
-    
     var secondsPerIncrement = {};
     for (const key in stats.today) {
       if (stats.today.hasOwnProperty(key) && key != "averageViewDuration") {
@@ -158,19 +157,21 @@ function displayRealTimeStats(stats) {
       }
     }
     localStorage.setItem("secondsPerIncrement",
-        JSON.stringify(secondsPerIncrement));
+      JSON.stringify(secondsPerIncrement));
 
     let startHour = new Date();
     startHour.setHours(6, 0, 0, 0);
     const now = new Date();
     // Calculates the seconds since startHour
     const diffInSeconds = Math.round((now - startHour) / 1000);
-    
+
     var avgDurationOdometer = document.getElementById("stat-avg-duration");
     var odometerCategories = {
       "views": ["stat-views-cumulative", "stat-views-month"],
-      "estimatedMinutesWatched": ["stat-minutes-cumulative",
-          "stat-minutes-month"],
+      "estimatedMinutesWatched": [
+        "stat-minutes-cumulative",
+        "stat-minutes-month"
+      ],
       "netSubscribersGained": ["stat-subs-cumulative", "stat-subs-month"],
       "cumulative": {
         "views": "stat-views-cumulative",
@@ -184,8 +185,8 @@ function displayRealTimeStats(stats) {
       }
     };
     localStorage.setItem("odometerCategories",
-        JSON.stringify(odometerCategories));
-    
+      JSON.stringify(odometerCategories));
+
     // Load data into odometers
     ["cumulative", "month"].forEach(category => {
       const odometers = odometerCategories[category];
@@ -201,7 +202,7 @@ function displayRealTimeStats(stats) {
       }
     });
     const avgDurationCumulative =
-        secondsToDurationMinSec(stats.cumulative.averageViewDuration);
+      secondsToDurationMinSec(stats.cumulative.averageViewDuration);
     avgDurationOdometer.innerHTML = avgDurationCumulative;
     avgDurationOdometer.value = stats.cumulative.averageViewDuration;
     calcAvgVideoDuration(stats.cumulative.averageViewDuration);
@@ -248,7 +249,7 @@ function calcAvgVideoDuration() {
       avgViewPercentage = 36.1;
     }
     document.getElementById("stat-avg-percentage").innerText =
-        avgViewPercentage + "%";
+      avgViewPercentage + "%";
   } else {
     // Default value if statsByVideoId does not exist yet
     document.getElementById("stat-avg-percentage").innerText = "36.1%";
@@ -258,7 +259,7 @@ function calcAvgVideoDuration() {
 function getTopVideoByCategory(categoryId, type, numVideos) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  allVideoStats.sort(function(a, b) {
+  allVideoStats.sort(function (a, b) {
     return parseInt(b[type]) - parseInt(a[type]);
   });
   if (numVideos == undefined || numVideos <= 0) {
@@ -297,12 +298,12 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
 
   for (var categoryId in categoryTraces) {
     if (categoryTraces.hasOwnProperty(categoryId) && categoryId != "years" &&
-        categoryId != "totals") {
+      categoryId != "totals") {
       let viewTrace = categoryTraces[categoryId]["viewTrace"];
       let avgViewTrace = categoryTraces[categoryId]["avgViewTrace"];
       let cumulativeViewTrace = categoryTraces[categoryId]["cumulativeViews"];
       let cumulativeAvgViewTrace =
-          categoryTraces[categoryId]["cumulativeAvgViewTrace"];
+        categoryTraces[categoryId]["cumulativeAvgViewTrace"];
       let categoryName = categoryTraces[categoryId]["name"];
       let percentageTrace = [];
       for (var i = 0; i < viewTrace.length; i++) {
@@ -361,7 +362,7 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
       });
     }
   }
-  var sortDescByLastY = function(a,b) {
+  var sortDescByLastY = function (a, b) {
     return parseInt(b["y"][numYears - 1]) - parseInt(a["y"][numYears - 1]);
   };
   viewTraces.sort(sortDescByLastY);
@@ -373,8 +374,8 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
   var graphWidth = 0.9528;
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
-  var legendFontSize = 
-        Math.floor(0.017 * document.documentElement.clientHeight);
+  var legendFontSize =
+    Math.floor(0.017 * document.documentElement.clientHeight);
   var tickSize = Math.floor(0.0104 * document.documentElement.clientWidth);
   var axisTitleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
   var titleSize = Math.floor(0.0208 * document.documentElement.clientWidth);
@@ -517,7 +518,7 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
     var categoryName = trace.name;
     trace.hovertemplate = "%{y:.2f}%: <i>" + categoryName + "</i><extra></extra>";
   }
-  
+
   let plotInfo = [
     [plotViews, viewTraces, viewLayout],
     [plotViewsNorm, normalViewTraces, normalViewLayout],
@@ -527,7 +528,8 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
     [plotAvgViewsNorm, normalAvgViewTraces, normalAvgViewLayout],
     [plotCumAvgViews, cumulativeAvgViewTraces, cumulativeAvgViewLayout],
     [plotCumAvgViewsNorm, normalCumulativeAvgViewTraces,
-          normalCumulativeAvgViewLayout],
+      normalCumulativeAvgViewLayout
+    ],
   ];
   categoryGraphData = {};
   for (var i = 0; i < plotInfo.length; i++) {
@@ -623,8 +625,8 @@ function displayCardPerformanceCharts(cardData) {
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
   var teaserWidth = teaserGraphWidth * document.documentElement.clientWidth;
-  var legendFontSize = 
-        Math.floor(0.017 * document.documentElement.clientHeight);
+  var legendFontSize =
+    Math.floor(0.017 * document.documentElement.clientHeight);
   var tickSize = Math.floor(0.0094 * document.documentElement.clientWidth);
   var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
   var titleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
@@ -715,18 +717,18 @@ function displayCardPerformanceCharts(cardData) {
 
   Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
   recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
-      graphHeight, graphWidth);
+    graphHeight, graphWidth);
   recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
 
   Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
   recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
-      graphWidth);
+    graphWidth);
   recordGraphSize(cardGraph, graphHeight, graphWidth);
 }
 
 function displayTopCategories(categoryStats) {
   categoryStats = categoryStats ||
-      JSON.parse(localStorage.getItem("categoryStats"));
+    JSON.parse(localStorage.getItem("categoryStats"));
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   var total = 0;
@@ -737,8 +739,8 @@ function displayTopCategories(categoryStats) {
   var width = graphWidth * document.documentElement.clientWidth;
   var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
   var labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
-  var legendFontSize = 
-      Math.floor(0.0125 * document.documentElement.clientWidth);
+  var legendFontSize =
+    Math.floor(0.0125 * document.documentElement.clientWidth);
   var values = [];
   var labels = [];
   var colors = [];
@@ -900,7 +902,9 @@ function displayTopCategories(categoryStats) {
   var layout = {
     height: height,
     width: width,
-    font: {size: labelFontSize},
+    font: {
+      size: labelFontSize
+    },
     automargin: true,
     autosize: true,
     paper_bgcolor: "rgba(0,0,0,0)",
@@ -917,10 +921,10 @@ function displayTopCategories(categoryStats) {
       columns: 2
     },
     margin: {
-      b:5,
-      l:5,
-      r:5,
-      t:5
+      b: 5,
+      l: 5,
+      r: 5,
+      t: 5
     }
   };
 
@@ -995,7 +999,7 @@ function displayTopTenThumbnails(topTenSheet) {
                 <span class="oi oi-arrow-thick-bottom arrow-red"></span>
                 <span class="arrow-text-white">${Math.abs(change)}</span>
               `;
-            } else if(change > 0) {
+            } else if (change > 0) {
               // Add up arrow
               output += `
                 <span class="oi oi-arrow-thick-top arrow-green"></span>
@@ -1009,7 +1013,7 @@ function displayTopTenThumbnails(topTenSheet) {
     }
   }
   let thumbnailContainer =
-      document.getElementById("top-ten-thumbnail-container");
+    document.getElementById("top-ten-thumbnail-container");
   thumbnailContainer.innerHTML = output;
   let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
   thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
@@ -1020,16 +1024,16 @@ function displayTopVideoTitles(dashboardIds) {
   for (const videoId in dashboardIds) {
     if (dashboardIds.hasOwnProperty(videoId)) {
       const dashboardId = dashboardIds[videoId];
-      
+
       const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
       let title = document.getElementById(dashboardId + "-title");
       title.innerHTML = statsByVideoId[videoId]["title"];
       const duration = statsByVideoId[videoId]["duration"];
       document.getElementById(dashboardId + "-duration").innerHTML = "Duration: " +
-          secondsToDuration(duration);
-      document.getElementById(dashboardId + "-duration-seconds").innerHTML = 
-          duration;
-    
+        secondsToDuration(duration);
+      document.getElementById(dashboardId + "-duration-seconds").innerHTML =
+        duration;
+
       let publishDateText = document.getElementById(dashboardId + "-publish-date");
       let publishDate = statsByVideoId[videoId]["publishDate"];
       const year = publishDate.slice(0, 4);
@@ -1037,7 +1041,7 @@ function displayTopVideoTitles(dashboardIds) {
       const day = publishDate.slice(8, 10);
       publishDate = month + "/" + day + "/" + year;
       publishDateText.innerHTML = "Published: " + publishDate;
-    
+
       let thumbnail = document.getElementById(dashboardId + "-thumbnail");
       let videoTitle = "YouTube Video ID: " + videoId;
       if (statsByVideoId && statsByVideoId[videoId]) {
@@ -1051,7 +1055,7 @@ function displayTopVideoTitles(dashboardIds) {
               alt="thumbnail" title="${videoTitle}">
         </a>`;
       thumbnail.innerHTML = thumbnailText;
-    
+
       videoData[videoId] = {
         "dashboardId": dashboardId,
         "title": statsByVideoId[videoId]["title"],
@@ -1168,11 +1172,10 @@ function displayUserFeedback(feedbackSheet) {
     new AutoDivScroll("feedback-wrapper", speed, 1, 1);
     autoScrollDivs.push("feedback-wrapper");
   }
-  
 }
 
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-        automargin) {
+  automargin) {
   totalNumGraphs = document.querySelectorAll('.graph-container').length;
   let graphData = JSON.parse(localStorage.getItem("graphData"));
   if (!automargin) {
@@ -1235,7 +1238,7 @@ function resizeGraphs() {
 
 function swapNormalCharts() {
   var activeDashboard =
-      $(".carousel-container.active >>> .carousel-item.active")[0].id;
+    $(".carousel-container.active >>> .carousel-item.active")[0].id;
   var standardChartId = activeDashboard + "-chart";
   var standardChart = document.getElementById(standardChartId);
   if (standardChart) {
@@ -1261,14 +1264,14 @@ function fixGraphMargins() {
 function updateTheme(dashboardIndex) {
   try {
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      var endDashboard = 
-          document.getElementsByClassName("carousel-item")[dashboardIndex];
+      var endDashboard =
+        document.getElementsByClassName("carousel-item")[dashboardIndex];
       var body = document.getElementsByTagName("body")[0];
       if (endDashboard.getAttribute("theme") == "dark") {
         body.className = "dark";
         if (endDashboard.id == "platform") {
           document.getElementsByClassName("demographics-table")[0]
-              .classList.add("table-dark");
+            .classList.add("table-dark");
         }
       } else {
         body.className = "";
@@ -1301,7 +1304,7 @@ function playDashboard() {
   $("#dashboard-carousel").carousel('cycle');
   pauseText.style.display = "none";
   playText.style.display = "initial";
-  setTimeout(function() {
+  setTimeout(function () {
     if (playText.offsetHeight != 0) {
       $('#play-text').fadeOut();
     }
@@ -1390,17 +1393,17 @@ for (var i = 0; i < enabledOrder.length; i++) {
     dashboardText = dashboardItem.outerHTML;
     dashboardText = dashboardText.replace(/top-video-#/g, enabledOrder[i].name);
     dashboardText =
-        dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
+      dashboardText.replace(/TITLE PLACEHOLDER/, enabledOrder[i].title);
     var template = document.createElement("template");
     template.innerHTML = dashboardText;
     dashboardItem = template.content.firstChild;
   } else {
     dashboardItem.remove();
   }
-  document.createElement("div",dashboardItem.outerText)
+  document.createElement("div", dashboardItem.outerText)
   dashboardItem.setAttribute("theme", enabledOrder[i].theme);
   indicator.id = "main-indicator-" + i;
-  indicator.setAttribute("onclick", "goToCarouselItem("+ i +")");
+  indicator.setAttribute("onclick", "goToCarouselItem(" + i + ")");
   indicator.className = enabledOrder[i].icon + " indicator";
   carouselInner.appendChild(dashboardItem);
   indicatorList.appendChild(indicator);
@@ -1455,7 +1458,7 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   var endIndicator = document.getElementById(indicatorName + e.to);
   startIndicator.classList.remove("active");
   endIndicator.classList.add("active");
-  window.setTimeout(function(){
+  window.setTimeout(function () {
     updateTheme(e.to);
     // Scroll top ten dashboard to the end on load
     let topTenWrapper = document.getElementById("top-ten-thumbnail-wrapper");
@@ -1472,7 +1475,7 @@ window.addEventListener('resize', function () {
   let topTenDashboard = document.getElementById("top-ten");
   if (topTenDashboard.classList.contains("active")) {
     let thumbnailContainer =
-        document.getElementById("top-ten-thumbnail-container");
+      document.getElementById("top-ten-thumbnail-container");
     thumbnailContainer.style.display = "none";
     this.window.setTimeout(function () {
       thumbnailContainer.style.display = "flex";

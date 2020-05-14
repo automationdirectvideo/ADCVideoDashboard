@@ -42,7 +42,7 @@ function getDateFromDaysAgo(numDaysAgo) {
 // Get today's date in the form YYYY-MM-DD
 function getTodaysDate() {
   return getYouTubeDateFormat(new Date());
-}    
+}
 
 // Get a date in the form YYYY-MM-DD
 function getYouTubeDateFormat(date) {
@@ -51,17 +51,17 @@ function getYouTubeDateFormat(date) {
   var yyyy = date.getFullYear();
   today = yyyy + "-" + mm + "-" + dd;
   return today;
-}      
+}
 
 // Converts ISO-8601 duration to seconds (e.g. PT5M25S -> 325 seconds)
 function isoDurationToSeconds(duration) {
-  duration = duration.replace("PT","").replace("H",":").replace("M",":")
-      .replace("S","");
+  duration = duration.replace("PT", "").replace("H", ":").replace("M", ":")
+    .replace("S", "");
   durationArr = duration.split(":");
   let seconds;
   if (durationArr.length == 3) {
-    seconds = Number(durationArr[0]) * 3600 + 
-        Number(durationArr[1]) * 60 + Number(durationArr[2]);
+    seconds = Number(durationArr[0]) * 3600 +
+      Number(durationArr[1]) * 60 + Number(durationArr[2]);
   } else if (durationArr.length == 2) {
     seconds = Number(durationArr[0]) * 60 + Number(durationArr[1]);
   } else {
@@ -72,9 +72,9 @@ function isoDurationToSeconds(duration) {
 
 // Get number of months between two dates (ignoring the day of the month)
 function monthDiff(dateFrom, dateTo) {
-  return dateTo.getMonth() - dateFrom.getMonth() + 
+  return dateTo.getMonth() - dateFrom.getMonth() +
     (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
- }
+}
 
 // Add commas to number
 function numberWithCommas(x) {
@@ -87,10 +87,10 @@ function searchForURLs(inputText) {
   var links = [];
   var match;
   do {
-      match = findURLs.exec(inputText);
-      if (match) {
-          links.push(match[0]);
-      }
+    match = findURLs.exec(inputText);
+    if (match) {
+      links.push(match[0]);
+    }
   } while (match);
   return links;
 }

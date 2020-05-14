@@ -72,8 +72,8 @@ function setAllDashboardThemes(theme) {
       badge.innerHTML = capitalizeFirstLetter(theme);
       badge.classList = "badge badge-pill badge-theme badge-" + theme;
       for (var j = 0; j < supportedThemes.length; j++) {
-        var themeButton = document.getElementById(dashboards[i].name + "-" + 
-            supportedThemes[j] + "-btn");
+        var themeButton = document.getElementById(dashboards[i].name + "-" +
+          supportedThemes[j] + "-btn");
         if (supportedThemes[j] == theme) {
           themeButton.disabled = true;
         } else {
@@ -124,9 +124,9 @@ function loadDashboardList() {
     enabledDashboardsList.appendChild(dashboardItem);
     if (dashboard.scrollSpeed != undefined) {
       document.getElementById(dashboard.name + "-scroll-row").classList
-          .remove("d-none");
+        .remove("d-none");
       document.getElementById(dashboard.name + "-scroll-input")
-          .setAttribute("value", dashboard.scrollSpeed);
+        .setAttribute("value", dashboard.scrollSpeed);
     }
   }
 }

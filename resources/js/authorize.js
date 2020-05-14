@@ -3,16 +3,16 @@
 // Options
 const API_KEY = "AIzaSyAd5qRbldWGyKfLnI27Pga5yUM-TFatp58";
 const CLIENT_ID = "440646774290-ism1om8j8hnp1js8tsc9603ogo6uvhco" +
-    ".apps.googleusercontent.com";
+  ".apps.googleusercontent.com";
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest',
   'https://youtubeanalytics.googleapis.com/$discovery/rest?version=v2',
   'https://sheets.googleapis.com/$discovery/rest?version=v4'
 ];
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
-    'https://www.googleapis.com/auth/yt-analytics.readonly ' +
-    'https://www.googleapis.com/auth/spreadsheets.readonly ' +
-    'https://www.googleapis.com/auth/spreadsheets';
+  'https://www.googleapis.com/auth/yt-analytics.readonly ' +
+  'https://www.googleapis.com/auth/spreadsheets.readonly ' +
+  'https://www.googleapis.com/auth/spreadsheets';
 
 const authorizeButton = document.getElementById("authorize-button");
 const signoutButton = document.getElementById("signout-button");

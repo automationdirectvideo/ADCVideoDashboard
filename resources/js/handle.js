@@ -137,7 +137,7 @@ function displayChannelSearchTerms(response) {
   const searchTerms = response.result.rows;
   let xValues = [];
   let yValues = [];
-  const numTerms = Math.min(9, searchTerms.length+ - 1);
+  const numTerms = Math.min(9, searchTerms.length + -1);
   for (var i = numTerms; i >= 0; i--) {
     xValues.push(searchTerms[i][1]);
     yValues.push(searchTerms[i][0]);
@@ -159,26 +159,28 @@ function displayChannelSearchTerms(response) {
     tickmode: 'linear',
     automargin: true
   };
-  let automargin = {yaxis: yaxis};
+  let automargin = {
+    yaxis: yaxis
+  };
 
-  const data = [
-    {
-      x: xValues,
-      y: yValues,
-      type: 'bar',
-      orientation: 'h',
-      text: textValues,
-      textposition: 'auto',
-      marker: {
-        color: 'rgb(255,0,0)'
-      }
+  const data = [{
+    x: xValues,
+    y: yValues,
+    type: 'bar',
+    orientation: 'h',
+    text: textValues,
+    textposition: 'auto',
+    marker: {
+      color: 'rgb(255,0,0)'
     }
-  ];
-  
+  }];
+
   let layout = {
     height: height,
     width: width,
-    font: {size: fontSize},
+    font: {
+      size: fontSize
+    },
     margin: {
       b: 10,
       r: 0,
@@ -190,9 +192,9 @@ function displayChannelSearchTerms(response) {
     },
     yaxis: yaxis
   };
-  
+
   const config = {
-    staticPlot: true, 
+    staticPlot: true,
     responsive: true
   };
 
@@ -211,9 +213,11 @@ function displayChannelSearchTerms(response) {
     layout["font"]["color"] = "#fff";
     yaxis["linecolor"] = "#fff";
     layout["yaxis"] = yaxis;
-    automargin = {yaxis: yaxis};
+    automargin = {
+      yaxis: yaxis
+    };
   }
-  
+
   Plotly.newPlot(graphId, data, layout, config);
 
   recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
@@ -259,8 +263,10 @@ function displayWatchTimeBySubscribedStatus(response) {
     tickmode: 'linear',
     automargin: true
   };
-  let automargin = {yaxis: yaxis};
-  
+  let automargin = {
+    yaxis: yaxis
+  };
+
   const data = [{
     x: xValues,
     y: yValues,
@@ -272,11 +278,13 @@ function displayWatchTimeBySubscribedStatus(response) {
       color: 'rgb(255,0,0)'
     }
   }];
-  
+
   let layout = {
     height: height,
     width: width,
-    font: {size: fontSize},
+    font: {
+      size: fontSize
+    },
     margin: {
       r: 0,
       t: 10,
@@ -288,7 +296,7 @@ function displayWatchTimeBySubscribedStatus(response) {
     },
     yaxis: yaxis,
   };
-  
+
   const config = {
     staticPlot: true,
     responsive: true
@@ -309,9 +317,11 @@ function displayWatchTimeBySubscribedStatus(response) {
     layout["font"]["color"] = "#fff";
     yaxis["linecolor"] = "#fff";
     layout["yaxis"] = yaxis;
-    automargin = {yaxis: yaxis};
+    automargin = {
+      yaxis: yaxis
+    };
   }
-  
+
   Plotly.newPlot(graphId, data, layout, config);
 
   recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
@@ -339,14 +349,14 @@ function displayViewsByDeviceType(response) {
     values.push(rows[i][1]);
     labels.push(labelConversion[rows[i][0]]);
   }
-  
+
   const graphId = "channel-views-by-device";
   const graphHeight = 0.3742;
   const graphWidth = 0.3065;
   const height = graphHeight * document.documentElement.clientHeight;
   const width = graphWidth * document.documentElement.clientWidth;
   const fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
-  
+
   const data = [{
     values: values,
     labels: labels,
@@ -357,11 +367,13 @@ function displayViewsByDeviceType(response) {
     rotation: -120,
     direction: 'clockwise'
   }];
-  
+
   let layout = {
     height: height,
     width: width,
-    font: {size: fontSize},
+    font: {
+      size: fontSize
+    },
     automargin: true,
     autosize: true,
     showlegend: false,
@@ -373,7 +385,7 @@ function displayViewsByDeviceType(response) {
       pad: 4
     }
   };
-  
+
   const config = {
     staticPlot: true,
     responsive: true
@@ -393,7 +405,7 @@ function displayViewsByDeviceType(response) {
     layout["paper_bgcolor"] = "#222";
     layout["font"]["color"] = "#fff";
   }
-  
+
   Plotly.newPlot(graphId, data, layout, config);
 
   recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
@@ -439,14 +451,14 @@ function displayViewsByState(response) {
   let layout = {
     height: height,
     width: width,
-    geo:{
-        scope: 'usa',
-        countrycolor: 'rgb(255, 255, 255)',
-        showland: true,
-        landcolor: 'rgb(217, 217, 217)',
-        showlakes: true,
-        lakecolor: 'rgb(255, 255, 255)',
-        subunitcolor: 'rgb(255, 255, 255)'
+    geo: {
+      scope: 'usa',
+      countrycolor: 'rgb(255, 255, 255)',
+      showland: true,
+      landcolor: 'rgb(217, 217, 217)',
+      showlakes: true,
+      lakecolor: 'rgb(255, 255, 255)',
+      subunitcolor: 'rgb(255, 255, 255)'
     },
     margin: {
       l: 0,
@@ -517,9 +529,11 @@ function displayViewsByTrafficSource(response) {
     }
   }
   const values = [advertisingViews, externalViews, youtubeSearchViews,
-      relatedViews, otherViews];
+    relatedViews, otherViews
+  ];
   const labels = ["Advertising", "External", "YouTube<br>Search",
-      "Related<br>Video", "Other"];
+    "Related<br>Video", "Other"
+  ];
 
   const graphId = "channel-traffic-sources";
   const graphHeight = 0.3742;
@@ -540,7 +554,9 @@ function displayViewsByTrafficSource(response) {
   let layout = {
     height: height,
     width: width,
-    font: {size: fontSize},
+    font: {
+      size: fontSize
+    },
     automargin: true,
     autosize: true,
     showlegend: false,
@@ -572,7 +588,7 @@ function displayViewsByTrafficSource(response) {
     layout["paper_bgcolor"] = "#222";
     layout["font"]["color"] = "#fff";
   }
-  
+
   Plotly.newPlot(graphId, data, layout, config);
 
   recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
@@ -588,10 +604,10 @@ function displayVideoBasicStats(response, dashboardIds, videoData) {
   const rows = response.result.rows;
   for (let index = 0; index < rows.length; index++) {
     const stats = rows[index];
-    
+
     const videoId = stats[0];
     const dashboardId = dashboardIds[videoId];
-    
+
     let views = document.getElementById(dashboardId + "-views");
     views.innerHTML = numberWithCommas(stats[1]);
 
@@ -614,19 +630,19 @@ function displayVideoBasicStats(response, dashboardIds, videoData) {
     comments.innerHTML = numberWithCommas(stats[2]);
 
     let avgViewDuration =
-        document.getElementById(dashboardId + "-avg-view-duration");
+      document.getElementById(dashboardId + "-avg-view-duration");
     const avd = stats[6];
     avgViewDuration.innerHTML = secondsToDuration(avd);
     const videoDuration =
-        document.getElementById(dashboardId + "-duration-seconds").innerHTML;
+      document.getElementById(dashboardId + "-duration-seconds").innerHTML;
 
     const avp = decimalToPercent(avd / videoDuration);
     let avgViewPercentage =
-        document.getElementById(dashboardId + "-avg-view-percentage");
+      document.getElementById(dashboardId + "-avg-view-percentage");
     avgViewPercentage.innerHTML = " (" + avp + "%)";
 
     let estimatedMinutesWatched =
-        document.getElementById(dashboardId + "-minutes-watched");
+      document.getElementById(dashboardId + "-minutes-watched");
     estimatedMinutesWatched.innerHTML = numberWithCommas(stats[5]);
 
     if (videoData != undefined) {
@@ -682,22 +698,22 @@ function displayVideoDailyViews(response, dashboardId) {
       yaxis: yaxis
     };
 
-    var data = [
-      {
-        x: xValues,
-        y: yValues,
-        fill: 'tozeroy',
-        type: 'scatter',
-        marker: {
-          color: 'rgb(255,0,0)'
-        }
+    var data = [{
+      x: xValues,
+      y: yValues,
+      fill: 'tozeroy',
+      type: 'scatter',
+      marker: {
+        color: 'rgb(255,0,0)'
       }
-    ];
+    }];
 
     var layout = {
       height: height,
       width: width,
-      font: {size: fontSize},
+      font: {
+        size: fontSize
+      },
       margin: {
         b: 0,
         t: 0
@@ -733,7 +749,7 @@ function displayVideoDailyViews(response, dashboardId) {
         yaxis: yaxis
       };
     }
-    
+
     Plotly.newPlot(graphId, data, layout, config);
 
     recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
@@ -770,27 +786,29 @@ function displayVideoSearchTerms(response, dashboardId) {
       tickmode: 'linear',
       automargin: true
     };
-    var automargin = {yaxis: yaxis};
+    var automargin = {
+      yaxis: yaxis
+    };
 
-    var data = [
-      {
-        x: xValues,
-        y: yValues,
-        type: 'bar',
-        orientation: 'h',
-        text: textValues,
-        textangle: 0,
-        textposition: 'auto',
-        marker: {
-          color: 'rgb(255,0,0)'
-        }
+    var data = [{
+      x: xValues,
+      y: yValues,
+      type: 'bar',
+      orientation: 'h',
+      text: textValues,
+      textangle: 0,
+      textposition: 'auto',
+      marker: {
+        color: 'rgb(255,0,0)'
       }
-    ];
-    
+    }];
+
     var layout = {
       height: height,
       width: width,
-      font: {size: fontSize},
+      font: {
+        size: fontSize
+      },
       autosize: false,
       margin: {
         b: 0,
@@ -802,7 +820,7 @@ function displayVideoSearchTerms(response, dashboardId) {
       },
       yaxis: yaxis
     };
-    
+
     var config = {
       staticPlot: true,
       responsive: true
@@ -823,9 +841,11 @@ function displayVideoSearchTerms(response, dashboardId) {
       layout["font"]["color"] = "#fff";
       yaxis["linecolor"] = "#fff";
       layout["yaxis"] = yaxis;
-      automargin = {yaxis: yaxis};
+      automargin = {
+        yaxis: yaxis
+      };
     }
-    
+
     Plotly.newPlot(graphId, data, layout, config);
 
     recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
