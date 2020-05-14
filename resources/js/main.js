@@ -1,8 +1,17 @@
 /* Load and display dashboards */
 
 function loadDashboards() {
+  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
   showLoadingText();
   resetGraphData();
+  if (isSignedIn) {
+    loadDashboardsSignedIn();
+  } else {
+    loadDashboardsSignedOut();
+  }
+}
+
+function loadDashboardsSignedIn() {
   const carouselInner = document.getElementsByClassName("carousel-inner")[0];
   const todayDate = getTodaysDate();
   let requests = [];
@@ -10,28 +19,10 @@ function loadDashboards() {
     loadIntroAnimation();
   }
   if (carouselInner.children["real-time-stats"]) {
-    try {
-      displayRealTimeStats();
-    } catch (err) {
-      //console.log(err);
-      requests.push(realTimeStatsCalls());
-    }
+    requests.push(loadRealTimeStatsDashboard());
   }
   if (carouselInner.children["thumbnails"]) {
-    try {
-      requests.push(requestChannelNumVideos());
-    } catch (err) {
-      //console.log(err);
-      // FIXME: Change error handling to retry X times
-      window.setTimeout(requestChannelNumVideos, 5000);
-    }
-    try {
-      displayUploadThumbnails();
-    } catch (err) {
-      //console.log(err);
-      window.setTimeout(displayUploadThumbnails, 5000);
-    }
-    displayUploadThumbnails();
+    requests.push(loadThumbnailDashboard());
   }
   if (carouselInner.children["platform"]) {
     requests.push(platformDashboardCalls(joinDate, todayDate));
@@ -45,6 +36,11 @@ function loadDashboards() {
   if (carouselInner.children["card-performance"]) {
     requests.push(loadCardPerformanceDashboard());
   }
+  if (carouselInner.children["product-categories"]) {
+    requests.push(loadProductCategoriesDashboard());
+    // Initiate Category Area Charts
+    requests.push(loadCategoryCharts());
+  }
   try {
     requests.push(loadTopVideoDashboards());
   } catch (err) {
@@ -53,19 +49,7 @@ function loadDashboards() {
       .then(loadTopVideoDashboards);
     requests.push(retryPromise);
   }
-  if (carouselInner.children["product-categories"]) {
-    try {
-      requests.push(displayTopCategories());
-    } catch (TypeError) {
-      console.error(TypeError);
-      const retryPromise = getCategoryStats()
-        .then(categoryStats => displayTopCategories(categoryStats));
-      requests.push(retryPromise);
-    }
-    // Initiate Category Area Charts
-    requests.push(loadCategoryCharts());
-    
-  }
+
   console.log("Starting Load Dashboards Requests");
   return Promise.all(requests)
     .then(response => {
@@ -77,63 +61,7 @@ function loadDashboards() {
     .finally(hideLoadingText);
 }
 
-function loadTopVideoDashboards() {
-  const carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  const todayDate = getTodaysDate();
-  let topVideoList = []
-  let dashboardIds = {};
-  if (carouselInner.children["top-video-1"]) {
-    let plcVideo = getTopVideoByCategory("B", "views")[0];
-    if (plcVideo != undefined) {
-        dashboardIds[plcVideo] = "top-video-1";
-        topVideoList.push(plcVideo);
-    }
-  }
-  if (carouselInner.children["top-video-2"]) {
-    let drivesVideo = getTopVideoByCategory("C", "views")[0];
-    if (drivesVideo != undefined) {
-        dashboardIds[drivesVideo] = "top-video-2";
-        topVideoList.push(drivesVideo);
-    }
-  }
-  if (carouselInner.children["top-video-3"]) {
-    let hmiVideo = getTopVideoByCategory("D", "views")[0];
-    if (hmiVideo != undefined) {
-        dashboardIds[hmiVideo] = "top-video-3";
-        topVideoList.push(hmiVideo);
-    }
-  }
-  if (carouselInner.children["top-video-4"]) {
-    let motionControlVideo = getTopVideoByCategory("F", "views")[0];
-    if (motionControlVideo != undefined) {
-        dashboardIds[motionControlVideo] = "top-video-4";
-        topVideoList.push(motionControlVideo);
-    }
-  }
-  if (carouselInner.children["top-video-5"]) {
-    let sensorsVideo = getTopVideoByCategory("H", "views")[0];
-    if (sensorsVideo != undefined) {
-        dashboardIds[sensorsVideo] = "top-video-5";
-        topVideoList.push(sensorsVideo);
-    }
-  }
-  if (carouselInner.children["top-video-6"]) {
-    let motorsVideo = getTopVideoByCategory("I", "views")[0];
-    if (motorsVideo != undefined) {
-        dashboardIds[motorsVideo] = "top-video-6";
-        topVideoList.push(motorsVideo);
-    }
-  }
-  if (topVideoList.length == 0) {
-    return null;
-  }
-  const topVideosStr = topVideoList.join(",");
-  return topVideoCalls(joinDate, todayDate, topVideosStr, dashboardIds);
-}
-
 function loadDashboardsSignedOut() {
-  showLoadingText();
-  resetGraphData();
   const carouselInner = document.getElementsByClassName("carousel-inner")[0];
   let requests = [];
   if (carouselInner.children["intro-animation"]) {
@@ -143,14 +71,7 @@ function loadDashboardsSignedOut() {
     requests.push(loadRealTimeStatsDashboard());
   }
   if (carouselInner.children["thumbnails"]) {
-    try {
-      const thumbnailPromise = getVideoStats()
-        .then(displayUploadThumbnails);
-      requests.push(thumbnailPromise);
-    } catch (err) {
-      //console.log(err);
-      window.setTimeout(displayUploadThumbnails, 5000);
-    }
+    requests.push(loadThumbnailDashboard());
   }
   if (carouselInner.children["platform"]) {
     requests.push(loadChannelDemographics());
@@ -1145,57 +1066,51 @@ function displayTopVideoTitles(dashboardIds) {
 
 // Load thumbnails in 1000 thumbnail dashboard
 function displayUploadThumbnails() {
-  try {
-    let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-    var carouselInner = document.getElementsByClassName("carousel-inner")[0];
-    if (carouselInner.children.thumbnails) {
-      let uploads = JSON.parse(localStorage.getItem("uploads"));
-      if (!uploads) {
-        throw "Uploads does not exist";
-      } else {
-        var uploadThumbnails = "";
-        for (var i = 0; i < uploads.length; i++) {
-          var videoTitle = "YouTube Video ID: " + uploads[i];
-          if (statsByVideoId && statsByVideoId[uploads[i]]) {
-            videoTitle = statsByVideoId[uploads[i]]["title"];
-          }
-          uploadThumbnails += `
-            <a href="https://youtu.be/${uploads[i]}" target="_blank"
-                onclick="closeFullscreen()" alt="${videoTitle}">
-              <img class="thumbnail"
-                  src="https://i.ytimg.com/vi/${uploads[i]}/mqdefault.jpg" 
-                  alt="thumbnail" title="${videoTitle}">
-            </a>`;
-        }
-        var thumbnailContainer = document.getElementById("thumbnail-container");
-        thumbnailContainer.innerHTML = uploadThumbnails;
-
-        if (!autoScrollDivs.includes("thumbnail-wrapper")) {
-          let currentSettings = JSON.parse(localStorage.getItem("settings"));
-          let speed = -1;
-          let index = 0;
-          while (speed == -1 && index <= currentSettings.dashboards.length) {
-            let dashboard = currentSettings.dashboards[index];
-            if (dashboard.name == "thumbnails") {
-              speed = dashboard.scrollSpeed;
-            }
-            index++;
-          }
-          if (speed <= 0) {
-            speed = 0;
-          } else {
-            speed = Math.ceil(1000 / speed);
-          }
-          new AutoDivScroll("thumbnail-wrapper", speed, 1, 1);
-          autoScrollDivs.push("thumbnail-wrapper");
-        }
-      }
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  var carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  if (carouselInner.children.thumbnails) {
+    let uploads = JSON.parse(localStorage.getItem("uploads"));
+    if (!uploads) {
+      throw new Error("Uploads does not exist");
     }
-  } catch (err) {
-    //console.log(err);
-    // TODO: Stop retrying after X attempts
-    window.setTimeout(displayUploadThumbnails, 5000);
+    var uploadThumbnails = "";
+    for (var i = 0; i < uploads.length; i++) {
+      var videoTitle = "YouTube Video ID: " + uploads[i];
+      if (statsByVideoId && statsByVideoId[uploads[i]]) {
+        videoTitle = statsByVideoId[uploads[i]]["title"];
+      }
+      uploadThumbnails += `
+        <a href="https://youtu.be/${uploads[i]}" target="_blank"
+            onclick="closeFullscreen()" alt="${videoTitle}">
+          <img class="thumbnail"
+              src="https://i.ytimg.com/vi/${uploads[i]}/mqdefault.jpg" 
+              alt="thumbnail" title="${videoTitle}">
+        </a>`;
+    }
+    var thumbnailContainer = document.getElementById("thumbnail-container");
+    thumbnailContainer.innerHTML = uploadThumbnails;
+
+    if (!autoScrollDivs.includes("thumbnail-wrapper")) {
+      let currentSettings = JSON.parse(localStorage.getItem("settings"));
+      let speed = -1;
+      let index = 0;
+      while (speed == -1 && index <= currentSettings.dashboards.length) {
+        let dashboard = currentSettings.dashboards[index];
+        if (dashboard.name == "thumbnails") {
+          speed = dashboard.scrollSpeed;
+        }
+        index++;
+      }
+      if (speed <= 0) {
+        speed = 0;
+      } else {
+        speed = Math.ceil(1000 / speed);
+      }
+      new AutoDivScroll("thumbnail-wrapper", speed, 1, 1);
+      autoScrollDivs.push("thumbnail-wrapper");
+    }
   }
+  return Promise.resolve("Displayed Upload Thumbnails");
 }
 
 function displayUserFeedback(feedbackSheet) {
@@ -1412,25 +1327,6 @@ function swapCarousels() {
   pauseDashboard();
   activeCarouselContainer.removeClass("active");
   inactiveCarouselContainer.addClass("active");
-}
-
-function loadSignedIn() {
-  var signinModalButton = document.getElementById("signin-modal-button");
-  var signoutModalButton = document.getElementById("signout-modal-button");
-  signinModalButton.style.display = "none";
-  signoutModalButton.style.display = "inline";
-  initializeUpdater();
-  loadDashboards();
-  updateTheme(0);
-}
-
-function loadSignedOut() {
-  var signinModalButton = document.getElementById("signin-modal-button");
-  var signoutModalButton = document.getElementById("signout-modal-button");
-  signinModalButton.style.display = "inline";
-  signoutModalButton.style.display = "none";
-  initializeUpdater();
-  loadDashboardsSignedOut();
 }
 
 function hideLoadingText() {

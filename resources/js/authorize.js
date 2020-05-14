@@ -57,11 +57,18 @@ function updateSigninStatus(isSignedIn) {
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
   showLoadingText();
+  const signinModalButton = document.getElementById("signin-modal-button");
+  const signoutModalButton = document.getElementById("signout-modal-button");
   if (isSignedIn) {
-    loadSignedIn();
+    signinModalButton.style.display = "none";
+    signoutModalButton.style.display = "inline";
   } else {
-    loadSignedOut();
+    signinModalButton.style.display = "inline";
+    signoutModalButton.style.display = "none";
   }
+  initializeUpdater();
+  loadDashboards();
+  updateTheme(0);
 }
 
 // Handle login
