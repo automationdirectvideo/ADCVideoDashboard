@@ -148,6 +148,8 @@ function sheetNameToId(sheetName) {
     return "1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ";
   } else if (sheetName == "Input Data") {
     return "1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg";
+  } else if (sheetName == "Logs") {
+    return "1zHxNYT1DFlTbulypfFf4jjLZsZAv_6kxh-oNQpuLqEc";
   } else {
     return "";
   }
@@ -185,7 +187,7 @@ function retry(fn, maxRetries, timeout) {
 }
 
 function recordError(err, additionalMessage) {
-  const spreadsheetId = sheetNameToId("Stats");
+  const spreadsheetId = sheetNameToId("Logs");
   const range = "Error Log";
   const errTime = new Date().toLocaleString();
   const browser = detectBrowser();
