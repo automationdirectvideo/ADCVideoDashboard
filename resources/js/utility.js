@@ -31,6 +31,36 @@ function getCurrMonth() {
   return [startDate, endDate, month];
 }
 
+// Detects the user browser
+// From https://stackoverflow.com/a/9851769
+function detectBrowser() {
+  // Opera 8.0+
+  var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+  // Firefox 1.0+
+  var isFirefox = typeof InstallTrigger !== 'undefined';
+
+  // Safari 3.0+ "[object HTMLElementConstructor]" 
+  var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+  // Internet Explorer 6-11
+  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+  // Edge 20+
+  var isEdge = !isIE && !!window.StyleMedia;
+
+  // Chrome 1 - 79
+  var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+  return isChrome ? "Chrome" :
+    isEdge ? "Edge" :
+    isIE ? "Internet Explorer" :
+    isFirefox ? "Firefox" :
+    isSafari ? "Safari" :
+    isOpera ? "Opera" :
+    "Unknown";
+}
+
 // Get date from numDaysAgo from today in the form YYYY-MM-DD
 function getDateFromDaysAgo(numDaysAgo) {
   var today = new Date();
@@ -146,4 +176,36 @@ function retry(fn, maxRetries, timeout) {
       }, timeout);
     }
   }
+}
+
+function recordError(err) {
+  console.log(err);
+  const spreadsheetId = sheetNameToId("Stats");
+  const range = "Error Log";
+  const errTime = new Date().toLocaleString();
+  const browser = detectBrowser();
+  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+  const values = [
+    [
+      errTime,
+      browser,
+      isSignedIn,
+      err.name,
+      err.message,
+      err.stack
+    ]
+  ];
+  const body = {
+    values: values
+  };
+  const request = {
+    "spreadsheetId": spreadsheetId,
+    "range": range,
+    "valueInputOption": "RAW",
+    "resource": body
+  };
+  return gapi.client.sheets.spreadsheets.values.append(request)
+    .catch(gapiError => {
+      console.error("Unable to record error to sheets", gapiError);
+    });
 }
