@@ -44,7 +44,7 @@ function loadDashboardsSignedIn() {
   try {
     requests.push(loadTopVideoDashboards());
   } catch (err) {
-    //console.log(err);
+    recordError(err);
     const retryPromise = getVideoStats()
       .then(loadTopVideoDashboards);
     requests.push(retryPromise);
@@ -56,7 +56,9 @@ function loadDashboardsSignedIn() {
       console.log("Load Dashboards Complete", response);
     })
     .catch(err => {
-      console.error("Error occurred loading dashboards", err);
+      const errorMsg = "Error occurred loading dashboards: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     })
     .finally(hideLoadingText);
 }
@@ -94,7 +96,9 @@ function loadDashboardsSignedOut() {
       console.log("Load Dashboards Complete", response);
     })
     .catch(err => {
-      console.error("Error occurred loading dashboards", err);
+      const errorMsg = "Error occurred loading dashboards: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     })
     .finally(hideLoadingText);
 }
@@ -547,7 +551,9 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
         "automargin": "None",
       };
     } catch (err) {
-      console.log("There was an error initiating graph: " + graphId + ", Error: ", err);
+      const errorMsg = `There was an error initiating graph: ${graphId} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     }
   }
 }
@@ -1075,7 +1081,9 @@ function displayUploadThumbnails() {
   if (carouselInner.children.thumbnails) {
     let uploads = JSON.parse(localStorage.getItem("uploads"));
     if (!uploads) {
-      throw new Error("Uploads does not exist");
+      const noUploadsErr = new Error("Uploads does not exist");
+      recordError(noUploadsErr);
+      throw noUploadsErr;
     }
     var uploadThumbnails = "";
     for (var i = 0; i < uploads.length; i++) {
@@ -1279,6 +1287,7 @@ function updateTheme(dashboardIndex) {
     }
   } catch (err) {
     console.error(err);
+    recordError(err);
   }
 }
 

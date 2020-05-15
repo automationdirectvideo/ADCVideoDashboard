@@ -15,7 +15,9 @@ function requestChannelNumVideos() {
       document.getElementById("num-videos").innerText = numVideos;
     })
     .catch(err => {
-      console.error("Unable to get number of channel videos:", err);
+      const errorMsg = "Unable to get number of channel videos: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -61,6 +63,7 @@ function getAllVideoStats(videos) {
         const errorMsg = `Error in fetching stats for video group` +
           ` ${i} - ${i + 49}: ${err}`;
         console.log(errorMsg);
+        recordError(err, errorMsg);
         return errorMsg;
       });
     requests.push(request);
@@ -106,6 +109,7 @@ function requestVideoViewsByYear(uploads, year) {
         const errorMsg = `Error in fetching stats for video group` +
           ` ${i} - ${i + 49}: ${err}`;
         console.error(errorMsg, err);
+        recordError(err, errorMsg);
         return errorMsg;
       });
     requests.push(request);
@@ -144,7 +148,11 @@ function requestVideoViewsByYear(uploads, year) {
       });
       return saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year);
     })
-    .catch(err => console.error("Unable to get video views by year", err));
+    .catch(err => {
+      const errorMsg = "Unable to get video views by year: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
+    });
   return viewsRequest;
 }
 
@@ -167,7 +175,9 @@ function requestChannelDemographics(startDate, endDate) {
       return displayChannelDemographics(response);
     })
     .catch(err => {
-      console.error("Error getting Channel Demographics", err);
+      const errorMsg = "Error getting Channel Demographics: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -188,7 +198,9 @@ function requestChannelSearchTerms(startDate, endDate) {
       return displayChannelSearchTerms(response);
     })
     .catch(err => {
-      console.error("Error getting Channel Search Terms", err);
+      const errorMsg = "Error getting Channel Search Terms: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -206,7 +218,9 @@ function requestWatchTimeBySubscribedStatus(startDate, endDate) {
       return displayWatchTimeBySubscribedStatus(response);
     })
     .catch(err => {
-      console.error("Error getting Watch Time By Subscribed Status", err);
+      const errorMsg = "Error getting Watch Time By Subscribed Status: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -225,7 +239,9 @@ function requestViewsByDeviceType(startDate, endDate) {
       return displayViewsByDeviceType(response);
     })
     .catch(err => {
-      console.error("Error getting Views By Device Type", err);
+      const errorMsg = "Error getting Views By Device Type: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -245,7 +261,9 @@ function requestViewsByState(startDate, endDate) {
       return displayViewsByState(response);
     })
     .catch(err => {
-      console.error("Error getting Views By State", err);
+      const errorMsg = "Error getting Views By State: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -264,7 +282,9 @@ function requestViewsByTrafficSource(startDate, endDate) {
       return displayViewsByTrafficSource(response);
     })
     .catch(err => {
-      console.error("Error getting Views By Traffic Source", err);
+      const errorMsg = "Error getting Views By Traffic Source: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -296,7 +316,9 @@ function requestRealTimeStats(startDate, endDate) {
       return realTimeStats;
     })
     .catch(err => {
-      console.error("Error getting Real Time Stats", err);
+      const errorMsg = "Error getting Real Time Stats: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
       throw err;
     });
 }
@@ -353,7 +375,9 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
       return values;
     })
     .catch(err => {
-      console.error("Error getting Most Watched Videos", err);
+      const errorMsg = "Error getting Most Watched Videos: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -381,7 +405,9 @@ function requestVideoBasicStats(startDate, endDate, videoId, dashboardIds,
       return "Displayed Top Video Basic Stats";
     })
     .catch(err => {
-      console.error(`Error getting basic stats for video: ${videoId}`, err);
+      const errorMsg = `Error getting basic stats for video: ${videoId} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
       throw new Error("Error in requestVideoBasicStats");
     });
 }
@@ -404,7 +430,9 @@ function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
       return Promise.resolve(`Displayed Daily Views: ${videoId}`);
     })
     .catch(err => {
-      console.error(`Error getting daily views for video: ${videoId}`, err);
+      const errorMsg = `Error getting daily views for video: ${videoId} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
       throw new Error("Error in requestVideoDailyViews");
     });
 }
@@ -428,7 +456,9 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
       return Promise.resolve(`Displayed Search Terms: ${videoId}`);
     })
     .catch(err => {
-      console.error(`Error getting search terms for video: ${videoId}`, err);
+      const errorMsg = `Error getting search terms for video: ${videoId} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
       throw new Error("Error in requestVideoSearchTerms");
     });
 }
@@ -451,7 +481,9 @@ function requestCardPerformance(startDate, endDate, month) {
       return cardData;
     })
     .catch(err => {
-      console.error(`Error getting card performance for month: ${month}`, err);
+      const errorMsg = `Error getting card performance for month: ${month} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -472,12 +504,14 @@ function requestSpreadsheetData(sheetName, range) {
       })
       .catch(err => {
         console.error(`Unable to get sheet: "${range}"`, err);
-        // TODO: Throw error & wrap function in retry block
-        // throw err;
+        recordError(err, errorMsg);
       });
     return sheetPromise;
   } else {
-    console.error(`No spreadsheet exists with sheetName: "${sheetName}"`);
+    const errorMsg = `No spreadsheet exists with sheetName: "${sheetName}"`;
+    console.error(errorMsg);
+    const sheetError = new Error(errorMsg);
+    recordError(sheetError);
   }
 }
 
@@ -496,13 +530,16 @@ function updateSheetData(sheetName, range, body) {
         return Promise.resolve(response);
       })
       .catch(err => {
-        console.error(`Unable to update sheet: "${range}"`, err);
-        // TODO: Throw error & wrap function in retry block
-        // throw err;
+        const errorMsg = `Unable to update sheet: "${range}" - `;
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
       });
     return updatePromise;
   } else {
-    console.error(`No spreadsheet exists with sheetName: "${sheetName}"`);
+    const errorMsg = `No spreadsheet exists with sheetName: "${sheetName}"`;
+    console.error(errorMsg);
+    const sheetError = new Error(errorMsg);
+    recordError(sheetError);
   }
 }
 
@@ -551,7 +588,9 @@ function getCardPerformanceByMonthSince(startDate) {
       return updateSheetData("Stats", sheet, body);
     })
     .catch(err => {
-      console.error("Error occurred getting Card Performance By Month", err);
+      const errorMsg = "Error occurred getting Card Performance By Month: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -582,7 +621,9 @@ function getTopTenVideosByMonthSince(startDate) {
       return updateSheetData("Stats", sheet, body);
     })
     .catch(err => {
-      console.error("Error occurred getting Top Ten Videos By Month", err);
+      const errorMsg = "Error occurred getting Top Ten Videos By Month: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -600,7 +641,9 @@ function platformDashboardCalls(startDate, endDate) {
       return "Platform Dashboard Calls";
     })
     .catch(err => {
-      console.error("Error occurred in Platform Dashboard Calls", err);
+      const errorMsg = "Error occurred in Platform Dashboard Calls: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -625,7 +668,9 @@ function realTimeStatsCalls() {
       return "Real Time Stats Completed";
     })
     .catch(err => {
-      console.error("Error occurred in Real Time Stats Calls", err);
+      const errorMsg = "Error occurred in Real Time Stats Calls: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -651,7 +696,9 @@ function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
       return Promise.resolve("Top Video Calls completed");
     })
     .catch(err => {
-      console.error(`Error making Top Video Calls for video: ${videoId}`, err);
+      const errorMsg = `Error making Top Video Calls for video: ${videoId} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
@@ -673,7 +720,9 @@ function requestVideoDescription(videoId) {
       console.log(videoId, links);
     })
     .catch(err => {
-      console.error(`Error getting video decription for video: ${videoId}`,
-        err);
+      const errorMsg = `Error getting video decription for video: ` +
+        `${videoId} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }

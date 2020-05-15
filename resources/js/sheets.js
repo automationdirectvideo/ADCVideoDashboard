@@ -217,6 +217,7 @@ function recordGraphDataFromSheets(graphData) {
       }
     } catch (err) {
       console.error(err);
+      recordError(err);
     }
   }
 }
@@ -269,7 +270,9 @@ function recordTopVideoStatsFromSheets(topVideoStatsSheet) {
       rows.push(row);
       dashboardIds[videoId] = dashboardId;
     } catch (err) {
-      console.error(`Dashboard "${dashboardId}" does not exist`, err)
+      const errorMsg = `Dashboard "${dashboardId}" does not exist - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     }
   }
   const response = {
@@ -469,6 +472,7 @@ function saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year) {
     })
     .catch(err => {
       console.error("Category Views By Year Google Sheet not found", err);
+      recordError(err);
     });
 }
 

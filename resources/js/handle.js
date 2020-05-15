@@ -871,7 +871,9 @@ function parseCardPerformance(response, month) {
       monthData[3] = cardTeaserImpressions;
       monthData[4] = cardTeaserCTR;
     } catch (err) {
-      console.log("No card data exists for month: " + month);
+      const errorMsg = `No card data exists for month: "${month}" - `;
+      console.log(errorMsg);
+      recordError(err, errorMsg);
     } finally {
       return monthData;
     }

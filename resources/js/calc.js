@@ -94,7 +94,9 @@ function updateDashboards() {
       return loadDashboards();
     })
     .catch(err => {
-      console.error("Error occurred updating dashboards", err);
+      const errorMsg = "Error occurred updating dashboards: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     })
     .finally(hideUpdatingText);
 }
@@ -179,7 +181,7 @@ function loadRealTimeStatsDashboard() {
       displayRealTimeStats();
       return Promise.resolve("Displayed Real Time Stats");
     } catch (err) {
-      //console.log(err);
+      recordError(err);
       return realTimeStatsCalls();
     }
   } else {
@@ -217,6 +219,7 @@ function loadProductCategoriesDashboard() {
     displayTopCategories();
     promise = Promise.resolve("Displayed Product Categories Dashboard");
   } catch (err) {
+    recordError(err);
     promise = getCategoryStats()
       .then(categoryStats => displayTopCategories(categoryStats));
   } finally {
@@ -239,6 +242,7 @@ function loadThumbnailDashboard() {
 function loadTopVideoDashboards() {
   return loadVideoDashboards()
     .catch(err => {
+      recordError(err);
       return getVideoStats()
         .then(loadVideoDashboards);
     })

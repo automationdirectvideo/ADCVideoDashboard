@@ -35,22 +35,27 @@ function getCurrMonth() {
 // From https://stackoverflow.com/a/9851769
 function detectBrowser() {
   // Opera 8.0+
-  var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+  const isOpera = (!!window.opr && !!opr.addons) || !!window.opera ||
+    navigator.userAgent.indexOf(' OPR/') >= 0;
 
   // Firefox 1.0+
-  var isFirefox = typeof InstallTrigger !== 'undefined';
+  const isFirefox = typeof InstallTrigger !== 'undefined';
 
   // Safari 3.0+ "[object HTMLElementConstructor]" 
-  var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+  const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) {
+    return p.toString() === "[object SafariRemoteNotification]";
+  })(!window['safari'] || (typeof safari !== 'undefined' &&
+    safari.pushNotification));
 
   // Internet Explorer 6-11
-  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+  const isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
   // Edge 20+
-  var isEdge = !isIE && !!window.StyleMedia;
+  const isEdge = !isIE && !!window.StyleMedia;
 
   // Chrome 1 - 79
-  var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+  const isChrome = !!window.chrome && (!!window.chrome.webstore ||
+    !!window.chrome.runtime);
 
   return isChrome ? "Chrome" :
     isEdge ? "Edge" :
@@ -169,6 +174,7 @@ function retry(fn, maxRetries, timeout) {
     fn();
   } catch (err) {
     if (maxRetries <= 0) {
+      recordError(err, "Function exceeded max retries: ");
       throw err;
     } else {
       window.setTimeout(function () {
@@ -178,23 +184,35 @@ function retry(fn, maxRetries, timeout) {
   }
 }
 
-function recordError(err) {
-  console.log(err);
+function recordError(err, additionalMessage) {
   const spreadsheetId = sheetNameToId("Stats");
   const range = "Error Log";
   const errTime = new Date().toLocaleString();
   const browser = detectBrowser();
   const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-  const values = [
+  let message = "";
+  if (additionalMessage) {
+    message = additionalMessage;
+  }
+  if (err.message) {
+    message += err.message;
+  }
+  console.log(message);
+  console.log(err);
+  let values = [
     [
       errTime,
       browser,
       isSignedIn,
+      message,
       err.name,
-      err.message,
       err.stack
     ]
   ];
+  if (!err.stack) {
+    values[0].push(JSON.stringify(err));
+  }
+  console.log(values);
   const body = {
     values: values
   };
@@ -205,6 +223,9 @@ function recordError(err) {
     "resource": body
   };
   return gapi.client.sheets.spreadsheets.values.append(request)
+    .then(response => {
+      console.log("Recorded Error to Sheets");
+    })
     .catch(gapiError => {
       console.error("Unable to record error to sheets", gapiError);
     });
