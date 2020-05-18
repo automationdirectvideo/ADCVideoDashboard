@@ -90,6 +90,7 @@ function updateDashboards() {
   return Promise.all(requests)
     .then(response => {
       console.log("Update Dashboards Complete", response);
+      recordUpdate();
       hideUpdatingText();
       return loadDashboards();
     })

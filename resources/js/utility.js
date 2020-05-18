@@ -214,7 +214,6 @@ function recordError(err, additionalMessage) {
   if (!err.stack) {
     values[0].push(JSON.stringify(err));
   }
-  console.log(values);
   const body = {
     values: values
   };
@@ -230,5 +229,41 @@ function recordError(err, additionalMessage) {
     })
     .catch(gapiError => {
       console.error("Unable to record error to sheets", gapiError);
+    });
+}
+
+function recordUpdate() {
+  const spreadsheetId = sheetNameToId("Logs");
+  const range = "Update Log";
+  const time = new Date().toLocaleString();
+  const browser = detectBrowser();
+  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+  const message = "Dashboards Updated";
+  let values = [
+    [
+      time,
+      browser,
+      isSignedIn,
+      message,
+    ]
+  ];
+  console.log(values);
+  const body = {
+    values: values
+  };
+  const request = {
+    "spreadsheetId": spreadsheetId,
+    "range": range,
+    "valueInputOption": "RAW",
+    "resource": body
+  };
+  return gapi.client.sheets.spreadsheets.values.append(request)
+    .then(response => {
+      console.log("Recorded Update");
+    })
+    .catch(err => {
+      const errorMsg = "Unable to record update log to sheets: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
