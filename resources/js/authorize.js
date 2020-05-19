@@ -59,12 +59,15 @@ function loadSigninStatus(isSignedIn) {
   showLoadingText();
   const signinModalButton = document.getElementById("signin-modal-button");
   const signoutModalButton = document.getElementById("signout-modal-button");
+  const controlPanelButton = document.getElementById("control-panel-button");
   if (isSignedIn) {
     signinModalButton.style.display = "none";
     signoutModalButton.style.display = "inline";
+    controlPanelButton.style.display = "inline";
   } else {
     signinModalButton.style.display = "inline";
     signoutModalButton.style.display = "none";
+    controlPanelButton.style.display = "none";
   }
   initializeUpdater();
   loadDashboards();
