@@ -37,7 +37,9 @@ function updateSigninStatus(isSignedIn) {
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    loadSignedIn();
+    if (isUserADC()) {
+      loadSignedIn();
+    }
   } else {
     loadSignedOut();
   }
