@@ -53,7 +53,7 @@ function updateSigninStatus(isSignedIn) {
 
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
-  if (isUserADC()) {
+  if (!isUserADC()) {
     console.log("User is not ADC on page load");
   }
   showLoadingText();
