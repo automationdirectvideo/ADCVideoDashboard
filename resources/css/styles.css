@@ -140,6 +140,10 @@ body {
   overflow-y: scroll;
 }
 
+.btn-light.btn-outline {
+  border-color: #212529;
+}
+
 /*----- Intro Animation -----*/
 
 .video-container {
