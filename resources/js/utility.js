@@ -105,6 +105,13 @@ function isoDurationToSeconds(duration) {
   return seconds;
 }
 
+// Checks if current Google user is the AutomationDirect.com account
+function isUserADC() {
+  const currUserId = gapi.auth2.getAuthInstance().currentUser.get().getId();
+  const userIdADC = "106069978891008555071";
+  return currUserId == userIdADC;
+}
+
 // Get number of months between two dates (ignoring the day of the month)
 function monthDiff(dateFrom, dateTo) {
   return dateTo.getMonth() - dateFrom.getMonth() +

@@ -41,11 +41,8 @@ function initClient() {
 
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    const currUserId = gapi.auth2.getAuthInstance().currentUser.get().getId();
-    const userIdADC = "106069978891008555071";
-    if (currUserId != userIdADC) {
+    if (isUserADC()) {
       console.log("Error: You are not ADC");
-      console.log("User ID: " + currUserId);
       gapi.auth2.getAuthInstance().currentUser.get().disconnect();
       $("#invalid-account-alert").show()
     } else {
@@ -56,6 +53,9 @@ function updateSigninStatus(isSignedIn) {
 
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
+  if (isUserADC()) {
+    console.log("User is not ADC on page load");
+  }
   showLoadingText();
   const signinModalButton = document.getElementById("signin-modal-button");
   const signoutModalButton = document.getElementById("signout-modal-button");
