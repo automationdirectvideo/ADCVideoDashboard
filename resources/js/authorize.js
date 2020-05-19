@@ -41,10 +41,8 @@ function initClient() {
 
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
-    if (isUserADC()) {
-      console.log("Error: You are not ADC");
-      gapi.auth2.getAuthInstance().currentUser.get().disconnect();
-      $("#invalid-account-alert").show()
+    if (!isUserADC()) {
+      handleInvalidAccount();
     } else {
       window.location.reload();
     }
@@ -53,8 +51,8 @@ function updateSigninStatus(isSignedIn) {
 
 // Load page based on sign in state
 function loadSigninStatus(isSignedIn) {
-  if (!isUserADC()) {
-    console.log("User is not ADC on page load");
+  if (!isUserADC() && isSignedIn) {
+    handleInvalidAccount();
   }
   showLoadingText();
   const signinModalButton = document.getElementById("signin-modal-button");
@@ -91,4 +89,11 @@ function signIn() {
 function handleSignout() {
   gapi.auth2.getAuthInstance().signOut();
   window.location.reload();
+}
+
+function handleInvalidAccount() {
+  console.log("Error: You are not ADC");
+  gapi.auth2.getAuthInstance().currentUser.get().disconnect();
+  $("#signinModal").modal("show");
+  $("#invalid-account-alert").show();
 }
