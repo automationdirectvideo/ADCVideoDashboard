@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF0000">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>ADC Video Dashboard</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap"/>
+    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="resources/css/styles.css"/>
+    <link rel="stylesheet" href="vendors/open-iconic/font/css/open-iconic-bootstrap.min.css"/>
+    <script type="text/javascript" src="vendors/fontawesome/js/solid.min.js"></script>
+    <script type="text/javascript" src="vendors/fontawesome/js/regular.min.js"></script>
+    <script type="text/javascript" src="vendors/fontawesome/js/fontawesome.min.js"></script>
+    <script type="text/javascript" src="vendors/jQuery-3.4.0/jquery-3.4.0.min.js"></script>
+    <script type="text/javascript" src="vendors/SortableJS/Sortable-1.10.2.min.js"></script>
+    <script type="text/javascript" src="vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="resources/js/values.js"></script>
+    <script type="text/javascript" src="resources/js/utility.js"></script>
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="main" style="padding-bottom:5rem;" id="main-container">
+        <div class="container my-2" style="padding-left:18rem;padding-right:18rem;">
+          <div class="row position-relative">
+            <div class="col-2">
+              <a href="index.html" class="btn btn-light ">
+                <i class="fas fa-chevron-left"></i>
+                Back
+              </a>
+            </div>
+            <div class="col-8 text-center">
+              <h3>Control Panel</h3>
+            </div>
+            <ul class="icon-bar">
+              <li>
+                <i class="fas fa-home" id="home-button" onclick="window.location='index.html';" title="Home"></i>
+              </li>
+            </ul>
+          </div>
+          <hr>
+          <h3 class="text-center">Video Dashboard Tools</h3>
+          <div class="row">
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-cog control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Video Dashboard Settings</h4>
+                  <p>
+                    Change cycle speed, dashboard order, and enable/disable dashboards.
+                  </p>
+                  <div class="text-center">
+                    <a class="btn btn-primary" href="settings.html">Open Dashboard Settings</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-bug control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Dashboard Error Log</h4>
+                  <p>
+                    View a list of recent errors from the video dashboard.
+                  </p>
+                  <div class="text-center">
+                    <a class="btn btn-primary" href="#">Open Dashboard Error Log</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-sync-alt control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Dashboard Update Log</h4>
+                  <p>
+                    View the when the video dashboard data was last updated.
+                  </p>
+                  <div class="text-center">
+                    <a class="btn btn-primary" href="#">Open Dashboard Update Log</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <h3 class="text-center">Other Tools</h3>
+          <div class="row">
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-link control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Scan YouTube Descriptions</h4>
+                  <div class="alert alert-warning construction" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Under Construction
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-comments control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">YouTube Comments Report</h4>
+                  <div class="alert alert-warning construction" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Under Construction
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-gas-pump control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Fuel Silo Reports</h4>
+                  <div class="alert alert-warning construction" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Under Construction
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-images control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Thumbnail Chart</h4>
+                  <p>
+                    Generates all ADC video thumbnails in a chart for printing.
+                  </p>
+                  <div class="text-center">
+                    <a class="btn btn-primary" href="thumbnail-chart.html">Go to Thumbnail Chart</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+              <div class="control-section">
+                <i class="fas fa-video control-icon"></i>
+                <div>
+                  <h4 class="control-section-title">Videographer Productivity</h4>
+                  <div class="alert alert-warning construction" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Under Construction
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="resources/js/control-panel.js"></script>
+  </body>
+</html>

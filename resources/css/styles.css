@@ -450,6 +450,33 @@ body {
   pointer-events: none;
 }
 
+/*----- Control Panel -----*/
+
+.control-section {
+  position: relative;
+  margin-bottom: 1em;
+  margin-top: 1em;
+  padding-left: 2em;
+}
+
+.control-icon {
+  position: absolute;
+  font-size: 1.5em;
+  left: 0;
+  top: 0;
+}
+
+.control-section-title {
+  border-bottom: 2px solid black;
+}
+
+.construction {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 50%;
+}
+
 /*----- Settings page -----*/
 
 .cursor-grab {
