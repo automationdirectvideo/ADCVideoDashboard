@@ -401,7 +401,10 @@ function saveCategoryStatsToSheets(categoryStats) {
   var body = {
     "values": values
   };
-  const updatePromise = updateSheetData("Stats", "Category Stats", body);
+  const updatePromise = clearSpreadsheet("Stats", "Category Stats")
+    .then(response => {
+      return updateSheetData("Stats", "Category Stats", body);
+    });
   return updatePromise;
 }
 
@@ -486,7 +489,10 @@ function saveVideoStatsToSheets(allVideoStats) {
   const body = {
     "values": values
   };
-  const updatePromise = updateSheetData("Stats", "Video Stats", body);
+  const updatePromise = clearSpreadsheet("Stats", "Video Stats")
+    .then(response => {
+      return updateSheetData("Stats", "Video Stats", body);
+    });
   return updatePromise;
 }
 
@@ -519,7 +525,10 @@ function saveGraphDataToSheets(graphData, sheetName) {
   const body = {
     "values": values
   };
-  updateSheetData("Stats", sheetName, body);
+  const updatePromise = clearSpreadsheet("Stats", sheetName)
+    .then(response => {
+      return updateSheetData("Stats", sheetName, body);
+    });
   if (removeItem) {
     localStorage.removeItem("graphData");
   }

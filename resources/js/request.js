@@ -490,6 +490,32 @@ function requestCardPerformance(startDate, endDate, month) {
 
 /* Google Sheets Calls */
 
+function clearSpreadsheet(sheetName, range) {
+  const spreadsheetId = sheetNameToId(sheetName);
+  if (spreadsheetId != "") {
+    const request = {
+      "spreadsheetId": spreadsheetId,
+      "range": range
+    };
+    const sheetPromise = gapi.client.sheets.spreadsheets.values.clear(request)
+      .then(response => {
+        const successMessage = `Spreadsheet Cleared: ${range}`
+        console.log(successMessage);
+        return Promise.resolve(successMessage);
+      })
+      .catch(err => {
+        console.error(`Unable to get sheet: "${range}"`, err);
+        recordError(err, errorMsg);
+      });
+    return sheetPromise;
+  } else {
+    const errorMsg = `No spreadsheet exists with sheetName: "${sheetName}"`;
+    console.error(errorMsg);
+    const sheetError = new Error(errorMsg);
+    recordError(sheetError);
+  }
+}
+
 function requestSpreadsheetData(sheetName, range) {
   const spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
