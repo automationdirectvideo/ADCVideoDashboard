@@ -309,21 +309,6 @@ function recordRealTimeStatsFromSheets(realTimeStatsSheet) {
   return realTimeStats;
 }
 
-function recordUploads(videoList) {
-  let uploads = [];
-  let columns = {};
-  let columnHeaders = videoList[0];
-  for (let i = 0; i < columnHeaders.length; i++) {
-    columns[columnHeaders[i]] = i;
-  }
-  for (let i = videoList.length - 1; i >= 1; i--) {
-    let row = videoList[i];
-    let videoId = row[columns["Video ID"]];
-    uploads.push(videoId);
-  }
-  displayThumbnails(uploads);
-}
-
 function recordYearlyCategoryViews(sheetValues) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let categoryTraces = {};

@@ -49,20 +49,33 @@ function loadSignedOut() {
 }
 
 function loadUploads() {
-  try {
-    document.getElementById("thumbnail-container").innerHTML = `
-      <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
-    `;
-    requestSpreadsheetData("Input Data", "Video List",
-        "Thumbnail Chart Uploads")
-      .then(videoList => recordUploads(videoList));
-    document.getElementById("error-container").className = "d-none"
-  } catch (err) {
-    //console.log(err);
-    document.getElementById("thumbnail-container").innerHTML = "";
-    document.getElementById("error-container").className = "d-block";
-    document.getElementById("error-message").innerText = err.message;
-  }
+  document.getElementById("thumbnail-container").innerHTML = `
+    <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
+  `;
+  requestSpreadsheetData("Input Data", "Video List")
+    .then(videoList => {
+      const uploads = recordUploads(videoList);
+      displayThumbnails(uploads);
+      document.getElementById("error-container").className = "d-none";
+    })
+    .catch(err => {
+      document.getElementById("thumbnail-container").innerHTML = "";
+      document.getElementById("error-container").className = "d-block";
+      document.getElementById("error-message").innerText = err.message;
+    });
 }
 
-var uploads = JSON.parse(localStorage.getItem("uploads"));
+function recordUploads(videoList) {
+  let uploads = [];
+  let columns = {};
+  let columnHeaders = videoList[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  for (let i = videoList.length - 1; i >= 1; i--) {
+    let row = videoList[i];
+    let videoId = row[columns["Video ID"]];
+    uploads.push(videoId);
+  }
+  displayThumbnails(uploads);
+}
