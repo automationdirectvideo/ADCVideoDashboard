@@ -13,6 +13,7 @@ function loadErrorLog() {
       for (let index = errorValues.length - 1; index >= 1; index--) {
         const error = errorValues[index];
         const time = error[columns["Time"]];
+        const sortTime = new Date(time).getTime();
         const browser = error[columns["Browser"]];
         let loginStatus;
         if (error[columns["Login Status"]].toUpperCase() == "TRUE") {
@@ -24,7 +25,7 @@ function loadErrorLog() {
         const name = error[columns["Name"]];
         output += `
         <tr>
-          <td>${time}</td>
+          <td data-sort="${sortTime}">${time}</td>
           <td>${browser}</td>
           <td>${loginStatus}</td>
           <td>${message}</td>

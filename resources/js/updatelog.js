@@ -13,6 +13,7 @@ function loadUpdateLog() {
       for (let index = updateValues.length - 1; index >= 1; index--) {
         const update = updateValues[index];
         const time = update[columns["Time"]];
+        const sortTime = new Date(time).getTime();
         const browser = update[columns["Browser"]];
         let loginStatus;
         if (update[columns["Login Status"]].toUpperCase() == "TRUE") {
@@ -23,7 +24,7 @@ function loadUpdateLog() {
         const message = update[columns["Message"]];
         output += `
         <tr>
-          <td>${time}</td>
+          <td data-sort="${sortTime}">${time}</td>
           <td>${browser}</td>
           <td>${loginStatus}</td>
           <td>${message}</td>
