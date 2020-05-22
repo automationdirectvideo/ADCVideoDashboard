@@ -123,20 +123,6 @@ function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// Searches input text for URLs and returns list of found URLs
-function searchForURLs(inputText) {
-  var findURLs = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
-  var links = [];
-  var match;
-  do {
-    match = findURLs.exec(inputText);
-    if (match) {
-      links.push(match[0]);
-    }
-  } while (match);
-  return links;
-}
-
 // Converts seconds to duration in the form M:SS
 function secondsToDuration(seconds) {
   let minutes = Math.floor(seconds / 60);
@@ -157,6 +143,8 @@ function sheetNameToId(sheetName) {
     return "1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg";
   } else if (sheetName == "Logs") {
     return "1zHxNYT1DFlTbulypfFf4jjLZsZAv_6kxh-oNQpuLqEc";
+  } else if (sheetName == "Reports") {
+    return "1hrUqR3Z3sPhm9zfDnkLkuFMpMZehKKpgFEHxptSNmtY";
   } else {
     return "";
   }

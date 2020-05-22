@@ -727,28 +727,3 @@ function topVideoCalls(startDate, endDate, videoId, dashboardIds) {
       recordError(err, errorMsg);
     });
 }
-
-/* Non-dashboard Related Calls */
-
-// Requests description of given video
-function requestVideoDescription(videoId) {
-  const request = {
-    "part": "snippet",
-    "id": videoId
-  };
-  return gapi.client.youtube.videos.list(request)
-    .then(response => {
-      console.log(`Video Description for video: ${videoId}`, response);
-
-      var videoId = response.result.items[0].id;
-      var description = response.result.items[0].snippet.description;
-      var links = searchForURLs(description);
-      console.log(videoId, links);
-    })
-    .catch(err => {
-      const errorMsg = `Error getting video decription for video: ` +
-        `${videoId} - `;
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
-    });
-}
