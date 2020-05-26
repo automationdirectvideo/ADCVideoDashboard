@@ -504,7 +504,8 @@ function clearSpreadsheet(sheetName, range) {
         return Promise.resolve(successMessage);
       })
       .catch(err => {
-        console.error(`Unable to get sheet: "${range}"`, err);
+        const errorMsg = `Unable to get sheet: "${range}"`;
+        console.error(errorMsg, err);
         recordError(err, errorMsg);
       });
     return sheetPromise;
@@ -529,7 +530,8 @@ function requestSpreadsheetData(sheetName, range) {
         return Promise.resolve(response.result.values);
       })
       .catch(err => {
-        console.error(`Unable to get sheet: "${range}"`, err);
+        const errorMsg = `Unable to get sheet: "${range}"`;
+        console.error(errorMsg, err);
         recordError(err, errorMsg);
       });
     return sheetPromise;
