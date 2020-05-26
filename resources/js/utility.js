@@ -227,13 +227,12 @@ function recordError(err, additionalMessage) {
     });
 }
 
-function recordUpdate() {
+function recordUpdate(message) {
   const spreadsheetId = sheetNameToId("Logs");
   const range = "Update Log";
   const time = new Date().toLocaleString();
   const browser = detectBrowser();
   const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-  const message = "Dashboards Updated";
   let values = [
     [
       time,

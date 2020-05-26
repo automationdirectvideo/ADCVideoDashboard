@@ -113,7 +113,12 @@ function initializeUpdater() {
     // updateCount calculates the seconds since midnight
     let updateCount = Math.floor((now - midnight) / 1000);
     if (isSignedIn) {
-      if (updateCount % 3600 == 0) {
+      if (updateCount == 3600) {
+        recordUpdate("Reload Dashboards")
+          .then(response => {
+            window.location.reload();
+          });
+      } else if (updateCount % 3600 == 0) {
         updateDashboards();
 
       } else if (updateCount % 900 == 0) {
