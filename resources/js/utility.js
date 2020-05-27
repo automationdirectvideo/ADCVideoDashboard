@@ -5,6 +5,13 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+// Creates an HTML element given the inner HTML and element type (e.g. "DIV")
+function createElement(innerHTML, type) {
+  var elem = document.createElement(type);
+  elem.innerHTML = innerHTML;
+  return elem;
+}
+
 // Converts a decimal to a percent with 1 decimal place
 function decimalToPercent(decimal) {
   return Math.round(decimal * 1000) / 10;
@@ -121,6 +128,11 @@ function monthDiff(dateFrom, dateTo) {
 // Add commas to number
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+// Adds newChildElem as first child of parentElem
+function prependElement(parentElem, newChildElem) {
+  parentElem.insertBefore(newChildElem, parentElem.firstChild);
 }
 
 // Converts seconds to duration in the form M:SS

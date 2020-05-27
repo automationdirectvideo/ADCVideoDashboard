@@ -13,7 +13,8 @@ const DISCOVERY_DOCS = [
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
   'https://www.googleapis.com/auth/yt-analytics.readonly ' +
   'https://www.googleapis.com/auth/spreadsheets.readonly ' +
-  'https://www.googleapis.com/auth/spreadsheets';
+  'https://www.googleapis.com/auth/spreadsheets ' + 
+  'https://www.googleapis.com/auth/youtube.force-ssl';
 
 // Load auth2 library
 function handleClientLoad() {
