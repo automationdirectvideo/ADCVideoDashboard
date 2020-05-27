@@ -47,10 +47,7 @@ function loadErrorLog() {
 }
 
 function loadSignedIn() {
-  console.log("Signed In");
+  const loadingCog = document.getElementById("table-loading");
+  loadingCog.style.display = "";
   loadErrorLog();
-}
-
-function loadSignedOut() {
-  console.log("Signed Out");
 }

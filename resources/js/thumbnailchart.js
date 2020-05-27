@@ -32,18 +32,6 @@ function loadSignedIn() {
   loadUploads();
 }
 
-function loadSignedOut() {
-  // add hr, sign in text and sign in button
-  document.getElementById("menu").innerHTML += `
-    <hr>
-    <h5>Sign In with your Google Account (the same account you use to edit the "ADC Video Dashboard Input Data" Google Sheet) to load the thumbnails.</h5>
-    <button class="btn btn-lg btn-primary mt-3" id="signin-btn">Sign In</button>
-  `;
-
-  var signinBtn = document.getElementById("signin-btn");
-  signinBtn.addEventListener("click", handleAuthClick);
-}
-
 function loadUploads() {
   document.getElementById("thumbnail-container").innerHTML = `
     <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>

@@ -45,10 +45,7 @@ function loadUpdateLog() {
 }
 
 function loadSignedIn() {
-  console.log("Signed In");
+  const loadingCog = document.getElementById("table-loading");
+  loadingCog.style.display = "";
   loadUpdateLog();
-}
-
-function loadSignedOut() {
-  console.log("Signed Out");
 }

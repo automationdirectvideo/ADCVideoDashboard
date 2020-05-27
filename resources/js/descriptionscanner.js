@@ -216,11 +216,9 @@ function searchForURLs(inputText) {
 }
 
 function loadSignedIn() {
-  console.log("Signed In");
-}
-
-function loadSignedOut() {
-  console.log("Signed Out");
+  const scanButton = document.getElementById("scan-button");
+  scanButton.disabled = "";
+  scanButton.onclick = createDescriptionReport;
 }
 
 /* Individual Video Functions */
