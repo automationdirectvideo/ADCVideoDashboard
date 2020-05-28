@@ -206,6 +206,15 @@ function recordError(err, additionalMessage) {
   if (err.message) {
     message += err.message;
   }
+  try {
+    // If variable err is thrown from gapi
+    let gapiMsg = err.result.error.errors[0].message;
+    if (gapiMsg) {
+      message += gapiMsg;
+    }
+  } catch (checkGapiError) {
+    // err is not from gapi - do nothing
+  }
   console.log(message);
   console.log(err);
   let values = [
