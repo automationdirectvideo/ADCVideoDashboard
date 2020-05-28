@@ -74,8 +74,8 @@ function getAllDescriptions(videos) {
       })
       .catch(err => {
         const errorMsg = `Error in fetching descriptions for video group` +
-          ` ${i} - ${i + 49}: ${err}`;
-        displayError(errorMsg);
+          ` ${i} - ${i + 49}: `;
+        displayError(errorMsg, err);
         console.log(errorMsg);
         recordError(err, errorMsg);
         return errorMsg;

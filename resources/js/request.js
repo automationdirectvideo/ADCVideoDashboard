@@ -61,8 +61,8 @@ function getAllVideoStats(videos) {
       })
       .catch(err => {
         const errorMsg = `Error in fetching stats for video group` +
-          ` ${i} - ${i + 49}: ${err}`;
-        console.log(errorMsg);
+          ` ${i} - ${i + 49}: `;
+        console.log(errorMsg, err);
         recordError(err, errorMsg);
         return errorMsg;
       });
@@ -107,7 +107,7 @@ function requestVideoViewsByYear(uploads, year) {
       })
       .catch(err => {
         const errorMsg = `Error in fetching stats for video group` +
-          ` ${i} - ${i + 49}: ${err}`;
+          ` ${i} - ${i + 49}: `;
         console.error(errorMsg, err);
         recordError(err, errorMsg);
         return errorMsg;
