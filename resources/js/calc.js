@@ -95,6 +95,7 @@ function updateDashboards() {
       return loadDashboards();
     })
     .catch(err => {
+      recordUpdate("Update Failed");
       const errorMsg = "Error occurred updating dashboards: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
