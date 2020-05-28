@@ -247,7 +247,7 @@ function calcAvgVideoDuration() {
     let totalDuration = 0;
     for (let videoId in statsByVideoId) {
       if (statsByVideoId.hasOwnProperty(videoId)) {
-        totalDuration += statsByVideoId[videoId]["duration"];
+        totalDuration += parseInt(statsByVideoId[videoId]["duration"]);
         numVideos++;
       }
     }
