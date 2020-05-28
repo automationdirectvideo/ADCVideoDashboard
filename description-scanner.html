@@ -47,8 +47,15 @@
             <br>
             <button class="btn btn-lg btn-primary mb-5" id="scan-button" disabled>Scan YouTube Descriptions</button>
             <br>
-            <i class="fas fa-cog fa-3x fa-spin mb-3" id="loading-cog" style="display:none;"></i>
-            <h4 id="finished-text" style="display:none;">Finished!</h4>
+            <div class="progress w-50 mx-auto mb-3" id="loading-bar-container" style="display:none;">
+              <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="loading-bar" role="progressbar"
+                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%;">
+              </div>
+            </div>
+            <h4 id="status-text" style="display:none;">Status: </h4>
+            <br>
+            <div id="alert-container"></div>
+          </div>
           </div>
         </div>
       </div>

@@ -18,7 +18,6 @@ function createCommentsReport() {
       return getAllComments(uploads);
     })
     .then(allCommentData => {
-      statusText.style.display = "";
       statusText.innerText = "Generating Spreadsheet...";
       return saveCommentsReport(allCommentData);
     })
@@ -95,13 +94,7 @@ function getCommentsForVideo(videoId, pageToken) {
             return allCommentData;
           })
       } else {
-        const loadingBar = document.getElementById("loading-bar");
-        loadingBar.ariaValueNow++;
-        let numFinished = loadingBar.ariaValueNow;
-        let total = loadingBar.ariaValueMax;
-        let percentage = (numFinished / total) * 100;
-        let percentageText = percentage.toFixed(2) + "%";
-        loadingBar.style.width = percentageText;
+        incrementLoadingBar();
         return commentData;
       }
     })
@@ -112,6 +105,16 @@ function getCommentsForVideo(videoId, pageToken) {
       recordError(err, errorMsg);
       return [];
     });
+}
+
+function incrementLoadingBar() {
+  const loadingBar = document.getElementById("loading-bar");
+  loadingBar.ariaValueNow++;
+  let numFinished = loadingBar.ariaValueNow;
+  let total = loadingBar.ariaValueMax;
+  let percentage = (numFinished / total) * 100;
+  let percentageText = percentage.toFixed(2) + "%";
+  loadingBar.style.width = percentageText;
 }
 
 function saveCommentsReport(commentData) {

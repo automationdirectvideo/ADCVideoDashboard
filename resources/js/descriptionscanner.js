@@ -1,31 +1,45 @@
 function createDescriptionReport() {
-  const loadingCog = document.getElementById("loading-cog");
-  const finishedText = document.getElementById("finished-text");
-  loadingCog.style.display = "initial";
-  finishedText.style.display = "none";
+  const statusText = document.getElementById("status-text");
+  const loadingBar = document.getElementById("loading-bar");
+  const loadingBarContainer = document.getElementById("loading-bar-container");
+  loadingBarContainer.style.display = "";
+  loadingBar.style.width = "0%";
+  loadingBar.classList.add("progress-bar-animated");
+  statusText.style.display = "";
+  statusText.innerText = "Fetching YouTube Videos...";
   return getVideoList()
     .then(response => {
       let uploads = response[1];
       console.log("uploads");
       console.log(uploads);
+      // First half of loading bar is for fetching descriptions
+      // Second half is for checking format
+      let numUploads = uploads.length;
+      loadingBar.ariaValueMax = numUploads + Math.ceil(numUploads / 50);
+      statusText.innerText = "Retrieving Descriptions...";
       // return getAllDescriptions(uploads.slice(0, 50));
       return getAllDescriptions(uploads);
     })
     .then(descriptions => {
       // const allLinks = scanDescriptionsForLinks(descriptions);
+      statusText.innerText = "Verifying Description Format...";
       let formatErrors = [];
       for (let index = 0; index < descriptions.length; index++) {
         const video = descriptions[index];
         formatErrors.push(checkFormat(video));
+        incrementLoadingBar();
       }
+      statusText.innerText = "Generating Spreadsheet...";
       return saveDescriptionsErrors(formatErrors);
     })
     .then(response => {
-      loadingCog.style.display = "none";
-      finishedText.style.display = "initial";
+      statusText.innerText = "Finished!";
+      loadingBar.classList.remove("progress-bar-animated");
     })
     .catch(err => {
+      statusText.innerText = "Process Failed";
       const errorMsg = `Error creating description report`;
+      displayError(errorMsg);
       console.log(errorMsg, err);
       recordError(err, errorMsg);
     });
@@ -54,12 +68,14 @@ function getAllDescriptions(videos) {
             "description": description
           });
         }
+        incrementLoadingBar();
         // Return for post-processing of the data elsewhere
         return descriptions;
       })
       .catch(err => {
         const errorMsg = `Error in fetching descriptions for video group` +
           ` ${i} - ${i + 49}: ${err}`;
+        displayError(errorMsg);
         console.log(errorMsg);
         recordError(err, errorMsg);
         return errorMsg;
@@ -201,6 +217,16 @@ function checkAllVideoLink(description) {
   }
 }
 
+function incrementLoadingBar() {
+  const loadingBar = document.getElementById("loading-bar");
+  loadingBar.ariaValueNow++;
+  let numFinished = loadingBar.ariaValueNow;
+  let total = loadingBar.ariaValueMax;
+  let percentage = (numFinished / total) * 100;
+  let percentageText = percentage.toFixed(2) + "%";
+  loadingBar.style.width = percentageText;
+}
+
 // Searches input text for URLs and returns list of found URLs
 function searchForURLs(inputText) {
   let findURLs = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
@@ -213,6 +239,19 @@ function searchForURLs(inputText) {
     }
   } while (match);
   return links;
+}
+
+function displayError(errorMsg) {
+  const alertContainer = document.getElementById("alert-container");
+  const alertText = `
+    <div class="alert alert-danger alert-dismissible fade show mb-2" id="error-alert" role="alert" style="display:inline-block;">
+      <i class="fas fa-exclamation-triangle"></i>  <strong>An error occurred:</strong> ${errorMsg}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>`;
+  const alertDiv = createElement(alertText, "DIV");
+  prependElement(alertContainer, alertDiv);
 }
 
 function loadSignedIn() {
@@ -231,6 +270,7 @@ function findLinksForVideo(videoId) {
     })
     .catch(err => {
       const errorMsg = `Error getting description links for video: ${videoId} - `;
+      displayError(errorMsg);
       console.error(errorMsg, err);
       recordError(err, errorMsg);
     });
@@ -251,6 +291,7 @@ function requestVideoDescription(videoId) {
     })
     .catch(err => {
       const errorMsg = `Error getting video description for video: ${videoId} - `;
+      displayError(errorMsg);
       console.error(errorMsg, err);
       recordError(err, errorMsg);
     });
