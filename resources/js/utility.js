@@ -29,7 +29,7 @@ function getCurrMonth() {
     lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
   } else {
     // Update for previous month
-    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 0);
+    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
   }
   let startDate = getYouTubeDateFormat(firstDayOfMonth);
