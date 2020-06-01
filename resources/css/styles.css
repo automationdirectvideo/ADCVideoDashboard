@@ -482,6 +482,14 @@ body {
   width: 50%;
 }
 
+.table-thumbnail {
+  max-width: 15rem;
+}
+
+table.dataTable#playlist-table tbody td {
+  vertical-align: middle;
+}
+
 /*----- Settings page -----*/
 
 .cursor-grab {
