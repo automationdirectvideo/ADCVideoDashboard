@@ -40,7 +40,7 @@ function createDescriptionReport() {
       statusText.innerText = "Process Failed";
       const errorMsg = `Error creating description report`;
       displayError(errorMsg);
-      console.log(errorMsg, err);
+      console.error(errorMsg, err);
       recordError(err, errorMsg);
     });
 }
@@ -75,8 +75,8 @@ function getAllDescriptions(videos) {
       .catch(err => {
         const errorMsg = `Error in fetching descriptions for video group` +
           ` ${i} - ${i + 49}: `;
-        displayError(errorMsg, err);
-        console.log(errorMsg);
+        displayError(errorMsg,);
+        console.error(errorMsg, err);
         recordError(err, errorMsg);
         return errorMsg;
       });
