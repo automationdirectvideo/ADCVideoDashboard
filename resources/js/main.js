@@ -1,13 +1,17 @@
 /* Load and display dashboards */
 
 function loadDashboards() {
-  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-  showLoadingText();
-  resetGraphData();
-  if (isSignedIn) {
-    loadDashboardsSignedIn();
-  } else {
-    loadDashboardsSignedOut();
+  // Prevents multiple simultaneous load/update dashboards calls
+  if (!isLoading && !isUpdating) {
+    isLoading = true;
+    const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
+    showLoadingText();
+    resetGraphData();
+    if (isSignedIn) {
+      loadDashboardsSignedIn();
+    } else {
+      loadDashboardsSignedOut();
+    }
   }
 }
 
@@ -60,7 +64,10 @@ function loadDashboardsSignedIn() {
       console.error(errorMsg, err);
       recordError(err, errorMsg);
     })
-    .finally(hideLoadingText);
+    .finally(response => {
+      isLoading = false;
+      hideLoadingText();
+    });
 }
 
 function loadDashboardsSignedOut() {
@@ -100,7 +107,10 @@ function loadDashboardsSignedOut() {
       console.error(errorMsg, err);
       recordError(err, errorMsg);
     })
-    .finally(hideLoadingText);
+    .finally(response => {
+      isLoading = false;
+      hideLoadingText();
+    });
 }
 
 function initializeUpdater() {
@@ -1462,6 +1472,11 @@ document.addEventListener("keyup", function (e) {
     } else {
       goToCarouselItem(parseInt(e.key) - 1);
     }
+  } else if (e.key.toUpperCase() == "U" && e.altKey &&
+    gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    updateDashboards();
+  } else if (e.key.toUpperCase() == "L" && e.altKey) {
+    loadDashboards();
   }
 });
 $(".carousel").on("slide.bs.carousel", function (e) {
@@ -1482,8 +1497,6 @@ $(".carousel").on("slide.bs.carousel", function (e) {
   }, 250);
 });
 
-// $(".carousel").on("slid.bs.carousel", hideLoadingText);
-
 window.addEventListener('resize', function () {
   retry(resizeGraphs, 5, 5000);
   let topTenDashboard = document.getElementById("top-ten");
@@ -1496,3 +1509,6 @@ window.addEventListener('resize', function () {
     }, 500);
   }
 }, true);
+
+let isLoading = false;
+let isUpdating = false;

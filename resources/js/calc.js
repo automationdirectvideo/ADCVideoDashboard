@@ -74,33 +74,41 @@ function calcCategoryStats(categoryTotals) {
 }
 
 function updateDashboards() {
-  showUpdatingText();
-  const now = new Date();
-  let requests = [];
-  // checks that today is between Jan 10-20 ish
-  if (now.getMonth() == 0 && now.getDate() >= 10 &&
-    now.getDate <= 20) {
-    let lastYear = now.getFullYear() - 1;
-    requests.push(getYearlyCategoryViews(lastYear));
+  // Prevent multiple simultaneous load/update dashboard calls
+  if (!isLoading && !isUpdating) {
+    isUpdating = true;
+    showUpdatingText();
+    const now = new Date();
+    let requests = [];
+    // checks that today is between Jan 10-20 ish
+    if (now.getMonth() == 0 && now.getDate() >= 10 &&
+      now.getDate <= 20) {
+      let lastYear = now.getFullYear() - 1;
+      requests.push(getYearlyCategoryViews(lastYear));
+    }
+    requests.push(getTopTenVideosForCurrMonth());
+    requests.push(getCardPerformanceForCurrMonth());
+    requests.push(realTimeStatsCalls());
+    requests.push(updateVideoAndCategoryStats());
+    return Promise.all(requests)
+      .then(response => {
+        console.log("Update Dashboards Complete", response);
+        recordUpdate("Dashboards Updated");
+        hideUpdatingText();
+        isUpdating = false;
+        return loadDashboards();
+      })
+      .catch(err => {
+        recordUpdate("Update Failed");
+        const errorMsg = "Error occurred updating dashboards: ";
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+      })
+      .finally(response => {
+        hideUpdatingText();
+        isUpdating = false;
+      });
   }
-  requests.push(getTopTenVideosForCurrMonth());
-  requests.push(getCardPerformanceForCurrMonth());
-  requests.push(realTimeStatsCalls());
-  requests.push(updateVideoAndCategoryStats());
-  return Promise.all(requests)
-    .then(response => {
-      console.log("Update Dashboards Complete", response);
-      recordUpdate("Dashboards Updated");
-      hideUpdatingText();
-      return loadDashboards();
-    })
-    .catch(err => {
-      recordUpdate("Update Failed");
-      const errorMsg = "Error occurred updating dashboards: ";
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
-    })
-    .finally(hideUpdatingText);
 }
 
 function updateVideoAndCategoryStats() {
