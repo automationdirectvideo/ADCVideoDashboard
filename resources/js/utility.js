@@ -234,10 +234,10 @@ function recordError(err, additionalMessage) {
     values: values
   };
   const request = {
-    "spreadsheetId": spreadsheetId,
     "range": range,
-    "valueInputOption": "RAW",
-    "resource": body
+    "resource": body,
+    "spreadsheetId": spreadsheetId,
+    "valueInputOption": "RAW"
   };
   return gapi.client.sheets.spreadsheets.values.append(request)
     .then(response => {
@@ -267,10 +267,10 @@ function recordUpdate(message) {
     values: values
   };
   const request = {
-    "spreadsheetId": spreadsheetId,
     "range": range,
-    "valueInputOption": "RAW",
-    "resource": body
+    "resource": body,
+    "spreadsheetId": spreadsheetId,
+    "valueInputOption": "RAW"
   };
   return gapi.client.sheets.spreadsheets.values.append(request)
     .then(response => {
