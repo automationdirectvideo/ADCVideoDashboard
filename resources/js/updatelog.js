@@ -33,7 +33,8 @@ function loadUpdateLog() {
       }
       updateTableBody.innerHTML = output;
       $("#update-table").DataTable({
-        "order": [[0, 'desc']]
+        "order": [[0, 'desc']],
+        "pageLength": 25
       });
       document.getElementById("table-loading").style.display = "none";
     })

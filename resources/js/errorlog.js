@@ -35,7 +35,8 @@ function loadErrorLog() {
       }
       errorTableBody.innerHTML = output;
       $("#error-table").DataTable({
-        "order": [[0, 'desc']]
+        "order": [[0, 'desc']],
+        "pageLength": 25
       });
       document.getElementById("table-loading").style.display = "none";
     })
