@@ -68,6 +68,7 @@ function recordVideoListData(videoList) {
       let publishDate = row[columns["Publish Date"]];
       let duration = row[columns["Duration"]];
       let categoryString = row[columns["Categories"]];
+      let createdBy = row[columns["Created By"]];
       categoryString = categoryString.replace(/\s/g, ''); // Removes whitespace
       let initialCategories = categoryString.split(",");
       let allCategories = [];
@@ -93,7 +94,8 @@ function recordVideoListData(videoList) {
         "categories": allCategories,
         "title": title,
         "publishDate": publishDate,
-        "duration": duration
+        "duration": duration,
+        "createdBy": createdBy
       };
 
       uploads.push(videoId);
@@ -169,6 +171,7 @@ function recordVideoData(videoSheet) {
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
     let publishDate = videoSheet[i][columns["Publish Date"]].substr(0, 10);
     let categories = videoSheet[i][columns["Categories"]].replace(/\s/g, '');
+    let createdBy = videoSheet[i][columns]["Created By"];
     let row = {
       "videoId": videoId,
       "views": viewCount,
@@ -184,6 +187,7 @@ function recordVideoData(videoSheet) {
     statsByVideoId[videoId]["publishDate"] = publishDate;
     statsByVideoId[videoId]["duration"] = duration;
     statsByVideoId[videoId]["categories"] = categories;
+    statsByVideoId[videoId]["createdBy"] = createdBy;
     uploads.push(videoId);
   }
   localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
@@ -468,7 +472,7 @@ function saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year) {
 function saveVideoStatsToSheets(allVideoStats) {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-      "Comments", "Publish Date", "Categories"
+      "Comments", "Publish Date", "Categories", "Created By"
     ]
   ];
   const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
@@ -484,6 +488,7 @@ function saveVideoStatsToSheets(allVideoStats) {
     row.push(allVideoStats[i]["comments"]);
     row.push(statsByVideoId[videoId]["publishDate"]);
     row.push(statsByVideoId[videoId]["categories"].join(","));
+    row.push(statsByVideoId[videoId]["createdBy"]);
     values.push(row);
   }
   const body = {
