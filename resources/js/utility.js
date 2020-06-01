@@ -23,7 +23,7 @@ function getCurrMonth() {
   let now = new Date();
   let firstDayOfMonth = undefined;
   let lastDayOfMonth = undefined;
-  if (now - firstDayOfMonth > 432000000) {
+  if (now.getDate() >= 5) {
     // Update for current month
     firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
     lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
