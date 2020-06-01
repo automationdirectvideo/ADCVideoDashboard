@@ -758,15 +758,16 @@ function displayTopCategories(categoryStats) {
   var graphWidth = 0.9528;
   var height = graphHeight * document.documentElement.clientHeight;
   var width = graphWidth * document.documentElement.clientWidth;
-  var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
-  var labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
+  var titleFontSize = Math.floor(0.0156 * document.documentElement.clientWidth);
+  var labelFontSize = Math.floor(0.0100 * document.documentElement.clientWidth);
   var legendFontSize =
-    Math.floor(0.0125 * document.documentElement.clientWidth);
+    Math.floor(0.0100 * document.documentElement.clientWidth);
+  var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
+
   var values = [];
   var labels = [];
-  var colors = [];
+  var list = [];
   var type = "views";
-  var cutoff = 0.025;
 
   var labelConversion = categoryColors;
 
@@ -781,88 +782,47 @@ function displayTopCategories(categoryStats) {
       }
     }
     if (include) {
-      total += Math.round(category[type]);
-    }
-  }
-  for (var i = 0; i < categoryStats.length; i++) {
-    let category = categoryStats[i];
-    let include = category.root;
-    if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
-        if (category.name.includes(excludeKeys[j])) {
-          include = false;
-        }
-      }
-    }
-    if (include) {
       let value = Math.round(category[type]);
-      if (value / total <= cutoff) {
-        otherTotal += value;
-      } else {
-        values.push(value);
-        labels.push(labelConversion[category.shortName].name);
-        colors.push(labelConversion[category.shortName].color);
-      }
+      list.push({
+        "value": value,
+        "label": category.shortName
+      });
     }
   }
-  if (cutoff != undefined && cutoff > 0) {
-    values.push(otherTotal);
-    labels.push("Other");
-    colors.push("#5fe0ed");
+  // Sort by value from largest to smallest
+  list.sort(function(a,b) {
+    return a.value > b.value ? -1 :
+      a.value == b.value ? 0 :
+      1;
+  });
+  for (let index = 0; index < list.length; index++) {
+    const category = list[index];
+    values.push(category.value);
+    labels.push(category.label);
   }
 
   var data1 = {
-    values: values,
-    labels: labels,
-    marker: {
-      colors: colors
-    },
-    domain: {
-      row: 0,
-      column: 0
-    },
+    x: labels,
+    y: values,
     name: "Total Views<br>By Category",
-    title: {
-      text: "Total Views<br>By Category",
-      font: {
-        size: titleFontSize
-      }
-    },
-    textinfo: "label",
-    textposition: "inside",
+    type: 'bar',
+    yaxis: "y",
+    offsetgroup: 1,
     hoverlabel: {
       namelength: "-1"
     },
-    hovertemplate: "%{label}<br>%{value} views<br>%{percent}",
-    sort: false,
-    type: 'pie',
-    rotation: 90
+    hovertemplate: "%{label}<br>%{value:,} views"
   };
 
-  // Avg Views Graph
+  // Avg Views Trace
 
   total = 0;
   otherTotal = 0;
   values = [];
   labels = [];
-  colors = [];
+  list = [];
   type = "avgViews";
-  cutoff = 0.025;
 
-  for (var i = 0; i < categoryStats.length; i++) {
-    let category = categoryStats[i];
-    let include = category.root;
-    if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
-        if (category.name.includes(excludeKeys[j])) {
-          include = false;
-        }
-      }
-    }
-    if (include) {
-      total += Math.round(category[type]);
-    }
-  }
   for (var i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
@@ -875,50 +835,38 @@ function displayTopCategories(categoryStats) {
     }
     if (include) {
       let value = Math.round(category[type]);
-      if (value / total <= cutoff) {
-        otherTotal += value;
-      } else {
-        values.push(value);
-        labels.push(labelConversion[category.shortName].name);
-        colors.push(labelConversion[category.shortName].color);
-      }
+      list.push({
+        "value": value,
+        "label": category.shortName
+      });
     }
   }
-  if (cutoff != undefined && cutoff > 0) {
-    values.push(otherTotal);
-    labels.push("Other");
-    colors.push("#5fe0ed");
+  // Sort by value from largest to smallest
+  list.sort(function(a,b) {
+    return a.value > b.value ? -1 :
+      a.value == b.value ? 0 :
+      1;
+  });
+  for (let index = 0; index < list.length; index++) {
+    const category = list[index];
+    values.push(category.value);
+    labels.push(category.label);
   }
 
   var data2 = {
-    values: values,
-    labels: labels,
-    marker: {
-      colors: colors
-    },
-    domain: {
-      row: 0,
-      column: 1
-    },
+    x: labels,
+    y: values,
     name: "Average Views Per Video<br>By Category",
-    title: {
-      text: "Average Views Per Video<br>By Category",
-      font: {
-        size: titleFontSize
-      }
-    },
-    textinfo: "label",
-    textposition: "inside",
+    type: 'bar',
+    yaxis: "y2",
+    offsetgroup: 2,
     hoverlabel: {
       namelength: "-1"
     },
-    hovertemplate: "%{label}<br>~%{value} views per video<br>%{percent}",
-    sort: false,
-    type: 'pie',
-    rotation: 140
+    hovertemplate: "%{label}<br>~%{value:,} views per video"
   };
 
-  var data = [data2, data1];
+  var data = [data1, data2];
 
   var layout = {
     height: height,
@@ -926,33 +874,59 @@ function displayTopCategories(categoryStats) {
     font: {
       size: labelFontSize
     },
-    automargin: true,
-    autosize: true,
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
     legend: {
       bgcolor: "#eeeeee",
       font: {
         size: legendFontSize
       },
-      y: 0.5
+      x: 0.8
     },
-    grid: {
-      rows: 1,
-      columns: 2
+    title: {
+      font: {
+        size: titleFontSize
+      },
+      text: "Product Category Performance"
     },
-    margin: {
-      b: 5,
-      l: 5,
-      r: 5,
-      t: 5
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Category"
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Total Category Views"
+      }
+    },
+    yaxis2: {
+      automargin: true,
+      fixedrange: true,
+      showgrid: false,
+      overlaying: "y",
+      side: "right",
+      zeroline: false,
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Average Views Per Video"
+      },
     }
   };
 
-  var config = {
-    staticPlot: true,
-    responsive: true
-  };
+  let config = {
+    scrollZoom: false,
+    displayModeBar: false,
+  }
 
   var graphId = "categories-double-views-chart";
 
