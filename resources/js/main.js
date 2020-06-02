@@ -1363,6 +1363,13 @@ function swapCarousels() {
   inactiveCarouselContainer.addClass("active");
 }
 
+function addDotsToLoadingText() {
+  const loadingText = document.getElementById("loading-text");
+  if (!loadingText.innerHTML.endsWith("...")) {
+    loadingText.innerHTML += "...";
+  }
+}
+
 function hideLoadingText() {
   const loadingText = document.getElementById("loading-text");
   loadingText.style.display = "none";

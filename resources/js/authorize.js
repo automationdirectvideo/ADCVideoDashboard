@@ -55,7 +55,7 @@ function loadSigninStatus(isSignedIn) {
   if (!isUserADC() && isSignedIn) {
     handleInvalidAccount();
   }
-  showLoadingText();
+  addDotsToLoadingText();
   const signinModalButton = document.getElementById("signin-modal-button");
   const signoutModalButton = document.getElementById("signout-modal-button");
   const controlPanelButton = document.getElementById("control-panel-button");
