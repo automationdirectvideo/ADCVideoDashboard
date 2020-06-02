@@ -999,8 +999,6 @@ function displayTopCategoriesGraphTwo(categoryStats) {
   var list = [];
   var type = "views";
 
-  var labelConversion = categoryColors;
-
   for (var i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
@@ -1102,6 +1100,8 @@ function displayTopCategoriesGraphTwo(categoryStats) {
     font: {
       size: labelFontSize
     },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
     legend: {
       bgcolor: "#eeeeee",
       font: {
@@ -1157,6 +1157,149 @@ function displayTopCategoriesGraphTwo(categoryStats) {
   }
 
   var graphId = "product-categories-chart-2";
+
+  var currentSettings = JSON.parse(localStorage.getItem("settings"));
+  var theme = "";
+  var index = 0;
+  while (index < currentSettings.dashboards.length && theme == "") {
+    if (currentSettings.dashboards[index].name == "product-categories") {
+      theme = currentSettings.dashboards[index].theme;
+    }
+    index++;
+  }
+  if (theme == "dark") {
+    layout["plot_bgcolor"] = "#222";
+    layout["paper_bgcolor"] = "#222";
+    layout["font"]["color"] = "#fff";
+    layout["legend"]["bgcolor"] = "#444";
+    layout["legend"]["font"]["color"] = "#fff";
+  }
+
+  Plotly.newPlot(graphId, data, layout, config);
+
+  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+  recordGraphSize(graphId, graphHeight, graphWidth);
+}
+
+function displayTopCategoriesGraphThree(categoryStats) {
+  categoryStats = categoryStats ||
+    JSON.parse(localStorage.getItem("categoryStats"));
+  var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
+
+  var graphHeight = 0.8583;
+  var graphWidth = 0.9528;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var titleFontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
+  var labelFontSize = Math.floor(0.0100 * document.documentElement.clientWidth);
+  var legendFontSize =
+    Math.floor(0.0100 * document.documentElement.clientWidth);
+  var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
+
+  let viewsList = [];
+  let avgViewsList = [];
+  let numVideosList = [];
+  let labelList = [];
+  let colors = [];
+  let data = [];
+
+  let labelConversion = categoryColors;
+
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      let views = Math.round(category["views"]);
+      let avgViews = Math.round(category["avgViews"]);
+      let numVideos = category["videos"].length;
+      let label = category.shortName;
+      let color = labelConversion[category.shortName].color
+      viewsList.push(views);
+      avgViewsList.push(avgViews);
+      numVideosList.push(numVideos);
+      labelList.push(label);
+      colors.push(color);
+      data.push({
+        x: [views],
+        y: [numVideos],
+        mode: "markers",
+        type: 'scatter',
+        marker: {
+          color: [color],
+          size: [avgViews],
+          sizemode: "area"
+        },
+        name: label,
+        text: [label],
+        hoverlabel: {
+          namelength: "-1"
+        },
+        hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>%{marker.size:,} average views per video<extra></extra>"
+      });
+    }
+  }
+
+  var layout = {
+    height: height,
+    width: width,
+    font: {
+      size: labelFontSize
+    },
+    hovermode: "closest",
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    legend: {
+      bgcolor: "#eeeeee",
+      font: {
+        size: legendFontSize
+      },
+      y: 0.5
+    },
+    title: {
+      font: {
+        size: titleFontSize
+      },
+      text: "<b>Product Category Performance</b><br>Circle Area is proportional to Average Views per Video"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      gridcolor: "#aaaaaa",
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Total Category Views"
+      },
+      type: "log"
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      gridcolor: "#888888",
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Number of Videos"
+      },
+      type: "log"
+    }
+  };
+
+  let config = {
+    scrollZoom: false,
+    displayModeBar: false,
+  }
+
+  var graphId = "product-categories-chart-3";
 
   var currentSettings = JSON.parse(localStorage.getItem("settings"));
   var theme = "";
@@ -1513,13 +1656,23 @@ function swapProductCategoriesGraphs() {
   var activeDashboard =
     $(".carousel-container.active >>> .carousel-item.active")[0].id;
     if (activeDashboard == "product-categories") {
-      var standardChartId = activeDashboard + "-chart-1";
-      var standardChart = document.getElementById(standardChartId);
-      if (standardChart) {
-        if (standardChart.style.display == "none") {
-          standardChart.style.display = "";
-        } else {
-          standardChart.style.display = "none";
+      var chartId = activeDashboard + "-chart-";
+      var chartOne = document.getElementById(chartId + "1");
+      var chartTwo = document.getElementById(chartId + "2");
+      var chartThree = document.getElementById(chartId + "3");
+      if (chartOne && chartTwo && chartThree) {
+        if (chartOne.style.display == "") {
+          chartOne.style.display = "none";
+          chartTwo.style.display = "";
+          chartThree.style.display = "none";
+        } else if (chartTwo.style.display == "") {
+          chartOne.style.display = "none";
+          chartTwo.style.display = "none";
+          chartThree.style.display = "";
+        } else if (chartThree.style.display == "") {
+          chartOne.style.display = "";
+          chartTwo.style.display = "none";
+          chartThree.style.display = "none";
         }
       }
   }

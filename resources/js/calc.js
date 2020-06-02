@@ -228,6 +228,7 @@ function loadProductCategoriesDashboard() {
   try {
     displayTopCategoriesGraphOne();
     displayTopCategoriesGraphTwo();
+    displayTopCategoriesGraphThree();
     promise = Promise.resolve("Displayed Product Categories Dashboard");
   } catch (err) {
     recordError(err);
@@ -235,6 +236,7 @@ function loadProductCategoriesDashboard() {
       .then(categoryStats => {
         displayTopCategoriesGraphOne(categoryStats);
         displayTopCategoriesGraphTwo(categoryStats);
+        displayTopCategoriesGraphThree(categoryStats);
       });
   } finally {
     return promise;
