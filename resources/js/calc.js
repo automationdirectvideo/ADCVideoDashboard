@@ -226,12 +226,16 @@ function loadCategoryCharts() {
 function loadProductCategoriesDashboard() {
   let promise = undefined;
   try {
-    displayTopCategories();
+    displayTopCategoriesGraphOne();
+    displayTopCategoriesGraphTwo();
     promise = Promise.resolve("Displayed Product Categories Dashboard");
   } catch (err) {
     recordError(err);
     promise = getCategoryStats()
-      .then(categoryStats => displayTopCategories(categoryStats));
+      .then(categoryStats => {
+        displayTopCategoriesGraphOne(categoryStats);
+        displayTopCategoriesGraphTwo(categoryStats);
+      });
   } finally {
     return promise;
   }
