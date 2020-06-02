@@ -164,10 +164,6 @@ function getAllVideoStats(videos) {
             allStats[videoId].avgViewDuration;
           allVideoStats[index].subscribersGained = allStats[videoId].subsGained;
         };
-        console.log("ALL VIDEO STATS:");
-        console.log(allVideoStats);
-        console.log("ALL STATS:");
-        console.log(allStats);
         return allVideoStats;
       });
   }

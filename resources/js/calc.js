@@ -376,9 +376,11 @@ function zScoreByPropertyName(stats, propertyName) {
   return zScores;
 }
 
-// TODO: document this function
-// https://stats.stackexchange.com/q/154888
+// Calculates the "strength" of each video
+// See https://stats.stackexchange.com/q/154888 for concepts used to combine
+// multiple metrics into a single metric (strength)
 function calcVideoStrength(allVideoStats) {
+  // Normalizes each metric individually across all videos
   let zScoreData = {
     videoIds: allVideoStats.map((video) => {return video["videoId"]}),
     views: zScoreByPropertyName(allVideoStats, "views"),
@@ -392,7 +394,6 @@ function calcVideoStrength(allVideoStats) {
     daysSincePublished: zScoreByPropertyName(allVideoStats,
       "daysSincePublished")
   };
-  let videoStrength = [];
   for (let index = 0; index < zScoreData.videoIds.length; index++) {
     const videoId = zScoreData.videoIds[index];
     const views = zScoreData.views[index];
@@ -404,21 +405,15 @@ function calcVideoStrength(allVideoStats) {
     const subscribersGained = zScoreData.subscribersGained[index];
     const avgViewDuration = zScoreData.avgViewDuration[index];
     const daysSincePublished = zScoreData.daysSincePublished[index];
-    let strength = avgViewsPerDay + comments + likesPerView +
-      subscribersGained + avgViewDuration + daysSincePublished -
-      dislikesPerView;
+    // Change the integers (weights) to balance each metric's contribution
+    let strength = (1 * avgViewsPerDay) +
+      (1 * comments) +
+      (1 * likesPerView) +
+      (1 * subscribersGained) +
+      (1 * avgViewDuration) +
+      (1 * daysSincePublished) -
+      (1 * dislikesPerView);
     allVideoStats[index].strength = strength;
-    videoStrength.push({
-      videoId: videoId,
-      strength: strength
-    });
   }
-  videoStrength.sort(function(a, b) {
-    return b.strength - a.strength;
-  });
-  console.log("zScoreData");
-  console.log(zScoreData);
-  console.log("videoStrength");
-  console.log(videoStrength);
   return allVideoStats;
 }
