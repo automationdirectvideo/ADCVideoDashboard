@@ -213,7 +213,15 @@ function recordError(err, additionalMessage) {
       message += gapiMsg;
     }
   } catch (checkGapiError) {
-    // err is not from gapi - do nothing
+    try {
+      // Another error message format from a gapi error
+      let gapiMsg = err.result.error.message;
+      if (gapiMsg) {
+        message += gapiMsg;
+      }
+    } catch (checkGapiError2) {
+      // err is not from gapi - do nothing
+    }
   }
   console.log(message);
   console.log(err);
