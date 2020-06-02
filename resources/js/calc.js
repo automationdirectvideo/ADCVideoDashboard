@@ -8,6 +8,7 @@ function updateCategoryTotals(allVideoStats) {
     let duration = videoInfo.duration;
     let viewCount = videoInfo.views;
     let likeCount = videoInfo.likes;
+    let strength = videoInfo.strength;
 
     statsByVideoId[videoId]["duration"] = duration;
     let categories = statsByVideoId[videoId]["categories"];
@@ -20,11 +21,13 @@ function updateCategoryTotals(allVideoStats) {
       let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
       let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
       let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
+      let categoryStrength = parseFloat(categoryTotals[categoryId]["strength"]);
       let categoryVideos = categoryTotals[categoryId]["videos"];
       categoryVideos.push(videoId);
       categoryTotals[categoryId]["views"] = categoryViews + viewCount;
       categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
       categoryTotals[categoryId]["duration"] = categoryDuration + duration;
+      categoryTotals[categoryId]["strength"] = categoryStrength + strength;
       categoryTotals[categoryId]["videos"] = categoryVideos;
     }
   });
@@ -47,11 +50,13 @@ function calcCategoryStats(categoryTotals) {
       let views = parseInt(totals["views"]);
       let likes = parseInt(totals["likes"]);
       let duration = parseInt(totals["duration"]);
+      let strength = parseInt(totals["strength"]);
       let videos = totals["videos"];
       let numVideos = videos.length;
       let avgViews = views / numVideos;
       let avgLikes = likes / numVideos;
       let avgDuration = duration / numVideos;
+      let avgStrength = strength / numVideos;
       categoryStats.push({
         "avgDuration": avgDuration,
         "avgLikes": avgLikes,
@@ -63,6 +68,8 @@ function calcCategoryStats(categoryTotals) {
         "name": name,
         "root": root,
         "shortName": shortName,
+        "strength": strength,
+        "avgStrength": avgStrength,
         "videos": videos,
         "views": views
       });
@@ -316,4 +323,102 @@ function loadTopVideoDashboards() {
     const topVideosStr = topVideoList.join(",");
     return topVideoCalls(joinDate, todayDate, topVideosStr, dashboardIds);
   }
+}
+
+
+/* Statistics Functions */
+
+// Calculates the average for a list of numerical data
+function average(data) {
+  let sum = data.reduce((sum, value) => {
+    return sum + value;
+  }, 0);
+
+  let avg = sum / data.length;
+  return avg;
+}
+// Calculates the standard deviation for a list of numerical data
+function standardDeviation(data, avg) {
+  let squareDiffs = data.map(value => {
+    let diff = value - avg;
+    let squareDiff = diff ** 2;
+    return squareDiff;
+  });
+  let avgSquareDiff = average(squareDiffs);
+  let stdDev = Math.sqrt(avgSquareDiff);
+  return stdDev;
+}
+
+// Calculates the z-score of a value given data's average and standard deviation
+function zScore(value, avg, stdDev) {
+  let diff = value - avg;
+  let z = diff / stdDev;
+  return z;
+}
+
+// Calculates the z-score for every value in the list of numerical data
+function zScoreForList(data) {
+  let avg = average(data);
+  let stdDev = standardDeviation(data, avg);
+  let zScores = data.map((value) => {
+    return zScore(value, avg, stdDev);
+  });
+  return zScores;
+}
+
+// This function was designed to be used with a list of objects
+// e.g. stats = [{x: 2, y: 3}, {x: 1, y: 5}]
+// Creates a list of zScores corresponding to a key (propertyName) in each
+// element of stats like "x" or "y" in the example above
+function zScoreByPropertyName(stats, propertyName) {
+  let data = stats.map((value) => {return value[propertyName]});
+  let zScores = zScoreForList(data);
+  return zScores;
+}
+
+// TODO: document this function
+// https://stats.stackexchange.com/q/154888
+function calcVideoStrength(allVideoStats) {
+  let zScoreData = {
+    videoIds: allVideoStats.map((video) => {return video["videoId"]}),
+    views: zScoreByPropertyName(allVideoStats, "views"),
+    avgViewsPerDay: zScoreByPropertyName(allVideoStats, "avgViewsPerDay"),
+    duration: zScoreByPropertyName(allVideoStats, "duration"),
+    comments: zScoreByPropertyName(allVideoStats, "comments"),
+    likesPerView: zScoreByPropertyName(allVideoStats, "likesPerView"),
+    dislikesPerView: zScoreByPropertyName(allVideoStats, "dislikesPerView"),
+    subscribersGained: zScoreByPropertyName(allVideoStats, "subscribersGained"),
+    avgViewDuration: zScoreByPropertyName(allVideoStats, "avgViewDuration"),
+    daysSincePublished: zScoreByPropertyName(allVideoStats,
+      "daysSincePublished")
+  };
+  let videoStrength = [];
+  for (let index = 0; index < zScoreData.videoIds.length; index++) {
+    const videoId = zScoreData.videoIds[index];
+    const views = zScoreData.views[index];
+    const avgViewsPerDay = zScoreData.avgViewsPerDay[index];
+    const duration = zScoreData.duration[index];
+    const comments = zScoreData.comments[index];
+    const likesPerView = zScoreData.likesPerView[index];
+    const dislikesPerView = zScoreData.dislikesPerView[index];
+    const subscribersGained = zScoreData.subscribersGained[index];
+    const avgViewDuration = zScoreData.avgViewDuration[index];
+    const daysSincePublished = zScoreData.daysSincePublished[index];
+    let strength = avgViewsPerDay + comments + likesPerView +
+      subscribersGained + avgViewDuration + daysSincePublished -
+      dislikesPerView;
+    allVideoStats[index].strength = strength;
+    videoStrength.push({
+      videoId: videoId,
+      strength: strength
+    });
+  }
+  videoStrength.sort(function(a, b) {
+    return b.strength - a.strength;
+  });
+  console.log("zScoreData");
+  console.log(zScoreData);
+  console.log("videoStrength");
+  console.log(videoStrength);
+  return allVideoStats;
 }

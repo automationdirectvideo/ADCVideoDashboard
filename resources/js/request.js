@@ -24,6 +24,7 @@ function requestChannelNumVideos() {
 /* Get All Video Stats Calls */
 
 function getAllVideoStats(videos) {
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let requests = [];
   for (let i = 0; i < videos.length; i += 50) {
     const fiftyVideos = videos.slice(i, i + 50);
@@ -47,13 +48,29 @@ function getAllVideoStats(videos) {
           const likeCount = parseInt(videoStats.likeCount);
           const dislikeCount = parseInt(videoStats.dislikeCount);
           const commentCount = parseInt(videoStats.commentCount);
+          let likesPerView = 0;
+          let dislikesPerView = 0;
+          if (viewCount != 0) {
+            likesPerView = likeCount / viewCount;
+            dislikesPerView = dislikeCount / viewCount;
+          }
+          const publishDate = statsByVideoId[videoId].publishDate;
+          const daysSincePublished = getNumberDaysSince(publishDate);
+          let avgViewsPerDay = viewCount;
+          if (daysSincePublished != 0) {
+            avgViewsPerDay = viewCount / daysSincePublished;
+          }
           stats.push({
             "videoId": videoId,
             "views": viewCount,
             "likes": likeCount,
             "dislikes": dislikeCount,
+            "likesPerView": likesPerView,
+            "dislikesPerView": dislikesPerView,
             "comments": commentCount,
-            "duration": duration
+            "duration": duration,
+            "daysSincePublished": daysSincePublished,
+            "avgViewsPerDay": avgViewsPerDay
           });
         }
         // Return for post-processing of the data elsewhere
@@ -73,6 +90,11 @@ function getAllVideoStats(videos) {
     .then(response => {
       console.log(response);
       let allVideoStats = [].concat.apply([], response);
+      return getAnalyticsVideoStats(allVideoStats, videos);
+    })
+    .then(response => {
+      allVideoStats = response;
+      allVideoStats = calcVideoStrength(allVideoStats);
       localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
       let categoryTotals = updateCategoryTotals(allVideoStats);
       let categoryStats = calcCategoryStats(categoryTotals);
@@ -82,6 +104,73 @@ function getAllVideoStats(videos) {
       const topTenRequest = getTopTenVideosForCurrMonth();
       return Promise.all([catRequest, videoRequest, topTenRequest]);
     });
+    
+  function getAnalyticsVideoStats(allVideoStats, videos) {
+    let endDate = getTodaysDate();
+    let requests = [];
+    for (let i = 0; i < videos.length; i += 50) {
+      const fiftyVideos = videos.slice(i, i + 50);
+      const fiftyVideosStr = fiftyVideos.join(",");
+      const filters = "video==" + fiftyVideosStr;
+      const gapiRequest = {
+        "dimensions": "video",
+        "endDate": endDate,
+        "filters": filters,
+        "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
+        "metrics": "averageViewDuration,subscribersGained,subscribersLost",
+        "startDate": joinDate
+      };
+      const request = gapi.client.youtubeAnalytics.reports.query(gapiRequest)
+        .then(response => {
+          console.log(`Video Request`, response);
+          let stats = {};
+          const videoItems = response.result.rows;
+          for (let index = 0; index < videoItems.length; index++) {
+            const video = videoItems[index];
+            const videoId = video[0];
+            const avgViewDuration = parseInt(video[1]);
+            const subsGained = parseInt(video[2]);
+            const subsLost = parseInt(video[3]);
+            const subsChanged = subsGained - subsLost;
+            stats[videoId] = {
+              "avgViewDuration": avgViewDuration,
+              "subsGained": subsChanged
+            };
+          }
+          // Return for post-processing of the data elsewhere
+          return stats;
+        })
+        .catch(err => {
+          const errorMsg = `Error in fetching analytics stats for video group` +
+            ` ${i} - ${i + 49}: `;
+          console.log(errorMsg, err);
+          recordError(err, errorMsg);
+          return errorMsg;
+        });
+      requests.push(request);
+    }
+
+    return Promise.all(requests)
+      .then(response => {
+        console.log(response);
+        let allStats = {};
+        response.forEach(stats => {
+          allStats = Object.assign(allStats, stats);
+        });
+        for (let index = 0; index < allVideoStats.length; index++) {
+          const video = allVideoStats[index];
+          const videoId = video.videoId;
+          allVideoStats[index].avgViewDuration =
+            allStats[videoId].avgViewDuration;
+          allVideoStats[index].subscribersGained = allStats[videoId].subsGained;
+        };
+        console.log("ALL VIDEO STATS:");
+        console.log(allVideoStats);
+        console.log("ALL STATS:");
+        console.log(allStats);
+        return allVideoStats;
+      });
+  }
 }
 
 function requestVideoViewsByYear(uploads, year) {

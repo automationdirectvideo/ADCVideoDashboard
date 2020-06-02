@@ -81,6 +81,14 @@ function getDateFromDaysAgo(numDaysAgo) {
   return getYouTubeDateFormat(priorDate);
 }
 
+// Get the number of days from today to the oldDate in the form YYYY-MM-DD
+function getNumberDaysSince(oldDate) {
+  const now = new Date();
+  const old = new Date(oldDate);
+  const diff = Math.floor((now - old) / 86400000);
+  return diff;
+}
+
 // Get today's date in the form YYYY-MM-DD
 function getTodaysDate() {
   return getYouTubeDateFormat(new Date());

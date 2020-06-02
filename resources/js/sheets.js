@@ -43,7 +43,8 @@ function recordCategoryListData(categoryList) {
       "views": 0,
       "likes": 0,
       "duration": 0,
-      "videos": []
+      "videos": [],
+      "strength": 0
     };
   }
   localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
