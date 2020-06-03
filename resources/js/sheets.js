@@ -128,6 +128,7 @@ function recordCategoryStats(categoriesSheet) {
       parseFloat(categoriesSheet[i][columns["Average Video Likes"]]);
     let avgDuration =
       parseFloat(categoriesSheet[i][columns["Average Video Duration"]]);
+    let strength = parseFloat(categoriesSheet[i][columns["Strength"]]);
     let videosString = categoriesSheet[i][columns["Videos"]];
     let videos = videosString.split(",");
     let root = ("TRUE" === categoriesSheet[i][columns["Root"]]);
@@ -142,6 +143,7 @@ function recordCategoryStats(categoriesSheet) {
       "avgViews": avgViews,
       "avgLikes": avgLikes,
       "avgDuration": avgDuration,
+      "avgStrength": strength,
       "videos": videos,
       "root": root,
       "leaf": leaf,
@@ -407,8 +409,8 @@ function recordYearlyCategoryViews(sheetValues) {
 function saveCategoryStatsToSheets(categoryStats) {
   var values = [
     ["Category ID", "Name", "Short Name", "Views", "Likes", "Duration (sec)",
-      "Average Video Views", "Average Video Likes", "Average Video Duration",
-      "Videos", "Root", "Leaf"
+      "Strength", "Average Video Views", "Average Video Likes",
+      "Average Video Duration", "Videos", "Root", "Leaf"
     ]
   ];
   for (var i = 0; i < categoryStats.length; i++) {
@@ -419,6 +421,7 @@ function saveCategoryStatsToSheets(categoryStats) {
     row.push(categoryStats[i]["views"]);
     row.push(categoryStats[i]["likes"]);
     row.push(categoryStats[i]["duration"]);
+    row.push(categoryStats[i]["avgStrength"]);
     row.push(categoryStats[i]["avgViews"]);
     row.push(categoryStats[i]["avgLikes"]);
     row.push(categoryStats[i]["avgDuration"]);
