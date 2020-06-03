@@ -50,480 +50,244 @@
             <h6 id="pause-text" onclick="toggleDashboardPause()"><i class="fas fa-pause mr-1" style="font-size:1em;"></i>Paused</h6>
             <h6 id="play-text" onclick="toggleDashboardPause()"><i class="fas fa-play mr-1" style="font-size:1em;"></i>Play</h6>
           </div>
-          <div class="text-center carousel-container active" id="content">
-            <div class="carousel slide" id="dashboard-carousel" data-ride="carousel" name="main">
-              <div class="carousel-inner" id="main-carousel-inner">
-              </div>
-            </div>
-            <div class="d-none" id="dashboard-holder">
-              <div class="carousel-item" id="intro-animation">
-                <div class="video-container container mb-1">
-                  <img id="intro-img" src="resources/img/Intro-Animation-Screenshot.png" alt="Intro Animation" height="100%">
-                  <video id="intro-video" style="display:none;" width="100%" height="100%" autoplay loop muted>
-                    <source src="resources/video/Intro-Animation.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                  </video>
+          <div id="carousel-list">
+            <div class="text-center carousel-container active" id="content" carousel="0">
+              <div class="carousel slide" id="dashboard-carousel" data-ride="carousel" name="main">
+                <div class="carousel-inner" id="main-carousel-inner">
                 </div>
               </div>
-              <div class="carousel-item" id="real-time-stats">
-                <h1 class="dashboard-title">Watch These Key Channel Statistics Update in <span style="font-style:italic;text-decoration:underline;">Real Time!</span></h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/4/13;">
-                      <div class="row align-items-center justify-content-around h-100">
-                        <div class="col-4">
-                          <div class="row align-items-center justify-content-around">
-                            <div class="col-4">
-                              <span class="fas fa-eye stats-icon"></span>
-                            </div>
-                            <div class="col-8">
-                              <h1 class="stat-title">Views</h1>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="odometer" value="" id="stat-views-cumulative">#</h1>
-                          <h3 class="text-muted stat-caption">(Cumulative)</h3>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="odometer" value="" id="stat-views-month">#</h1>
-                          <h3 class="text-muted stat-caption">(Last 30 Days)</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/1/7/13;">
-                      <div class="row align-items-center justify-content-around h-100">
-                        <div class="col-4">
-                          <div class="row align-items-center justify-content-around">
-                            <div class="col-4">
-                              <span class="fas fa-users stats-icon-subscribers"></span>
-                            </div>
-                            <div class="col-8">
-                              <h1 class="stat-title pl-3">Subscribers</h1>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="odometer" value="" id="stat-subs-cumulative">#</h1>
-                          <h3 class="text-muted stat-caption">(Cumulative)</h3>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="odometer" value="" id="stat-subs-month">#</h1>
-                          <h3 class="text-muted stat-caption">(Last 30 Days)</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 7/1/10/13;">
-                      <div class="row align-items-center justify-content-around h-100">
-                        <div class="col-4">
-                          <div class="row align-items-center justify-content-around">
-                            <div class="col-4">
-                              <span class="far fa-clock stats-icon"></span>
-                            </div>
-                            <div class="col-8">
-                              <h1 class="stat-title">Minutes Watched</h1>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="odometer" value="" id="stat-minutes-cumulative">#</h1>
-                          <h3 class="text-muted stat-caption">(Cumulative)</h3>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="odometer" value="" id="stat-minutes-month">#</h1>
-                          <h3 class="text-muted stat-caption">(Last 30 Days)</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 10/1/13/13;">
-                      <div class="row align-items-center justify-content-around h-100">
-                        <div class="col-4">
-                          <div class="row align-items-center justify-content-around">
-                            <div class="col-4">
-                              <span class="fas fa-redo-alt stats-icon"></span>
-                            </div>
-                            <div class="col-8">
-                              <h1 class="stat-title">Audience Retention</h1>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="stat-retention" value="" id="stat-avg-duration">#</h1>
-                          <h3 class="text-muted stat-caption">(Average View Duration)</h3>
-                        </div>
-                        <div class="col-4">
-                          <h1 class="stat-retention" id="stat-avg-percentage">#</h1>
-                          <h3 class="text-muted stat-caption">(Average View Percentage)</h3>
-                        </div>
-                      </div>
-                    </div>
+              <div class="d-none" id="dashboard-holder">
+                <div class="carousel-item" id="intro-animation">
+                  <div class="video-container container mb-1">
+                    <img id="intro-img" src="resources/img/Intro-Animation-Screenshot.png" alt="Intro Animation" height="100%">
+                    <video id="intro-video" style="display:none;" width="100%" height="100%" autoplay loop muted>
+                      <source src="resources/video/Intro-Animation.mp4" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
                   </div>
                 </div>
-              </div>
-              <div class="carousel-item" id="platform">
-                <h1 class="dashboard-title">How are Users Accessing Our Videos?</h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/7/5;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height: 10%">
-                          <h2>Views by Traffic Source</h2>
-                        </div>
-                        <div class="col-12" style="height: 90%">
-                          <div class="h-100 w-100 graph-container" id="channel-traffic-sources"></div>
+                <div class="carousel-item" id="real-time-stats">
+                  <h1 class="dashboard-title">Watch These Key Channel Statistics Update in <span style="font-style:italic;text-decoration:underline;">Real Time!</span></h1>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                      <div class="grid-item" style="grid-area: 1/1/4/13;">
+                        <div class="row align-items-center justify-content-around h-100">
+                          <div class="col-4">
+                            <div class="row align-items-center justify-content-around">
+                              <div class="col-4">
+                                <span class="fas fa-eye stats-icon"></span>
+                              </div>
+                              <div class="col-8">
+                                <h1 class="stat-title">Views</h1>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="odometer" value="" id="stat-views-cumulative">#</h1>
+                            <h3 class="text-muted stat-caption">(Cumulative)</h3>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="odometer" value="" id="stat-views-month">#</h1>
+                            <h3 class="text-muted stat-caption">(Last 30 Days)</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/5/7/9;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height: 10%">
-                          <h2>Views by Device Type</h2>
-                        </div>
-                        <div class="col-12" style="height: 90%">
-                          <div class="h-100 w-100 graph-container" id="channel-views-by-device"></div>
+                      <div class="grid-item" style="grid-area: 4/1/7/13;">
+                        <div class="row align-items-center justify-content-around h-100">
+                          <div class="col-4">
+                            <div class="row align-items-center justify-content-around">
+                              <div class="col-4">
+                                <span class="fas fa-users stats-icon-subscribers"></span>
+                              </div>
+                              <div class="col-8">
+                                <h1 class="stat-title pl-3">Subscribers</h1>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="odometer" value="" id="stat-subs-cumulative">#</h1>
+                            <h3 class="text-muted stat-caption">(Cumulative)</h3>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="odometer" value="" id="stat-subs-month">#</h1>
+                            <h3 class="text-muted stat-caption">(Last 30 Days)</h3>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/9/7/13;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height: 10%">
-                          <h2>Viewer Demographics</h2>
+                      <div class="grid-item" style="grid-area: 7/1/10/13;">
+                        <div class="row align-items-center justify-content-around h-100">
+                          <div class="col-4">
+                            <div class="row align-items-center justify-content-around">
+                              <div class="col-4">
+                                <span class="far fa-clock stats-icon"></span>
+                              </div>
+                              <div class="col-8">
+                                <h1 class="stat-title">Minutes Watched</h1>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="odometer" value="" id="stat-minutes-cumulative">#</h1>
+                            <h3 class="text-muted stat-caption">(Cumulative)</h3>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="odometer" value="" id="stat-minutes-month">#</h1>
+                            <h3 class="text-muted stat-caption">(Last 30 Days)</h3>
+                          </div>
                         </div>
-                        <div class="col-12" style="height: 90%">
-                          <div class="h-100 w-75 mx-auto" id="channel-demographics">
-                            <table class="table table-striped demographics-table mx-auto mb-0">
-                              <thead>
-                                <tr>
-                                  <th style="width:33.33%;">
-                                    <div class="mx-auto graph-container" id="demographics-graph"></div>
-                                  </th>
-                                  <th style="width:33.33%;" id="male-title">Male</th>
-                                  <th style="width:33.33%;" id="female-title">Female</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>13-17</td>
-                                  <td id="male-13-17"></td>
-                                  <td id="female-13-17"></td>
-                                </tr>
-                                <tr>
-                                  <td>18-24</td>
-                                  <td id="male-18-24"></td>
-                                  <td id="female-18-24"></td>
-                                </tr>
-                                <tr>
-                                  <td>25-34</td>
-                                  <td id="male-25-34"></td>
-                                  <td id="female-25-34"></td>
-                                </tr>
-                                <tr>
-                                  <td>35-44</td>
-                                  <td id="male-35-44"></td>
-                                  <td id="female-35-44"></td>
-                                </tr>
-                                <tr>
-                                  <td>45-54</td>
-                                  <td id="male-45-54"></td>
-                                  <td id="female-45-54"></td>
-                                </tr>
-                                <tr>
-                                  <td>55-64</td>
-                                  <td id="male-55-64"></td>
-                                  <td id="female-55-64"></td>
-                                </tr>
-                                <tr>
-                                  <td>65+</td>
-                                  <td id="male-65-"></td>
-                                  <td id="female-65-"></td>
-                                </tr>
-                              </tbody>
-                            </table>
+                      </div>
+                      <div class="grid-item" style="grid-area: 10/1/13/13;">
+                        <div class="row align-items-center justify-content-around h-100">
+                          <div class="col-4">
+                            <div class="row align-items-center justify-content-around">
+                              <div class="col-4">
+                                <span class="fas fa-redo-alt stats-icon"></span>
+                              </div>
+                              <div class="col-8">
+                                <h1 class="stat-title">Audience Retention</h1>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="stat-retention" value="" id="stat-avg-duration">#</h1>
+                            <h3 class="text-muted stat-caption">(Average View Duration)</h3>
+                          </div>
+                          <div class="col-4">
+                            <h1 class="stat-retention" id="stat-avg-percentage">#</h1>
+                            <h3 class="text-muted stat-caption">(Average View Percentage)</h3>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="grid-item" style="grid-area: 7/1/13/7;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height: 10%">
-                          <h2>Views By State</h2>
-                        </div>
-                        <div class="col-12" style="height: 90%">
-                          <div class="h-100 w-100 graph-container" id="channel-views-by-state"></div>
+                  </div>
+                </div>
+                <div class="carousel-item" id="platform">
+                  <h1 class="dashboard-title">How are Users Accessing Our Videos?</h1>
+                  <div class="outer-shell container mb-1">
+                    <div class="grid-container">
+                      <div class="grid-item" style="grid-area: 1/1/7/5;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height: 10%">
+                            <h2>Views by Traffic Source</h2>
+                          </div>
+                          <div class="col-12" style="height: 90%">
+                            <div class="h-100 w-100 graph-container" id="channel-traffic-sources"></div>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 7/7/13/13;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height: 9%">
-                          <h2 class="m-0">Top Search Terms By Views</h2>
+                      <div class="grid-item" style="grid-area: 1/5/7/9;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height: 10%">
+                            <h2>Views by Device Type</h2>
+                          </div>
+                          <div class="col-12" style="height: 90%">
+                            <div class="h-100 w-100 graph-container" id="channel-views-by-device"></div>
+                          </div>
                         </div>
-                        <div class="col-12" style="height: 55%">
-                          <div class="h-100 w-100 graph-container" id="channel-search-terms"></div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 1/9/7/13;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height: 10%">
+                            <h2>Viewer Demographics</h2>
+                          </div>
+                          <div class="col-12" style="height: 90%">
+                            <div class="h-100 w-75 mx-auto" id="channel-demographics">
+                              <table class="table table-striped demographics-table mx-auto mb-0">
+                                <thead>
+                                  <tr>
+                                    <th style="width:33.33%;">
+                                      <div class="mx-auto graph-container" id="demographics-graph"></div>
+                                    </th>
+                                    <th style="width:33.33%;" id="male-title">Male</th>
+                                    <th style="width:33.33%;" id="female-title">Female</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>13-17</td>
+                                    <td id="male-13-17"></td>
+                                    <td id="female-13-17"></td>
+                                  </tr>
+                                  <tr>
+                                    <td>18-24</td>
+                                    <td id="male-18-24"></td>
+                                    <td id="female-18-24"></td>
+                                  </tr>
+                                  <tr>
+                                    <td>25-34</td>
+                                    <td id="male-25-34"></td>
+                                    <td id="female-25-34"></td>
+                                  </tr>
+                                  <tr>
+                                    <td>35-44</td>
+                                    <td id="male-35-44"></td>
+                                    <td id="female-35-44"></td>
+                                  </tr>
+                                  <tr>
+                                    <td>45-54</td>
+                                    <td id="male-45-54"></td>
+                                    <td id="female-45-54"></td>
+                                  </tr>
+                                  <tr>
+                                    <td>55-64</td>
+                                    <td id="male-55-64"></td>
+                                    <td id="female-55-64"></td>
+                                  </tr>
+                                  <tr>
+                                    <td>65+</td>
+                                    <td id="male-65-"></td>
+                                    <td id="female-65-"></td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
-                        <div class="col-12" style="height: 2%">
-                          <hr class="m-0">
+                      </div>
+                      <div class="grid-item" style="grid-area: 7/1/13/7;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height: 10%">
+                            <h2>Views By State</h2>
+                          </div>
+                          <div class="col-12" style="height: 90%">
+                            <div class="h-100 w-100 graph-container" id="channel-views-by-state"></div>
+                          </div>
                         </div>
-                        <div class="col-12" style="height: 9%">
-                          <h2 class="m-0">Watch Time By Subscribers</h2>
-                        </div>
-                        <div class="col-12" style="height: 25%">
-                          <div class="h-100 w-100 graph-container" id="channel-watch-time"></div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 7/7/13/13;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height: 9%">
+                            <h2 class="m-0">Top Search Terms By Views</h2>
+                          </div>
+                          <div class="col-12" style="height: 55%">
+                            <div class="h-100 w-100 graph-container" id="channel-search-terms"></div>
+                          </div>
+                          <div class="col-12" style="height: 2%">
+                            <hr class="m-0">
+                          </div>
+                          <div class="col-12" style="height: 9%">
+                            <h2 class="m-0">Watch Time By Subscribers</h2>
+                          </div>
+                          <div class="col-12" style="height: 25%">
+                            <div class="h-100 w-100 graph-container" id="channel-watch-time"></div>
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="carousel-item" id="thumbnails">
-                <h1 class="dashboard-title">We have <span style="text-decoration:underline;" id="num-videos">1000+</span> videos servicing the entire chain!</h1>
-                <div class="outer-shell outer-shell-dark container mb-1">
-                  <div class="scroll-y" id="thumbnail-wrapper">
-                    <div id="thumbnail-container">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="product-categories">
-                <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels()">
-                  <i class="fas fa-info-circle button-icon"></i>More Details
-                </button>
-                <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                <div class="outer-shell click-through container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/13/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-1"></div>
-                          <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-2"></div>
-                          <div class="category-stats-chart graph-container" id="product-categories-chart-3"></div>
-                        </div>
+                <div class="carousel-item" id="thumbnails">
+                  <h1 class="dashboard-title">We have <span style="text-decoration:underline;" id="num-videos">1000+</span> videos servicing the entire chain!</h1>
+                  <div class="outer-shell outer-shell-dark container mb-1">
+                    <div class="scroll-y" id="thumbnail-wrapper">
+                      <div id="thumbnail-container">
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="carousel-item" id="top-ten">
-                <h1 class="dashboard-title" style="font-size:2.5rem;margin-bottom:1rem;">Which Products are our Customers Most Interested in Learning About Each Month?</h1>
-                <div class="outer-shell outer-shell-dark container mb-1">
-                  <div class="label-column">
-                    <div class="column-title"></div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>1.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>2.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>3.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>4.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>5.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>6.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>7.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>8.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>9.</h3>
-                      </div>
-                    </div>
-                    <div class="top-ten-label-holder column-label">
-                      <div class="top-ten-label">
-                        <h3>10.</h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="scroll-x" id="top-ten-thumbnail-wrapper">
-                    <div class="column" id="top-ten-thumbnail-container">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="feedback">
-                <h1 class="dashboard-title">What Feedback Are Users Commenting on our YouTube Videos?</h1>
-                <div class="outer-shell outer-shell-dark container mb-1">
-                  <div class="scroll-y" style="overflow-x:hidden;" id="feedback-wrapper">
-                    <div class="row align-items-center mr-0" id="feedback-container">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="top-video-#">
-                <h1 class="dashboard-title">TITLE PLACEHOLDER</h1>
-                <div class="d-none" id="top-video-#-duration-seconds"></div>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/4/4;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-3">
-                          <span class="fas fa-eye top-video-eye" title="Views"></span>
-                        </div>
-                        <div class="col-9">
-                          <h1 class="top-video-stat" id="top-video-#-views">#</h1>
-                          <h3 class="top-video-caption-views text-muted">Views</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/4/6/10;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-6 h-100">
-                          <div class="position-relative h-100 ml-2" id="top-video-#-thumbnail"></div>
-                        </div>
-                        <div class="col-6 text-left">
-                          <h1 class="font-weight-bold" id="top-video-#-title">Placeholder Title</h1>
-                          <h3 class="text-muted" id="top-video-#-publish-date">Placeholder Date</h3>
-                          <h3 class="text-muted" id="top-video-#-duration">Placeholder Duration</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 1/10/4/13;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-3">
-                          <span class="fas fa-users top-video-people" title="Subscribers"></span>
-                        </div>
-                        <div class="col-9">
-                          <h1 class="top-video-stat-subs" id="top-video-#-subs-net">#</h1>
-                          <h3 class="top-video-caption text-muted">Subscribers Gained</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/1/9/4;">
-                      <span class="fas fa-redo-alt top-video-retention" title="Audience Retention"></span>
-                      <h1 style="font-size:4.5rem;">
-                        <span id="top-video-#-avg-view-duration">M:SS</span>
-                        <br>
-                        <span id="top-video-#-avg-view-percentage">(%)</span>
-                      </h1>
-                      <h3 class="top-video-caption text-muted mt-3">Average View<br>Duration/Percentage</h3>
-                    </div>
-                    <div class="grid-item" style="grid-area: 6/4/9/7;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-3">
-                          <span class="far fa-clock top-video-clock" title="Minutes Watched"></span>
-                        </div>
-                        <div class="col-9">
-                          <h1 class="top-video-stat" id="top-video-#-minutes-watched">#</h1>
-                          <h3 class="top-video-caption text-muted">Estimated Minutes Watched</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 6/7/9/10;">
-                      <div class="row align-items-center h-100">
-                        <div class="col-3">
-                          <span class="fas fa-comment-alt top-video-comment" title="Comments"></span>
-                        </div>
-                        <div class="col-9">
-                          <h1 class="top-video-stat-comment" id="top-video-#-comments">#</h1>
-                          <h3 class="top-video-caption-comment text-muted">Comments</h3>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 4/10/9/13;">
-                      <span class="fas fa-thumbs-up top-video-like" title="Likes"></span>
-                      <h1 class="m-0" style="font-size:4.5rem;" id="top-video-#-like-ratio">%</h1>
-                      <h3 class="text-muted">Likes (vs. Dislikes)</h3>
-                      <div class="progress like-progress w-75 mx-auto">
-                        <div class="progress-bar bg-yt-red" id="top-video-#-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <hr>
-                      <h2 id="top-video-#-likes"># Likes</h2>
-                      <h2 class="text-muted" id="top-video-#-dislikes"># Dislikes</h2>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/1/13/7;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height:15%;">
-                          <h2>Daily Video Views from Last 30 Days</h2>
-                        </div>
-                        <div class="col-12" style="height:85%;">
-                          <div class="h-100 w-100 graph-container" id="top-video-#-views-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 9/7/13/13;">
-                      <div class="row h-100">
-                        <div class="col-12" style="height:15%;">
-                          <h2>Top Search Terms By Views</h2>
-                        </div>
-                        <div class="col-12" style="height:85%;">
-                          <div class="h-100 w-100 graph-container" id="top-video-#-search-terms"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="card-performance">
-                <h1 class="dashboard-title">Are our Customers Using YouTube Cards in our Videos?</h1>
-                <div class="outer-shell container mb-1">
-                  <div class="grid-container">
-                    <div class="grid-item" style="grid-area: 1/1/7/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="h-100 w-100 graph-container" id="card-teaser-performance-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="grid-item" style="grid-area: 7/1/13/13;">
-                      <div class="row align-content-around h-100">
-                        <div class="col-12 h-100">
-                          <div class="h-100 graph-container" style="width:96.5%;" id="card-performance-graph"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="carousel-item" id="video-strength">
-                <h1 class="dashboard-title">Which YouTube Videos perform the best?</h1>
-                <div class="outer-shell outer-shell-dark container mb-1">
-                  <div class="scroll-y" style="overflow-x:hidden;" id="video-strength-wrapper">
-                    <div class="row align-items-center mr-0" id="video-strength-container">
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <i class="fas fa-circle indicator" data-target="#dashboard-carousel" id="indicator"></i>
-            </div>
-            <div class="row justify-content-center">
-              <div class="col-8">
-                <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
-                <div class="indicator-list" id="main-indicator-list"></div>
-                <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
-              </div>
-            </div>
-          </div>
-          <div class="text-center carousel-container" id="category-stats-content">
-            <div class="carousel slide" id="category-stats-carousel" data-ride="carousel" name="cat-stats">
-              <div class="carousel-inner" id="category-stats-carousel-inner">
-                <div class="carousel-item active" id="categories-views">
-                  <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels()">
-                    <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                <div class="carousel-item" id="product-categories">
+                  <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(1)">
+                    <i class="fas fa-info-circle button-icon"></i>More Details
                   </button>
                   <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                   <div class="outer-shell click-through container mb-1">
@@ -531,62 +295,300 @@
                       <div class="grid-item" style="grid-area: 1/1/13/13;">
                         <div class="row align-content-around h-100">
                           <div class="col-12 h-100">
-                            <div class="category-stats-chart mb-2 graph-container" id="categories-views-chart"></div>
-                            <div class="category-stats-chart graph-container" id="categories-normal-views-chart"></div>
+                            <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-1"></div>
+                            <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-2"></div>
+                            <div class="category-stats-chart graph-container" id="product-categories-chart-3"></div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="carousel-item" id="categories-cum-views">
-                  <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels()">
-                    <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                  </button>
-                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                  <div class="outer-shell click-through container mb-1">
+                <div class="carousel-item" id="top-ten">
+                  <h1 class="dashboard-title" style="font-size:2.5rem;margin-bottom:1rem;">Which Products are our Customers Most Interested in Learning About Each Month?</h1>
+                  <div class="outer-shell outer-shell-dark container mb-1">
+                    <div class="label-column">
+                      <div class="column-title"></div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>1.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>2.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>3.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>4.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>5.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>6.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>7.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>8.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>9.</h3>
+                        </div>
+                      </div>
+                      <div class="top-ten-label-holder column-label">
+                        <div class="top-ten-label">
+                          <h3>10.</h3>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="scroll-x" id="top-ten-thumbnail-wrapper">
+                      <div class="column" id="top-ten-thumbnail-container">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item" id="feedback">
+                  <h1 class="dashboard-title">What Feedback Are Users Commenting on our YouTube Videos?</h1>
+                  <div class="outer-shell outer-shell-dark container mb-1">
+                    <div class="scroll-y" style="overflow-x:hidden;" id="feedback-wrapper">
+                      <div class="row align-items-center mr-0" id="feedback-container">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="carousel-item" id="top-video-#">
+                  <h1 class="dashboard-title">TITLE PLACEHOLDER</h1>
+                  <div class="d-none" id="top-video-#-duration-seconds"></div>
+                  <div class="outer-shell container mb-1">
                     <div class="grid-container">
-                      <div class="grid-item" style="grid-area: 1/1/13/13;">
-                        <div class="row align-content-around h-100">
-                          <div class="col-12 h-100">
-                            <div class="category-stats-chart mb-2 graph-container" id="categories-cum-views-chart"></div>
-                            <div class="category-stats-chart graph-container" id="categories-normal-cum-views-chart"></div>
+                      <div class="grid-item" style="grid-area: 1/1/4/4;">
+                        <div class="row align-items-center h-100">
+                          <div class="col-3">
+                            <span class="fas fa-eye top-video-eye" title="Views"></span>
+                          </div>
+                          <div class="col-9">
+                            <h1 class="top-video-stat" id="top-video-#-views">#</h1>
+                            <h3 class="top-video-caption-views text-muted">Views</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 1/4/6/10;">
+                        <div class="row align-items-center h-100">
+                          <div class="col-6 h-100">
+                            <div class="position-relative h-100 ml-2" id="top-video-#-thumbnail"></div>
+                          </div>
+                          <div class="col-6 text-left">
+                            <h1 class="font-weight-bold" id="top-video-#-title">Placeholder Title</h1>
+                            <h3 class="text-muted" id="top-video-#-publish-date">Placeholder Date</h3>
+                            <h3 class="text-muted" id="top-video-#-duration">Placeholder Duration</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 1/10/4/13;">
+                        <div class="row align-items-center h-100">
+                          <div class="col-3">
+                            <span class="fas fa-users top-video-people" title="Subscribers"></span>
+                          </div>
+                          <div class="col-9">
+                            <h1 class="top-video-stat-subs" id="top-video-#-subs-net">#</h1>
+                            <h3 class="top-video-caption text-muted">Subscribers Gained</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 4/1/9/4;">
+                        <span class="fas fa-redo-alt top-video-retention" title="Audience Retention"></span>
+                        <h1 style="font-size:4.5rem;">
+                          <span id="top-video-#-avg-view-duration">M:SS</span>
+                          <br>
+                          <span id="top-video-#-avg-view-percentage">(%)</span>
+                        </h1>
+                        <h3 class="top-video-caption text-muted mt-3">Average View<br>Duration/Percentage</h3>
+                      </div>
+                      <div class="grid-item" style="grid-area: 6/4/9/7;">
+                        <div class="row align-items-center h-100">
+                          <div class="col-3">
+                            <span class="far fa-clock top-video-clock" title="Minutes Watched"></span>
+                          </div>
+                          <div class="col-9">
+                            <h1 class="top-video-stat" id="top-video-#-minutes-watched">#</h1>
+                            <h3 class="top-video-caption text-muted">Estimated Minutes Watched</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 6/7/9/10;">
+                        <div class="row align-items-center h-100">
+                          <div class="col-3">
+                            <span class="fas fa-comment-alt top-video-comment" title="Comments"></span>
+                          </div>
+                          <div class="col-9">
+                            <h1 class="top-video-stat-comment" id="top-video-#-comments">#</h1>
+                            <h3 class="top-video-caption-comment text-muted">Comments</h3>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 4/10/9/13;">
+                        <span class="fas fa-thumbs-up top-video-like" title="Likes"></span>
+                        <h1 class="m-0" style="font-size:4.5rem;" id="top-video-#-like-ratio">%</h1>
+                        <h3 class="text-muted">Likes (vs. Dislikes)</h3>
+                        <div class="progress like-progress w-75 mx-auto">
+                          <div class="progress-bar bg-yt-red" id="top-video-#-like-bar" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <hr>
+                        <h2 id="top-video-#-likes"># Likes</h2>
+                        <h2 class="text-muted" id="top-video-#-dislikes"># Dislikes</h2>
+                      </div>
+                      <div class="grid-item" style="grid-area: 9/1/13/7;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height:15%;">
+                            <h2>Daily Video Views from Last 30 Days</h2>
+                          </div>
+                          <div class="col-12" style="height:85%;">
+                            <div class="h-100 w-100 graph-container" id="top-video-#-views-graph"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 9/7/13/13;">
+                        <div class="row h-100">
+                          <div class="col-12" style="height:15%;">
+                            <h2>Top Search Terms By Views</h2>
+                          </div>
+                          <div class="col-12" style="height:85%;">
+                            <div class="h-100 w-100 graph-container" id="top-video-#-search-terms"></div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="carousel-item" id="categories-avg-views">
-                  <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels()">
-                    <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                  </button>
-                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                  <div class="outer-shell click-through container mb-1">
+                <div class="carousel-item" id="card-performance">
+                  <h1 class="dashboard-title">Are our Customers Using YouTube Cards in our Videos?</h1>
+                  <div class="outer-shell container mb-1">
                     <div class="grid-container">
-                      <div class="grid-item" style="grid-area: 1/1/13/13;">
+                      <div class="grid-item" style="grid-area: 1/1/7/13;">
                         <div class="row align-content-around h-100">
                           <div class="col-12 h-100">
-                            <div class="category-stats-chart mb-2 graph-container" id="categories-avg-views-chart"></div>
-                            <div class="category-stats-chart graph-container" id="categories-normal-avg-views-chart"></div>
+                            <div class="h-100 w-100 graph-container" id="card-teaser-performance-graph"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="grid-item" style="grid-area: 7/1/13/13;">
+                        <div class="row align-content-around h-100">
+                          <div class="col-12 h-100">
+                            <div class="h-100 graph-container" style="width:96.5%;" id="card-performance-graph"></div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="carousel-item" id="categories-cum-avg-views">
-                  <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels()">
-                    <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                  </button>
-                  <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-                  <div class="outer-shell click-through container mb-1">
-                    <div class="grid-container">
-                      <div class="grid-item" style="grid-area: 1/1/13/13;">
-                        <div class="row align-content-around h-100">
-                          <div class="col-12 h-100">
-                            <div class="category-stats-chart mb-2 graph-container" id="categories-cum-avg-views-chart"></div>
-                            <div class="category-stats-chart graph-container" id="categories-normal-cum-avg-views-chart"></div>
+                <div class="carousel-item" id="video-strength">
+                  <h1 class="dashboard-title">Which YouTube Videos perform the best?</h1>
+                  <div class="outer-shell outer-shell-dark container mb-1">
+                    <div class="scroll-y" style="overflow-x:hidden;" id="video-strength-wrapper">
+                      <div class="row align-items-center mr-0" id="video-strength-container">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <i class="fas fa-circle indicator" data-target="#dashboard-carousel" id="indicator"></i>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-8">
+                  <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
+                  <div class="indicator-list" id="main-indicator-list"></div>
+                  <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
+                </div>
+              </div>
+            </div>
+            <div class="text-center carousel-container" id="category-stats-content" carousel="1">
+              <div class="carousel slide" id="category-stats-carousel" data-ride="carousel" name="cat-stats">
+                <div class="carousel-inner" id="category-stats-carousel-inner">
+                  <div class="carousel-item active" id="categories-views">
+                    <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(-1)">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </button>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-cum-views">
+                    <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(-1)">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </button>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-cum-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-cum-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-avg-views">
+                    <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(-1)">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </button>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-avg-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-avg-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-cum-avg-views">
+                    <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(-1)">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </button>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-cum-avg-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-cum-avg-views-chart"></div>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -594,17 +596,52 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row justify-content-center">
-              <div class="col-8">
-                <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
-                <div class="indicator-list" id="category-stats-indicator-list">
-                  <i class="fas fa-chart-area indicator active" data-target="#category-stats-carousel" id="cat-stats-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
-                  <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+              <div class="row justify-content-center">
+                <div class="col-8">
+                  <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
+                  <div class="indicator-list" id="category-stats-indicator-list">
+                    <i class="fas fa-chart-area indicator active" data-target="#category-stats-carousel" id="cat-stats-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+                  </div>
+                  <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
                 </div>
-                <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
+              </div>
+            </div>
+            <div class="text-center carousel-container" id="videographer-content" carousel="2">
+              <div class="carousel slide" id="videographer-carousel" data-ride="carousel" name="videographer">
+                <div class="carousel-inner" id="videographer-carousel-inner">
+                  <div class="carousel-item active" id="categories-views">
+                    <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(-2)">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </button>
+                    <h1 class="dashboard-title">Videographer Carousel!</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart graph-container" id="videographer-avg-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-8">
+                  <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
+                  <div class="indicator-list" id="videographer-indicator-list">
+                    <i class="fas fa-camera indicator active" data-target="#videographer-carousel" id="videographer-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                    <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                    <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                    <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+                  </div>
+                  <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
+                </div>
               </div>
             </div>
           </div>

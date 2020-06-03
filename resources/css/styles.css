@@ -435,7 +435,7 @@ body {
   background-color: powderblue;
 }
 
-.category-stats-chart {
+.category-stats-chart, .videographer-chart {
   height: 100%;
   width: 100%;
 }
@@ -452,6 +452,12 @@ body {
 
 .click-through {
   pointer-events: none;
+}
+
+/*----- Videographer Dashboards -----*/
+
+#videographer-carousel .outer-shell {
+  background-color: #2eb356;
 }
 
 /*----- Control Panel -----*/

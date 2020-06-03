@@ -1852,12 +1852,18 @@ function goToCarouselItem(index) {
   $(".carousel-container.active > .carousel").carousel(index);
 }
 
-function swapCarousels() {
+function swapCarousels(direction) {
+  let carouselList = $("#carousel-list");
+  let numCarousels = carouselList.children().length;
   let activeCarouselContainer = $(".carousel-container.active");
-  let inactiveCarouselContainer = $(".carousel-container:not(.active)");
+  let activeNumber = parseInt(activeCarouselContainer.attr("carousel"));
+  // Calculates the value of the next carousel
+  let next = activeNumber + direction;
+  let nextActiveNumber = ((next % numCarousels) + numCarousels) % numCarousels;
+  let nextCarouselContainer = $(`.carousel-container[carousel='${nextActiveNumber}']`);
   pauseDashboard();
   activeCarouselContainer.removeClass("active");
-  inactiveCarouselContainer.addClass("active");
+  nextCarouselContainer.addClass("active");
 }
 
 function addDotsToLoadingText() {
@@ -1955,8 +1961,10 @@ document.addEventListener("keyup", function (e) {
     carouselPrev();
   } else if (e.key == "ArrowRight") {
     carouselNext();
-  } else if (e.key == "ArrowUp" || e.key == "ArrowDown") {
-    swapCarousels();
+  } else if (e.key == "ArrowDown") {
+    swapCarousels(1);
+  } else if (e.key == "ArrowUp") {
+    swapCarousels(-1);
   } else if (e.which == 32) {
     toggleDashboardPause();
   } else if (e.key == "F2") {
