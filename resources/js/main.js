@@ -1228,7 +1228,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
     if (include) {
       let views = Math.round(category["views"]);
       let avgViews = Math.round(category["avgViews"]);
-      let strength = Math.round(category["strength"] * 2);
+      let strength = Math.round(category["avgStrength"] * 100);
       let numVideos = category["videos"].length;
       let label = category.shortName;
       let color = labelConversion[category.shortName].color
@@ -1247,12 +1247,13 @@ function displayTopCategoriesGraphThree(categoryStats) {
           size: [strength],
           sizemode: "area"
         },
+        customdata: [Math.round(category["avgStrength"])],
         name: label,
         text: [label],
         hoverlabel: {
           namelength: "-1"
         },
-        hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>%{marker.size:,} average views per video<extra></extra>"
+        hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>Category Strength: %{customdata:,}<extra></extra>"
       });
     }
   }
@@ -1277,7 +1278,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
       font: {
         size: titleFontSize
       },
-      text: "<b>Product Category Performance</b><br>Circle Area is proportional to Average Views per Video"
+      text: "<b>Product Category Performance</b><br>Circle Area is proportional to Category Strength"
     },
     xaxis: {
       automargin: true,

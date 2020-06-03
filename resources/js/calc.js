@@ -50,13 +50,13 @@ function calcCategoryStats(categoryTotals) {
       let views = parseInt(totals["views"]);
       let likes = parseInt(totals["likes"]);
       let duration = parseInt(totals["duration"]);
-      let strength = parseInt(totals["strength"]);
+      let totalStrength = parseFloat(totals["strength"]);
       let videos = totals["videos"];
       let numVideos = videos.length;
       let avgViews = views / numVideos;
       let avgLikes = likes / numVideos;
       let avgDuration = duration / numVideos;
-      let avgStrength = strength / numVideos;
+      let avgStrength = totalStrength / numVideos;
       categoryStats.push({
         "avgDuration": avgDuration,
         "avgLikes": avgLikes,
@@ -68,7 +68,7 @@ function calcCategoryStats(categoryTotals) {
         "name": name,
         "root": root,
         "shortName": shortName,
-        "strength": strength,
+        "totalStrength": totalStrength,
         "avgStrength": avgStrength,
         "videos": videos,
         "views": views
@@ -373,7 +373,16 @@ function zScoreForList(data) {
 function zScoreByPropertyName(stats, propertyName) {
   let data = stats.map((value) => {return value[propertyName]});
   let zScores = zScoreForList(data);
-  return zScores;
+  let zScoresUpdated = zScores.map((value) => {
+    if (value > 4) {
+      return 4;
+    } else if (value < -4) {
+      return -4;
+    } else {
+      return value;
+    }
+  });
+  return zScoresUpdated;
 }
 
 // Calculates the "strength" of each video
@@ -413,11 +422,11 @@ function calcVideoStrength(allVideoStats) {
     let strength =
       (1.5 * views) +
       (1 * avgViewsPerDay) +
-      (1 * comments) +
-      (1 * likesPerView) +
-      (1 * subscribersGained) +
+      (0.5 * comments) +
+      (0.5 * likesPerView) +
+      (1.5 * subscribersGained) +
       (1 * avgViewPercentage) -
-      (1 * dislikesPerView);
+      (0.5 * dislikesPerView);
     if (strength > max) {
       max = strength;
     } else if (strength < min) {
@@ -432,9 +441,8 @@ function calcVideoStrength(allVideoStats) {
   }
   // Normalize all strength values to between 0-100
   for (let index = 0; index < allVideoStats.length; index++) {
-    const video = allVideoStats[index];
-    let strength = video.strength;
-    let normalizedStrength = ((strength - min) / range) * 100;
+    let strength = zScoreStrengths[index];
+    let normalizedStrength = (((strength - min) / range) * 100);
     allVideoStats[index].strength = normalizedStrength;
   }
   return allVideoStats;
