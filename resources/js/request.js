@@ -160,7 +160,7 @@ function getAllVideoStats(videos) {
         for (let index = 0; index < allVideoStats.length; index++) {
           const video = allVideoStats[index];
           const videoId = video.videoId;
-          const duration = allVideoStats[videoId]["duration"];
+          const duration = allVideoStats[index]["duration"];
           const avgViewDuration = allStats[videoId].avgViewDuration;
           let avgViewPercentage = avgViewDuration / duration;
           if (avgViewPercentage > 1) {
