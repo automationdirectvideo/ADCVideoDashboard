@@ -23,7 +23,12 @@ function loadDashboardsSignedIn() {
     loadIntroAnimation();
   }
   if (carouselInner.children["video-strength"]) {
-    loadVideoStrengthDashboard()
+    try {
+      loadVideoStrengthDashboard()
+    } catch (err) {
+      // TODO: get video stats before calling load dashboard calls
+      // allVideoStats or statsByVideoId is not defined yet
+    }
   }
   if (carouselInner.children["real-time-stats"]) {
     requests.push(loadRealTimeStatsDashboard());
@@ -53,7 +58,10 @@ function loadDashboardsSignedIn() {
   } catch (err) {
     recordError(err);
     const retryPromise = getVideoStats()
-      .then(loadTopVideoDashboards);
+      .then(response => {
+        loadTopVideoDashboards();
+        loadVideoStrengthDashboard();
+      });
     requests.push(retryPromise);
   }
 
@@ -79,43 +87,46 @@ function loadDashboardsSignedOut() {
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
   }
-  if (carouselInner.children["video-strength"]) {
-    loadVideoStrengthDashboard()
-  }
-  if (carouselInner.children["real-time-stats"]) {
-    requests.push(loadRealTimeStatsDashboard());
-  }
-  if (carouselInner.children["thumbnails"]) {
-    requests.push(loadThumbnailDashboard());
-  }
-  if (carouselInner.children["platform"]) {
-    requests.push(loadChannelDemographics());
-  }
-  if (carouselInner.children["top-ten"]) {
-    requests.push(loadTopTenDashboard());
-  }
-  if (carouselInner.children["feedback"]) {
-    requests.push(loadUserFeedbackDashboard());
-  }
-  if (carouselInner.children["card-performance"]) {
-    requests.push(loadCardPerformanceDashboard());
-  }
-  requests.push(loadGraphsFromSheets());
-  requests.push(loadTopVideoStats());
-
-  console.log("Starting Load Dashboards Requests");
-  return Promise.all(requests)
+  return getVideoStats()
     .then(response => {
-      console.log("Load Dashboards Complete", response);
-    })
-    .catch(err => {
-      const errorMsg = "Error occurred loading dashboards: ";
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
-    })
-    .finally(response => {
-      isLoading = false;
-      hideLoadingText();
+      if (carouselInner.children["video-strength"]) {
+        loadVideoStrengthDashboard()
+      }
+      if (carouselInner.children["real-time-stats"]) {
+        requests.push(loadRealTimeStatsDashboard());
+      }
+      if (carouselInner.children["thumbnails"]) {
+        requests.push(loadThumbnailDashboard());
+      }
+      if (carouselInner.children["platform"]) {
+        requests.push(loadChannelDemographics());
+      }
+      if (carouselInner.children["top-ten"]) {
+        requests.push(loadTopTenDashboard());
+      }
+      if (carouselInner.children["feedback"]) {
+        requests.push(loadUserFeedbackDashboard());
+      }
+      if (carouselInner.children["card-performance"]) {
+        requests.push(loadCardPerformanceDashboard());
+      }
+      requests.push(loadGraphsFromSheets());
+      requests.push(loadTopVideoStats());
+    
+      console.log("Starting Load Dashboards Requests");
+      return Promise.all(requests)
+        .then(response => {
+          console.log("Load Dashboards Complete", response);
+        })
+        .catch(err => {
+          const errorMsg = "Error occurred loading dashboards: ";
+          console.error(errorMsg, err);
+          recordError(err, errorMsg);
+        })
+        .finally(response => {
+          isLoading = false;
+          hideLoadingText();
+        });
     });
 }
 

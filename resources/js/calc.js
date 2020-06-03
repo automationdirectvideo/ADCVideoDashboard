@@ -404,8 +404,6 @@ function calcVideoStrength(allVideoStats) {
     daysSincePublished: zScoreByPropertyName(allVideoStats,
       "daysSincePublished")
   };
-  let max = -1000000;
-  let min = 1000000;
   for (let index = 0; index < zScoreData.videoIds.length; index++) {
     const videoId = zScoreData.videoIds[index];
     const views = zScoreData.views[index];
@@ -427,14 +425,17 @@ function calcVideoStrength(allVideoStats) {
       (1.5 * subscribersGained) +
       (1 * avgViewPercentage) -
       (0.5 * dislikesPerView);
-    if (strength > max) {
-      max = strength;
-    } else if (strength < min) {
-      min = strength;
-    }
     allVideoStats[index].strength = strength;
   }
-  let range = max - min;
+  allVideoStats.sort(function (a,b) {
+    return a.strength - b.strength;
+  });
+  let zScoreStrengths = zScoreByPropertyName(allVideoStats, "strength");
+  let length = zScoreStrengths.length;
+  let lowPercentile = Math.floor(length * 0);
+  let highPercentile = Math.floor(length - 1);
+  let min = zScoreStrengths[lowPercentile]
+  let range = zScoreStrengths[highPercentile] - min;
   if (range == 0) {
     // Avoid a divide by zero error later on
     range = 1;
