@@ -103,9 +103,16 @@ const defaultSettings =
       "index": 13,
       "theme": "light",
       "title": "Card Performance Dashboard"
+    },
+    {
+      "name": "video-strength",
+      "icon": "fas fa-dumbbell",
+      "index": 14,
+      "theme": "light",
+      "title": "Video Strength Dashboard"
     }
   ],
-  "numEnabled": 14
+  "numEnabled": 15
 };
 
 const categoryColors = {

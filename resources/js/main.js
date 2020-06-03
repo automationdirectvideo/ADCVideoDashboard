@@ -22,6 +22,9 @@ function loadDashboardsSignedIn() {
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
   }
+  if (carouselInner.children["video-strength"]) {
+    loadVideoStrengthDashboard()
+  }
   if (carouselInner.children["real-time-stats"]) {
     requests.push(loadRealTimeStatsDashboard());
   }
@@ -75,6 +78,9 @@ function loadDashboardsSignedOut() {
   let requests = [];
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
+  }
+  if (carouselInner.children["video-strength"]) {
+    loadVideoStrengthDashboard()
   }
   if (carouselInner.children["real-time-stats"]) {
     requests.push(loadRealTimeStatsDashboard());
@@ -1584,6 +1590,76 @@ function displayUserFeedback(feedbackSheet) {
     }
     new AutoDivScroll("feedback-wrapper", speed, 1, 1);
     autoScrollDivs.push("feedback-wrapper");
+  }
+}
+
+function loadVideoStrengthDashboard() {
+  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  allVideoStats.sort(function (a, b) {
+    if (a.strength == b.strength) {
+      return b.daysSincePublished - a.daysSincePublished;
+    } else {
+      return b.strength - a.strength;
+    }
+  });
+  let numVideos = 20;
+  let output = ``;
+  for (var i = 0; i < numVideos; i++) {
+    var videoId = allVideoStats[i]["videoId"];
+    var strength = Math.round(allVideoStats[i]["strength"] * 100) / 100;
+    let videoTitle = "YouTube Video ID: " + videoId;
+    if (statsByVideoId && statsByVideoId[videoId]) {
+      videoTitle = statsByVideoId[videoId]["title"];
+    }
+
+    output += `
+      <div class="col-1">
+        <h1>${i + 1}.</h1>
+      </div>
+      <div class="col-4">
+        <a href="https://youtu.be/${videoId}" target="_blank"
+            alt="${videoTitle}">
+          <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
+              src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+              alt="thumbnail" title="${videoTitle}">
+        </a>
+      </div>
+      <div class="col-7">
+        <h1 class="video-strength-title">${videoTitle}</h1>
+        <h2 class="video-strength-value">Strength: ${strength}</h2>
+      </div>
+    `;
+    var spacer = `
+      <div class="col-12">
+        <hr style="border-top:0.25rem solid rgba(0,0,0,.3);">
+      </div>
+    `;
+    if (i != numVideos - 1) {
+      output += spacer;
+    }
+  }
+  let videoStrengthContainer =
+    document.getElementById("video-strength-container");
+  videoStrengthContainer.innerHTML = output;
+  if (!autoScrollDivs.includes("video-strength-wrapper")) {
+    let currentSettings = JSON.parse(localStorage.getItem("settings"));
+    let speed = -1;
+    let index = 0;
+    while (speed == -1 && index <= currentSettings.dashboards.length) {
+      let dashboard = currentSettings.dashboards[index];
+      if (dashboard.name == "video-strength") {
+        speed = dashboard.scrollSpeed;
+      }
+      index++;
+    }
+    if (speed <= 0) {
+      speed = 0;
+    } else {
+      speed = Math.ceil(1000 / speed);
+    }
+    new AutoDivScroll("video-strength-wrapper", speed, 1, 1);
+    autoScrollDivs.push("video-strength-wrapper");
   }
 }
 
