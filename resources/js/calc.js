@@ -391,9 +391,12 @@ function calcVideoStrength(allVideoStats) {
     dislikesPerView: zScoreByPropertyName(allVideoStats, "dislikesPerView"),
     subscribersGained: zScoreByPropertyName(allVideoStats, "subscribersGained"),
     avgViewDuration: zScoreByPropertyName(allVideoStats, "avgViewDuration"),
+    avgViewPercentage: zScoreByPropertyName(allVideoStats, "avgViewPercentage"),
     daysSincePublished: zScoreByPropertyName(allVideoStats,
       "daysSincePublished")
   };
+  let max = -1000000;
+  let min = 1000000;
   for (let index = 0; index < zScoreData.videoIds.length; index++) {
     const videoId = zScoreData.videoIds[index];
     const views = zScoreData.views[index];
@@ -404,16 +407,50 @@ function calcVideoStrength(allVideoStats) {
     const dislikesPerView = zScoreData.dislikesPerView[index];
     const subscribersGained = zScoreData.subscribersGained[index];
     const avgViewDuration = zScoreData.avgViewDuration[index];
+    const avgViewPercentage = zScoreData.avgViewPercentage[index];
     const daysSincePublished = zScoreData.daysSincePublished[index];
     // Change the integers (weights) to balance each metric's contribution
-    let strength = (1 * avgViewsPerDay) +
+    let strength =
+      (1.5 * views) +
+      (1 * avgViewsPerDay) +
       (1 * comments) +
       (1 * likesPerView) +
       (1 * subscribersGained) +
-      (1 * avgViewDuration) +
-      (1 * daysSincePublished) -
+      (1 * avgViewPercentage) -
       (1 * dislikesPerView);
+    if (strength > max) {
+      max = strength;
+    } else if (strength < min) {
+      min = strength;
+    }
     allVideoStats[index].strength = strength;
   }
+  let range = max - min;
+  if (range == 0) {
+    // Avoid a divide by zero error later on
+    range = 1;
+  }
+  // Normalize all strength values to between 0-100
+  for (let index = 0; index < allVideoStats.length; index++) {
+    const video = allVideoStats[index];
+    let strength = video.strength;
+    let normalizedStrength = ((strength - min) / range) * 100;
+    allVideoStats[index].strength = normalizedStrength;
+  }
   return allVideoStats;
+}
+
+function getTopVideosByStrength(numVideos) {
+  let statsByVideoId = JSON.parse(localStorage.statsByVideoId);
+  let allVideoStats = JSON.parse(localStorage.allVideoStats);
+  allVideoStats.sort(function (a, b) {
+    return b.strength - a.strength;
+  });
+  for (let index = 0; index < numVideos; index++) {
+    const video = allVideoStats[index];
+    const videoId = video.videoId;
+    const strength = video.strength;
+    const title = statsByVideoId[videoId].title;
+    console.log(`${index + 1}. ${strength} - ${videoId}: ${title}`);
+  }
 }

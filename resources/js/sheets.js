@@ -172,13 +172,37 @@ function recordVideoData(videoSheet) {
     let commentCount = parseInt(videoSheet[i][columns["Comments"]]);
     let publishDate = videoSheet[i][columns["Publish Date"]].substr(0, 10);
     let categories = videoSheet[i][columns["Categories"]].replace(/\s/g, '');
-    let createdBy = videoSheet[i][columns]["Created By"];
+    let createdBy = videoSheet[i][columns["Created By"]];
+    let strength = parseFloat(videoSheet[i][columns["Strength"]]);
+    let avgViewDuration =
+      parseInt(videoSheet[i][columns["Average View Duration"]]);
+    let avgViewPercentage =
+      parseFloat(videoSheet[i][columns["Average View Percentage"]]);
+    let avgViewsPerDay =
+      parseFloat(videoSheet[i][columns["Average Views Per Day"]]);
+    let daysSincePublished =
+      parseInt(videoSheet[i][columns["Days Since Published"]]);
+    let subscribersGained =
+      parseInt(videoSheet[i][columns["Subscribers Gained"]]);
+    let likesPerView =
+      parseFloat(videoSheet[i][columns["Likes Per View"]]);
+    let dislikesPerView =
+      parseFloat(videoSheet[i][columns["Dislikes Per View"]]);
     let row = {
       "videoId": videoId,
       "views": viewCount,
       "likes": likeCount,
       "dislikes": dislikeCount,
-      "comments": commentCount
+      "comments": commentCount,
+      "duration": duration,
+      "strength": strength,
+      "avgViewDuration": avgViewDuration,
+      "avgViewPercentage": avgViewPercentage,
+      "avgViewsPerDay": avgViewsPerDay,
+      "daysSincePublished": daysSincePublished,
+      "subscribersGained": subscribersGained,
+      "likesPerView": likesPerView,
+      "dislikesPerView": dislikesPerView,
     };
     allVideoStats.push(row);
     if (!statsByVideoId[videoId]) {
@@ -473,23 +497,35 @@ function saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year) {
 function saveVideoStatsToSheets(allVideoStats) {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-      "Comments", "Publish Date", "Categories", "Created By"
+      "Comments", "Publish Date", "Categories", "Created By", "Strength",
+      "Average View Duration", "Average View Percentage",
+      "Average Views Per Day", "Days Since Published", "Subscribers Gained",
+      "Likes Per View", "Dislikes Per View"
     ]
   ];
   const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   for (var i = 0; i < allVideoStats.length; i++) {
-    var row = [];
     var videoId = allVideoStats[i]["videoId"];
-    row.push(videoId);
-    row.push(statsByVideoId[videoId]["title"]);
-    row.push(allVideoStats[i]["views"]);
-    row.push(allVideoStats[i]["likes"]);
-    row.push(allVideoStats[i]["dislikes"]);
-    row.push(statsByVideoId[videoId]["duration"]);
-    row.push(allVideoStats[i]["comments"]);
-    row.push(statsByVideoId[videoId]["publishDate"]);
-    row.push(statsByVideoId[videoId]["categories"].join(","));
-    row.push(statsByVideoId[videoId]["createdBy"]);
+    var row = [
+      videoId,
+      statsByVideoId[videoId]["title"],
+      allVideoStats[i]["views"],
+      allVideoStats[i]["likes"],
+      allVideoStats[i]["dislikes"],
+      statsByVideoId[videoId]["duration"],
+      allVideoStats[i]["comments"],
+      statsByVideoId[videoId]["publishDate"],
+      statsByVideoId[videoId]["categories"].join(","),
+      statsByVideoId[videoId]["createdBy"],
+      allVideoStats[i]["strength"],
+      allVideoStats[i]["avgViewDuration"],
+      allVideoStats[i]["avgViewPercentage"],
+      allVideoStats[i]["avgViewsPerDay"],
+      allVideoStats[i]["daysSincePublished"],
+      allVideoStats[i]["subscribersGained"],
+      allVideoStats[i]["likesPerView"],
+      allVideoStats[i]["dislikesPerView"]
+    ];
     values.push(row);
   }
   const body = {

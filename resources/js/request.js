@@ -160,8 +160,14 @@ function getAllVideoStats(videos) {
         for (let index = 0; index < allVideoStats.length; index++) {
           const video = allVideoStats[index];
           const videoId = video.videoId;
-          allVideoStats[index].avgViewDuration =
-            allStats[videoId].avgViewDuration;
+          const duration = allVideoStats[videoId]["duration"];
+          const avgViewDuration = allStats[videoId].avgViewDuration;
+          let avgViewPercentage = avgViewDuration / duration;
+          if (avgViewPercentage > 1) {
+            avgViewPercentage = 1.0;
+          }
+          allVideoStats[index].avgViewDuration = avgViewDuration;
+          allVideoStats[index].avgViewPercentage = avgViewPercentage;
           allVideoStats[index].subscribersGained = allStats[videoId].subsGained;
         };
         return allVideoStats;

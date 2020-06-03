@@ -1186,6 +1186,16 @@ function displayTopCategoriesGraphThree(categoryStats) {
     JSON.parse(localStorage.getItem("categoryStats"));
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
+  let minStrength = 1;
+  categoryStats.forEach(category => {
+    if (category.root) {
+      let strength = category.strength;
+      if (strength < minStrength) {
+        minStrength = strength;
+      }
+    }
+  });
+
   var graphHeight = 0.8583;
   var graphWidth = 0.9528;
   var height = graphHeight * document.documentElement.clientHeight;
@@ -1218,6 +1228,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
     if (include) {
       let views = Math.round(category["views"]);
       let avgViews = Math.round(category["avgViews"]);
+      let strength = Math.round(category["strength"] * 2);
       let numVideos = category["videos"].length;
       let label = category.shortName;
       let color = labelConversion[category.shortName].color
@@ -1233,7 +1244,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
         type: 'scatter',
         marker: {
           color: [color],
-          size: [avgViews],
+          size: [strength],
           sizemode: "area"
         },
         name: label,
