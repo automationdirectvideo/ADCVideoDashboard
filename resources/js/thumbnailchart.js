@@ -23,7 +23,14 @@ function loadSignedIn() {
   document.getElementById("thumbnail-container").innerHTML =
     `<h5>No thumbnails are loaded. Press the "Refresh Thumbnails" button to view the thumbnails.</h5>`;
   document.getElementById("about-list").innerHTML +=
-    `<li>Thumbnails not loading? Try <a href="" id="signout-text">signing out</a> and signing back in.</li>`;
+    `
+      <li>Thumbnails not loading? Try <a href="" id="signout-text">signing out</a> and signing back in.</li>
+      <li>
+        Missing some thumbnails? Make sure the missing videos are listed in the 
+        <a href="https://docs.google.com/spreadsheets/d/1LNVjw5Hf2Ykp89jtxaX9itH5NOoudwaz0T74E7flZZg/edit#gid=485839191?usp=sharing"
+          target="_blank">"ADC Video Dashboard Input Data" Google Sheet</a>.
+      </li>
+    `;
 
   var signoutText = document.getElementById("signout-text");
   signoutText.addEventListener("click", handleSignout);
