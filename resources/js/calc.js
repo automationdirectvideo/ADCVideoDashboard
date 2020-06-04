@@ -163,6 +163,12 @@ function getVideoStats() {
     .then(videoSheet => recordVideoData(videoSheet));
 }
 
+function getCategoryAndVideoStats() {
+  const categoryPromise = getCategoryStats();
+  const videoPromise = getVideoStats();
+  return Promise.all([categoryPromise, videoPromise]);
+}
+
 function loadChannelDemographics() {
   return requestSpreadsheetData("Stats", "Channel Demographics")
     .then(response => {
@@ -231,23 +237,10 @@ function loadCategoryCharts() {
 }
 
 function loadProductCategoriesDashboard() {
-  let promise = undefined;
-  try {
-    displayTopCategoriesGraphOne();
-    displayTopCategoriesGraphTwo();
-    displayTopCategoriesGraphThree();
-    promise = Promise.resolve("Displayed Product Categories Dashboard");
-  } catch (err) {
-    recordError(err);
-    promise = getCategoryStats()
-      .then(categoryStats => {
-        displayTopCategoriesGraphOne(categoryStats);
-        displayTopCategoriesGraphTwo(categoryStats);
-        displayTopCategoriesGraphThree(categoryStats);
-      });
-  } finally {
-    return promise;
-  }
+  displayTopCategoriesGraphOne();
+  displayTopCategoriesGraphTwo();
+  displayTopCategoriesGraphThree();
+  return Promise.resolve("Displayed Product Categories Dashboard");
 }
 
 function loadThumbnailDashboard() {
@@ -257,72 +250,62 @@ function loadThumbnailDashboard() {
     const thumbnailsRequest = displayUploadThumbnails();
     return Promise.all([numVideosRequest, thumbnailsRequest]);
   } else {
-    return getVideoStats()
-      .then(displayUploadThumbnails);
+    return displayUploadThumbnails();
   }
 }
 
 function loadTopVideoDashboards() {
-  return loadVideoDashboards()
-    .catch(err => {
-      recordError(err);
-      return getVideoStats()
-        .then(loadVideoDashboards);
-    })
-
-  function loadVideoDashboards() {
-    const carouselInner = document.getElementsByClassName("carousel-inner")[0];
-    const todayDate = getTodaysDate();
-    let topVideoList = [];
-    let dashboardIds = {};
-    if (carouselInner.children["top-video-1"]) {
-      let plcVideo = getTopVideoByCategory("B", "views")[0];
-      if (plcVideo != undefined) {
-        dashboardIds[plcVideo] = "top-video-1";
-        topVideoList.push(plcVideo);
-      }
+  const carouselInner = document.getElementsByClassName("carousel-inner")[0];
+  const todayDate = getTodaysDate();
+  let topVideoList = [];
+  let dashboardIds = {};
+  if (carouselInner.children["top-video-1"]) {
+    let plcVideo = getTopVideoByCategory("B", "views")[0];
+    if (plcVideo != undefined) {
+      dashboardIds[plcVideo] = "top-video-1";
+      topVideoList.push(plcVideo);
     }
-    if (carouselInner.children["top-video-2"]) {
-      let drivesVideo = getTopVideoByCategory("C", "views")[0];
-      if (drivesVideo != undefined) {
-        dashboardIds[drivesVideo] = "top-video-2";
-        topVideoList.push(drivesVideo);
-      }
-    }
-    if (carouselInner.children["top-video-3"]) {
-      let hmiVideo = getTopVideoByCategory("D", "views")[0];
-      if (hmiVideo != undefined) {
-        dashboardIds[hmiVideo] = "top-video-3";
-        topVideoList.push(hmiVideo);
-      }
-    }
-    if (carouselInner.children["top-video-4"]) {
-      let motionControlVideo = getTopVideoByCategory("F", "views")[0];
-      if (motionControlVideo != undefined) {
-        dashboardIds[motionControlVideo] = "top-video-4";
-        topVideoList.push(motionControlVideo);
-      }
-    }
-    if (carouselInner.children["top-video-5"]) {
-      let sensorsVideo = getTopVideoByCategory("H", "views")[0];
-      if (sensorsVideo != undefined) {
-        dashboardIds[sensorsVideo] = "top-video-5";
-        topVideoList.push(sensorsVideo);
-      }
-    }
-    if (carouselInner.children["top-video-6"]) {
-      let motorsVideo = getTopVideoByCategory("I", "views")[0];
-      if (motorsVideo != undefined) {
-        dashboardIds[motorsVideo] = "top-video-6";
-        topVideoList.push(motorsVideo);
-      }
-    }
-    if (topVideoList.length == 0) {
-      return null;
-    }
-    const topVideosStr = topVideoList.join(",");
-    return topVideoCalls(joinDate, todayDate, topVideosStr, dashboardIds);
   }
+  if (carouselInner.children["top-video-2"]) {
+    let drivesVideo = getTopVideoByCategory("C", "views")[0];
+    if (drivesVideo != undefined) {
+      dashboardIds[drivesVideo] = "top-video-2";
+      topVideoList.push(drivesVideo);
+    }
+  }
+  if (carouselInner.children["top-video-3"]) {
+    let hmiVideo = getTopVideoByCategory("D", "views")[0];
+    if (hmiVideo != undefined) {
+      dashboardIds[hmiVideo] = "top-video-3";
+      topVideoList.push(hmiVideo);
+    }
+  }
+  if (carouselInner.children["top-video-4"]) {
+    let motionControlVideo = getTopVideoByCategory("F", "views")[0];
+    if (motionControlVideo != undefined) {
+      dashboardIds[motionControlVideo] = "top-video-4";
+      topVideoList.push(motionControlVideo);
+    }
+  }
+  if (carouselInner.children["top-video-5"]) {
+    let sensorsVideo = getTopVideoByCategory("H", "views")[0];
+    if (sensorsVideo != undefined) {
+      dashboardIds[sensorsVideo] = "top-video-5";
+      topVideoList.push(sensorsVideo);
+    }
+  }
+  if (carouselInner.children["top-video-6"]) {
+    let motorsVideo = getTopVideoByCategory("I", "views")[0];
+    if (motorsVideo != undefined) {
+      dashboardIds[motorsVideo] = "top-video-6";
+      topVideoList.push(motorsVideo);
+    }
+  }
+  if (topVideoList.length == 0) {
+    return null;
+  }
+  const topVideosStr = topVideoList.join(",");
+  return topVideoCalls(joinDate, todayDate, topVideosStr, dashboardIds);
 }
 
 

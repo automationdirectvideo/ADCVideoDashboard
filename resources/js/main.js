@@ -8,7 +8,15 @@ function loadDashboards() {
     showLoadingText();
     resetGraphData();
     if (isSignedIn) {
-      loadDashboardsSignedIn();
+      let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+      if (!categoryStats) {
+        getCategoryAndVideoStats()
+          .then(response => {
+            loadDashboardsSignedIn();
+          });
+      } else {
+        loadDashboardsSignedIn();
+      }
     } else {
       loadDashboardsSignedOut();
     }
@@ -23,12 +31,7 @@ function loadDashboardsSignedIn() {
     loadIntroAnimation();
   }
   if (carouselInner.children["video-strength"]) {
-    try {
-      loadVideoStrengthDashboard()
-    } catch (err) {
-      // TODO: get video stats before calling load dashboard calls
-      // allVideoStats or statsByVideoId is not defined yet
-    }
+    loadVideoStrengthDashboard();
   }
   if (carouselInner.children["real-time-stats"]) {
     requests.push(loadRealTimeStatsDashboard());
@@ -53,17 +56,7 @@ function loadDashboardsSignedIn() {
     // Initiate Category Area Charts
     requests.push(loadCategoryCharts());
   }
-  try {
-    requests.push(loadTopVideoDashboards());
-  } catch (err) {
-    recordError(err);
-    const retryPromise = getVideoStats()
-      .then(response => {
-        loadTopVideoDashboards();
-        loadVideoStrengthDashboard();
-      });
-    requests.push(retryPromise);
-  }
+  requests.push(loadTopVideoDashboards());
 
   console.log("Starting Load Dashboards Requests");
   return Promise.all(requests)
@@ -90,7 +83,7 @@ function loadDashboardsSignedOut() {
   return getVideoStats()
     .then(response => {
       if (carouselInner.children["video-strength"]) {
-        loadVideoStrengthDashboard()
+        loadVideoStrengthDashboard();
       }
       if (carouselInner.children["real-time-stats"]) {
         requests.push(loadRealTimeStatsDashboard());
