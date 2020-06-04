@@ -41,8 +41,22 @@
           </div>
           <div class="text-center">
             <h4>
-              This tool dumps all YouTube comments on ADC videos to a spreadsheet. The report is generated in the
-              <a href="https://docs.google.com/spreadsheets/d/1hrUqR3Z3sPhm9zfDnkLkuFMpMZehKKpgFEHxptSNmtY/edit?usp=sharing" target="_blank">"ADC YouTube Reports" Google Sheet</a>.
+              This tool dumps all YouTube comments on ADC videos to a spreadsheet.
+              <br>
+              The report is generated in the
+              <a href="https://docs.google.com/spreadsheets/d/1hrUqR3Z3sPhm9zfDnkLkuFMpMZehKKpgFEHxptSNmtY/edit#gid=983903790?usp=sharing"
+                target="_blank">"ADC YouTube Reports" Google Sheet</a>.
+              <br>
+              Disclaimer: This tool does not automatically run. Someone must press the button below for the report to update.
+              <br>
+              <br>
+              <strong>WARNING:</strong>
+              <br>
+              <span style="text-decoration:underline;">Do not use this tool more than once a day.</span>
+              <br>
+              This tool requires many calls to the YouTube API.
+              <br>
+              Using this tool repeatedly will consume all of the available API calls for the day and will break the Video Dashboard.
             </h4>
             <br>
             <button class="btn btn-lg btn-primary mb-5" id="scan-button" disabled>Retrieve YouTube Comments</button>
@@ -53,6 +67,9 @@
               </div>
             </div>
             <h4 id="status-text" style="display:none;">Status: </h4>
+            <br>
+            <a href="https://docs.google.com/spreadsheets/d/1hrUqR3Z3sPhm9zfDnkLkuFMpMZehKKpgFEHxptSNmtY/edit#gid=983903790?usp=sharing"
+              target="_blank" class="btn btn-lg btn-success mb-5" style="display:none;" id="view-report-button">View Report</a>
             <br>
             <div id="alert-container"></div>
           </div>

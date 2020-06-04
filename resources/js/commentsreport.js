@@ -2,11 +2,13 @@ function createCommentsReport() {
   const statusText = document.getElementById("status-text");
   const loadingBar = document.getElementById("loading-bar");
   const loadingBarContainer = document.getElementById("loading-bar-container");
+  const viewReportButton = document.getElementById("view-report-button");
   loadingBarContainer.style.display = "";
   loadingBar.style.width = "0%";
   loadingBar.classList.add("progress-bar-animated");
   statusText.style.display = "";
   statusText.innerText = "Fetching YouTube Videos...";
+  viewReportButton.style.display = "none";
   return getVideoList()
     .then(response => {
       let uploads = response[1];
@@ -24,6 +26,7 @@ function createCommentsReport() {
     .then(response => {
       statusText.innerText = "Finished!";
       loadingBar.classList.remove("progress-bar-animated");
+      viewReportButton.style.display = "";
     })
     .catch(err => {
       statusText.innerText = "Process Failed";
@@ -63,6 +66,7 @@ function getCommentsForVideo(videoId, pageToken) {
   if (pageToken) {
     request["pageToken"] = pageToken;
   }
+  const videoLink = `https://youtu.be/${videoId}`;
 
   return gapi.client.youtube.commentThreads.list(request)
     .then(response => {
@@ -78,6 +82,7 @@ function getCommentsForVideo(videoId, pageToken) {
           // The author of the comment is not AutomationDirect.com
           commentData.push([
             videoId,
+            videoLink,
             author,
             publishedAt,
             text
@@ -119,7 +124,7 @@ function incrementLoadingBar() {
 
 function saveCommentsReport(commentData) {
   const columnHeaders = [
-    "Video ID", "Comment Author", "Published At", "Comment"
+    "Video ID", "YouTube Link", "Comment Author", "Published At", "Comment"
   ];
   commentData.unshift(columnHeaders);
   const body = {

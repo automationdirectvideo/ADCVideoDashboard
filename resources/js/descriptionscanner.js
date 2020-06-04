@@ -2,11 +2,13 @@ function createDescriptionReport() {
   const statusText = document.getElementById("status-text");
   const loadingBar = document.getElementById("loading-bar");
   const loadingBarContainer = document.getElementById("loading-bar-container");
+  const viewReportButton = document.getElementById("view-report-button");
   loadingBarContainer.style.display = "";
   loadingBar.style.width = "0%";
   loadingBar.classList.add("progress-bar-animated");
   statusText.style.display = "";
   statusText.innerText = "Fetching YouTube Videos...";
+  viewReportButton.style.display = "none";
   return getVideoList()
     .then(response => {
       let uploads = response[1];
@@ -35,6 +37,7 @@ function createDescriptionReport() {
     .then(response => {
       statusText.innerText = "Finished!";
       loadingBar.classList.remove("progress-bar-animated");
+      viewReportButton.style.display = "";
     })
     .catch(err => {
       statusText.innerText = "Process Failed";
@@ -123,9 +126,9 @@ function scanDescriptionsForLinks(descriptions) {
 
 function saveDescriptionsErrors(formatErrors) {
   const columnHeaders = [
-    "Video ID", "(VID-**-****)", "Subscribe Link", "Facebook Link",
-    "Twitter Link", "LinkedIn Link", "'Prices Were Valid' Sentence",
-    "'Check out all videos' sentence"
+    "Video ID", "YouTube Link", "(VID-**-****)", "Subscribe Link",
+    "Facebook Link", "Twitter Link", "LinkedIn Link",
+    "'Prices Were Valid' Sentence", "'Check out all videos' sentence"
   ];
   formatErrors.unshift(columnHeaders);
   const body = {
@@ -141,7 +144,8 @@ function saveDescriptionsErrors(formatErrors) {
 function checkFormat(video) {
   const videoId = video["videoId"];
   const description = video["description"];
-  let errors = [videoId];
+  const videoLink = `https://youtu.be/${videoId}`;
+  let errors = [videoId, videoLink];
   errors.push(checkVID(description));
   errors.push(checkSocialLinks(description));
   errors.push(checkPricesWereValid(description));
