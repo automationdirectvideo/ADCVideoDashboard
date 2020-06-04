@@ -138,6 +138,26 @@ function isUserADC() {
   return currUserId == userIdADC;
 }
 
+// Gets an item from local storage
+function lsGet(name, parse) {
+  parse = parse || true;
+  if (parse) {
+    return JSON.parse(localStorage.getItem(name));
+  } else {
+    return localStorage.getItem(name);
+  }
+}
+
+// Sets an item in local storage
+function lsSet(name, value, stringify) {
+  stringify = stringify || true;
+  if (stringify) {
+    localStorage.setItem(name, JSON.stringify(value));
+  } else {
+    localStorage.setItem(name, value);
+  }
+}
+
 // Get number of months between two dates (ignoring the day of the month)
 function monthDiff(dateFrom, dateTo) {
   return dateTo.getMonth() - dateFrom.getMonth() +
