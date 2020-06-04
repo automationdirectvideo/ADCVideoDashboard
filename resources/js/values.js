@@ -106,7 +106,7 @@ const defaultSettings =
     },
     {
       "name": "video-strength",
-      "icon": "fas fa-dumbbell",
+      "icon": "fas fa-sort-numeric-down",
       "index": 14,
       "theme": "light",
       "title": "Video Strength Dashboard"
