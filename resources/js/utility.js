@@ -1,26 +1,47 @@
 /* Helpful utility functions */
 
-// Capitalize the first letter of a string
+/**
+ * Capitalize the first letter of a string
+ *
+ * @param {String} string String to capitalize
+ * @returns {String} Original string with first letter capitalized
+ */
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-// Creates an HTML element given the inner HTML and element type (e.g. "DIV")
+/**
+ * Creates an HTML element given the inner HTML and element type (e.g. "DIV")
+ *
+ * @param {String} innerHTML The inner HTML of the desired element
+ * @param {String} type The HTML tag of the desired element
+ * @returns {HTMLElement} The desired element
+ */
 function createElement(innerHTML, type) {
-  var elem = document.createElement(type);
+  const elem = document.createElement(type);
   elem.innerHTML = innerHTML;
   return elem;
 }
 
-// Converts a decimal to a percent with 1 decimal place
+/**
+ * Converts a decimal to a percent with 1 decimal place
+ *
+ * @param {Number} decimal A float number to turn into a percent
+ * @returns {Number} The same number times 100 with one decimal place precision
+ */
 function decimalToPercent(decimal) {
   return Math.round(decimal * 1000) / 10;
 }
 
-// Get month data for the most recent month with data in the YouTube API which
-// is usually the current month
+/**
+ * Get month data for the most recent month with data in the YouTube API which
+ * is usually the current month
+ *
+ * @returns {Array} First and last day of the month (YYYY-MM-DD) and the month
+ *    (YYYY-MM)
+ */
 function getCurrMonth() {
-  let now = new Date();
+  const now = new Date();
   let firstDayOfMonth = undefined;
   let lastDayOfMonth = undefined;
   if (now.getDate() >= 5) {
@@ -32,14 +53,18 @@ function getCurrMonth() {
     firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
     lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
   }
-  let startDate = getYouTubeDateFormat(firstDayOfMonth);
-  let endDate = getYouTubeDateFormat(lastDayOfMonth);
-  let month = startDate.substr(0, 7);
+  const startDate = getYouTubeDateFormat(firstDayOfMonth);
+  const endDate = getYouTubeDateFormat(lastDayOfMonth);
+  const month = startDate.substr(0, 7);
   return [startDate, endDate, month];
 }
 
-// Detects the user browser
-// From https://stackoverflow.com/a/9851769
+/**
+ * Detects the user browser. Taken from
+ * [StackOverflow](https://stackoverflow.com/a/9851769)
+ *
+ * @returns {String} The user's browser
+ */
 function detectBrowser() {
   // Opera 8.0+
   const isOpera = (!!window.opr && !!opr.addons) || !!window.opera ||
@@ -73,8 +98,13 @@ function detectBrowser() {
     "Unknown";
 }
 
-// Returns object with keys as spreadsheet column titles and value is index in
-// the sheet that corresponds to that column
+/**
+ * Creates a helper object for reading from a Google Sheet
+ *
+ * @param {Array} sheet The body from a Google Sheet API response
+ * @returns {Object} An object with keys as spreadsheet column titles and value
+ *    is index in the sheet that corresponds to that column
+ */
 function getColumnHeaders(sheet) {
   let columns = {};
   const columnHeaders = sheet[0];
@@ -84,15 +114,25 @@ function getColumnHeaders(sheet) {
   return columns;
 }
 
-// Get date from numDaysAgo from today in the form YYYY-MM-DD
+/**
+ * Get date from `numDaysAgo` from today in the form YYYY-MM-DD
+ *
+ * @param {Number} numDaysAgo An integer
+ * @returns {String} The desired day written as YYYY-MM-DD
+ */
 function getDateFromDaysAgo(numDaysAgo) {
-  var today = new Date();
+  const today = new Date();
   var priorDate = new Date().setDate(today.getDate() - numDaysAgo);
   priorDate = new Date(priorDate);
   return getYouTubeDateFormat(priorDate);
 }
 
-// Get the number of days from today to the oldDate in the form YYYY-MM-DD
+/**
+ * Get the number of days from today to the `oldDate` in the form YYYY-MM-DD
+ *
+ * @param {String|Date} oldDate A date from the past
+ * @returns {Number} The number of days between today and the `oldDate`
+ */
 function getNumberDaysSince(oldDate) {
   const now = new Date();
   const old = new Date(oldDate);
@@ -100,25 +140,40 @@ function getNumberDaysSince(oldDate) {
   return diff;
 }
 
-// Get today's date in the form YYYY-MM-DD
+/**
+ * Get today's date in the form YYYY-MM-DD
+ *
+ * @returns {String} Today's date written as YYYY-MM-DD
+ */
 function getTodaysDate() {
   return getYouTubeDateFormat(new Date());
 }
 
-// Get a date in the form YYYY-MM-DD
+/**
+ * Get a date in the form YYYY-MM-DD
+ *
+ * @param {String|Date} date A `Date`
+ * @returns {String} The `date` written as YYYY-MM-DD
+ */
 function getYouTubeDateFormat(date) {
-  var dd = String(date.getDate()).padStart(2, "0");
-  var mm = String(date.getMonth() + 1).padStart(2, "0");
-  var yyyy = date.getFullYear();
-  today = yyyy + "-" + mm + "-" + dd;
+  const day = new Date(date);
+  const dd = String(day.getDate()).padStart(2, "0");
+  const mm = String(day.getMonth() + 1).padStart(2, "0");
+  const yyyy = day.getFullYear();
+  const today = yyyy + "-" + mm + "-" + dd;
   return today;
 }
 
-// Converts ISO-8601 duration to seconds (e.g. PT5M25S -> 325 seconds)
+/**
+ * Converts ISO-8601 duration to seconds (e.g. PT5M25S -> 325 seconds)
+ *
+ * @param {String} duration A duration in ISO-8601 format
+ * @returns {Number} The duration in seconds
+ */
 function isoDurationToSeconds(duration) {
   duration = duration.replace("PT", "").replace("H", ":").replace("M", ":")
     .replace("S", "");
-  durationArr = duration.split(":");
+  const durationArr = duration.split(":");
   let seconds;
   if (durationArr.length == 3) {
     seconds = Number(durationArr[0]) * 3600 +
@@ -131,14 +186,25 @@ function isoDurationToSeconds(duration) {
   return seconds;
 }
 
-// Checks if current Google user is the AutomationDirect.com account
+/**
+ * Checks if current Google user is the AutomationDirect.com account
+ *
+ * @returns {Boolean} True if user is ADC. False otherwise
+ */
 function isUserADC() {
   const currUserId = gapi.auth2.getAuthInstance().currentUser.get().getId();
   const userIdADC = "106069978891008555071";
   return currUserId == userIdADC;
 }
 
-// Gets an item from local storage
+/**
+ * Gets an item from local storage
+ *
+ * @param {String} name Variable name
+ * @param {Boolean} parse Whether JSON.parse should be applied to the variable
+ *    before returning it. Defaults to true
+ * @returns {*} Variable from local storage with name `name`
+ */
 function lsGet(name, parse) {
   parse = parse || true;
   if (parse) {
@@ -148,7 +214,14 @@ function lsGet(name, parse) {
   }
 }
 
-// Sets an item in local storage
+/**
+ * Saves an item to local storage
+ *
+ * @param {String} name Variable name
+ * @param {*} value The variable itself
+ * @param {Boolean} stringify Whether JSON.stringify should be applied to the
+ *    variable before saving it. Defaults to true
+ */
 function lsSet(name, value, stringify) {
   stringify = stringify || true;
   if (stringify) {
@@ -158,35 +231,68 @@ function lsSet(name, value, stringify) {
   }
 }
 
-// Get number of months between two dates (ignoring the day of the month)
+/**
+ * Get number of months between two dates (ignoring the day of the month)
+ *
+ * @param {Date} dateFrom Starting date
+ * @param {Date} dateTo Ending date
+ * @returns {Number} The number of months between `dateFrom` and `dateTo`
+ */
 function monthDiff(dateFrom, dateTo) {
   return dateTo.getMonth() - dateFrom.getMonth() +
     (12 * (dateTo.getFullYear() - dateFrom.getFullYear()))
 }
 
-// Add commas to number
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+/**
+ * Add commas to number for thousands, millions, etc.
+ *
+ * @param {Number} num An integer
+ * @returns {String} The number as String with commas every three digits
+ */
+function numberWithCommas(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-// Adds newChildElem as first child of parentElem
+/**
+ * Adds `newChildElem` as first child of `parentElem`
+ *
+ * @param {HTMLElement} parentElem The element to add to
+ * @param {HTMLElement} newChildElem The element to be added
+ */
 function prependElement(parentElem, newChildElem) {
   parentElem.insertBefore(newChildElem, parentElem.firstChild);
 }
 
-// Converts seconds to duration in the form M:SS
+/**
+ * Converts seconds to duration in the form M:SS
+ *
+ * @param {Number} seconds An integer
+ * @returns {String} The number of seconds written as M:SS
+ */
 function secondsToDuration(seconds) {
-  let minutes = Math.floor(seconds / 60);
-  let durationSeconds = ('00' + seconds % 60).substr(-2);
+  const minutes = Math.floor(seconds / 60);
+  const durationSeconds = ('00' + seconds % 60).substr(-2);
   return minutes + ":" + durationSeconds;
 }
 
+/**
+ * Converts seconds to duration in the form "M min S sec"
+ *
+ * @param {Number} seconds An integer
+ * @returns {String} The number of seconds written as "M min S sec"
+ */
 function secondsToDurationMinSec(seconds) {
   let minutes = Math.floor(seconds / 60);
   let durationSeconds = ("00" + seconds % 60).substr(-2);
   return minutes + " min " + durationSeconds + " sec";
 }
 
+/**
+ * Converts the spreadsheet's common name to the Google Sheet ID
+ *
+ * @param {String} sheetName The sheet's common name
+ * @returns {String} The sheet's ID
+ */
 function sheetNameToId(sheetName) {
   if (sheetName == "Stats") {
     return "1lRYxCbEkNo2zfrBRfRwJn1H_2FOxOy7p36SvZSw4XHQ";
@@ -201,9 +307,15 @@ function sheetNameToId(sheetName) {
   }
 }
 
-// Reloads thumbnail with lower quality if max resolution thumbnail throws 404
+/**
+ * Checks if the YouTube thumbnail is a 404 image and replaces it with a
+ * different quality thumbnail
+ *
+ * @param {Element} e The JQuery img object of the thumbnail
+ * @param {Boolean} highQuality Decides the backup quality of the thumbnail
+ */
 function thumbnailCheck(e, highQuality) {
-  var thumbnailURL = e.attr("src");
+  const thumbnailURL = e.attr("src");
   if (e[0].naturalWidth == 120 && e[0].naturalHeight == 90) {
     if (highQuality === true) {
       // Keeps higher resolution but adds black bars across top and bottom
@@ -217,6 +329,15 @@ function thumbnailCheck(e, highQuality) {
 
 /* Error Handling Functions */
 
+/**
+ * Retries the function `fn` on error `maxRetries` number of times with a
+ * `timeout` millisecond timeout
+ *
+ * @param {Function} fn The function to retry upon error
+ * @param {Number} maxRetries The maximum number of times to retry the function
+ * @param {Number} timeout The integer timeout in milliseconds between failed
+ *    attempts
+ */
 function retry(fn, maxRetries, timeout) {
   try {
     fn();
@@ -232,6 +353,15 @@ function retry(fn, maxRetries, timeout) {
   }
 }
 
+/**
+ * Records an error to the Error Log Google Sheet
+ * @see retry
+ *
+ * @param {Error} err The caught error
+ * @param {String} additionalMessage An extra message to give the error more
+ *    context in the log
+ * @returns {Promise} Status update
+ */
 function recordError(err, additionalMessage) {
   const spreadsheetId = sheetNameToId("Logs");
   const range = "Error Log";
@@ -247,14 +377,14 @@ function recordError(err, additionalMessage) {
   }
   try {
     // If variable err is thrown from gapi
-    let gapiMsg = err.result.error.errors[0].message;
+    const gapiMsg = err.result.error.errors[0].message;
     if (gapiMsg) {
       message += gapiMsg;
     }
   } catch (checkGapiError) {
     try {
       // Another error message format from a gapi error
-      let gapiMsg = err.result.error.message;
+      const gapiMsg = err.result.error.message;
       if (gapiMsg) {
         message += gapiMsg;
       }
@@ -295,13 +425,19 @@ function recordError(err, additionalMessage) {
     });
 }
 
+/**
+ * Record an update to the Update Log Google Sheet
+ *
+ * @param {String} message The update message to log
+ * @returns {Promise} Status update
+ */
 function recordUpdate(message) {
   const spreadsheetId = sheetNameToId("Logs");
   const range = "Update Log";
   const time = new Date().toLocaleString();
   const browser = detectBrowser();
   const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-  let values = [
+  const values = [
     [
       time,
       browser,
