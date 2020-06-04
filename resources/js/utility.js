@@ -73,6 +73,17 @@ function detectBrowser() {
     "Unknown";
 }
 
+// Returns object with keys as spreadsheet column titles and value is index in
+// the sheet that corresponds to that column
+function getColumnHeaders(sheet) {
+  let columns = {};
+  const columnHeaders = sheet[0];
+  for (let i = 0; i < columnHeaders.length; i++) {
+    columns[columnHeaders[i]] = i;
+  }
+  return columns;
+}
+
 // Get date from numDaysAgo from today in the form YYYY-MM-DD
 function getDateFromDaysAgo(numDaysAgo) {
   var today = new Date();
