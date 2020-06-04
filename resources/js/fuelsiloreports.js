@@ -278,7 +278,13 @@ function createMonthlyViewsGraph(monthlyViews) {
       viewsList.push(views);
     }
   }
-  console.log([monthList[0], monthList[monthList.length - 1]]);
+  var graphHeight = 0.75;
+  var graphWidth = 0.6603;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var tickSize = Math.floor(0.0073 * document.documentElement.clientWidth);
+  var axisTitleSize = Math.floor(0.0094 * document.documentElement.clientWidth);
+  var titleSize = Math.floor(0.0104 * document.documentElement.clientWidth);
   const trace = [{
     "x": monthList,
     "y": viewsList,
@@ -286,11 +292,11 @@ function createMonthlyViewsGraph(monthlyViews) {
     "name": "Monthy Views"
   }];
   let layout = {
-    height: 800,
-    width: 1400,
+    height: height,
+    width: width,
     title: {
       font: {
-        size: 20
+        size: titleSize
       },
       text: "Playlist Monthly Views"
     },
@@ -299,11 +305,11 @@ function createMonthlyViewsGraph(monthlyViews) {
       hoverformat: "%b %Y",
       tickformat: "%b<br>%Y",
       tickfont: {
-        size: 14
+        size: tickSize
       },
       title: {
         font: {
-          size: 18
+          size: axisTitleSize
         },
         text: "Month"
       }
@@ -312,11 +318,11 @@ function createMonthlyViewsGraph(monthlyViews) {
       automargin: true,
       fixedrange: true,
       tickfont: {
-        size: 14
+        size: tickSize
       },
       title: {
         font: {
-          size: 18
+          size: axisTitleSize
         },
         text: "Views"
       }
