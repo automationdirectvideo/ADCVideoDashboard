@@ -1,7 +1,8 @@
-/* Variables and functions for connecting to Google APIs */
-/* For the thumbnail chart page */
+/**
+ * @fileoverview Variables and function for connecting to Google APIs. Designed
+ * for the tools pages.
+ */
 
-// Options
 const API_KEY = "AIzaSyAd5qRbldWGyKfLnI27Pga5yUM-TFatp58";
 const CLIENT_ID = "440646774290-ism1om8j8hnp1js8tsc9603ogo6uvhco" +
   ".apps.googleusercontent.com";
@@ -13,22 +14,27 @@ const DISCOVERY_DOCS = [
 const SCOPES = 'https://www.googleapis.com/auth/youtube.readonly ' +
   'https://www.googleapis.com/auth/yt-analytics.readonly ' +
   'https://www.googleapis.com/auth/spreadsheets.readonly ' +
-  'https://www.googleapis.com/auth/spreadsheets ' + 
+  'https://www.googleapis.com/auth/spreadsheets ' +
   'https://www.googleapis.com/auth/youtube.force-ssl';
 
-// Load auth2 library
+/**
+ * Loads auth2 library
+ */
 function handleClientLoad() {
   gapi.load("client:auth2", initClient);
 }
 
-// Init API client library and set up sign in listeners
+/**
+ * Init API client library and set up sign in listeners
+ */
 function initClient() {
   gapi.client.init({
     apiKey: API_KEY,
     discoveryDocs: DISCOVERY_DOCS,
     clientId: CLIENT_ID,
     scope: SCOPES
-  }).then(() => {
+  })
+  .then(() => {
     // Listen for sign in state changes
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
     // Handle initial sign in state
@@ -36,26 +42,39 @@ function initClient() {
   });
 }
 
+/**
+ * Updates the page based on the new signed in status
+ *
+ * @param {Boolean} isSignedIn The sign in status of the user
+ */
 function updateSigninStatus(isSignedIn) {
   if (isSignedIn) {
     if (!isUserADC()) {
+      // The user is not ADC
       handleInvalidAccount();
     } else {
+      // The user is ADC. Reload the page to load the signed in view
       window.location.reload();
     }
   }
 }
 
-// Load page based on sign in state
+/**
+ * Load page based on sign in state
+ *
+ * @param {Booleans} isSignedIn The sign in status of the user
+ */
 function loadSigninStatus(isSignedIn) {
   if (isSignedIn) {
     if (!isUserADC()) {
+      // The user is not ADC
       handleInvalidAccount();
     } else {
       console.log("Signed In");
       loadSignedIn();
     }
   } else {
+    // Show a sign in modal. Prevent using the page until signed in
     console.log("Signed Out");
     createSignInModal();
     const authorizeButton = document.getElementById("authorize-button");
@@ -67,24 +86,33 @@ function loadSigninStatus(isSignedIn) {
   }
 }
 
-// Handle login
+/**
+ * Handles login action
+ */
 function handleAuthClick() {
   gapi.auth2.getAuthInstance().signIn();
 }
 
-// Login shortcut
+/**
+ * Login shortcut
+ */
 function signIn() {
   if (!gapi.auth2.getAuthInstance().isSignedIn.get()) {
     handleAuthClick();
   }
 }
 
-// Handle logout
+/**
+ * Handles logout action
+ */
 function handleSignout() {
   gapi.auth2.getAuthInstance().signOut();
   window.location.reload();
 }
 
+/**
+ * Signs out user who is not ADC and displays an error on the signin modal
+ */
 function handleInvalidAccount() {
   console.log("Error: You are not ADC");
   gapi.auth2.getAuthInstance().currentUser.get().disconnect();
@@ -92,6 +120,9 @@ function handleInvalidAccount() {
   $("#invalid-account-alert").show();
 }
 
+/**
+ * Creates a modal that prompts sign in
+ */
 function createSignInModal() {
   const innerHTML = `
     <div class="modal fade" id="signinModal" tabindex="-1" role="dialog" aria-labelledby="signinModal" aria-hidden="true">
