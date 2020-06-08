@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Creats a report of all comments from all channel videos.
+ */
+
+/**
+ * Gets the comments from all videos and creates a report with all of the
+ * comment data
+ *
+ * @returns {Promise} Status message
+ */
 function createCommentsReport() {
   const statusText = document.getElementById("status-text");
   const loadingBar = document.getElementById("loading-bar");
@@ -11,9 +21,7 @@ function createCommentsReport() {
   viewReportButton.style.display = "none";
   return getVideoList()
     .then(response => {
-      let uploads = response[1];
-      console.log("uploads");
-      console.log(uploads);
+      const uploads = response[1];
       loadingBar.ariaValueMax = uploads.length;
       statusText.innerText = "Retrieving Comments...";
       // return getAllComments(uploads.slice(0, 50));
@@ -37,6 +45,12 @@ function createCommentsReport() {
     });
 }
 
+/**
+ * Gets the comments from all the videos from the YouTube Data API
+ *
+ * @param {Array<String>} uploads A list of videoIds
+ * @returns {Array<Array<String>>} All comments for all videos
+ */
 function getAllComments(uploads) {
   let requests = [];
   for (let index = 0; index < uploads.length; index++) {
@@ -45,7 +59,7 @@ function getAllComments(uploads) {
   }
   return Promise.all(requests)
     .then(commentDataArray => {
-      let allCommentData = [].concat.apply([], commentDataArray);
+      const allCommentData = [].concat.apply([], commentDataArray);
       return allCommentData;
     })
     .catch(err => {
@@ -56,6 +70,15 @@ function getAllComments(uploads) {
     });
 }
 
+/**
+ * Gets the comments for a video from the YouTube Data API. Only includes top
+ * level comments that were not written by AutomationDirect
+ *
+ * @param {String} videoId The desired video
+ * @param {String} pageToken The value corresponding to the next page of the
+ *    YouTube API response. Used for recursion
+ * @returns {Array<Array<String>>} All comments for the video
+ */
 function getCommentsForVideo(videoId, pageToken) {
   let request = {
     "maxResults": 100,
@@ -70,7 +93,7 @@ function getCommentsForVideo(videoId, pageToken) {
 
   return gapi.client.youtube.commentThreads.list(request)
     .then(response => {
-      let comments = response.result.items;
+      const comments = response.result.items;
       let commentData = [];
       for (let index = 0; index < comments.length; index++) {
         const comment = comments[index].snippet.topLevelComment.snippet;
@@ -90,15 +113,20 @@ function getCommentsForVideo(videoId, pageToken) {
         }
       }
 
-      let nextPageToken = response.result.nextPageToken;
+      const nextPageToken = response.result.nextPageToken;
       if (nextPageToken) {
+        // There are more results than could fit in the API response
+        // Get the rest of the comments
         return getCommentsForVideo(videoId, nextPageToken)
           .then(moreCommentData => {
+            // Combine the original results and the next page(s) into one array
             let allCommentData = [].concat.apply([],
               [commentData, moreCommentData]);
             return allCommentData;
           })
       } else {
+        // This response was contained all of the comments or the last page of
+        // the comments
         incrementLoadingBar();
         return commentData;
       }
@@ -108,20 +136,31 @@ function getCommentsForVideo(videoId, pageToken) {
       displayError(errorMsg);
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      // Return an empty array since the response will be concatenated with
+      // other arrays
       return [];
     });
 }
 
+/**
+ * Increments the loading bar by one
+ */
 function incrementLoadingBar() {
   const loadingBar = document.getElementById("loading-bar");
   loadingBar.ariaValueNow++;
-  let numFinished = loadingBar.ariaValueNow;
-  let total = loadingBar.ariaValueMax;
-  let percentage = (numFinished / total) * 100;
-  let percentageText = percentage.toFixed(2) + "%";
+  const numFinished = loadingBar.ariaValueNow;
+  const total = loadingBar.ariaValueMax;
+  const percentage = (numFinished / total) * 100;
+  const percentageText = percentage.toFixed(2) + "%";
   loadingBar.style.width = percentageText;
 }
 
+/**
+ * Writes the description error report to the reports Google Sheet
+ *
+ * @param {Array<Array<String>>} commentData The list of comment details
+ * @returns {Promise} Status message
+ */
 function saveCommentsReport(commentData) {
   const columnHeaders = [
     "Video ID", "YouTube Link", "Comment Author", "Published At", "Comment"
@@ -137,6 +176,11 @@ function saveCommentsReport(commentData) {
   return updatePromise;
 }
 
+/**
+ * Creates and displays an error alert with the provided error
+ *
+ * @param {String} errorMsg The error message to display
+ */
 function displayError(errorMsg) {
   const alertContainer = document.getElementById("alert-container");
   const alertText = `
@@ -150,6 +194,9 @@ function displayError(errorMsg) {
   prependElement(alertContainer, alertDiv);
 }
 
+/**
+ * Loads the page once the user has signed into Google
+ */
 function loadSignedIn() {
   const scanButton = document.getElementById("scan-button");
   scanButton.disabled = "";
