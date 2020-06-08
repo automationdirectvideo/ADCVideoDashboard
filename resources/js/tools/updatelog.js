@@ -1,15 +1,19 @@
+/**
+ * @fileoverview Creates the update log table
+ */
+
+/**
+ * Gets list of updates from the log Google Sheet and displays them in a table
+ *
+ * @returns {Promise} Status message
+ */
 function loadUpdateLog() { 
   return requestSpreadsheetData("Logs", "Update Log")
     .then(updateValues => {
       console.log("UpdateValues: ", updateValues);
       const updateTableBody = document.getElementById("update-table-body");
       let output = ``;
-
-      let columns = {};
-      let columnHeaders = updateValues[0];
-      for (let i = 0; i < columnHeaders.length; i++) {
-        columns[columnHeaders[i]] = i;
-      }
+      const columns = getColumnHeaders(updateValues);
       for (let index = updateValues.length - 1; index >= 1; index--) {
         const update = updateValues[index];
         const time = update[columns["Time"]];
@@ -45,6 +49,9 @@ function loadUpdateLog() {
     });
 }
 
+/**
+ * Loads the page once the user has signed into Google
+ */
 function loadSignedIn() {
   const loadingCog = document.getElementById("table-loading");
   loadingCog.style.display = "";
