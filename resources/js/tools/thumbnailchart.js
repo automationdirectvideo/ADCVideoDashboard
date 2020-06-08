@@ -1,8 +1,17 @@
+/**
+ * @fileoverview Gets channel uploads and displays their thumbnails in a table
+ */
+
+/**
+ * Displays the upload thumbnails in a grid
+ *
+ * @param {Array<String>} uploads A list of videoIds
+ */
 function displayThumbnails(uploads) {
-  var thumbnailContainer = document.getElementById("thumbnail-container");
-  var uploadThumbnails = "";
+  let thumbnailContainer = document.getElementById("thumbnail-container");
+  let uploadThumbnails = "";
   uploadThumbnails += `<div class="thumbnail-page">`;
-  for (var i = 0; i < uploads.length; i++) {
+  for (let i = 0; i < uploads.length; i++) {
     uploadThumbnails += `
       <a href="https://youtu.be/${uploads[i]}" target="_blank">
         <img class="thumbnail"
@@ -17,6 +26,36 @@ function displayThumbnails(uploads) {
   thumbnailContainer.innerHTML = uploadThumbnails;
 }
 
+/**
+ * Gets the list of channel uploads from the input data Google Sheet and
+ * displays the uploads thumbnails in a grid
+ */
+function loadUploads() {
+  document.getElementById("thumbnail-container").innerHTML = `
+    <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
+  `;
+  requestSpreadsheetData("Input Data", "Video List")
+    .then(videoList => {
+      let uploads = [];
+      let columns = getColumnHeaders(videoList);
+      for (let i = videoList.length - 1; i >= 1; i--) {
+        const row = videoList[i];
+        const videoId = row[columns["Video ID"]];
+        uploads.push(videoId);
+      }
+      displayThumbnails(uploads);
+      document.getElementById("error-container").className = "d-none";
+    })
+    .catch(err => {
+      document.getElementById("thumbnail-container").innerHTML = "";
+      document.getElementById("error-container").className = "d-block";
+      document.getElementById("error-message").innerText = err.message;
+    });
+}
+
+/**
+ * Loads the page once the user has signed into Google
+ */
 function loadSignedIn() {
   document.getElementById("menu").innerHTML +=
     `<button class="btn btn-lg btn-primary mt-3" id="refresh-btn">Refresh Thumbnails</button>`;
@@ -32,41 +71,9 @@ function loadSignedIn() {
       </li>
     `;
 
-  var signoutText = document.getElementById("signout-text");
+  let signoutText = document.getElementById("signout-text");
   signoutText.addEventListener("click", handleSignout);
-  var refreshBtn = document.getElementById("refresh-btn");
+  let refreshBtn = document.getElementById("refresh-btn");
   refreshBtn.addEventListener("click", loadUploads);
   loadUploads();
-}
-
-function loadUploads() {
-  document.getElementById("thumbnail-container").innerHTML = `
-    <div class="text-center"><i class="fas fa-cog fa-3x fa-spin"></i></div>
-  `;
-  requestSpreadsheetData("Input Data", "Video List")
-    .then(videoList => {
-      const uploads = recordUploads(videoList);
-      displayThumbnails(uploads);
-      document.getElementById("error-container").className = "d-none";
-    })
-    .catch(err => {
-      document.getElementById("thumbnail-container").innerHTML = "";
-      document.getElementById("error-container").className = "d-block";
-      document.getElementById("error-message").innerText = err.message;
-    });
-}
-
-function recordUploads(videoList) {
-  let uploads = [];
-  let columns = {};
-  let columnHeaders = videoList[0];
-  for (let i = 0; i < columnHeaders.length; i++) {
-    columns[columnHeaders[i]] = i;
-  }
-  for (let i = videoList.length - 1; i >= 1; i--) {
-    let row = videoList[i];
-    let videoId = row[columns["Video ID"]];
-    uploads.push(videoId);
-  }
-  return uploads;
 }
