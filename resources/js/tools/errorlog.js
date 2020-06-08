@@ -1,5 +1,5 @@
 /**
- * @fileoverview Creates the error log table
+ * @fileoverview Creates the error log table.
  */
 
 /**

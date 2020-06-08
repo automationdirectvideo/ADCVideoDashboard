@@ -1,5 +1,5 @@
 /**
- * @fileoverview Creates the update log table
+ * @fileoverview Creates the update log table.
  */
 
 /**

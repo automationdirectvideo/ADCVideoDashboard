@@ -1,5 +1,5 @@
 /**
- * @fileoverview Gets channel uploads and displays their thumbnails in a table
+ * @fileoverview Gets channel uploads and displays their thumbnails in a table.
  */
 
 /**

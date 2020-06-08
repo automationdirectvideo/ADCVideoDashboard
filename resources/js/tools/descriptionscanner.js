@@ -1,6 +1,6 @@
 /**
  * @fileoverview Creates a report of the formatting all video descriptions on
- * YouTube
+ * YouTube.
  */
 
 /**

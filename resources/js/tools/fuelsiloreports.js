@@ -1,6 +1,6 @@
 /**
  * @fileoverview Uses the YouTube APIs to create a table of channel playlists
- * and generate graphs of monthly playlist views .
+ * and generate graphs of monthly playlist views.
  */
 
 /**
@@ -243,7 +243,7 @@ function getPlaylistVideos(playlistId, pageToken) {
       const nextPageToken = response.result.nextPageToken;
       if (nextPageToken) {
         // There are more results than could fit in the API response
-        // Get the rest of the playlists
+        // Get the rest of the videos
         return getPlaylistVideos(playlistId, nextPageToken)
           .then(moreVideosList => {
             // Combine the original results and the next page(s) into one array
