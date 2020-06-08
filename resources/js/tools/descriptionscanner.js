@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Creates a report of the formatting all video descriptions on
+ * YouTube
+ */
+
+/**
+ * Gets the channel uploads, description for each video, checks the format of
+ * each description, and generates a report of the results
+ *
+ * @returns {Promise} Status message
+ */
 function createDescriptionReport() {
   const statusText = document.getElementById("status-text");
   const loadingBar = document.getElementById("loading-bar");
@@ -11,9 +22,7 @@ function createDescriptionReport() {
   viewReportButton.style.display = "none";
   return getVideoList()
     .then(response => {
-      let uploads = response[1];
-      console.log("uploads");
-      console.log(uploads);
+      const uploads = response[1];
       // First half of loading bar is for fetching descriptions
       // Second half is for checking format
       let numUploads = uploads.length;
@@ -48,6 +57,12 @@ function createDescriptionReport() {
     });
 }
 
+/**
+ * Gets the descriptions of the videos from the YouTube Data API
+ *
+ * @param {Array<String>} videos A list of videoIds
+ * @returns {Array<String>} A list of descriptions for the provided videos
+ */
 function getAllDescriptions(videos) {
   let requests = [];
   for (let i = 0; i < videos.length; i += 50) {
@@ -88,13 +103,18 @@ function getAllDescriptions(videos) {
 
   return Promise.all(requests)
     .then(response => {
-      let descriptions = [].concat.apply([], response);
-      console.log("Descriptions")
-      console.log(descriptions);
+      const descriptions = [].concat.apply([], response);
       return descriptions;
     });
 }
 
+/**
+ * Tallies the number of appearances for links across the given descriptions
+ *
+ * @param {Array<String>} descriptions A list of video descriptions
+ * @returns {Object} An object where keys are links which correspond to their
+ *    number of appearances
+ */
 function scanDescriptionsForLinks(descriptions) {
   let allLinks = {};
   for (let index = 0; index < descriptions.length; index++) {
@@ -111,10 +131,9 @@ function scanDescriptionsForLinks(descriptions) {
       }
     }
   }
-  console.log("allLinks");
-  console.log(allLinks);
+  // Sort the links by most appearances in description to least
   let sortable = [];
-  for (var link in allLinks) {
+  for (const link in allLinks) {
     sortable.push([link, allLinks[link]]);
   }
   sortable.sort(function (a, b) {
@@ -124,6 +143,13 @@ function scanDescriptionsForLinks(descriptions) {
   return allLinks;
 }
 
+/**
+ * Writes the description error report to the reports Google Sheet
+ *
+ * @param {Array<Array<String>>} formatErrors The list of format errors for each
+ *    video description
+ * @returns {Promise} Status message
+ */
 function saveDescriptionsErrors(formatErrors) {
   const columnHeaders = [
     "Video ID", "YouTube Link", "(VID-**-****)", "Subscribe Link",
@@ -141,6 +167,13 @@ function saveDescriptionsErrors(formatErrors) {
   return updatePromise;
 }
 
+/**
+ * Checks if the video description contains all required elements
+ *
+ * @param {Object} video The desired video as with "videoId" and "description"
+ *    attributes
+ * @returns {Array<String>} A report of what is present and missing
+ */
 function checkFormat(video) {
   const videoId = video["videoId"];
   const description = video["description"];
@@ -151,13 +184,18 @@ function checkFormat(video) {
   errors.push(checkPricesWereValid(description));
   errors.push(checkAllVideoLink(description));
   errors = [].concat.apply([], errors);
-  // console.log(`Video ID: ${videoId} - Errors: ${JSON.stringify(errors)}`);
   return errors;
 }
 
+/**
+ * Checks if the description contains the a ADC VID of the form (VID-**-****)
+ *
+ * @param {String} description The text to search through
+ * @returns {Array<String>} Either ["Present"] or ["MISSING"]
+ */
 function checkVID(description) {
-  let regexVID = /\(VID-[a-zA-Z0-9]{2,3}-([0-9]{2}|[0-9]{4})\)/g;
-  let match = regexVID.exec(description);
+  const regexVID = /\(VID-[a-zA-Z0-9]{2,3}-([0-9]{2}|[0-9]{4})\)/g;
+  const match = regexVID.exec(description);
   if (!match) {
     return ["MISSING"];
   } else {
@@ -165,11 +203,18 @@ function checkVID(description) {
   }
 }
 
+/**
+ * Checks if the description contains the Subscribe, Facebook, Twitter, and
+ * LinkedIn links
+ *
+ * @param {String} description The text to search through
+ * @returns {Array<String>} Contains a combination of "Present" and "MISSING"
+ */
 function checkSocialLinks(description) {
   let errors = [];
 
   const regexYT = /https:\/\/www\.youtube\.com\/(user\/automationdirect\?sub_confirmation=1|subscription_center\?add_user=automationdirect)(?:\s|$)/g;
-  let matchYT = regexYT.exec(description);
+  const matchYT = regexYT.exec(description);
   if (!matchYT) {
     errors.push("MISSING");
   } else {
@@ -177,14 +222,14 @@ function checkSocialLinks(description) {
   }
 
   const regexFB = /https:\/\/www\.facebook\.com\/[aA]utomation[dD]irect(?:\s|$)/g;
-  let matchFB = regexFB.exec(description);
+  const matchFB = regexFB.exec(description);
   if (!matchFB) {
     errors.push("MISSING");
   } else {
     errors.push("Present");
   }
   const regexTwitter = /https:\/\/(?:www\.)?twitter\.com\/[aA]utomation[dD]irec(?:\s|$)/g;
-  let matchTwitter = regexTwitter.exec(description);
+  const matchTwitter = regexTwitter.exec(description);
   if (!matchTwitter) {
     errors.push("MISSING");
   } else {
@@ -192,7 +237,7 @@ function checkSocialLinks(description) {
   }
 
   const regexLinkedIn = /https:\/\/www\.linkedin\.com\/company\/automationdirect/;
-  let matchLinkedIn = regexLinkedIn.exec(description);
+  const matchLinkedIn = regexLinkedIn.exec(description);
   if (!matchLinkedIn) {
     errors.push("MISSING");
   } else {
@@ -202,8 +247,15 @@ function checkSocialLinks(description) {
   return errors;
 }
 
+/**
+ * Checks if the description contains the "Prices were valid" sentence
+ *
+ * @param {String} description The text to search through
+ * @returns {Array<String>} Either ["Present"] or ["MISSING"]
+ */
 function checkPricesWereValid(description) {
-  let pricesSentence = "Prices were valid at the time the video was released and are subject to change";
+  const pricesSentence = "Prices were valid at the time the video was" +
+    "released and are subject to change";
   if (description.indexOf(pricesSentence) === -1) {
     return ["MISSING"];
   } else {
@@ -211,9 +263,15 @@ function checkPricesWereValid(description) {
   }
 }
 
+/**
+ * Checks if the description contains the "Check out all of our videos" sentence
+ *
+ * @param {String} description The text to search through
+ * @returns {Array<String>} Either ["Present"] or ["MISSING"]
+ */
 function checkAllVideoLink(description) {
-  let regexSentence = /Check out all of our videos at:? https:\/\/www\.[aA]utomation[dD]irect\.com\/[vV]ideos/;
-  let match = regexSentence.exec(description);
+  const regexSentence = /Check out all of our videos at:? https:\/\/www\.[aA]utomation[dD]irect\.com\/[vV]ideos/;
+  const match = regexSentence.exec(description);
   if (!match) {
     return ["MISSING"];
   } else {
@@ -221,19 +279,27 @@ function checkAllVideoLink(description) {
   }
 }
 
+/**
+ * Increments the loading bar by one
+ */
 function incrementLoadingBar() {
   const loadingBar = document.getElementById("loading-bar");
   loadingBar.ariaValueNow++;
-  let numFinished = loadingBar.ariaValueNow;
-  let total = loadingBar.ariaValueMax;
-  let percentage = (numFinished / total) * 100;
-  let percentageText = percentage.toFixed(2) + "%";
+  const numFinished = loadingBar.ariaValueNow;
+  const total = loadingBar.ariaValueMax;
+  const percentage = (numFinished / total) * 100;
+  const percentageText = percentage.toFixed(2) + "%";
   loadingBar.style.width = percentageText;
 }
 
-// Searches input text for URLs and returns list of found URLs
+/**
+ * Searches input text for URLs and returns list of found URLs
+ *
+ * @param {*} inputText The text to search through for URLs
+ * @returns {Array<String>} A list of URLs
+ */
 function searchForURLs(inputText) {
-  let findURLs = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
+  const findURLs = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
   let links = [];
   let match;
   do {
@@ -245,6 +311,11 @@ function searchForURLs(inputText) {
   return links;
 }
 
+/**
+ * Creates and displays an error alert with the provided error
+ *
+ * @param {String} errorMsg The error message to display
+ */
 function displayError(errorMsg) {
   const alertContainer = document.getElementById("alert-container");
   const alertText = `
@@ -258,6 +329,9 @@ function displayError(errorMsg) {
   prependElement(alertContainer, alertDiv);
 }
 
+/**
+ * Loads the page once the user has signed into Google
+ */
 function loadSignedIn() {
   const scanButton = document.getElementById("scan-button");
   scanButton.disabled = "";
@@ -266,21 +340,33 @@ function loadSignedIn() {
 
 /* Individual Video Functions */
 
+/**
+ * Finds all URLs in the description of a video
+ *
+ * @param {String} videoId The desired video
+ * @returns {Promise} A list of links in the provided video's description
+ */
 function findLinksForVideo(videoId) {
   return requestVideoDescription(videoId)
     .then(description => {
-      let links = searchForURLs(description);
+      const links = searchForURLs(description);
       return links;
     })
     .catch(err => {
-      const errorMsg = `Error getting description links for video: ${videoId} - `;
+      const errorMsg = `Error getting description links for video:` +
+        ` ${videoId} - `;
       displayError(errorMsg);
       console.error(errorMsg, err);
       recordError(err, errorMsg);
     });
 }
 
-// Returns description of given video
+/**
+ * Gets the description of a video from the YouTube API
+ *
+ * @param {String} videoId The desired video
+ * @returns {String} The description of the desired video
+ */
 function requestVideoDescription(videoId) {
   const request = {
     "part": "snippet",
@@ -289,12 +375,12 @@ function requestVideoDescription(videoId) {
   return gapi.client.youtube.videos.list(request)
     .then(response => {
       console.log(`Video Description for video: ${videoId}`, response);
-      let videoId = response.result.items[0].id;
-      let description = response.result.items[0].snippet.description;
+      const description = response.result.items[0].snippet.description;
       return description;
     })
     .catch(err => {
-      const errorMsg = `Error getting video description for video: ${videoId} - `;
+      const errorMsg = `Error getting video description for video:` +
+        ` ${videoId} - `;
       displayError(errorMsg);
       console.error(errorMsg, err);
       recordError(err, errorMsg);
