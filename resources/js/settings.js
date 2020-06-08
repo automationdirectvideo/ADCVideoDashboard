@@ -1,24 +1,25 @@
-/* Functions and event listeners for the settings page */
+/**
+ * @fileoverview Functions and event listeners for the settings page.
+ */
 
 /**
  * Resets the settings back to the default settings
  */
 function resetSettings() {
-  localStorage.setItem("settings", JSON.stringify(defaultSettings));
+  lsSet("settings", defaultSettings);
 }
 
 /**
- * Saves current settings to HTML local storage
+ * Saves current settings selected by user
  */
 function saveNewSettings() {
-  localStorage.setItem("settings", JSON.stringify(currentSettings));
-  localStorage.removeItem("graphSizes");
+  lsSet("settings", currentSettings);
 }
 
 /**
  * Records cycle speed to current settings
  *
- * @param {number} speed cycle speed in seconds
+ * @param {Number} speed The cycle speed in seconds
  */
 function recordCycleSpeed(speed) {
   if (Number.isInteger(speed)) {
@@ -35,9 +36,9 @@ function recordCycleSpeed(speed) {
  * Records scroll speeds for dashboards to current settings
  */
 function recordScrollSpeeds() {
-  var dashboards = currentSettings.dashboards;
-  for (var i = 0; i < dashboards.length; i++) {
-    var dashboard = dashboards[i];
+  const dashboards = currentSettings.dashboards;
+  for (let i = 0; i < dashboards.length; i++) {
+    const dashboard = dashboards[i];
     if (dashboard.scrollSpeed != undefined) {
       scrollInput = document.getElementById(dashboard.name + "-scroll-input");
       currentSettings.dashboards[i].scrollSpeed = scrollInput.value;
@@ -48,12 +49,12 @@ function recordScrollSpeeds() {
 /**
  * Moves the dashboards in the startList to the bottom of the targetList
  *
- * @param {HTMLUListElement} startList starting unordered list of dashboards
- * @param {HTMLUListElement} targetList target unorderd list of dashboards
+ * @param {HTMLUListElement} startList The starting unordered list of dashboards
+ * @param {HTMLUListElement} targetList The target unordered list of dashboards
  */
 function moveDashboards(startList, targetList) {
   while (startList.children.length > 0) {
-    var dashboard = startList.children[0];
+    const dashboard = startList.children[0];
     dashboard.remove();
     targetList.appendChild(dashboard);
   }
@@ -62,17 +63,17 @@ function moveDashboards(startList, targetList) {
 /**
  * Sets the theme of all the dashboards to the parameter given
  *
- * @param {string} theme theme to change all the dashboards to
+ * @param {String} theme The theme to change all the dashboards to
  */
 function setAllDashboardThemes(theme) {
   if (supportedThemes.includes(theme)) {
-    var dashboards = currentSettings.dashboards;
-    for (var i = 0; i < dashboards.length; i++) {
-      var badge = document.getElementById(dashboards[i].name + "-badge");
+    const dashboards = currentSettings.dashboards;
+    for (let i = 0; i < dashboards.length; i++) {
+      const badge = document.getElementById(dashboards[i].name + "-badge");
       badge.innerHTML = capitalizeFirstLetter(theme);
       badge.classList = "badge badge-pill badge-theme badge-" + theme;
-      for (var j = 0; j < supportedThemes.length; j++) {
-        var themeButton = document.getElementById(dashboards[i].name + "-" +
+      for (let j = 0; j < supportedThemes.length; j++) {
+        const themeButton = document.getElementById(dashboards[i].name + "-" +
           supportedThemes[j] + "-btn");
         if (supportedThemes[j] == theme) {
           themeButton.disabled = true;
@@ -92,17 +93,17 @@ function setAllDashboardThemes(theme) {
  * themes of all dashboards
  */
 function recordDashboardOrderandThemes() {
-  var enabledOrder = enabledSortable.toArray();
-  var numEnabled = 0;
-  for (var i = 0; i < currentSettings.dashboards.length; i++) {
-    var dashboard = currentSettings.dashboards[i];
+  const enabledOrder = enabledSortable.toArray();
+  let numEnabled = 0;
+  for (let i = 0; i < currentSettings.dashboards.length; i++) {
+    let dashboard = currentSettings.dashboards[i];
     // Order
     dashboard.index = enabledOrder.indexOf(dashboard.name);
     if (dashboard.index >= 0) {
       numEnabled++;
     }
     // Themes
-    var badge = document.getElementById(dashboard.name + "-badge");
+    const badge = document.getElementById(dashboard.name + "-badge");
     dashboard.theme = badge.innerHTML.toLowerCase();
   }
   currentSettings.numEnabled = numEnabled;
@@ -113,12 +114,12 @@ function recordDashboardOrderandThemes() {
  */
 function loadDashboardList() {
   for (let i = 0; i < currentSettings.dashboards.length; i++) {
-    let dashboard = currentSettings.dashboards[i];
+    const dashboard = currentSettings.dashboards[i];
     let dashboardItem = document.getElementById("INSERT_ID").cloneNode(true);
     let dashboardText = dashboardItem.outerHTML;
     dashboardText = dashboardText.replace(/INSERT_ID/g, dashboard.name);
     dashboardText = dashboardText.replace(/TITLE PLACEHOLDER/, dashboard.title);
-    var template = document.createElement("template");
+    const template = document.createElement("template");
     template.innerHTML = dashboardText;
     dashboardItem = template.content.firstChild;
     enabledDashboardsList.appendChild(dashboardItem);
@@ -136,26 +137,26 @@ function loadDashboardList() {
  */
 function loadSettings() {
   cycleSpeedInput.value = currentSettings.cycleSpeed;
-  var enabledOrder = new Array(currentSettings.numEnabled);
-  var disabledOrder = new Array();
-  for (var i = 0; i < currentSettings.dashboards.length; i++) {
-    var dashboard = currentSettings.dashboards[i];
+  let enabledOrder = new Array(currentSettings.numEnabled);
+  let disabledOrder = new Array();
+  for (let i = 0; i < currentSettings.dashboards.length; i++) {
+    const dashboard = currentSettings.dashboards[i];
     if (dashboard.index >= 0) {
       enabledOrder.splice(dashboard.index, 1, dashboard.name);
     } else {
       disabledOrder.push(dashboard.name);
     }
-    var badge = document.getElementById(dashboard.name + "-badge");
+    const badge = document.getElementById(dashboard.name + "-badge");
     badge.innerHTML = capitalizeFirstLetter(dashboard.theme);
     badge.classList.add("badge-" + dashboard.theme);
   }
-  for (var i = 0; i < enabledOrder.length; i++) {
-    var dashboardItem = document.getElementById(enabledOrder[i]);
+  for (let i = 0; i < enabledOrder.length; i++) {
+    const dashboardItem = document.getElementById(enabledOrder[i]);
     dashboardItem.remove();
     enabledDashboardsList.appendChild(dashboardItem);
   }
-  for (var i = 0; i < disabledOrder.length; i++) {
-    var dashboardItem = document.getElementById(disabledOrder[i]);
+  for (let i = 0; i < disabledOrder.length; i++) {
+    const dashboardItem = document.getElementById(disabledOrder[i]);
     dashboardItem.remove();
     disabledDashboardsList.appendChild(dashboardItem);
   }
@@ -178,7 +179,7 @@ function updateDashboardText() {
   }
 }
 
-var currentSettings = JSON.parse(localStorage.getItem("settings"));
+let currentSettings = lsGet("settings");
 const supportedThemes = ["light", "dark"];
 
 // Get buttons, input text, and dashboard lists
@@ -190,8 +191,8 @@ const disableAllButton = document.getElementById("disable-all-btn");
 const resetButton = document.getElementById("confirm-reset-btn");
 const saveButton = document.getElementById("save-btn");
 
-var disabledDashboardsList = document.getElementById("disabledDashboards");
-var enabledDashboardsList = document.getElementById("enabledDashboards");
+let disabledDashboardsList = document.getElementById("disabledDashboards");
+let enabledDashboardsList = document.getElementById("enabledDashboards");
 
 
 // Create button press event listeners
@@ -229,14 +230,14 @@ saveButton.addEventListener("click", function () {
 loadDashboardList();
 
 // Create button press event listeners for buttons in each dashboard
-for (var i = 0; i < currentSettings.dashboards.length; i++) {
+for (let i = 0; i < currentSettings.dashboards.length; i++) {
   (function () {
-    var dashboardName = currentSettings.dashboards[i].name;
-    let dashboard = document.getElementById(dashboardName);
-    let enableButton = document.getElementById(dashboardName + "-enable-btn");
-    let disableButton = document.getElementById(dashboardName + "-disable-btn");
-    let lightButton = document.getElementById(dashboardName + "-light-btn");
-    let darkButton = document.getElementById(dashboardName + "-dark-btn");
+    const dashboardName = currentSettings.dashboards[i].name;
+    const dashboard = document.getElementById(dashboardName);
+    const enableButton = document.getElementById(dashboardName + "-enable-btn");
+    const disableButton = document.getElementById(dashboardName + "-disable-btn");
+    const lightButton = document.getElementById(dashboardName + "-light-btn");
+    const darkButton = document.getElementById(dashboardName + "-dark-btn");
     if (currentSettings.dashboards[i].theme == "light") {
       lightButton.disabled = true;
       darkButton.disabled = false;
@@ -268,14 +269,14 @@ for (var i = 0; i < currentSettings.dashboards.length; i++) {
     lightButton.addEventListener("click", function () {
       lightButton.disabled = true;
       darkButton.disabled = false;
-      let badge = document.getElementById(dashboardName + "-badge");
+      const badge = document.getElementById(dashboardName + "-badge");
       badge.innerHTML = "Light";
       badge.className = "badge badge-pill badge-theme badge-light";
     });
     darkButton.addEventListener("click", function () {
       darkButton.disabled = true;
       lightButton.disabled = false;
-      let badge = document.getElementById(dashboardName + "-badge");
+      const badge = document.getElementById(dashboardName + "-badge");
       badge.innerHTML = "Dark";
       badge.className = "badge badge-pill badge-theme badge-dark";
     });
@@ -288,14 +289,14 @@ console.log("Current Settings: ", currentSettings);
 loadSettings();
 
 // Create sortable lists
-var enabledSortable = Sortable.create(enabledDashboards, {
+let enabledSortable = Sortable.create(enabledDashboards, {
   animation: 150,
   ghostClass: 'grey-background',
   group: "dashboards",
   handle: ".drag-handle",
   onAdd: function (e) {
-    var enableButton = document.getElementById(e.item.id + "-enable-btn");
-    var disableButton = document.getElementById(e.item.id + "-disable-btn");
+    const enableButton = document.getElementById(e.item.id + "-enable-btn");
+    const disableButton = document.getElementById(e.item.id + "-disable-btn");
     enableButton.disabled = true;
     disableButton.disabled = false;
   },
@@ -304,14 +305,14 @@ var enabledSortable = Sortable.create(enabledDashboards, {
   }
 });
 
-var disabledSortable = Sortable.create(disabledDashboards, {
+let disabledSortable = Sortable.create(disabledDashboards, {
   animation: 150,
   ghostClass: 'grey-background',
   group: "dashboards",
   handle: ".drag-handle",
   onAdd: function (e) {
-    var enableButton = document.getElementById(e.item.id + "-enable-btn");
-    var disableButton = document.getElementById(e.item.id + "-disable-btn");
+    const enableButton = document.getElementById(e.item.id + "-enable-btn");
+    const disableButton = document.getElementById(e.item.id + "-disable-btn");
     enableButton.disabled = false;
     disableButton.disabled = true;
   },
@@ -322,20 +323,20 @@ var disabledSortable = Sortable.create(disabledDashboards, {
 
 // Toggle collapse/expand arrow buttons
 $(".collapse").on('show.bs.collapse', function () {
-  var id = this.id;
-  var collapseId = this.id.substring(0, id.length - 4) + "collapse";
-  var expandId = this.id.substring(0, id.length - 4) + "expand";
-  var collapseButton = document.getElementById(collapseId);
-  var expandButton = document.getElementById(expandId);
+  const id = this.id;
+  const collapseId = this.id.substring(0, id.length - 4) + "collapse";
+  const expandId = this.id.substring(0, id.length - 4) + "expand";
+  const collapseButton = document.getElementById(collapseId);
+  const expandButton = document.getElementById(expandId);
   expandButton.classList.add("d-none");
   collapseButton.classList.remove("d-none");
 });
 $(".collapse").on('hide.bs.collapse', function () {
-  var id = this.id;
-  var collapseId = this.id.substring(0, id.length - 4) + "collapse";
-  var expandId = this.id.substring(0, id.length - 4) + "expand";
-  var collapseButton = document.getElementById(collapseId);
-  var expandButton = document.getElementById(expandId);
+  const id = this.id;
+  const collapseId = this.id.substring(0, id.length - 4) + "collapse";
+  const expandId = this.id.substring(0, id.length - 4) + "expand";
+  const collapseButton = document.getElementById(collapseId);
+  const expandButton = document.getElementById(expandId);
   collapseButton.classList.add("d-none");
   expandButton.classList.remove("d-none");
 });
