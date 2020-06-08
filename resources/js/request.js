@@ -726,26 +726,6 @@ function getTopTenVideosByMonthSince(startDate) {
     });
 }
 
-function platformDashboardCalls(startDate, endDate) {
-  let requests = [];
-  requests.push(requestChannelSearchTerms(startDate, endDate));
-  requests.push(requestViewsByDeviceType(startDate, endDate));
-  requests.push(requestViewsByTrafficSource(startDate, endDate));
-  requests.push(requestViewsByState(startDate, endDate));
-  requests.push(requestChannelDemographics(startDate, endDate));
-  requests.push(requestWatchTimeBySubscribedStatus(startDate, endDate));
-  return Promise.all(requests)
-    .then(response => {
-      console.log("Platform Dashboard Calls Status:", response);
-      return "Platform Dashboard Calls";
-    })
-    .catch(err => {
-      const errorMsg = "Error occurred in Platform Dashboard Calls: ";
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
-    });
-}
-
 // Requests data for real time stats dashboard
 function realTimeStatsCalls() {
   let requests = [];

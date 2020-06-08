@@ -111,10 +111,14 @@ function displayChannelDemographics(response) {
   graphContainer.style.height = width + "px";
   graphContainer.style.width = width + "px";
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    recordError(err, "Unable to display channel demographics graph");
+    return Promise.resolve("Error Displaying Channel Demographics");
+  }
 
   if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
     const body = {
@@ -218,11 +222,15 @@ function displayChannelSearchTerms(response) {
     };
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-    automargin);
-  recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+  } catch (err) {
+    displayGraphError(graphId, err);
+    return Promise.resolve("Error Displaying Channel Search Terms");
+  }
   return Promise.resolve("Displayed Channel Search Terms");
 }
 
@@ -322,11 +330,15 @@ function displayWatchTimeBySubscribedStatus(response) {
     };
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-    automargin);
-  recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+  } catch (err) {
+    displayGraphError(graphId, err);
+    return Promise.resolve("Error Displaying Watch Time By Subscribed Status");
+  }
   return Promise.resolve("Displayed Watch Time By Subscribed Status");
 }
 
@@ -406,10 +418,14 @@ function displayViewsByDeviceType(response) {
     layout["font"]["color"] = "#fff";
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+    return Promise.resolve("Error Displaying Views By Device Type");
+  }
   return Promise.resolve("Displayed Views By Device Type");
 }
 
@@ -496,10 +512,14 @@ function displayViewsByState(response) {
     layout["geo"]["showlakes"] = false;
   }
 
-  Plotly.plot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+    return Promise.resolve("Error Displaying Views By State");
+  }
   return Promise.resolve("Displayed Views By State");
 }
 
@@ -589,11 +609,15 @@ function displayViewsByTrafficSource(response) {
     layout["font"]["color"] = "#fff";
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
-  return Promise.resolve("Displayed Views by Traffic Source");
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+    return Promise.resolve("Error Displaying Views By Traffic Source");
+  }
+  return Promise.resolve("Displayed Views By Traffic Source");
 }
 
 
@@ -750,11 +774,15 @@ function displayVideoDailyViews(response, dashboardId) {
       };
     }
 
-    Plotly.newPlot(graphId, data, layout, config);
-
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-      automargin);
-    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+    try {
+      Plotly.newPlot(graphId, data, layout, config);
+      recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin);
+      recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+    } catch (err) {
+      displayGraphError(graphId);
+      throw err;
+    }
   }
 }
 
@@ -846,11 +874,15 @@ function displayVideoSearchTerms(response, dashboardId) {
       };
     }
 
-    Plotly.newPlot(graphId, data, layout, config);
-
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
-      automargin);
-    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+    try {
+      Plotly.newPlot(graphId, data, layout, config);
+      recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+        automargin);
+      recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+    } catch (err) {
+      displayGraphError(graphId);
+      throw err;
+    }
   }
 }
 

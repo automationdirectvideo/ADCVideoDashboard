@@ -144,6 +144,18 @@ body {
   border-color: #212529;
 }
 
+.graph-error {
+  font-weight: bold;
+  left: 50%;
+  margin: 0;
+  position: relative;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+  top: 50%;
+  width: 50%;
+}
+
 /*----- Intro Animation -----*/
 
 .video-container {

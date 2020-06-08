@@ -320,6 +320,34 @@ function getCategoryAndVideoStats() {
 }
 
 /**
+ * Gets channel platform and demographics statistics from the YouTube API and
+ * displays graphs on the platform dashboard
+ *
+ * @returns {Promise} Status message
+ */
+function loadPlatformDashboard() {
+  const startDate = joinDate;
+  const endDate = getTodaysDate();
+  let requests = [];
+  requests.push(requestChannelSearchTerms(startDate, endDate));
+  requests.push(requestViewsByDeviceType(startDate, endDate));
+  requests.push(requestViewsByTrafficSource(startDate, endDate));
+  requests.push(requestViewsByState(startDate, endDate));
+  requests.push(requestChannelDemographics(startDate, endDate));
+  requests.push(requestWatchTimeBySubscribedStatus(startDate, endDate));
+  return Promise.all(requests)
+    .then(response => {
+      console.log("Platform Dashboard Calls Status:", response);
+      return "Displayed Platform Dashboard";
+    })
+    .catch(err => {
+      const errorMsg = "Error loading the Platform Dashboard: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
+    });
+}
+
+/**
  * Gets the channel demographics graph information from the stats spreadsheet
  * and displays the graph
  *
@@ -658,16 +686,32 @@ function loadCardPerformanceDashboard() {
       const cardTeaserGraph = "card-teaser-performance-graph";
       const cardGraph = "card-performance-graph";
 
-      Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
-      recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
-        graphHeight, graphWidth);
-      recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
+      let numErrors = 0;
 
-      Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
-      recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
-        graphWidth);
-      recordGraphSize(cardGraph, graphHeight, graphWidth);
-      return Promise.resolve("Displayed Card Performance Dashboard");
+      try {
+        Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
+        recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
+          graphHeight, graphWidth);
+        recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
+      } catch (err) {
+        numErrors++;
+        displayGraphError(cardTeaserGraph, err);
+      }
+
+      try {
+        Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
+        recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
+          graphWidth);
+        recordGraphSize(cardGraph, graphHeight, graphWidth);
+      } catch (err) {
+        numErrors++;
+        displayGraphError(cardGraph, err);
+      }
+      if (numErrors > 0) {
+        return Promise.resolve("Error Displaying Card Performance Dashboard")
+      } else {
+        return Promise.resolve("Displayed Card Performance Dashboard");
+      }
     });
 }
 
@@ -742,6 +786,7 @@ function loadGraphsFromSheets() {
         } catch (err) {
           console.error(err);
           recordError(err);
+          displayGraphError(graphId);
           numErrors++;
         }
       }

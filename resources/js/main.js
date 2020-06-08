@@ -25,7 +25,6 @@ function loadDashboards() {
 
 function loadDashboardsSignedIn() {
   const carouselInner = document.getElementsByClassName("carousel-inner")[0];
-  const todayDate = getTodaysDate();
   let requests = [];
   if (carouselInner.children["intro-animation"]) {
     loadIntroAnimation();
@@ -40,7 +39,7 @@ function loadDashboardsSignedIn() {
     requests.push(loadThumbnailDashboard());
   }
   if (carouselInner.children["platform"]) {
-    requests.push(platformDashboardCalls(joinDate, todayDate));
+    requests.push(loadPlatformDashboard());
   }
   if (carouselInner.children["top-ten"]) {
     requests.push(loadTopTenDashboard());
@@ -579,6 +578,7 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
       };
     } catch (err) {
       const errorMsg = `There was an error initiating graph: ${graphId} - `;
+      displayGraphError(graphId);
       console.error(errorMsg, err);
       recordError(err, errorMsg);
       numErrors++;
@@ -814,10 +814,13 @@ function displayTopCategoriesGraphOne(categoryStats) {
     layout["legend"]["font"]["color"] = "#fff";
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
 }
 
 function displayTopCategoriesGraphTwo(categoryStats) {
@@ -1016,10 +1019,13 @@ function displayTopCategoriesGraphTwo(categoryStats) {
     layout["legend"]["font"]["color"] = "#fff";
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
 }
 
 function displayTopCategoriesGraphThree(categoryStats) {
@@ -1171,10 +1177,13 @@ function displayTopCategoriesGraphThree(categoryStats) {
     layout["legend"]["font"]["color"] = "#fff";
   }
 
-  Plotly.newPlot(graphId, data, layout, config);
-
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+    recordGraphSize(graphId, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
 }
 
 function calcVideographerStats() {
@@ -1563,6 +1572,22 @@ function swapProductCategoriesGraphs() {
         }
       }
   }
+}
+
+function displayGraphError(graphId, err) {
+  if (err) {
+    recordError(err, `Unable to display graph "${graphId}" - `);
+  }
+  let alert = `
+    <div class="h-100 w-100 position-relative">
+      <div class="alert alert-danger graph-error h3" role="alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        Error loading graph
+      </div>
+    </div>
+  `;
+  const graph = document.getElementById(graphId);
+  graph.innerHTML = alert;
 }
 
 function fixGraphMargins() {
