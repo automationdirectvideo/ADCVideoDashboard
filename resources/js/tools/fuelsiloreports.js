@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Uses the YouTube APIs to create a table of channel playlists
+ * and generate graphs of monthly playlist views .
+ */
+
+/**
+ * Gets the list of channel playlists from the YouTube API and displays them in
+ * a table
+ *
+ * @returns {Promise} Status message
+ */
 function displayChannelPlaylists() {
   return getChannelPlaylists()
     .then(playlists => {
@@ -18,6 +29,13 @@ function displayChannelPlaylists() {
     })
 }
 
+/**
+ * Gets the list of channel playlists from the YouTube API
+ *
+ * @param {String} pageToken The value corresponding to the next page of the
+ *    YouTube API response. Used for recursion
+ * @returns {Array<Object>} The playlist information
+ */
 function getChannelPlaylists(pageToken) {
   let request = {
     "maxResults": 25,
@@ -33,7 +51,7 @@ function getChannelPlaylists(pageToken) {
       console.log("Channel Playlists");
       console.log(response);
       let playlistList = []
-      let playlistData = response.result.items;
+      const playlistData = response.result.items;
       for (let index = 0; index < playlistData.length; index++) {
         const playlist = playlistData[index];
         const id = playlist.id;
@@ -58,15 +76,20 @@ function getChannelPlaylists(pageToken) {
         });
       }
 
-      let nextPageToken = response.result.nextPageToken;
+      const nextPageToken = response.result.nextPageToken;
       if (nextPageToken) {
+        // There are more results than could fit in the API response
+        // Get the rest of the playlists
         return getChannelPlaylists(nextPageToken)
           .then(morePlaylistList => {
-            let allPlaylistList = [].concat.apply([],
+            // Combine the original results and the next page(s) into one array
+            const allPlaylistList = [].concat.apply([],
               [playlistList, morePlaylistList]);
             return allPlaylistList;
           })
       } else {
+        // This response was contained all of the playlists or the last page of
+        // the playlists
         return playlistList;
       }
     })
@@ -78,6 +101,11 @@ function getChannelPlaylists(pageToken) {
     });
 }
 
+/**
+ * Displays a table with playlist information
+ *
+ * @param {Array<Object>} playlists The channel playlist information
+ */
 function createPlaylistsTable(playlists) {
   const playlistTableBody = document.getElementById("playlist-table-body");
   let output = ``;
@@ -118,6 +146,7 @@ function createPlaylistsTable(playlists) {
     `;
   });
   playlistTableBody.innerHTML = output;
+  // Format the table
   $("#playlist-table").DataTable({
     "columnDefs": [
       {
@@ -138,6 +167,13 @@ function createPlaylistsTable(playlists) {
   });
 }
 
+/**
+ * Creates a graph of monthly views for the videos in the provided playlist
+ *
+ * @param {String} playlistId The playlist ID of the desired playlist
+ * @param {String} playlistTitle The title of the desired playlist
+ * @returns {Promise} Status message
+ */
 function generateReportForPlaylist(playlistId, playlistTitle) {
   console.log(`Report generated for playlist: ${playlistId}`);
 
@@ -148,7 +184,7 @@ function generateReportForPlaylist(playlistId, playlistTitle) {
   reportPlaylistTitle.innerText = playlistTitle;
 
   const startDate = "2010-01-01";
-  const endDate = "2020-05-01";
+  const endDate = getYouTubeDateFormat(new Date().setDate(1));
   return getPlaylistVideos(playlistId)
     .then(videos => {
       console.log(videos);
@@ -174,6 +210,14 @@ function generateReportForPlaylist(playlistId, playlistTitle) {
     })
 }
 
+/**
+ * Gets the list of videos in the provided playlist
+ *
+ * @param {String} playlistId The playlist ID of the desired playlist
+ * @param {String} pageToken The value corresponding to the next page of the
+ *    YouTube API response. Used for recursion
+ * @returns {Array<String>} List of videos in the playlist
+ */
 function getPlaylistVideos(playlistId, pageToken) {
   let request = {
     "part": "snippet,status,contentDetails",
@@ -189,22 +233,27 @@ function getPlaylistVideos(playlistId, pageToken) {
       console.log("Playlist Videos:");
       console.log(response);
       let videoList = [];
-      let videoData = response.result.items;
+      const videoData = response.result.items;
       for (let index = 0; index < videoData.length; index++) {
         const video = videoData[index];
         const videoId = video.contentDetails.videoId;
         videoList.push(videoId);
       }
 
-      let nextPageToken = response.result.nextPageToken;
+      const nextPageToken = response.result.nextPageToken;
       if (nextPageToken) {
+        // There are more results than could fit in the API response
+        // Get the rest of the playlists
         return getPlaylistVideos(playlistId, nextPageToken)
           .then(moreVideosList => {
-            let allVideosList = [].concat.apply([],
+            // Combine the original results and the next page(s) into one array
+            const allVideosList = [].concat.apply([],
               [videoList, moreVideosList]);
             return allVideosList;
           })
       } else {
+        // This response was contained all of the videos or the last page of
+        // the videos
         return videoList;
       }
     })
@@ -216,6 +265,18 @@ function getPlaylistVideos(playlistId, pageToken) {
     });
 }
 
+/**
+ * Gets the sum of views of the videos for each month from the start date to the
+ * end date
+ *
+ * @param {Array<String>} videos A list of videos
+ * @param {String} startDate The start date of the period written as YYYY-MM-01.
+ *    Must be the first day of the month
+ * @param {String} endDate The end date of the period written as YYYY-MM-01.
+ *    Must be the first day of the month
+ * @returns {Object} The monthly views of the videos where months ("YYYY-MM")
+ *    are keys that correspond to the views during that month
+ */
 function getCumulativeViews(videos, startDate, endDate) {
   let videoViewsRequests = [];
   videos.forEach(videoId => {
@@ -245,6 +306,18 @@ function getCumulativeViews(videos, startDate, endDate) {
     });
 }
 
+/**
+ * Gets the monthly video views for each month between the start date to the end
+ * date
+ *
+ * @param {String} videoId The YouTube video ID of the desired video
+ * @param {String} startDate The start date of the period written as YYYY-MM-01.
+ *    Must be the first day of the month
+ * @param {String} endDate The end date of the period written as YYYY-MM-01.
+ *    Must be the first day of the month
+ * @returns {Array<Array>} The provided video's monthly views as an array of
+ *    `["YYYY-MM", numViews]` tuples
+ */
 function getVideoViewsByMonth(videoId, startDate, endDate) {
   const request = {
     "dimensions": "month",
@@ -268,6 +341,12 @@ function getVideoViewsByMonth(videoId, startDate, endDate) {
     });
 }
 
+/**
+ * Display a monthly views graph for a playlist
+ *
+ * @param {Array<Array>} monthlyViews The playlist's monthly views as an array of
+ *  `["YYYY-MM", numViews]` tuples
+ */
 function createMonthlyViewsGraph(monthlyViews) {
   let monthList = [];
   let viewsList = [];
@@ -278,13 +357,13 @@ function createMonthlyViewsGraph(monthlyViews) {
       viewsList.push(views);
     }
   }
-  var graphHeight = 0.75;
-  var graphWidth = 0.6603;
-  var height = graphHeight * document.documentElement.clientHeight;
-  var width = graphWidth * document.documentElement.clientWidth;
-  var tickSize = Math.floor(0.0073 * document.documentElement.clientWidth);
-  var axisTitleSize = Math.floor(0.0094 * document.documentElement.clientWidth);
-  var titleSize = Math.floor(0.0104 * document.documentElement.clientWidth);
+  const graphHeight = 0.75;
+  const graphWidth = 0.6603;
+  const height = graphHeight * document.documentElement.clientHeight;
+  const width = graphWidth * document.documentElement.clientWidth;
+  const tickSize = Math.floor(0.0073 * document.documentElement.clientWidth);
+  const axisTitleSize = Math.floor(0.0094 * document.documentElement.clientWidth);
+  const titleSize = Math.floor(0.0104 * document.documentElement.clientWidth);
   const trace = [{
     "x": monthList,
     "y": viewsList,
@@ -333,6 +412,8 @@ function createMonthlyViewsGraph(monthlyViews) {
     displayModeBar: false
   };
   if (monthList.length < 7) {
+    // If there are less than 7 months in the list, the x-axis autoticks will
+    // repeat months. This change prevents repeated months
     layout.xaxis.nticks = monthList.length;
   }
   console.log(trace);
@@ -340,6 +421,11 @@ function createMonthlyViewsGraph(monthlyViews) {
   document.getElementById("playlist-graph").style.display = "";
 }
 
+/**
+ * Creates and displays an error alert with the provided error
+ *
+ * @param {String} errorMsg The error message to display
+ */
 function displayError(errorMsg) {
   const alertContainer = document.getElementById("alert-container");
   const alertText = `
@@ -353,6 +439,9 @@ function displayError(errorMsg) {
   prependElement(alertContainer, alertDiv);
 }
 
+/**
+ * Loads the page once the user has signed into Google
+ */
 function loadSignedIn() {
   const loadingCog = document.getElementById("table-loading");
   loadingCog.style.display = "";
