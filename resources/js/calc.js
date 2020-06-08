@@ -1,85 +1,3 @@
-// Updates total views, likes, etc. for each category given all video stats
-function updateCategoryTotals(allVideoStats) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
-
-  allVideoStats.forEach(videoInfo => {
-    let videoId = videoInfo.videoId;
-    let duration = videoInfo.duration;
-    let viewCount = videoInfo.views;
-    let likeCount = videoInfo.likes;
-    let strength = videoInfo.strength;
-
-    statsByVideoId[videoId]["duration"] = duration;
-    let categories = statsByVideoId[videoId]["categories"];
-    for (let i = 0; i < categories.length; i++) {
-      let categoryId = categories[i];
-      if (categoryTotals[categoryId] == undefined) {
-        categoryTotals[categoryId] = {};
-        categoryTotals[categoryId]["videos"] = [];
-      }
-      let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
-      let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
-      let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
-      let categoryStrength = parseFloat(categoryTotals[categoryId]["strength"]);
-      let categoryVideos = categoryTotals[categoryId]["videos"];
-      categoryVideos.push(videoId);
-      categoryTotals[categoryId]["views"] = categoryViews + viewCount;
-      categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
-      categoryTotals[categoryId]["duration"] = categoryDuration + duration;
-      categoryTotals[categoryId]["strength"] = categoryStrength + strength;
-      categoryTotals[categoryId]["videos"] = categoryVideos;
-    }
-  });
-  localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
-  localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
-
-  return categoryTotals;
-}
-
-// Calculate stats for each category given totals for each category
-function calcCategoryStats(categoryTotals) {
-  let categoryStats = [];
-  for (let categoryId in categoryTotals) {
-    if (categoryTotals.hasOwnProperty(categoryId)) {
-      let totals = categoryTotals[categoryId];
-      let shortName = totals["shortName"];
-      let name = totals["name"];
-      let root = totals["root"];
-      let leaf = totals["leaf"];
-      let views = parseInt(totals["views"]);
-      let likes = parseInt(totals["likes"]);
-      let duration = parseInt(totals["duration"]);
-      let totalStrength = parseFloat(totals["strength"]);
-      let videos = totals["videos"];
-      let numVideos = videos.length;
-      let avgViews = views / numVideos;
-      let avgLikes = likes / numVideos;
-      let avgDuration = duration / numVideos;
-      let avgStrength = totalStrength / numVideos;
-      categoryStats.push({
-        "avgDuration": avgDuration,
-        "avgLikes": avgLikes,
-        "avgViews": avgViews,
-        "categoryId": categoryId,
-        "duration": duration,
-        "leaf": leaf,
-        "likes": likes,
-        "name": name,
-        "root": root,
-        "shortName": shortName,
-        "totalStrength": totalStrength,
-        "avgStrength": avgStrength,
-        "videos": videos,
-        "views": views
-      });
-    }
-  }
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
-
-  return categoryStats;
-}
-
 /**
  * Updates the data used in the dashboards then reloads the dashboards.
  * Data is taken from the input sheet and the YouTube APIs
@@ -504,7 +422,7 @@ function loadTopTenDashboard() {
 function loadUserFeedbackDashboard() {
   return requestSpreadsheetData("Input Data", "User Feedback List")
     .then(feedbackSheet => {
-      const statsByVideoId = lsSet("statsByVideoId");
+      const statsByVideoId = lsGet("statsByVideoId");
       let output = ``;
       for (let i = 1; i < feedbackSheet.length; i++) {
         const videoId = feedbackSheet[i][0];
