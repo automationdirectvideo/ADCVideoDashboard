@@ -235,6 +235,7 @@ function displayRealTimeStats(stats) {
     avgDurationOdometer.innerHTML = avgDurationCumulative;
     avgDurationOdometer.value = stats.cumulative.averageViewDuration;
     calcAvgVideoDuration(stats.cumulative.averageViewDuration);
+    return Promise.resolve("Displayed Real Time Stats Dashboard");
   }
 }
 
@@ -561,6 +562,7 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
     ],
   ];
   categoryGraphData = {};
+  let numErrors = 0;
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
     try {
@@ -579,182 +581,11 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
       const errorMsg = `There was an error initiating graph: ${graphId} - `;
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      numErrors++;
     }
   }
-}
-
-function displayCardPerformanceCharts(cardData) {
-  cardData.shift(); // Remove the headers from the sheet
-
-  let months = [];
-  let cardImpressions = [];
-  let cardCTR = [];
-  let cardTeaserImpressions = [];
-  let cardTeaserCTR = [];
-
-  // If the last month has no data (all zeros), omit it from the graph
-  let numMonths = cardData.length;
-  let lastMonth = cardData[cardData.length - 1];
-  if (lastMonth[1] == 0 && lastMonth[3] == 0) {
-    numMonths--;
-  }
-
-  for (var i = 0; i < numMonths; i++) {
-    months.push(cardData[i][0]);
-    cardImpressions.push(cardData[i][1]);
-    cardCTR.push(cardData[i][2] * 100);
-    cardTeaserImpressions.push(cardData[i][3]);
-    cardTeaserCTR.push(cardData[i][4] * 100);
-  }
-
-  var impressionsTrace = {
-    "x": months,
-    "y": cardImpressions,
-    "type": "bar",
-    "hovertemplate": "%{y} Impressions<extra></extra>",
-    "name": "Card Impressions"
-  };
-
-  var ctrTrace = {
-    "x": months,
-    "y": cardCTR,
-    "type": "scatter",
-    "hovertemplate": "%{y} Click Rate<extra></extra>",
-    "line": {
-      "width": 4,
-    },
-    "name": "Card Click Rate",
-    "yaxis": "y2"
-  };
-
-  var teaserImpressionsTrace = {
-    "x": months,
-    "y": cardTeaserImpressions,
-    "type": "bar",
-    "hovertemplate": "%{y:,g} Teaser Impressions<extra></extra>",
-    "name": "Card Teaser Impressions"
-  };
-
-  var teaserCTRTrace = {
-    "x": months,
-    "y": cardTeaserCTR,
-    "type": "scatter",
-    "hovertemplate": "%{y} Teaser Click Rate<extra></extra>",
-    "line": {
-      "width": 4,
-    },
-    "name": "Card Teaser Click Rate",
-    "yaxis": "y2"
-  };
-
-  var cardTraces = [impressionsTrace, ctrTrace];
-  var cardTeaserTraces = [teaserImpressionsTrace, teaserCTRTrace];
-
-  var graphHeight = 0.4159;
-  var graphWidth = 0.9192;
-  var teaserGraphWidth = 0.9528;
-  var height = graphHeight * document.documentElement.clientHeight;
-  var width = graphWidth * document.documentElement.clientWidth;
-  var teaserWidth = teaserGraphWidth * document.documentElement.clientWidth;
-  var legendFontSize =
-    Math.floor(0.017 * document.documentElement.clientHeight);
-  var tickSize = Math.floor(0.0094 * document.documentElement.clientWidth);
-  var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
-  var titleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
-  var topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
-  var bottomMargin = Math.floor(0.0104 * document.documentElement.clientWidth);
-
-  var cardLayout = {
-    height: height,
-    width: width,
-    legend: {
-      bgcolor: "#eeeeee",
-      font: {
-        size: legendFontSize
-      },
-      x: 1.1,
-      y: 0.5
-    },
-    margin: {
-      b: bottomMargin,
-      t: topMargin
-    },
-    title: {
-      font: {
-        size: titleSize
-      },
-      text: "Card Performance"
-    },
-    xaxis: {
-      automargin: true,
-      fixedrange: true,
-      hoverformat: "%b %Y",
-      tickformat: "%b<br>%Y",
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Month"
-      }
-    },
-    yaxis: {
-      automargin: true,
-      fixedrange: true,
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Card Impressions"
-      }
-    },
-    yaxis2: {
-      automargin: true,
-      fixedrange: true,
-      showgrid: false,
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Card Click Rate"
-      },
-      overlaying: "y",
-      side: "right",
-      ticksuffix: "%",
-      zeroline: false
-    }
-  };
-
-  let config = {
-    scrollZoom: false,
-    displayModeBar: false,
-  }
-
-  let teaserLayout = JSON.parse(JSON.stringify(cardLayout));
-  teaserLayout.title.text = "Card Teaser Performance";
-  teaserLayout.yaxis.title.text = "Card Teaser Impressions";
-  teaserLayout.width = teaserWidth;
-
-  let cardTeaserGraph = "card-teaser-performance-graph";
-  let cardGraph = "card-performance-graph";
-
-  Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
-  recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
-    graphHeight, graphWidth);
-  recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
-
-  Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
-  recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
-    graphWidth);
-  recordGraphSize(cardGraph, graphHeight, graphWidth);
+  return Promise.resolve("Displayed Category Views Area Charts with " +
+    numErrors + " errors");
 }
 
 function displayTopCategoriesGraphOne(categoryStats) {
@@ -1379,67 +1210,6 @@ function calcVideographerStats() {
   return videographerStats;
 }
 
-// Displays thumbnails with arrows on Top Ten Dashboard
-function displayTopTenThumbnails(topTenSheet) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  let output = ``;
-  for (var j = 1; j < topTenSheet.length; j++) {
-    for (var i = 0; i < 11; i++) {
-      if (i == 0) {
-        output += `<div class="column-title"><h4>${topTenSheet[j][i]}</h4></div>`;
-      } else {
-        var videoId = topTenSheet[j][i];
-        var views = numberWithCommas(parseInt(topTenSheet[j][i + 10]));
-        var minutesWatched = numberWithCommas(parseInt(topTenSheet[j][i + 20]));
-        var videoTitle = "YouTube Video ID: " + videoId;
-        if (statsByVideoId && statsByVideoId[videoId]) {
-          videoTitle = statsByVideoId[videoId]["title"];
-        }
-        videoTitle += ` | ${views} views & ${minutesWatched} minutes watched`;
-        output += `
-          <div class="top-ten-thumbnail-holder column-thumbnail">
-            <a href="https://youtu.be/${videoId}" target="_blank"
-                alt="${videoTitle}">
-              <img class="top-ten-thumbnail"
-                  src="https://i.ytimg.com/vi/${videoId}/mqdefault.jpg" 
-                  alt="thumbnail" title="${videoTitle}">`;
-        if (j != 1) {
-          var currPosition = i;
-          var prevPosition = topTenSheet[j - 1].indexOf(videoId);
-          if (prevPosition == -1) {
-            // Add + up arrow
-            output += `
-              <span class="oi oi-arrow-thick-top arrow-green"></span>
-              <span class="arrow-text-black">+</span>
-            `;
-          } else if (prevPosition != currPosition) {
-            var change = prevPosition - currPosition;
-            if (change < 0) {
-              // Add down arrow
-              output += `
-                <span class="oi oi-arrow-thick-bottom arrow-red"></span>
-                <span class="arrow-text-white">${Math.abs(change)}</span>
-              `;
-            } else if (change > 0) {
-              // Add up arrow
-              output += `
-                <span class="oi oi-arrow-thick-top arrow-green"></span>
-                <span class="arrow-text-black">${change}</span>
-              `;
-            }
-          }
-        }
-        output += `</a></div>`;
-      }
-    }
-  }
-  let thumbnailContainer =
-    document.getElementById("top-ten-thumbnail-container");
-  thumbnailContainer.innerHTML = output;
-  let thumbnailWrapper = document.getElementById("top-ten-thumbnail-wrapper");
-  thumbnailWrapper.scrollLeft = thumbnailWrapper.scrollWidth;
-}
-
 function displayTopVideoTitles(dashboardIds) {
   let videoData = {};
   for (const videoId in dashboardIds) {
@@ -1538,63 +1308,6 @@ function displayUploadThumbnails() {
     }
   }
   return Promise.resolve("Displayed Upload Thumbnails");
-}
-
-function displayUserFeedback(feedbackSheet) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  let output = ``;
-  for (var i = 1; i < feedbackSheet.length; i++) {
-    var videoId = feedbackSheet[i][0];
-    var feedbackText = feedbackSheet[i][1];
-    let videoTitle = "YouTube Video ID: " + videoId;
-    if (statsByVideoId && statsByVideoId[videoId]) {
-      videoTitle = statsByVideoId[videoId]["title"];
-    }
-    var thumbnail = `
-      <div class="col-4">
-        <a href="https://youtu.be/${videoId}" target="_blank"
-            alt="${videoTitle}">
-          <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
-              src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
-              alt="thumbnail" title="${videoTitle}">
-        </a>
-      </div>`;
-    var feedback = `
-      <div class="col-8">
-        <h1 class="feedback-text">"${feedbackText}"</h1>
-      </div>
-    `;
-    var spacer = `<div class="col-12"><hr></div>`;
-    if (i % 2 == 0) {
-      output += feedback + thumbnail;
-    } else {
-      output += thumbnail + feedback;
-    }
-    if (i != feedbackSheet.length - 1) {
-      output += spacer;
-    }
-  }
-  let feedbackContainer = document.getElementById("feedback-container");
-  feedbackContainer.innerHTML = output;
-  if (!autoScrollDivs.includes("feedback-wrapper")) {
-    let currentSettings = JSON.parse(localStorage.getItem("settings"));
-    let speed = -1;
-    let index = 0;
-    while (speed == -1 && index <= currentSettings.dashboards.length) {
-      let dashboard = currentSettings.dashboards[index];
-      if (dashboard.name == "top-ten") {
-        speed = dashboard.scrollSpeed;
-      }
-      index++;
-    }
-    if (speed <= 0) {
-      speed = 0;
-    } else {
-      speed = Math.ceil(1000 / speed);
-    }
-    new AutoDivScroll("feedback-wrapper", speed, 1, 1);
-    autoScrollDivs.push("feedback-wrapper");
-  }
 }
 
 function loadVideoStrengthDashboard() {

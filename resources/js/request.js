@@ -1,26 +1,6 @@
 /* Sends requests to API call functions */
 
 
-/* 1000 Thumbnail Dashboard Calls */
-
-// Request number of videos the channel has
-function requestChannelNumVideos() {
-  let request = {
-    part: "statistics",
-    forUsername: "automationdirect"
-  };
-  return gapi.client.youtube.channels.list(request)
-    .then(response => {
-      const numVideos = response.result.items[0].statistics.videoCount;
-      document.getElementById("num-videos").innerText = numVideos;
-    })
-    .catch(err => {
-      const errorMsg = "Unable to get number of channel videos: ";
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
-    });
-}
-
 /* Get All Video Stats Calls */
 
 function getAllVideoStats(videos) {
@@ -104,7 +84,7 @@ function getAllVideoStats(videos) {
       const topTenRequest = getTopTenVideosForCurrMonth();
       return Promise.all([catRequest, videoRequest, topTenRequest]);
     });
-    
+
   function getAnalyticsVideoStats(allVideoStats, videos) {
     let endDate = getTodaysDate();
     let requests = [];
