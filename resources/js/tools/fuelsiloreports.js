@@ -358,28 +358,3 @@ function loadSignedIn() {
   loadingCog.style.display = "";
   displayChannelPlaylists();
 }
-
-/**
- * *Plan for Fuel Silo Reports page
- * 
- * Show a list of all ADC Playlists
- *  Maybe in a table
- * Selecting a playlist causes
- *  Playlists disapear/collapse
- *  Show the playlist title
- *  Show the views over time graph
- *  Perhaps save the graph to a sheet via graphData or actual image
- * 
- * *Technical Steps
- * 
- *  ✔ Request all ADC playlists
- *      Title, thumbnail, description, and playlistId
- *  ✔ Display playlists in a table/list
- *  ✔ Add playlist selector
- *  ✔ Create plotly graph
- *  Research saving images to Google Sheets
- *  Save image/graphData to Google Sheets
- *  Add error container & display error calls
- *  Add loading bar
- * 
- */
