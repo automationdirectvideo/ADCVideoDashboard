@@ -1,15 +1,19 @@
+/**
+ * @fileoverview Creates the error log table
+ */
+
+/**
+ * Gets list of errors from the log Google Sheet and displays them in a table
+ *
+ * @returns {Promise} Status message
+ */
 function loadErrorLog() { 
   return requestSpreadsheetData("Logs", "Error Log")
     .then(errorValues => {
       console.log("ErrorValues: ", errorValues);
       const errorTableBody = document.getElementById("error-table-body");
       let output = ``;
-
-      let columns = {};
-      let columnHeaders = errorValues[0];
-      for (let i = 0; i < columnHeaders.length; i++) {
-        columns[columnHeaders[i]] = i;
-      }
+      const columns = getColumnHeaders(errorValues);
       for (let index = errorValues.length - 1; index >= 1; index--) {
         const error = errorValues[index];
         const time = error[columns["Time"]];
@@ -47,6 +51,9 @@ function loadErrorLog() {
     });
 }
 
+/**
+ * Loads the page once the user has signed into Google
+ */
 function loadSignedIn() {
   const loadingCog = document.getElementById("table-loading");
   loadingCog.style.display = "";
