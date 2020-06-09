@@ -92,15 +92,7 @@ function displayChannelDemographics(response) {
   };
 
   if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-    var currentSettings = JSON.parse(localStorage.getItem("settings"));
-    var theme = "";
-    var index = 0;
-    while (index < currentSettings.dashboards.length && theme == "") {
-      if (currentSettings.dashboards[index].name == "platform") {
-        theme = currentSettings.dashboards[index].theme;
-      }
-      index++;
-    }
+    const theme = getCurrentDashboardTheme("platform");
     if (theme == "dark") {
       layout["plot_bgcolor"] = "#222";
       layout["paper_bgcolor"] = "#222";
@@ -202,15 +194,7 @@ function displayChannelSearchTerms(response) {
     responsive: true
   };
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "platform") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("platform");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -310,15 +294,7 @@ function displayWatchTimeBySubscribedStatus(response) {
     responsive: true
   };
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "platform") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("platform");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -403,15 +379,7 @@ function displayViewsByDeviceType(response) {
     responsive: true
   };
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "platform") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("platform");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -491,15 +459,7 @@ function displayViewsByState(response) {
     responsive: true
   };
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "platform") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("platform");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -594,15 +554,7 @@ function displayViewsByTrafficSource(response) {
     responsive: true
   };
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "platform") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("platform");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -751,15 +703,7 @@ function displayVideoDailyViews(response, dashboardId) {
       responsive: true
     };
 
-    var currentSettings = JSON.parse(localStorage.getItem("settings"));
-    var theme = "";
-    var index = 0;
-    while (index < currentSettings.dashboards.length && theme == "") {
-      if (currentSettings.dashboards[index].name == dashboardId) {
-        theme = currentSettings.dashboards[index].theme;
-      }
-      index++;
-    }
+    const theme = getCurrentDashboardTheme(dashboardId);
     if (theme == "dark") {
       layout["plot_bgcolor"] = "#222";
       layout["paper_bgcolor"] = "#222";
@@ -854,15 +798,7 @@ function displayVideoSearchTerms(response, dashboardId) {
       responsive: true
     };
 
-    var currentSettings = JSON.parse(localStorage.getItem("settings"));
-    var theme = "";
-    var index = 0;
-    while (index < currentSettings.dashboards.length && theme == "") {
-      if (currentSettings.dashboards[index].name == dashboardId) {
-        theme = currentSettings.dashboards[index].theme;
-      }
-      index++;
-    }
+    const theme = getCurrentDashboardTheme(dashboardId);
     if (theme == "dark") {
       layout["plot_bgcolor"] = "#222";
       layout["paper_bgcolor"] = "#222";

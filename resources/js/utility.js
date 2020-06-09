@@ -115,6 +115,25 @@ function getColumnHeaders(sheet) {
 }
 
 /**
+ * Gets the theme of a dashboard from settings
+ *
+ * @param {String} dashboardId The ID of the desired dashboard
+ * @returns {String} The theme of the dashboard
+ */
+function getCurrentDashboardTheme(dashboardId) {
+  const currentSettings = lsGet("settings");
+  let theme = "";
+  let index = 0;
+  while (index < currentSettings.dashboards.length && theme == "") {
+    if (currentSettings.dashboards[index].name == dashboardId) {
+      theme = currentSettings.dashboards[index].theme;
+    }
+    index++;
+  }
+  return theme;
+}
+
+/**
  * Get date from `numDaysAgo` from today in the form YYYY-MM-DD
  *
  * @param {Number} numDaysAgo An integer
