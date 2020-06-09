@@ -1289,8 +1289,8 @@ function displayUploadThumbnails() {
 }
 
 function loadVideoStrengthDashboard() {
-  let statsByVideoId = lsGet("statsByVideoId");
-  let allVideoStats = lsGet("allVideoStats");
+  const statsByVideoId = lsGet("statsByVideoId");
+  const allVideoStats = lsGet("allVideoStats");
   allVideoStats.sort(function (a, b) {
     if (a.strength == b.strength) {
       return b.daysSincePublished - a.daysSincePublished;
@@ -1300,19 +1300,26 @@ function loadVideoStrengthDashboard() {
   });
   let numVideos = 20;
   let output = ``;
+  let graphData = [];
   for (var i = 0; i < numVideos; i++) {
-    var videoId = allVideoStats[i]["videoId"];
-    var strength = Math.round(allVideoStats[i]["strength"] * 100) / 100;
+    const videoStats = allVideoStats[i];
+    const videoId = videoStats["videoId"];
+    const strength = Math.round(videoStats["strength"] * 100) / 100;
     let videoTitle = "YouTube Video ID: " + videoId;
+    let graphId = `video-strength-bars-${i + 1}`;
+    graphData.push({
+      videoStats: videoStats,
+      graphId: graphId
+    });
     if (statsByVideoId && statsByVideoId[videoId]) {
       videoTitle = statsByVideoId[videoId]["title"];
     }
 
     output += `
       <div class="col-1">
-        <h1>${i + 1}.</h1>
+        <h1 style="font-size:5rem;">${i + 1}.</h1>
       </div>
-      <div class="col-4">
+      <div class="col-3">
         <a href="https://youtu.be/${videoId}" target="_blank"
             alt="${videoTitle}">
           <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
@@ -1320,12 +1327,16 @@ function loadVideoStrengthDashboard() {
               alt="thumbnail" title="${videoTitle}">
         </a>
       </div>
-      <div class="col-7">
+      <div class="col-4">
         <h1 class="video-strength-title">${videoTitle}</h1>
+        <br>
         <h2 class="video-strength-value">Strength: ${strength}</h2>
       </div>
+      <div class="col-4">
+        <div class="h-100 w-100 graph-container" id="${graphId}"></div>
+      </div>
     `;
-    var spacer = `
+    const spacer = `
       <div class="col-12">
         <hr style="border-top:0.25rem solid rgba(0,0,0,.3);">
       </div>
@@ -1337,6 +1348,12 @@ function loadVideoStrengthDashboard() {
   let videoStrengthContainer =
     document.getElementById("video-strength-container");
   videoStrengthContainer.innerHTML = output;
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    for (let index = 0; index < graphData.length; index++) {
+      const graph = graphData[index];
+      displayVideoStrengthBars(graph.videoStats, graph.graphId);
+    }
+  }
   if (!autoScrollDivs.includes("video-strength-wrapper")) {
     let currentSettings = lsGet("settings");
     let speed = -1;
@@ -1356,6 +1373,120 @@ function loadVideoStrengthDashboard() {
     new AutoDivScroll("video-strength-wrapper", speed, 1, 1);
     autoScrollDivs.push("video-strength-wrapper");
   }
+}
+
+function displayVideoStrengthBars(videoStats, graphId) {
+  const views = videoStats.z.views;
+  const avgViewsPerDay = videoStats.z.avgViewsPerDay;
+  const comments = videoStats.z.comments;
+  const likesPerView = videoStats.z.likesPerView;
+  const dislikesPerView = videoStats.z.dislikesPerView;
+  const subscribersGained = videoStats.z.subscribersGained;
+  const avgViewPercentage = videoStats.z.avgViewPercentage;
+  const labels = [
+    "Views",
+    "Average<br>Views<br>Per Day",
+    "Comments",
+    "Likes<br>Per View",
+    "Subscribers<br>Gained",
+    "Average<br>View<br>Percentage",
+    "Dislikes<br>Per View"
+  ];
+  const values = [
+    views,
+    avgViewsPerDay,
+    comments,
+    likesPerView,
+    subscribersGained,
+    avgViewPercentage,
+    dislikesPerView * -1
+  ];
+  const colors = [];
+  const green = "rgb(50,171,96)";
+  const red = "rgb(255,0,0)";
+  for (let index = 0; index < values.length; index++) {
+    const value = values[index];
+    if (value >= 0) {
+      colors.push(green);
+    } else {
+      colors.push(red);
+    }
+  }
+
+  const graphHeight = 0.3673;
+  const graphWidth = 0.2864;
+  const height = graphHeight * document.documentElement.clientHeight;
+  const width = graphWidth * document.documentElement.clientWidth;
+  const titleFontSize =
+    Math.floor(0.0114 * document.documentElement.clientWidth);
+  const xTickFontSize =
+    Math.floor(0.0067 * document.documentElement.clientWidth);
+  const yTickFontSize =
+    Math.floor(0.0093 * document.documentElement.clientWidth);
+  const axisTitleSize =
+    Math.floor(0.0093 * document.documentElement.clientWidth);
+  const topMargin = titleFontSize + 10;
+
+  const data = [{
+    x: labels,
+    y: values,
+    marker: {
+      color: colors,
+    },
+    type: "bar",
+  }];
+  const layout = {
+    height: height,
+    width: width,
+    hovermode: false,
+    margin: {
+      b: 0,
+      l: 0,
+      r: 0,
+      t: topMargin
+    },
+    paper_bgcolor: "rgb(255,250,250)",
+    plot_bgcolor: "rgb(255,250,250)",
+    title: {
+      font: {
+        size: titleFontSize
+      },
+      text: "Contributions to Video Strength"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickangle: 0,
+      tickfont: {
+        size: xTickFontSize
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      gridcolor: "#aaaaaa",
+      tickprefix: " ",
+      tickfont: {
+        size: yTickFontSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Contribution"
+      },
+      zerolinewidth: 2
+    }
+  };
+  const config = {
+    scrollZoom: false,
+    displayModeBar: false,
+    staticPlot: true,
+    responsive: true
+  }
+  Plotly.newPlot(graphId, data, layout, config);
+  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
+  recordGraphSize(graphId, graphHeight, graphWidth);
 }
 
 // Updates total views, likes, etc. for each category given all video stats

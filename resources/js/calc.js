@@ -1120,6 +1120,18 @@ function calcVideoStrength(allVideoStats) {
       (1 * avgViewPercentage) -
       (0.5 * dislikesPerView);
     allVideoStats[index].strength = strength;
+    allVideoStats[index].z = {
+      views: views,
+      avgViewsPerDay: avgViewsPerDay,
+      duration: duration,
+      comments: comments,
+      likesPerView: likesPerView,
+      dislikesPerView: dislikesPerView,
+      subscribersGained: subscribersGained,
+      avgViewDuration: avgViewDuration,
+      avgViewPercentage: avgViewPercentage,
+      daysSincePublished: daysSincePublished
+    };
   }
   allVideoStats.sort(function (a,b) {
     return a.strength - b.strength;

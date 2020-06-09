@@ -108,6 +108,7 @@ const defaultSettings =
       "name": "video-strength",
       "icon": "fas fa-sort-numeric-down",
       "index": 14,
+      "scrollSpeed": 30,
       "theme": "light",
       "title": "Video Strength Dashboard"
     }
