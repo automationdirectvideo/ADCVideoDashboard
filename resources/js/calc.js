@@ -260,7 +260,7 @@ function getVideoStats() {
         const dislikeCount = parseInt(video[columns["Dislikes"]]);
         const duration = parseInt(video[columns["Duration (sec)"]]);
         const commentCount = parseInt(video[columns["Comments"]]);
-        const publishDate = video[columns["Publish Date"]].substr(0, 10);
+        const publishDate = video[columns["YouTube Publish Date"]].substr(0, 10);
         // Removes whitespace
         const categories = video[columns["Categories"]].replace(/\s/g, '');
         const createdBy = video[columns["Created By"]];
