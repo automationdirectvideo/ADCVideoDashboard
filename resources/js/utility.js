@@ -1,4 +1,6 @@
-/* Helpful utility functions */
+/**
+ * @fileoverview Useful utility functions that can be used by many pages.
+ */
 
 /**
  * Capitalize the first letter of a string
