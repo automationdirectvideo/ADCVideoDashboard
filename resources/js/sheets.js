@@ -1,12 +1,5 @@
 /* Handles recording data from Google Sheets and saving data to Google Sheets */
 
-function a() {
-  return requestSpreadsheetData("Stats", "Category Views By Year")
-    .then(sheetValues => {
-      recordYearlyCategoryViews(sheetValues);
-    });
-}
-
 function recordYearlyCategoryViews(sheetValues) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let categoryTraces = {};
