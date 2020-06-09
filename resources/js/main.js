@@ -1731,7 +1731,13 @@ function showUpdatingText() {
 if (!lsGet("settings")) {
   lsSet("settings", defaultSettings);
 }
-var currentSettings = lsGet("settings");
+let currentSettings = lsGet("settings");
+const settingsVersion = currentSettings.version;
+const defaultVersion = defaultSettings.version;
+if (settingsVersion == undefined || defaultVersion > settingsVersion) {
+  lsSet("settings", defaultSettings);
+  currentSettings = defaultSettings;
+}
 //console.log("Current Settings: ", currentSettings);
 
 

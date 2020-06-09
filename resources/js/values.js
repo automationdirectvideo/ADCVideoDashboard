@@ -113,7 +113,8 @@ const defaultSettings =
       "title": "Video Strength Dashboard"
     }
   ],
-  "numEnabled": 15
+  "numEnabled": 15,
+  "version": 1
 };
 
 const categoryColors = {
