@@ -1473,34 +1473,36 @@ function calcCategoryStats(categoryTotals) {
 
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
   automargin) {
-  totalNumGraphs = document.querySelectorAll('.graph-container').length;
-  let graphData = JSON.parse(localStorage.getItem("graphData"));
-  if (!automargin) {
-    automargin = "None";
-  }
-  graphData[graphId] = {
-    "data": data,
-    "layout": layout,
-    "config": config,
-    "graphHeight": graphHeight,
-    "graphWidth": graphWidth,
-    "automargin": automargin,
-  };
-  if (Object.keys(graphData).length == totalNumGraphs) {
-    localStorage.setItem("graphData", JSON.stringify(graphData));
-    if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      saveGraphDataToSheets();
+  let totalNumGraphs = document.querySelectorAll('.graph-container').length;
+  let graphData = lsGet("graphData");
+  if (graphData) {
+    if (!automargin) {
+      automargin = "None";
     }
-  } else {
-    localStorage.setItem("graphData", JSON.stringify(graphData));
+    graphData[graphId] = {
+      "data": data,
+      "layout": layout,
+      "config": config,
+      "graphHeight": graphHeight,
+      "graphWidth": graphWidth,
+      "automargin": automargin,
+    };
+    if (Object.keys(graphData).length == totalNumGraphs) {
+      lsSet("graphData", graphData);
+      if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        saveGraphDataToSheets();
+      }
+    } else {
+      lsSet("graphData", graphData);
+    }
   }
 }
 
 function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
-  if (!localStorage.getItem("graphSizes")) {
-    localStorage.setItem("graphSizes", JSON.stringify({}));
+  if (!lsGet("graphSizes")) {
+    lsGet("graphSizes", {});
   }
-  let graphSizes = JSON.parse(localStorage.getItem("graphSizes"));
+  let graphSizes = lsGet("graphSizes");
   graphSizes[graphId] = {
     height: graphHeight,
     width: graphWidth
@@ -1508,29 +1510,31 @@ function recordGraphSize(graphId, graphHeight, graphWidth, automargin) {
   if (automargin) {
     graphSizes[graphId]["automargin"] = automargin;
   }
-  localStorage.setItem("graphSizes", JSON.stringify(graphSizes));
+  lsSet("graphSizes", graphSizes);
 }
 
-// Empties localStorage.graphData
+// Empties localStorage.graphData and .graphSizes
 function resetGraphData() {
-  localStorage.setItem("graphData", "{}");
-  localStorage.setItem("graphSizes", "{}");
+  lsSet("graphData", {});
+  lsSet("graphSizes", {});
 }
 
 function resizeGraphs() {
-  //this.//console.log("Resize");
-  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
-  let viewportHeight = document.documentElement.clientHeight;
-  let viewportWidth = document.documentElement.clientWidth;
-  for (var graphId in graphSizes) {
-    let height = graphSizes[graphId].height * viewportHeight;
-    let width = graphSizes[graphId].width * viewportWidth;
-    let update = {
-      height: height,
-      width: width
-    };
-    // console.log("Resizing graph: " + graphId);
-    Plotly.relayout(graphId, update);
+  const graphSizes = lsGet("graphSizes");
+  const viewportHeight = document.documentElement.clientHeight;
+  const viewportWidth = document.documentElement.clientWidth;
+  for (const graphId in graphSizes) {
+    if (graphSizes.hasOwnProperty(graphId)) {
+      const graph = graphSizes[graphId];
+      const height = graph.height * viewportHeight;
+      const width = graph.width * viewportWidth;
+      const update = {
+        height: height,
+        width: width
+      };
+      // console.log("Resizing graph: " + graphId);
+      Plotly.relayout(graphId, update);
+    }
   }
 }
 
