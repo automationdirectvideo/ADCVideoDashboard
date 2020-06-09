@@ -75,7 +75,7 @@ function getAllVideoStats(videos) {
     .then(response => {
       allVideoStats = response;
       allVideoStats = calcVideoStrength(allVideoStats);
-      localStorage.setItem("allVideoStats", JSON.stringify(allVideoStats));
+      lsSet("allVideoStats", allVideoStats);
       let categoryTotals = updateCategoryTotals(allVideoStats);
       let categoryStats = calcCategoryStats(categoryTotals);
 
@@ -190,8 +190,8 @@ function requestVideoViewsByYear(uploads, year) {
     .then(response => {
       const allVideoViews = [].concat.apply([], response);
       console.log(`${year} Views by Video:`, allVideoViews);
-      const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-      const categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+      const statsByVideoId = lsGet("statsByVideoId");
+      const categoryStats = lsGet("categoryStats");
       let categoryYearlyTotals = {};
       for (let i = 0; i < categoryStats.length; i++) {
         const categoryId = categoryStats[i]["categoryId"];
@@ -425,7 +425,7 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
     .then(response => {
       console.log("Most Watched Videos", response);
       const videos = response.result.rows;
-      const uploads = JSON.parse(localStorage.getItem("uploads"));
+      const uploads = lsGet("uploads");
       if (month == undefined) {
         throw new Error("Month is undefined");
       }
@@ -645,7 +645,7 @@ function updateSheetData(sheetName, range, body) {
 /* Multiple Requests Functions */
 
 function getYearlyCategoryViews(year) {
-  const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  const statsByVideoId = lsGet("statsByVideoId");
   let uploadsByYear = [];
   for (const videoId in statsByVideoId) {
     if (statsByVideoId.hasOwnProperty(videoId)) {
@@ -739,7 +739,7 @@ function realTimeStatsCalls() {
         "month": response[1],
         "cumulative": response[2]
       };
-      localStorage.setItem("realTimeStats", JSON.stringify(realTimeStats));
+      lsSet("realTimeStats", realTimeStats);
       displayRealTimeStats(realTimeStats);
       return saveRealTimeStatsToSheets(realTimeStats);
     })

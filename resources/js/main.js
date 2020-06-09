@@ -8,7 +8,7 @@ function loadDashboards() {
     showLoadingText();
     resetGraphData();
     if (isSignedIn) {
-      let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+      let categoryStats = lsGet("categoryStats");
       if (!categoryStats) {
         getCategoryAndVideoStats()
           .then(response => {
@@ -155,10 +155,8 @@ function initializeUpdater() {
 
 // Update odometers in real time stats dashboard
 function updateRealTimeStats(updateCount) {
-  let secondsPerIncrement =
-    JSON.parse(localStorage.getItem("secondsPerIncrement"));
-  let odometerCategories =
-    JSON.parse(localStorage.getItem("odometerCategories"));
+  let secondsPerIncrement = lsGet("secondsPerIncrement");
+  let odometerCategories = lsGet("odometerCategories");
   for (var key in secondsPerIncrement) {
     if (secondsPerIncrement.hasOwnProperty(key)) {
       if (updateCount % secondsPerIncrement[key] == 0) {
@@ -176,7 +174,7 @@ function updateRealTimeStats(updateCount) {
 
 // Initialize real time stats in real time stats dashboard
 function displayRealTimeStats(stats) {
-  stats = stats || JSON.parse(localStorage.getItem("realTimeStats"));
+  stats = stats || lsGet("realTimeStats");
   if (stats.cumulative && stats.month && stats.today) {
     var secondsPerIncrement = {};
     for (const key in stats.today) {
@@ -184,8 +182,7 @@ function displayRealTimeStats(stats) {
         secondsPerIncrement[key] = Math.round(43200 / stats.today[key]);
       }
     }
-    localStorage.setItem("secondsPerIncrement",
-      JSON.stringify(secondsPerIncrement));
+    lsSet("secondsPerIncrement", secondsPerIncrement);
 
     let startHour = new Date();
     startHour.setHours(6, 0, 0, 0);
@@ -212,8 +209,7 @@ function displayRealTimeStats(stats) {
         "netSubscribersGained": "stat-subs-month"
       }
     };
-    localStorage.setItem("odometerCategories",
-      JSON.stringify(odometerCategories));
+    lsSet("odometerCategories", odometerCategories);
 
     // Load data into odometers
     ["cumulative", "month"].forEach(category => {
@@ -261,7 +257,7 @@ function loadIntroAnimation() {
 }
 
 function calcAvgVideoDuration() {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  let statsByVideoId = lsGet("statsByVideoId");
   if (statsByVideoId) {
     let numVideos = 0;
     let totalDuration = 0;
@@ -286,8 +282,8 @@ function calcAvgVideoDuration() {
 }
 
 function getTopVideoByCategory(categoryId, type, numVideos) {
-  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  let categoryStats = lsGet("categoryStats");
+  let allVideoStats = lsGet("allVideoStats");
   allVideoStats.sort(function (a, b) {
     return parseInt(b[type]) - parseInt(a[type]);
   });
@@ -589,8 +585,7 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
 }
 
 function displayTopCategoriesGraphOne(categoryStats) {
-  categoryStats = categoryStats ||
-    JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats = categoryStats || lsGet("categoryStats");
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   var total = 0;
@@ -797,15 +792,7 @@ function displayTopCategoriesGraphOne(categoryStats) {
 
   var graphId = "product-categories-chart-1";
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "product-categories") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("product-categories");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -824,8 +811,7 @@ function displayTopCategoriesGraphOne(categoryStats) {
 }
 
 function displayTopCategoriesGraphTwo(categoryStats) {
-  categoryStats = categoryStats ||
-    JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats = categoryStats || lsGet("categoryStats");
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   var graphHeight = 0.8583;
@@ -1002,15 +988,7 @@ function displayTopCategoriesGraphTwo(categoryStats) {
 
   var graphId = "product-categories-chart-2";
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "product-categories") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("product-categories");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -1029,8 +1007,7 @@ function displayTopCategoriesGraphTwo(categoryStats) {
 }
 
 function displayTopCategoriesGraphThree(categoryStats) {
-  categoryStats = categoryStats ||
-    JSON.parse(localStorage.getItem("categoryStats"));
+  categoryStats = categoryStats || lsGet("categoryStats");
   var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   let minStrength = 1;
@@ -1160,15 +1137,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
 
   var graphId = "product-categories-chart-3";
 
-  var currentSettings = JSON.parse(localStorage.getItem("settings"));
-  var theme = "";
-  var index = 0;
-  while (index < currentSettings.dashboards.length && theme == "") {
-    if (currentSettings.dashboards[index].name == "product-categories") {
-      theme = currentSettings.dashboards[index].theme;
-    }
-    index++;
-  }
+  const theme = getCurrentDashboardTheme("product-categories");
   if (theme == "dark") {
     layout["plot_bgcolor"] = "#222";
     layout["paper_bgcolor"] = "#222";
@@ -1187,8 +1156,8 @@ function displayTopCategoriesGraphThree(categoryStats) {
 }
 
 function calcVideographerStats() {
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  let allVideoStats = lsGet("allVideoStats");
+  let statsByVideoId = lsGet("statsByVideoId");
   let videographerStats = {};
   allVideoStats.forEach(videoStats => {
     const videoId = videoStats.videoId;
@@ -1225,7 +1194,7 @@ function displayTopVideoTitles(dashboardIds) {
     if (dashboardIds.hasOwnProperty(videoId)) {
       const dashboardId = dashboardIds[videoId];
 
-      const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+      const statsByVideoId = lsGet("statsByVideoId");
       let title = document.getElementById(dashboardId + "-title");
       title.innerHTML = statsByVideoId[videoId]["title"];
       const duration = statsByVideoId[videoId]["duration"];
@@ -1270,10 +1239,10 @@ function displayTopVideoTitles(dashboardIds) {
 
 // Load thumbnails in 1000 thumbnail dashboard
 function displayUploadThumbnails() {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  let statsByVideoId = lsGet("statsByVideoId");
   var carouselInner = document.getElementsByClassName("carousel-inner")[0];
   if (carouselInner.children.thumbnails) {
-    let uploads = JSON.parse(localStorage.getItem("uploads"));
+    let uploads = lsGet("uploads");
     if (!uploads) {
       const noUploadsErr = new Error("Uploads does not exist");
       recordError(noUploadsErr);
@@ -1297,7 +1266,7 @@ function displayUploadThumbnails() {
     thumbnailContainer.innerHTML = uploadThumbnails;
 
     if (!autoScrollDivs.includes("thumbnail-wrapper")) {
-      let currentSettings = JSON.parse(localStorage.getItem("settings"));
+      let currentSettings = lsGet("settings");
       let speed = -1;
       let index = 0;
       while (speed == -1 && index <= currentSettings.dashboards.length) {
@@ -1320,8 +1289,8 @@ function displayUploadThumbnails() {
 }
 
 function loadVideoStrengthDashboard() {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  let allVideoStats = JSON.parse(localStorage.getItem("allVideoStats"));
+  let statsByVideoId = lsGet("statsByVideoId");
+  let allVideoStats = lsGet("allVideoStats");
   allVideoStats.sort(function (a, b) {
     if (a.strength == b.strength) {
       return b.daysSincePublished - a.daysSincePublished;
@@ -1369,7 +1338,7 @@ function loadVideoStrengthDashboard() {
     document.getElementById("video-strength-container");
   videoStrengthContainer.innerHTML = output;
   if (!autoScrollDivs.includes("video-strength-wrapper")) {
-    let currentSettings = JSON.parse(localStorage.getItem("settings"));
+    let currentSettings = lsGet("settings");
     let speed = -1;
     let index = 0;
     while (speed == -1 && index <= currentSettings.dashboards.length) {
@@ -1391,8 +1360,8 @@ function loadVideoStrengthDashboard() {
 
 // Updates total views, likes, etc. for each category given all video stats
 function updateCategoryTotals(allVideoStats) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
-  let categoryTotals = JSON.parse(localStorage.getItem("categoryTotals"));
+  let statsByVideoId = lsGet("statsByVideoId");
+  let categoryTotals = lsGet("categoryTotals");
 
   allVideoStats.forEach(videoInfo => {
     let videoId = videoInfo.videoId;
@@ -1422,8 +1391,8 @@ function updateCategoryTotals(allVideoStats) {
       categoryTotals[categoryId]["videos"] = categoryVideos;
     }
   });
-  localStorage.setItem("categoryTotals", JSON.stringify(categoryTotals));
-  localStorage.setItem("statsByVideoId", JSON.stringify(statsByVideoId));
+  lsSet("categoryTotals", categoryTotals);
+  lsSet("statsByVideoId", statsByVideoId);
 
   return categoryTotals;
 }
@@ -1466,7 +1435,7 @@ function calcCategoryStats(categoryTotals) {
       });
     }
   }
-  localStorage.setItem("categoryStats", JSON.stringify(categoryStats));
+  lsSet("categoryStats", categoryStats);
 
   return categoryStats;
 }
@@ -1595,7 +1564,7 @@ function displayGraphError(graphId, err) {
 }
 
 function fixGraphMargins() {
-  let graphSizes = JSON.parse(this.localStorage.getItem("graphSizes"));
+  let graphSizes = lsGet("graphSizes");
   for (var graphId in graphSizes) {
     let automargin = graphSizes[graphId]["automargin"];
     if (automargin) {
@@ -1711,10 +1680,10 @@ function showUpdatingText() {
 }
 
 // Get current settings
-if (!localStorage.getItem("settings")) {
-  localStorage.setItem("settings", JSON.stringify(defaultSettings));
+if (!lsGet("settings")) {
+  lsSet("settings", defaultSettings);
 }
-var currentSettings = JSON.parse(localStorage.getItem("settings"));
+var currentSettings = lsGet("settings");
 //console.log("Current Settings: ", currentSettings);
 
 

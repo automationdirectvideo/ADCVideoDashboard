@@ -1,7 +1,7 @@
 /* Handles recording data from Google Sheets and saving data to Google Sheets */
 
 function recordYearlyCategoryViews(sheetValues) {
-  let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
+  let categoryStats = lsGet("categoryStats");
   let categoryTraces = {};
   let years = [];
   for (var row = 1; row < sheetValues.length; row += 2) {
@@ -153,7 +153,7 @@ function saveVideoStatsToSheets(allVideoStats) {
       "Likes Per View", "Dislikes Per View"
     ]
   ];
-  const statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
+  const statsByVideoId = lsGet("statsByVideoId");
   for (var i = 0; i < allVideoStats.length; i++) {
     var videoId = allVideoStats[i]["videoId"];
     var row = [
@@ -192,7 +192,7 @@ function saveVideoStatsToSheets(allVideoStats) {
 function saveGraphDataToSheets(graphData, sheetName) {
   var removeItem = false;
   if (graphData == undefined) {
-    graphData = JSON.parse(localStorage.getItem("graphData"));
+    graphData = lsGet("graphData");
     var removeItem = true;
   }
   sheetName = sheetName || "Graph Data";
