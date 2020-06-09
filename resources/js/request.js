@@ -4,13 +4,12 @@
 /* Get All Video Stats Calls */
 
 function getAllVideoStats(videos) {
-  let statsByVideoId = JSON.parse(localStorage.getItem("statsByVideoId"));
   let requests = [];
   for (let i = 0; i < videos.length; i += 50) {
     const fiftyVideos = videos.slice(i, i + 50);
     const fiftyVideosStr = fiftyVideos.join(",");
     const gapiRequest = {
-      "part": "statistics,contentDetails",
+      "part": "snippet,statistics,contentDetails",
       "id": fiftyVideosStr
     };
     const request = gapi.client.youtube.videos.list(gapiRequest)
@@ -34,7 +33,7 @@ function getAllVideoStats(videos) {
             likesPerView = likeCount / viewCount;
             dislikesPerView = dislikeCount / viewCount;
           }
-          const publishDate = statsByVideoId[videoId].publishDate;
+          const publishDate = video.snippet.publishedAt.substr(0, 10);
           const daysSincePublished = getNumberDaysSince(publishDate);
           let avgViewsPerDay = viewCount;
           if (daysSincePublished != 0) {
@@ -50,7 +49,8 @@ function getAllVideoStats(videos) {
             "comments": commentCount,
             "duration": duration,
             "daysSincePublished": daysSincePublished,
-            "avgViewsPerDay": avgViewsPerDay
+            "avgViewsPerDay": avgViewsPerDay,
+            "publishDate": publishDate
           });
         }
         // Return for post-processing of the data elsewhere

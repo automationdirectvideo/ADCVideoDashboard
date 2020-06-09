@@ -147,8 +147,8 @@ function saveCategoryYearlyStatsToSheets(categoryYearlyTotals, year) {
 function saveVideoStatsToSheets(allVideoStats) {
   var values = [
     ["Video ID", "Title", "Views", "Likes", "Dislikes", "Duration (sec)",
-      "Comments", "Publish Date", "Categories", "Created By", "Strength",
-      "Average View Duration", "Average View Percentage",
+      "Comments", "YouTube Publish Date", "Categories", "Created By",
+      "Strength", "Average View Duration", "Average View Percentage",
       "Average Views Per Day", "Days Since Published", "Subscribers Gained",
       "Likes Per View", "Dislikes Per View"
     ]
@@ -164,7 +164,7 @@ function saveVideoStatsToSheets(allVideoStats) {
       allVideoStats[i]["dislikes"],
       statsByVideoId[videoId]["duration"],
       allVideoStats[i]["comments"],
-      statsByVideoId[videoId]["publishDate"],
+      allVideoStats[i]["publishDate"],
       statsByVideoId[videoId]["categories"].join(","),
       statsByVideoId[videoId]["createdBy"],
       allVideoStats[i]["strength"],
