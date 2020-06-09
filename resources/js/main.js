@@ -1796,8 +1796,6 @@ document.addEventListener("keyup", function (e) {
     goToCarouselItem(14);
   } else if (e.key.toUpperCase() == "N") {
     swapNormalCharts();
-  } else if (e.key.toUpperCase() == "R") {
-    loadCategoryCharts();
   } else if (e.key.toUpperCase() == "V") {
     swapProductCategoriesGraphs();
   } else if (!isNaN(e.key) && e.which != 32) {

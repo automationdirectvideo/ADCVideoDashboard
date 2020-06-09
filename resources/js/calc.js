@@ -870,9 +870,9 @@ function loadTopVideoStats() {
  * @returns {Promise} Status message
  */
 function loadCategoryCharts() {
-  return requestSpreadsheetData("Stats", "Category Traces")
-    .then(response => {
-      const categoryTraces = JSON.parse(response[0][0]);
+  return requestSpreadsheetData("Stats", "Category Views By Year")
+    .then(viewsSheet => {
+      const categoryTraces = recordYearlyCategoryViews(viewsSheet);
       return displayCategoryViewsAreaCharts(categoryTraces);
     });
 }

@@ -1,5 +1,12 @@
 /* Handles recording data from Google Sheets and saving data to Google Sheets */
 
+function a() {
+  return requestSpreadsheetData("Stats", "Category Views By Year")
+    .then(sheetValues => {
+      recordYearlyCategoryViews(sheetValues);
+    });
+}
+
 function recordYearlyCategoryViews(sheetValues) {
   let categoryStats = JSON.parse(localStorage.getItem("categoryStats"));
   let categoryTraces = {};
@@ -61,8 +68,7 @@ function recordYearlyCategoryViews(sheetValues) {
     }
   }
   categoryTraces["totals"] = yearlyTotals;
-  saveCategoryTracesToSheets(categoryTraces);
-  displayCategoryViewsAreaCharts(categoryTraces);
+  return categoryTraces;
 }
 
 // Saves categoryStats to Google Sheets
@@ -98,18 +104,6 @@ function saveCategoryStatsToSheets(categoryStats) {
       return updateSheetData("Stats", "Category Stats", body);
     });
   return updatePromise;
-}
-
-// Saves categoryTraces for the Category Area Charts to Google Sheets
-function saveCategoryTracesToSheets(categoryTraces) {
-  var body = {
-    values: [
-      [
-        JSON.stringify(categoryTraces)
-      ]
-    ]
-  };
-  updateSheetData("Stats", "Category Traces", body);
 }
 
 // Saves categoryYearlyStats to Google Sheets
