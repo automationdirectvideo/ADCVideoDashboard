@@ -70,11 +70,14 @@ function getAllVideoStats(videos) {
     .then(response => {
       console.log(response);
       let allVideoStats = [].concat.apply([], response);
-      return getAnalyticsVideoStats(allVideoStats, videos);
+      let videoRequest = getAnalyticsVideoStats(allVideoStats, videos);
+      let weightsRequest = getVideoStrengthWeights();
+      return Promise.all([videoRequest, weightsRequest]);
     })
     .then(response => {
-      allVideoStats = response;
-      allVideoStats = calcVideoStrength(allVideoStats);
+      allVideoStats = response[0];
+      const weights = response[1];
+      allVideoStats = calcVideoStrength(allVideoStats, weights);
       lsSet("allVideoStats", allVideoStats);
       let categoryTotals = updateCategoryTotals(allVideoStats);
       let categoryStats = calcCategoryStats(categoryTotals);

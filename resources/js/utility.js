@@ -376,7 +376,6 @@ function retry(fn, maxRetries, timeout) {
 
 /**
  * Records an error to the Error Log Google Sheet
- * @see retry
  *
  * @param {Error} err The caught error
  * @param {String} additionalMessage An extra message to give the error more

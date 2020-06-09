@@ -310,15 +310,42 @@ function getVideoStats() {
 }
 
 /**
- * Gets category and video statistics from the stats spreadsheet
+ * Gets category, video, and real time statistics from the stats spreadsheet and
+ * weights from the video strength formula from the input data spreadsheet
  *
  * @returns {Promise} A promise that resolves when all stats have been saved to
  *    local storage
  */
-function getCategoryAndVideoStats() {
-  const categoryPromise = getCategoryStats();
-  const videoPromise = getVideoStats();
-  return Promise.all([categoryPromise, videoPromise]);
+function getBasicDashboardStats() {
+  let requests = [];
+  requests.push(getCategoryStats());
+  requests.push(getVideoStats());
+  requests.push(getVideoStrengthWeights());
+  requests.push(realTimeStatsCalls());
+  return Promise.all(requests);
+}
+
+/**
+ * Gets the weights for the video strength formula from the input data Google
+ * Sheet
+ *
+ * @returns {Promise} The promise resolves to an object whose keys are metric
+ *    property names that correspond to their weight
+ */
+function getVideoStrengthWeights() {
+  return requestSpreadsheetData("Input Data", "Video Strength Calculation")
+    .then(sheetValues => {
+      let weights = {};
+      let column = getColumnHeaders(sheetValues);
+      for (let index = 1; index < sheetValues.length; index++) {
+        const metric = sheetValues[index];
+        let name = metric[column["Short Name"]];
+        let weight = parseFloat(metric[column["Weight"]]);
+        weights[name] = weight;
+      }
+      lsSet("weights", weights);
+      return Promise.resolve(weights);
+    });
 }
 
 /**
@@ -980,6 +1007,124 @@ function loadTopVideoDashboards() {
   return topVideoCalls(joinDate, todayDate, topVideosStr, dashboardIds);
 }
 
+/**
+ * Gets the top twenty organic videos by strengths and displays them
+ */
+function loadVideoStrengthDashboard() {
+  const statsByVideoId = lsGet("statsByVideoId");
+  const allVideoStats = lsGet("allVideoStats");
+  allVideoStats.sort(function (a, b) {
+    if (a.strength == b.strength) {
+      return b.daysSincePublished - a.daysSincePublished;
+    } else {
+      return b.strength - a.strength;
+    }
+  });
+  let numVideos = 20;
+  let output = ``;
+  let graphData = [];
+  for (var i = 0; i < numVideos; i++) {
+    const videoStats = allVideoStats[i];
+    const videoId = videoStats["videoId"];
+    const strength = Math.round(videoStats["strength"] * 100) / 100;
+    let videoTitle = "YouTube Video ID: " + videoId;
+    let graphId = `video-strength-bars-${i + 1}`;
+    graphData.push({
+      videoStats: videoStats,
+      graphId: graphId
+    });
+    if (statsByVideoId && statsByVideoId[videoId]) {
+      videoTitle = statsByVideoId[videoId]["title"];
+    }
+
+    output += `
+      <div class="col-1">
+        <h1 style="font-size:5rem;">${i + 1}.</h1>
+      </div>
+      <div class="col-3">
+        <a href="https://youtu.be/${videoId}" target="_blank"
+            alt="${videoTitle}">
+          <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
+              src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+              alt="thumbnail" title="${videoTitle}">
+        </a>
+      </div>
+      <div class="col-4">
+        <h1 class="video-strength-title">${videoTitle}</h1>
+        <br>
+        <h2 class="video-strength-value">Strength: ${strength}</h2>
+      </div>
+      <div class="col-4">
+        <div class="h-100 w-100 graph-container" id="${graphId}"></div>
+      </div>
+    `;
+    const spacer = `
+      <div class="col-12">
+        <hr style="border-top:0.25rem solid rgba(0,0,0,.3);">
+      </div>
+    `;
+    if (i != numVideos - 1) {
+      output += spacer;
+    }
+  }
+  let videoStrengthContainer =
+    document.getElementById("video-strength-container");
+  videoStrengthContainer.innerHTML = output;
+  if (!autoScrollDivs.includes("video-strength-wrapper")) {
+    let currentSettings = lsGet("settings");
+    let speed = -1;
+    let index = 0;
+    while (speed == -1 && index <= currentSettings.dashboards.length) {
+      let dashboard = currentSettings.dashboards[index];
+      if (dashboard.name == "video-strength") {
+        speed = dashboard.scrollSpeed;
+      }
+      index++;
+    }
+    if (speed <= 0) {
+      speed = 0;
+    } else {
+      speed = Math.ceil(1000 / speed);
+    }
+    new AutoDivScroll("video-strength-wrapper", speed, 1, 1);
+    autoScrollDivs.push("video-strength-wrapper");
+  }
+
+  if (gapi.auth2.getAuthInstance().isSignedIn.get()) {
+    if (allVideoStats[0].z === undefined) {
+      reloadVideoStrengthDashboard();
+    } else {
+      for (let index = 0; index < graphData.length; index++) {
+        const graph = graphData[index];
+        displayVideoStrengthBars(graph.videoStats, graph.graphId);
+      }
+    }
+  }
+}
+
+/**
+ * Recalculates the strength for all videos and loads the video strength
+ * dashboard
+ *
+ * @returns {Promise} Status message
+ */
+function reloadVideoStrengthDashboard() {
+  return getVideoStrengthWeights()
+    .then(weights => {
+      try {
+        const allVideoStats = lsGet("allVideoStats");
+        let updatedAllVideoStats = calcVideoStrength(allVideoStats, weights);
+        lsSet("allVideoStats", updatedAllVideoStats);
+        loadVideoStrengthDashboard();
+      } catch (err) {
+        const errorMsg = "Unable to recalculate video strengths";
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+        return errorMsg;
+      }
+    });
+}
+
 
 /* Statistics Functions */
 
@@ -1082,7 +1227,7 @@ function zScoreByPropertyName(stats, propertyName) {
  * @returns {Array<Object>} The input `allVideoStats` with the "strength"
  *    property for each video
  */
-function calcVideoStrength(allVideoStats) {
+function calcVideoStrength(allVideoStats, weights) {
   // Normalizes each metric individually across all videos
   let zScoreData = {
     videoIds: allVideoStats.map((video) => {return video["videoId"]}),
@@ -1110,15 +1255,13 @@ function calcVideoStrength(allVideoStats) {
     const avgViewDuration = zScoreData.avgViewDuration[index];
     const avgViewPercentage = zScoreData.avgViewPercentage[index];
     const daysSincePublished = zScoreData.daysSincePublished[index];
-    // Change the integers (weights) to balance each metric's contribution
-    let strength =
-      (1.5 * views) +
-      (1 * avgViewsPerDay) +
-      (0.5 * comments) +
-      (0.5 * likesPerView) +
-      (1.5 * subscribersGained) +
-      (1 * avgViewPercentage) -
-      (0.5 * dislikesPerView);
+    let strength = 0;
+    for (const name in weights) {
+      if (weights.hasOwnProperty(name)) {
+        const weight = weights[name];
+        strength += (weight * zScoreData[name][index]);
+      }
+    }
     allVideoStats[index].strength = strength;
     allVideoStats[index].z = {
       views: views,

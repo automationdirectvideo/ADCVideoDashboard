@@ -45,6 +45,7 @@ function updateSigninStatus(isSignedIn) {
     if (!isUserADC()) {
       handleInvalidAccount();
     } else {
+      localStorage.clear();
       window.location.reload();
     }
   }
