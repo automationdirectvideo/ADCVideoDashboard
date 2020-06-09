@@ -145,6 +145,7 @@ function getVideoList() {
           const duration = video[columns["Duration"]];
           let categoryString = video[columns["Categories"]];
           const createdBy = video[columns["Created By"]];
+          const privacy = video[columns["Privacy"]].toLowerCase();
           // Removes whitespace
           categoryString = categoryString.replace(/\s/g, '');
           const initialCategories = categoryString.split(",");
@@ -174,7 +175,8 @@ function getVideoList() {
             "title": title,
             "publishDate": publishDate,
             "duration": duration,
-            "createdBy": createdBy
+            "createdBy": createdBy,
+            "privacy": privacy
           };
 
           // Array of video IDs for the channel
@@ -486,7 +488,7 @@ function loadUserFeedbackDashboard() {
       let feedbackContainer = document.getElementById("feedback-container");
       feedbackContainer.innerHTML = output;
       if (!autoScrollDivs.includes("feedback-wrapper")) {
-        const currentSettings = JSON.parse(localStorage.getItem("settings"));
+        const currentSettings = lsGet("settings");
         let speed = -1;
         let index = 0;
         while (speed == -1 && index <= currentSettings.dashboards.length) {

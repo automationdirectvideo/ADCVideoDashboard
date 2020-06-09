@@ -22,7 +22,17 @@ function createDescriptionReport() {
   viewReportButton.style.display = "none";
   return getVideoList()
     .then(response => {
-      const uploads = response[1];
+      const statsByVideoId = response[0];
+      let uploads = [];
+      for (const videoId in statsByVideoId) {
+        if (statsByVideoId.hasOwnProperty(videoId)) {
+          const video = statsByVideoId[videoId];
+          const privacy = video.privacy;
+          if (privacy == "public") {
+            uploads.push(videoId);
+          }
+        }
+      }
       // First half of loading bar is for fetching descriptions
       // Second half is for checking format
       let numUploads = uploads.length;
@@ -255,7 +265,7 @@ function checkSocialLinks(description) {
  */
 function checkPricesWereValid(description) {
   const pricesSentence = "Prices were valid at the time the video was" +
-    "released and are subject to change";
+    " released and are subject to change";
   if (description.indexOf(pricesSentence) === -1) {
     return ["MISSING"];
   } else {
