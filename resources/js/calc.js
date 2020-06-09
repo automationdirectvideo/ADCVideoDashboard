@@ -1015,7 +1015,7 @@ function loadVideoStrengthDashboard() {
   const allVideoStats = lsGet("allVideoStats");
   allVideoStats.sort(function (a, b) {
     if (a.strength == b.strength) {
-      return b.daysSincePublished - a.daysSincePublished;
+      return b.totalStrength - a.totalStrength;
     } else {
       return b.strength - a.strength;
     }
@@ -1262,7 +1262,7 @@ function calcVideoStrength(allVideoStats, weights) {
         strength += (weight * zScoreData[name][index]);
       }
     }
-    allVideoStats[index].strength = strength;
+    allVideoStats[index].totalStrength = strength;
     allVideoStats[index].z = {
       views: views,
       avgViewsPerDay: avgViewsPerDay,
@@ -1277,9 +1277,9 @@ function calcVideoStrength(allVideoStats, weights) {
     };
   }
   allVideoStats.sort(function (a,b) {
-    return a.strength - b.strength;
+    return a.totalStrength - b.totalStrength;
   });
-  let zScoreStrengths = zScoreByPropertyName(allVideoStats, "strength");
+  let zScoreStrengths = zScoreByPropertyName(allVideoStats, "totalStrength");
   let length = zScoreStrengths.length;
   let lowPercentile = Math.floor(length * 0);
   let highPercentile = Math.floor(length - 1);
