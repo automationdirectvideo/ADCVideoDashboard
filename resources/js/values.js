@@ -149,7 +149,8 @@ const defaultSettings =
     "searchTerms": "top-video-#-search-terms"
   },
   "videographerGraphs": {
-    "monthlyVideos": "videographer-monthly-videos-chart"
+    "avgViews": "videographer-avg-views-graph",
+    "monthlyVideos": "videographer-monthly-videos-graph"
   },
   "version": 2,
 };

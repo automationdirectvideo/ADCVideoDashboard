@@ -1147,6 +1147,11 @@ function loadVideographerDashboards() {
   try {
     let videographers = calcVideographerStats();
     displayVideographerMonthlyVideos(videographers);
+    getVideographerAvgViews(videographers, getDateFromDaysAgo(34),
+      getDateFromDaysAgo(4))
+      .then(videographers => {
+        displayVideographerAvgViews(videographers);
+      });
   } catch (err) {
     displayGraphError(monthlyVideosChart);
   }
@@ -1549,6 +1554,148 @@ function displayVideographerMonthlyVideos(videographers) {
 
   const graphIds = getDashboardGraphIds("videographerGraphs");
   const graphId = graphIds.monthlyVideos;
+
+  try {
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
+}
+
+/**
+ * Creates the Videographer - Average Views Per Video stacked bar graph
+ *
+ * @param {Object} videographers Videographer statistics
+ */
+function displayVideographerAvgViews(videographers) {
+  videographers = videographers || lsGet("videographers");
+
+  const graphHeight = 0.8583;
+  const graphWidth = 0.9528;
+  const height = graphHeight * document.documentElement.clientHeight;
+  const width = graphWidth * document.documentElement.clientWidth;
+  const titleFontSize =
+    Math.floor(0.0208 * document.documentElement.clientWidth);
+  const legendFontSize =
+    Math.floor(0.0128 * document.documentElement.clientWidth);
+  const axisTitleSize =
+    Math.floor(0.0156 * document.documentElement.clientWidth);
+  const textSize = Math.floor(0.0156 * document.documentElement.clientWidth);
+  const tickSize = Math.floor(0.0128 * document.documentElement.clientWidth);
+  const topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
+  const bottomMargin =
+    Math.floor(0.0104 * document.documentElement.clientWidth);
+
+  let allTime = [];
+  let lastXDays = [];
+  const people = ["Shane C", "Rick F", "Tim W"];
+  people.forEach(name => {
+    const stats = videographers[name];
+    const avgViews = Math.round(stats.avgViews);
+    const lastXDaysAvgViews = Math.round(stats.lastXDaysAvgViews);
+    allTime.push(avgViews);
+    lastXDays.push(lastXDaysAvgViews);
+  });
+  const trace1 = {
+    x: people,
+    y: allTime,
+    name: "All Time",
+    offsetgroup: 1,
+    textfont: {
+      size: textSize
+    },
+    textposition: "auto",
+    texttemplate: "~%{y:,}<br>views",
+    type: "bar",
+    yaxis: "y"
+  };
+  let trace2 = JSON.parse(JSON.stringify(trace1));
+  trace2.y = lastXDays;
+  trace2.name = "Last 30 Days";
+  trace2.offsetgroup = 2;
+  trace2.yaxis = "y2";
+  let data = [trace1, trace2];
+
+  const layout = {
+    height: height,
+    width: width,
+    barmode: "group",
+    hovermode: false,
+    legend: {
+      bgcolor: "#eeeeee",
+      font: {
+        size: legendFontSize
+      },
+      x: 1.1,
+      xanchor: 'left',
+      y: 0.5
+    },
+    margin: {
+      b: bottomMargin,
+      t: topMargin
+    },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    title: {
+      font: {
+        size: titleFontSize
+      },
+      text: "Average Views Per Video By Videographer"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickfont: {
+        size: tickSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Videographers"
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickfont: {
+        size: tickSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Average Views Per Video (All Time)"
+      }
+    },
+    yaxis2: {
+      automargin: true,
+      fixedrange: true,
+      showgrid: false,
+      overlaying: "y",
+      side: "right",
+      zeroline: false,
+      tickfont: {
+        size: tickSize
+      },
+      title: {
+        font: {
+          size: axisTitleSize
+        },
+        text: "Average Views Per Video (Last 30 Days)"
+      }
+    }
+  };
+
+  const config = {
+    scrollZoom: false,
+    displayModeBar: false,
+    staticPlot: true,
+    responsive: true
+  }
+
+  const graphIds = getDashboardGraphIds("videographerGraphs");
+  const graphId = graphIds.avgViews;
 
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);

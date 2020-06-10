@@ -600,7 +600,7 @@ function getVideographerPerformanceForMonth(videographers, startDate) {
       names.push(name);
       const data = videographers[name];
       const videos = data.videos;
-      const request = requestMonthlyViews(videos, startDate, endDate);
+      const request = requestVideoViews(videos, startDate, endDate);
       requests.push(request);
     }
   }
@@ -616,44 +616,74 @@ function getVideographerPerformanceForMonth(videographers, startDate) {
       }
       return videographers;
     });
-
-  function requestMonthlyViews(videos, startDate, endDate) {
-    let requests = [];
-    for (let i = 0; i < videos.length; i += 50) {
-      const fiftyVideos = videos.slice(i, i + 50);
-      const fiftyVideosStr = fiftyVideos.join(",");
-      const filters = "video==" + fiftyVideosStr;
-      const gapiRequest = {
-        "endDate": endDate,
-        "filters": filters,
-        "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
-        "metrics": "views",
-        "startDate": startDate
-      };
-      const request = gapi.client.youtubeAnalytics.reports.query(gapiRequest)
-        .then(response => {
-          const views = response.result.rows[0][0];
-          return views;
-        })
-        .catch(err => {
-          const errorMsg = `Error in fetching monthly views for video group` +
-            ` ${i} - ${i + 49}: `;
-          console.error(errorMsg, err);
-          recordError(err, errorMsg);
-          return errorMsg;
-        });
-      requests.push(request);
-    }
-
-    return Promise.all(requests)
-      .then(response => {
-        const totalViews = response.reduce((sum, value) => {
-          return sum + value;
-        }, 0);
-        return totalViews;
-      });
-  }
 }
+
+function getVideographerAvgViews(videographers, startDate, endDate) {
+  let requests = [];
+  let names = [];
+  for (const name in videographers) {
+    if (videographers.hasOwnProperty(name)) {
+      const stats = videographers[name];
+      const videos = stats.videos;
+      names.push(name)
+      requests.push(requestVideoViews(videos, startDate, endDate));
+    }
+  }
+  return Promise.all(requests)
+    .then(responses => {
+      for (let index = 0; index < responses.length; index++) {
+        const avgViews = responses[index];
+        const name = names[index];
+        const numVideos = videographers[name].videos.length;
+        videographers[name].lastXDaysAvgViews = avgViews / numVideos;
+      }
+      lsSet("videographers", videographers);
+      return videographers;
+    })
+    .catch(err => {
+      const errorMsg = `Unable to get videographer average views - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
+    });
+}
+
+function requestVideoViews(videos, startDate, endDate) {
+  let requests = [];
+  for (let i = 0; i < videos.length; i += 50) {
+    const fiftyVideos = videos.slice(i, i + 50);
+    const fiftyVideosStr = fiftyVideos.join(",");
+    const filters = "video==" + fiftyVideosStr;
+    const gapiRequest = {
+      "endDate": endDate,
+      "filters": filters,
+      "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
+      "metrics": "views",
+      "startDate": startDate
+    };
+    const request = gapi.client.youtubeAnalytics.reports.query(gapiRequest)
+      .then(response => {
+        const views = response.result.rows[0][0];
+        return views;
+      })
+      .catch(err => {
+        const errorMsg = `Error in fetching monthly views for video group` +
+          ` ${i} - ${i + 49}: `;
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+        return errorMsg;
+      });
+    requests.push(request);
+  }
+
+  return Promise.all(requests)
+    .then(response => {
+      const totalViews = response.reduce((sum, value) => {
+        return sum + value;
+      }, 0);
+      return totalViews;
+    });
+}
+
 
 /* Google Sheets Calls */
 

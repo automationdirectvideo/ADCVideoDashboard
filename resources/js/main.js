@@ -1767,9 +1767,13 @@ var carousel = document.getElementById("dashboard-carousel");
 carousel.setAttribute("data-interval", cycleSpeed);
 carousel.setAttribute("data-pause", "false");
 
-var categoryStatsCarousel = document.getElementById("category-stats-carousel");
+const categoryStatsCarousel = document.getElementById("category-stats-carousel");
 categoryStatsCarousel.setAttribute("data-interval", 0);
 categoryStatsCarousel.setAttribute("data-pause", "false");
+
+const videographerCarousel = document.getElementById("videographer-carousel");
+videographerCarousel.setAttribute("data-interval", 0);
+videographerCarousel.setAttribute("data-pause", "false");
 
 // Set order of dashboards
 var enabledOrder = new Array(currentSettings.numEnabled);

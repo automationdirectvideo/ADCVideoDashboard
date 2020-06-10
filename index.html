@@ -622,7 +622,24 @@
                         <div class="grid-item" style="grid-area: 1/1/13/13;">
                           <div class="row align-content-around h-100">
                             <div class="col-12 h-100">
-                              <div class="videographer-chart graph-container" id="videographer-monthly-videos-chart"></div>
+                              <div class="videographer-chart graph-container" id="videographer-monthly-videos-graph"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="videographer-avg-views">
+                    <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(-2)">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </button>
+                    <h1 class="dashboard-title">How Much Do Our Customers Watch Our Videos?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart graph-container" id="videographer-avg-views-graph"></div>
                               <!-- <div class="alert alert-warning construction h1" role="alert" style="margin-top:23%;">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 Under Construction
@@ -639,9 +656,9 @@
                 <div class="col-8">
                   <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
                   <div class="indicator-list" id="videographer-indicator-list">
-                    <i class="fas fa-camera indicator active" data-target="#videographer-carousel" id="videographer-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
-                    <!-- <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
-                    <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                    <i class="fas fa-chart-area indicator active" data-target="#videographer-carousel" id="videographer-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                    <i class="fas fa-chart-bar indicator" data-target="#videographer-carousel" id="videographer-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                    <!-- <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
                     <i class="fas fa-camera indicator" data-target="#videographer-carousel" id="videographer-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i> -->
                   </div>
                   <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
