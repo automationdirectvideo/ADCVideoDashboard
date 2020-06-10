@@ -252,6 +252,9 @@ function requestChannelDemographics(startDate, endDate) {
       const errorMsg = "Error getting Channel Demographics: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.demographics;
+      displayGraphError(graphId);
     });
 }
 
@@ -275,6 +278,9 @@ function requestChannelSearchTerms(startDate, endDate) {
       const errorMsg = "Error getting Channel Search Terms: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.searchTerms;
+      displayGraphError(graphId);
     });
 }
 
@@ -295,6 +301,9 @@ function requestWatchTimeBySubscribedStatus(startDate, endDate) {
       const errorMsg = "Error getting Watch Time By Subscribed Status: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.watchTime;
+      displayGraphError(graphId);
     });
 }
 
@@ -316,6 +325,9 @@ function requestViewsByDeviceType(startDate, endDate) {
       const errorMsg = "Error getting Views By Device Type: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.deviceType;
+      displayGraphError(graphId);
     });
 }
 
@@ -338,6 +350,9 @@ function requestViewsByState(startDate, endDate) {
       const errorMsg = "Error getting Views By State: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.states;
+      displayGraphError(graphId);
     });
 }
 
@@ -359,6 +374,9 @@ function requestViewsByTrafficSource(startDate, endDate) {
       const errorMsg = "Error getting Views By Traffic Source: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.trafficSource;
+      displayGraphError(graphId);
     });
 }
 
@@ -507,6 +525,9 @@ function requestVideoDailyViews(startDate, endDate, videoId, dashboardId) {
       const errorMsg = `Error getting daily views for video: ${videoId} - `;
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds(dashboardId);
+      const graphId = graphIds.dailyViews;
+      displayGraphError(graphId);
       throw new Error("Error in requestVideoDailyViews");
     });
 }
@@ -533,6 +554,9 @@ function requestVideoSearchTerms(startDate, endDate, videoId, dashboardId) {
       const errorMsg = `Error getting search terms for video: ${videoId} - `;
       console.error(errorMsg, err);
       recordError(err, errorMsg);
+      const graphIds = getDashboardGraphIds(dashboardId);
+      const graphId = graphIds.searchTerms;
+      displayGraphError(graphId);
       throw new Error("Error in requestVideoSearchTerms");
     });
 }

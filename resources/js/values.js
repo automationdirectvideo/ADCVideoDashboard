@@ -2,6 +2,16 @@
 
 const defaultSettings = 
 {
+  "categoryGraphs": [
+    "categories-views-chart",
+    "categories-normal-views-chart",
+    "categories-cum-views-chart",
+    "categories-normal-cum-views-chart",
+    "categories-avg-views-chart",
+    "categories-normal-avg-views-chart",
+    "categories-cum-avg-views-chart",
+    "categories-normal-cum-avg-views-chart"
+  ],
   "cycleSpeed": 15,
   "dashboards": [
     {
@@ -20,6 +30,14 @@ const defaultSettings =
     },
     {
       "name": "platform",
+      "graphIds": {
+        "trafficSource": "channel-traffic-sources",
+        "deviceType": "channel-views-by-device",
+        "demographics": "demographics-graph",
+        "states": "channel-views-by-state",
+        "searchTerms": "channel-search-terms",
+        "watchTime": "channel-watch-time"
+      },
       "icon": "fas fa-user",
       "index": 2,
       "theme": "light",
@@ -35,6 +53,11 @@ const defaultSettings =
     },
     {
       "name": "product-categories",
+      "graphIds": {
+        "graphOne" : "product-categories-chart-1",
+        "graphTwo" : "product-categories-chart-2",
+        "graphThree" : "product-categories-chart-3"
+      },
       "icon": "fas fa-chart-pie",
       "index": 4,
       "theme": "light",
@@ -99,6 +122,10 @@ const defaultSettings =
     },
     {
       "name": "card-performance",
+      "graphIds": {
+        "cardTeaser" : "card-teaser-performance-graph",
+        "card": "card-performance-graph"
+      },
       "icon": "fas fa-info-circle",
       "index": 13,
       "theme": "light",
@@ -106,6 +133,9 @@ const defaultSettings =
     },
     {
       "name": "video-strength",
+      "graphIds": {
+        "barChart": "video-strength-bars-#"
+      },
       "icon": "fas fa-sort-numeric-down",
       "index": 14,
       "scrollSpeed": 30,
@@ -114,7 +144,14 @@ const defaultSettings =
     }
   ],
   "numEnabled": 15,
-  "version": 1
+  "topVideoGraphs": {
+    "dailyViews" : "top-video-#-views-graph",
+    "searchTerms": "top-video-#-search-terms"
+  },
+  "videographerGraphs": {
+    "monthlyVideos": "videographer-monthly-videos-chart"
+  },
+  "version": 2,
 };
 
 const categoryColors = {

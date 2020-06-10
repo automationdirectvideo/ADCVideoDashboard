@@ -55,7 +55,6 @@ function displayChannelDemographics(response) {
     %
   `;
 
-  const graphId = "demographics-graph";
   const graphHeight = 0.0875;
   const graphWidth = 0.0500;
   const height = graphHeight * document.documentElement.clientHeight;
@@ -99,9 +98,13 @@ function displayChannelDemographics(response) {
     }
   }
 
+  const graphIds = getDashboardGraphIds("platform");
+  const graphId = graphIds.demographics;
+
   var graphContainer = document.getElementById(graphId);
   graphContainer.style.height = width + "px";
   graphContainer.style.width = width + "px";
+
 
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);
@@ -141,7 +144,6 @@ function displayChannelSearchTerms(response) {
     textValues[i] = numberWithCommas(textValues[i]);
   }
 
-  const graphId = "channel-search-terms";
   const graphHeight = 0.2287;
   const graphWidth = 0.4681;
   const height = graphHeight * document.documentElement.clientHeight;
@@ -204,6 +206,9 @@ function displayChannelSearchTerms(response) {
     };
   }
 
+  const graphIds = getDashboardGraphIds("platform");
+  const graphId = graphIds.searchTerms;
+
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth,
       automargin);
@@ -239,7 +244,6 @@ function displayWatchTimeBySubscribedStatus(response) {
     textValues.reverse();
   }
 
-  const graphId = "channel-watch-time";
   const graphHeight = 0.1039;
   const graphWidth = 0.4681;
   const height = graphHeight * document.documentElement.clientHeight;
@@ -301,6 +305,9 @@ function displayWatchTimeBySubscribedStatus(response) {
       yaxis: yaxis
     };
   }
+  
+  const graphIds = getDashboardGraphIds("platform");
+  const graphId = graphIds.watchTime;
 
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth,
@@ -332,7 +339,6 @@ function displayViewsByDeviceType(response) {
     labels.push(labelConversion[rows[i][0]]);
   }
 
-  const graphId = "channel-views-by-device";
   const graphHeight = 0.3742;
   const graphWidth = 0.3065;
   const height = graphHeight * document.documentElement.clientHeight;
@@ -380,6 +386,9 @@ function displayViewsByDeviceType(response) {
     layout["font"]["color"] = "#fff";
   }
 
+  const graphIds = getDashboardGraphIds("platform");
+  const graphId = graphIds.deviceType;
+
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
@@ -401,7 +410,6 @@ function displayViewsByState(response) {
     labels.push(numberWithCommas(rows[i][1]) + " views")
   }
 
-  const graphId = "channel-views-by-state";
   const graphHeight = 0.3742;
   const graphWidth = 0.4681;
   const height = graphHeight * document.documentElement.clientHeight;
@@ -464,6 +472,9 @@ function displayViewsByState(response) {
     layout["geo"]["showlakes"] = false;
   }
 
+  const graphIds = getDashboardGraphIds("platform");
+  const graphId = graphIds.states;
+
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
@@ -505,7 +516,6 @@ function displayViewsByTrafficSource(response) {
     "Related<br>Video", "Other"
   ];
 
-  const graphId = "channel-traffic-sources";
   const graphHeight = 0.3742;
   const graphWidth = 0.3065;
   const height = graphHeight * document.documentElement.clientHeight;
@@ -550,6 +560,9 @@ function displayViewsByTrafficSource(response) {
     layout["paper_bgcolor"] = "#222";
     layout["font"]["color"] = "#fff";
   }
+
+  const graphIds = getDashboardGraphIds("platform");
+  const graphId = graphIds.trafficSource;
 
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);
@@ -637,7 +650,6 @@ function displayVideoDailyViews(response, dashboardId) {
       yValues.push(rows[i][1]);
     }
 
-    var graphId = dashboardId + "-views-graph";
     var graphHeight = 0.2280;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
@@ -706,6 +718,9 @@ function displayVideoDailyViews(response, dashboardId) {
       };
     }
 
+    const graphIds = getDashboardGraphIds(dashboardId);
+    const graphId = graphIds.dailyViews;
+
     try {
       createGraph(graphId, data, layout, config, graphHeight, graphWidth,
         automargin);
@@ -732,7 +747,6 @@ function displayVideoSearchTerms(response, dashboardId) {
       textValues[i] = numberWithCommas(textValues[i]);
     }
 
-    var graphId = dashboardId + "-search-terms";
     var graphHeight = 0.2280;
     var graphWidth = 0.4681;
     var height = graphHeight * document.documentElement.clientHeight;
@@ -795,6 +809,9 @@ function displayVideoSearchTerms(response, dashboardId) {
         yaxis: yaxis
       };
     }
+
+    const graphIds = getDashboardGraphIds(dashboardId);
+    const graphId = graphIds.searchTerms;
 
     try {
       createGraph(graphId, data, layout, config, graphHeight, graphWidth,

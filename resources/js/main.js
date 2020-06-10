@@ -475,14 +475,16 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
     displayModeBar: false,
   }
 
-  let plotViews = "categories-views-chart";
-  let plotViewsNorm = "categories-normal-views-chart";
-  let plotCumViews = "categories-cum-views-chart";
-  let plotCumViewsNorm = "categories-normal-cum-views-chart";
-  let plotAvgViews = "categories-avg-views-chart";
-  let plotAvgViewsNorm = "categories-normal-avg-views-chart";
-  let plotCumAvgViews = "categories-cum-avg-views-chart";
-  let plotCumAvgViewsNorm = "categories-normal-cum-avg-views-chart";
+  const graphIds = getDashboardGraphIds("categoryGraphs");
+
+  let plotViews = graphIds[0];
+  let plotViewsNorm = graphIds[1];
+  let plotCumViews = graphIds[2];
+  let plotCumViewsNorm = graphIds[3];
+  let plotAvgViews = graphIds[4];
+  let plotAvgViewsNorm = graphIds[5];
+  let plotCumAvgViews = graphIds[6];
+  let plotCumAvgViewsNorm = graphIds[7];
 
 
   let normalViewTraces = JSON.parse(JSON.stringify(viewTraces));
@@ -777,7 +779,8 @@ function displayTopCategoriesGraphOne(categoryStats) {
     responsive: true
   };
 
-  var graphId = "product-categories-chart-1";
+  const graphIds = getDashboardGraphIds("product-categories");
+  const graphId = graphIds.graphOne;
 
   const theme = getCurrentDashboardTheme("product-categories");
   if (theme == "dark") {
@@ -971,7 +974,8 @@ function displayTopCategoriesGraphTwo(categoryStats) {
     displayModeBar: false,
   }
 
-  var graphId = "product-categories-chart-2";
+  const graphIds = getDashboardGraphIds("product-categories");
+  const graphId = graphIds.graphTwo;
 
   const theme = getCurrentDashboardTheme("product-categories");
   if (theme == "dark") {
@@ -1118,7 +1122,8 @@ function displayTopCategoriesGraphThree(categoryStats) {
     displayModeBar: false,
   }
 
-  var graphId = "product-categories-chart-3";
+  const graphIds = getDashboardGraphIds("product-categories");
+  const graphId = graphIds.graphThree;
 
   const theme = getCurrentDashboardTheme("product-categories");
   if (theme == "dark") {
@@ -1604,6 +1609,38 @@ function updateTheme(dashboardIndex) {
     console.error(err);
     recordError(err);
   }
+}
+
+function getDashboardGraphIds(dashboardId) {
+  if (dashboardId == "categoryGraphs") {
+    return currentSettings.categoryGraphs;
+  }
+  if (dashboardId == "videographerGraphs") {
+    return currentSettings.videographerGraphs;
+  }
+  if (dashboardId.substr(0,10) == "top-video-") {
+    // Gets the number at the end of the dashboardId
+    let dashboardNumber = /[^-]*$/.exec(dashboardId)[0];
+    let graphIds = currentSettings.topVideoGraphs;
+    let newGraphIds = {};
+    for (const name in graphIds) {
+      if (graphIds.hasOwnProperty(name)) {
+        const graphId = graphIds[name];
+        newGraphIds[name] = graphId.replace("#", dashboardNumber);
+      }
+    }
+    return newGraphIds;
+  }
+  const dashboards = currentSettings.dashboards;
+  let index = 0;
+  while (index < dashboards.length) {
+    const dashboard = dashboards[index];
+    if (dashboard.name == dashboardId) {
+      return dashboard.graphIds;
+    }
+    index++;
+  }
+  return null;
 }
 
 function carouselNext() {

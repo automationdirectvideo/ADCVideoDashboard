@@ -392,6 +392,11 @@ function loadChannelDemographics() {
         }
       };
       return displayChannelDemographics(newResponse);
+    })
+    .catch(err => {
+      const graphIds = getDashboardGraphIds("platform");
+      const graphId = graphIds.demographics;
+      displayGraphError(graphId, err);
     });
 }
 
@@ -544,6 +549,9 @@ function loadUserFeedbackDashboard() {
  * @returns {Promise} Status message
  */
 function loadCardPerformanceDashboard() {
+  const graphIds = getDashboardGraphIds("card-performance");
+  const cardTeaserGraph = graphIds.cardTeaser;
+  const cardGraph = graphIds.card;
   return requestSpreadsheetData("Stats", "Card Performance")
     .then(cardData => {
       cardData.shift(); // Remove the headers from the sheet
@@ -712,9 +720,6 @@ function loadCardPerformanceDashboard() {
       teaserLayout.yaxis.title.text = "Card Teaser Impressions";
       teaserLayout.width = teaserWidth;
 
-      const cardTeaserGraph = "card-teaser-performance-graph";
-      const cardGraph = "card-performance-graph";
-
       let numErrors = 0;
 
       try {
@@ -737,6 +742,10 @@ function loadCardPerformanceDashboard() {
       } else {
         return Promise.resolve("Displayed Card Performance Dashboard");
       }
+    })
+    .catch(err => {
+      displayGraphError(cardTeaserGraph, err);
+      displayGraphError(cardGraph, err);
     });
 }
 
@@ -897,6 +906,13 @@ function loadCategoryCharts() {
     .then(viewsSheet => {
       const categoryTraces = recordYearlyCategoryViews(viewsSheet);
       return displayCategoryViewsAreaCharts(categoryTraces);
+    })
+    .catch(err => {
+      recordError(err);
+      const graphIds = getDashboardGraphIds("categoryGraphs");
+      graphIds.forEach(graphId => {
+        displayGraphError(graphId);
+      });
     });
 }
 
@@ -1124,13 +1140,17 @@ function reloadVideoStrengthDashboard() {
 /**
  * Calculates videographer statistics and displays graphs on the videographer
  * dashboards
- *
  */
 function loadVideographerDashboards() {
-  let videographers = calcVideographerStats();
-  displayVideographerMonthlyVideos(videographers);
+  const graphIds = getDashboardGraphIds("videographerGraphs");
+  const monthlyVideosChart = graphIds.monthlyVideos;
+  try {
+    let videographers = calcVideographerStats();
+    displayVideographerMonthlyVideos(videographers);
+  } catch (err) {
+    displayGraphError(monthlyVideosChart);
+  }
 }
-
 
 /* Statistics Functions */
 
@@ -1527,7 +1547,9 @@ function displayVideographerMonthlyVideos(videographers) {
     displayModeBar: false,
   }
 
-  const graphId = "videographer-monthly-videos-chart";
+  const graphIds = getDashboardGraphIds("videographerGraphs");
+  const graphId = graphIds.monthlyVideos;
+
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
