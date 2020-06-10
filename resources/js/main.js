@@ -3,7 +3,7 @@
 function loadDashboards() {
   // Prevents multiple simultaneous load/update dashboards calls
   if (!isLoading && !isUpdating) {
-    isLoading = true;
+    setLoadingStatus(true);
     const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
     showLoadingText();
     resetGraphData();
@@ -69,7 +69,7 @@ function loadDashboardsSignedIn() {
       recordError(err, errorMsg);
     })
     .finally(response => {
-      isLoading = false;
+      setLoadingStatus(false);
       hideLoadingText();
     });
 }
@@ -117,7 +117,7 @@ function loadDashboardsSignedOut() {
           recordError(err, errorMsg);
         })
         .finally(response => {
-          isLoading = false;
+          setLoadingStatus(false);
           hideLoadingText();
         });
     });
@@ -1626,6 +1626,7 @@ function pauseDashboard() {
   $("#dashboard-carousel").carousel('pause');
   pauseText.style.display = "initial";
   playText.style.display = "none";
+  isPaused = true;
 }
 
 function playDashboard() {
@@ -1639,14 +1640,14 @@ function playDashboard() {
       $('#play-text').fadeOut();
     }
   }, 2000);
+  isPaused = false;
 }
 
 function toggleDashboardPause() {
-  let pauseText = document.getElementById("pause-text");
-  if (pauseText.offsetHeight == 0) {
-    pauseDashboard();
-  } else {
+  if (isPaused) {
     playDashboard();
+  } else {
+    pauseDashboard();
   }
 }
 
@@ -1693,6 +1694,24 @@ function hideUpdatingText() {
 function showUpdatingText() {
   const updatingText = document.getElementById("updating-text");
   updatingText.style.display = "initial";
+}
+
+function setLoadingStatus(bool) {
+  isLoading = bool;
+  if (bool) {
+    $("#dashboard-carousel").carousel('pause');
+  } else if (!isPaused) {
+    $("#dashboard-carousel").carousel('cycle');
+  }
+}
+
+function setUpdatingStatus(bool) {
+  isUpdating = bool;
+  if (bool) {
+    $("#dashboard-carousel").carousel('pause');
+  } else if (!isPaused) {
+    $("#dashboard-carousel").carousel('cycle');
+  }
 }
 
 // Get current settings
@@ -1840,4 +1859,5 @@ window.addEventListener('resize', function () {
 }, true);
 
 let isLoading = false;
+let isPaused = false;
 let isUpdating = false;

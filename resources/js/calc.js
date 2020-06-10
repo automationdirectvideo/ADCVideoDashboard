@@ -7,7 +7,7 @@
 function updateDashboards() {
   // Prevent multiple simultaneous load/update dashboard calls
   if (!isLoading && !isUpdating) {
-    isUpdating = true;
+    setUpdatingStatus(true);
     showUpdatingText();
     const now = new Date();
     let requests = [];
@@ -25,7 +25,7 @@ function updateDashboards() {
         console.log("Update Dashboards Complete", response);
         recordUpdate("Dashboards Updated");
         hideUpdatingText();
-        isUpdating = false;
+        setUpdatingStatus(false);
         // Reload the dashboards with the new data
         return loadDashboards();
       })
@@ -37,7 +37,7 @@ function updateDashboards() {
       })
       .finally(response => {
         hideUpdatingText();
-        isUpdating = false;
+        setUpdatingStatus(false);
       });
   }
 }
