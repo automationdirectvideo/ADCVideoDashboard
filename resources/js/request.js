@@ -144,14 +144,19 @@ function getAllVideoStats(videos) {
           const video = allVideoStats[index];
           const videoId = video.videoId;
           const duration = allVideoStats[index]["duration"];
-          const avgViewDuration = allStats[videoId].avgViewDuration;
+          let avgViewDuration = 0;
+          let subsGained = 0;
+          if (allStats[videoId]) {
+            avgViewDuration = allStats[videoId].avgViewDuration;
+            subsGained = allStats[videoId].subsGained;  
+          }
           let avgViewPercentage = avgViewDuration / duration;
           if (avgViewPercentage > 1) {
             avgViewPercentage = 1.0;
           }
           allVideoStats[index].avgViewDuration = avgViewDuration;
           allVideoStats[index].avgViewPercentage = avgViewPercentage;
-          allVideoStats[index].subscribersGained = allStats[videoId].subsGained;
+          allVideoStats[index].subscribersGained = subsGained;
         };
         return allVideoStats;
       });
@@ -446,7 +451,7 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
     .then(response => {
       console.log("Most Watched Videos", response);
       const videos = response.result.rows;
-      const uploads = lsGet("uploads");
+      const statsByVideoId = lsGet("statsByVideoId");
       if (month == undefined) {
         throw new Error("Month is undefined");
       }
@@ -456,7 +461,9 @@ function requestMostWatchedVideos(startDate, endDate, numVideos, month) {
       var index = 0;
       var numVideos = 1;
       while (numVideos <= 10) {
-        if (uploads.includes(videos[index][0])) {
+        const videoId = videos[index][0];
+        const organic = statsByVideoId[videoId].organic;
+        if (organic) {
           values[0][numVideos] = videos[index][0];
           values[0][numVideos + 10] = videos[index][1];
           values[0][numVideos + 20] = videos[index][2];

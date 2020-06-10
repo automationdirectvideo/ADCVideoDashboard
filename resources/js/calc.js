@@ -137,51 +137,52 @@ function getVideoList() {
       for (let i = 1; i < videoList.length; i++) {
         const video = videoList[i];
         const organic = ("TRUE" === video[columns["Organic"]]);
-        // Only include the video in the dashboards if it is organic
-        if (organic) {
-          const videoId = video[columns["Video ID"]];
-          const title = video[columns["Title"]];
-          const publishDate = video[columns["Publish Date"]];
-          const duration = video[columns["Duration"]];
-          let categoryString = video[columns["Categories"]];
-          const createdBy = video[columns["Created By"]];
-          const privacy = video[columns["Privacy"]].toLowerCase();
-          // Removes whitespace
-          categoryString = categoryString.replace(/\s/g, '');
-          const initialCategories = categoryString.split(",");
-          // Parse through initialCategories to create a list of categories
-          // that the video is in
-          let allCategories = [];
-          for (let j = 0; j < initialCategories.length; j++) {
-            let categoryId = initialCategories[j];
-            if (allCategories.indexOf(categoryId) == -1) {
-              allCategories.push(categoryId);
+        const videoId = video[columns["Video ID"]];
+        const title = video[columns["Title"]];
+        const publishDate = video[columns["Publish Date"]];
+        const duration = video[columns["Duration"]];
+        let categoryString = video[columns["Categories"]];
+        const createdBy = video[columns["Created By"]];
+        const privacy = video[columns["Privacy"]].toLowerCase();
+        // Removes whitespace
+        categoryString = categoryString.replace(/\s/g, '');
+        const initialCategories = categoryString.split(",");
+        // Parse through initialCategories to create a list of categories
+        // that the video is in
+        let allCategories = [];
+        for (let j = 0; j < initialCategories.length; j++) {
+          let categoryId = initialCategories[j];
+          if (allCategories.indexOf(categoryId) == -1) {
+            allCategories.push(categoryId);
+          }
+          if (/\d/.test(categoryId)) {
+            const parentCategoryLvl1 = categoryId.match(/[A-Z]+/)[0];
+            if (allCategories.indexOf(parentCategoryLvl1) == -1) {
+              allCategories.push(parentCategoryLvl1);
             }
-            if (/\d/.test(categoryId)) {
-              const parentCategoryLvl1 = categoryId.match(/[A-Z]+/)[0];
-              if (allCategories.indexOf(parentCategoryLvl1) == -1) {
-                allCategories.push(parentCategoryLvl1);
-              }
-              if (categoryId.replace(/[A-Z]+[0-9]+/, "") != "") {
-                const parentCategoryLvl2 = categoryId.match(/[A-Z]+[0-9]+/)[0];
-                if (allCategories.indexOf(parentCategoryLvl2) == -1) {
-                  allCategories.push(parentCategoryLvl2);
-                }
+            if (categoryId.replace(/[A-Z]+[0-9]+/, "") != "") {
+              const parentCategoryLvl2 = categoryId.match(/[A-Z]+[0-9]+/)[0];
+              if (allCategories.indexOf(parentCategoryLvl2) == -1) {
+                allCategories.push(parentCategoryLvl2);
               }
             }
           }
-          statsByVideoId[videoId] = {
-            "categories": allCategories,
-            "title": title,
-            "publishDate": publishDate,
-            "duration": duration,
-            "createdBy": createdBy,
-            "privacy": privacy
-          };
-
-          // Array of video IDs for the channel
-          uploads.push(videoId);
         }
+        statsByVideoId[videoId] = {
+          "categories": allCategories,
+          "createdBy": createdBy,
+          "duration": duration,
+          "organic": organic,
+          "privacy": privacy,
+          "publishDate": publishDate,
+          "title": title
+        };
+
+        // Array of video IDs for the channel
+        uploads.push(videoId);
+        // // Only include the video in the dashboards if it is organic
+        // if (organic) {
+        // }
       }
       lsSet("statsByVideoId", statsByVideoId);
       lsSet("uploads", uploads);
@@ -264,6 +265,7 @@ function getVideoStats() {
         // Removes whitespace
         const categories = video[columns["Categories"]].replace(/\s/g, '');
         const createdBy = video[columns["Created By"]];
+        const organic = ("TRUE" === video[columns["Organic"]]);
         const strength = parseFloat(video[columns["Strength"]]);
         const avgViewDuration = parseInt(video[columns["Average View Duration"]]);
         const avgViewPercentage =
@@ -300,6 +302,7 @@ function getVideoStats() {
         statsByVideoId[videoId]["duration"] = duration;
         statsByVideoId[videoId]["categories"] = categories;
         statsByVideoId[videoId]["createdBy"] = createdBy;
+        statsByVideoId[videoId]["organic"] = organic;
         // Array of video IDs for the channel
         uploads.push(videoId);
       }
@@ -1035,49 +1038,57 @@ function loadVideoStrengthDashboard() {
   let numVideos = 20;
   let output = ``;
   let graphData = [];
-  for (var i = 0; i < numVideos; i++) {
+  let i = 0;
+  let numFound = 0;
+  while (i < allVideoStats.length && numFound < numVideos) {
     const videoStats = allVideoStats[i];
     const videoId = videoStats["videoId"];
-    const strength = Math.round(videoStats["strength"] * 100) / 100;
-    let videoTitle = "YouTube Video ID: " + videoId;
-    let graphId = `video-strength-bars-${i + 1}`;
-    graphData.push({
-      videoStats: videoStats,
-      graphId: graphId
-    });
-    if (statsByVideoId && statsByVideoId[videoId]) {
-      videoTitle = statsByVideoId[videoId]["title"];
+    const organic = statsByVideoId[videoId].organic;
+    if (organic) {
+      numFound++;
+      const strength = Math.round(videoStats["strength"] * 100) / 100;
+      let videoTitle = "YouTube Video ID: " + videoId;
+      let graphId = `video-strength-bars-${numFound}`;
+      graphData.push({
+        videoStats: videoStats,
+        graphId: graphId
+      });
+      if (statsByVideoId && statsByVideoId[videoId]) {
+        videoTitle = statsByVideoId[videoId]["title"];
+      }
+  
+      output += `
+        <div class="col-1">
+          <h1 style="font-size:5rem;">${numFound}.</h1>
+        </div>
+        <div class="col-3">
+          <a href="https://youtu.be/${videoId}" target="_blank"
+              alt="${videoTitle}">
+            <img class="feedback-thumbnail"
+                onload="thumbnailCheck($(this), true)"
+                src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
+                alt="thumbnail" title="${videoTitle}">
+          </a>
+        </div>
+        <div class="col-4">
+          <h1 class="video-strength-title">${videoTitle}</h1>
+          <br>
+          <h2 class="video-strength-value">Strength: ${strength}</h2>
+        </div>
+        <div class="col-4">
+          <div class="h-100 w-100 graph-container" id="${graphId}"></div>
+        </div>
+      `;
+      const spacer = `
+        <div class="col-12">
+          <hr style="border-top:0.25rem solid rgba(0,0,0,.3);">
+        </div>
+      `;
+      if (numFound != numVideos - 1) {
+        output += spacer;
+      }
     }
-
-    output += `
-      <div class="col-1">
-        <h1 style="font-size:5rem;">${i + 1}.</h1>
-      </div>
-      <div class="col-3">
-        <a href="https://youtu.be/${videoId}" target="_blank"
-            alt="${videoTitle}">
-          <img class="feedback-thumbnail" onload="thumbnailCheck($(this), true)"
-              src="https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg"
-              alt="thumbnail" title="${videoTitle}">
-        </a>
-      </div>
-      <div class="col-4">
-        <h1 class="video-strength-title">${videoTitle}</h1>
-        <br>
-        <h2 class="video-strength-value">Strength: ${strength}</h2>
-      </div>
-      <div class="col-4">
-        <div class="h-100 w-100 graph-container" id="${graphId}"></div>
-      </div>
-    `;
-    const spacer = `
-      <div class="col-12">
-        <hr style="border-top:0.25rem solid rgba(0,0,0,.3);">
-      </div>
-    `;
-    if (i != numVideos - 1) {
-      output += spacer;
-    }
+    i++;
   }
   let videoStrengthContainer =
     document.getElementById("video-strength-container");

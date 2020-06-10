@@ -285,6 +285,7 @@ function calcAvgVideoDuration() {
 function getTopVideoByCategory(categoryId, type, numVideos) {
   let categoryStats = lsGet("categoryStats");
   let allVideoStats = lsGet("allVideoStats");
+  let statsByVideoId = lsGet("statsByVideoId");
   allVideoStats.sort(function (a, b) {
     return parseInt(b[type]) - parseInt(a[type]);
   });
@@ -301,8 +302,10 @@ function getTopVideoByCategory(categoryId, type, numVideos) {
       let j = 0;
       let numFound = 0;
       while (j < allVideoStats.length && numFound < numVideos) {
-        if (videos.includes(allVideoStats[j]["videoId"])) {
-          topVideos.push(allVideoStats[j]["videoId"]);
+        const videoId = allVideoStats[j].videoId;
+        const organic = statsByVideoId[videoId].organic;
+        if (videos.includes(videoId) && organic) {
+          topVideos.push(videoId);
           numFound++;
         }
         j++;
