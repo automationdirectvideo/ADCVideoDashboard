@@ -557,27 +557,13 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
       normalCumulativeAvgViewLayout
     ],
   ];
-  categoryGraphData = {};
   let numErrors = 0;
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
     try {
-      Plotly.newPlot(graphId, trace, layout, config);
-      recordGraphData(graphId, trace, layout, config, graphHeight, graphWidth);
-      recordGraphSize(graphId, graphHeight, graphWidth);
-      categoryGraphData[graphId] = {
-        "data": trace,
-        "layout": layout,
-        "config": config,
-        "graphHeight": graphHeight,
-        "graphWidth": graphWidth,
-        "automargin": "None",
-      };
+      createGraph(graphId, trace, layout, config, graphHeight, graphWidth);
     } catch (err) {
-      const errorMsg = `There was an error initiating graph: ${graphId} - `;
-      displayGraphError(graphId);
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
+      displayGraphError(graphId, err)
       numErrors++;
     }
   }
@@ -803,9 +789,7 @@ function displayTopCategoriesGraphOne(categoryStats) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
   }
@@ -999,9 +983,7 @@ function displayTopCategoriesGraphTwo(categoryStats) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
   }
@@ -1148,9 +1130,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
   }
@@ -1369,9 +1349,11 @@ function displayVideoStrengthBars(videoStats, graphId) {
     staticPlot: true,
     responsive: true
   }
-  Plotly.newPlot(graphId, data, layout, config);
-  recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-  recordGraphSize(graphId, graphHeight, graphWidth);
+  try {
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
 }
 
 // Updates total views, likes, etc. for each category given all video stats
@@ -1454,6 +1436,18 @@ function calcCategoryStats(categoryTotals) {
   lsSet("categoryStats", categoryStats);
 
   return categoryStats;
+}
+
+function createGraph(graphId, data, layout, config, graphHeight, graphWidth,
+  automargin) {
+  try {
+    Plotly.newPlot(graphId, data, layout, config);
+    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      automargin);
+    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
+  } catch (err) {
+    throw err;
+  }
 }
 
 function recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,

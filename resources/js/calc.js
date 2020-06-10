@@ -718,20 +718,16 @@ function loadCardPerformanceDashboard() {
       let numErrors = 0;
 
       try {
-        Plotly.newPlot(cardTeaserGraph, cardTeaserTraces, teaserLayout, config);
-        recordGraphData(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
+        createGraph(cardTeaserGraph, cardTeaserTraces, teaserLayout, config,
           graphHeight, graphWidth);
-        recordGraphSize(cardTeaserGraph, graphHeight, teaserGraphWidth);
       } catch (err) {
         numErrors++;
         displayGraphError(cardTeaserGraph, err);
       }
 
       try {
-        Plotly.newPlot(cardGraph, cardTraces, cardLayout, config);
-        recordGraphData(cardGraph, cardTraces, cardLayout, config, graphHeight,
+        createGraph(cardGraph, cardTraces, cardLayout, config, graphHeight,
           graphWidth);
-        recordGraphSize(cardGraph, graphHeight, graphWidth);
       } catch (err) {
         numErrors++;
         displayGraphError(cardGraph, err);
@@ -1533,9 +1529,7 @@ function displayVideographerMonthlyVideos(videographers) {
 
   const graphId = "videographer-monthly-videos-chart";
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
   }

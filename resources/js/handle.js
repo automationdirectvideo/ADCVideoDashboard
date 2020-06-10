@@ -104,9 +104,7 @@ function displayChannelDemographics(response) {
   graphContainer.style.width = width + "px";
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     recordError(err, "Unable to display channel demographics graph");
     return Promise.resolve("Error Displaying Channel Demographics");
@@ -207,10 +205,8 @@ function displayChannelSearchTerms(response) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth,
       automargin);
-    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   } catch (err) {
     displayGraphError(graphId, err);
     return Promise.resolve("Error Displaying Channel Search Terms");
@@ -307,10 +303,8 @@ function displayWatchTimeBySubscribedStatus(response) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth,
       automargin);
-    recordGraphSize(graphId, graphHeight, graphWidth, automargin);
   } catch (err) {
     displayGraphError(graphId, err);
     return Promise.resolve("Error Displaying Watch Time By Subscribed Status");
@@ -387,9 +381,7 @@ function displayViewsByDeviceType(response) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
     return Promise.resolve("Error Displaying Views By Device Type");
@@ -473,9 +465,7 @@ function displayViewsByState(response) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
     return Promise.resolve("Error Displaying Views By State");
@@ -562,9 +552,7 @@ function displayViewsByTrafficSource(response) {
   }
 
   try {
-    Plotly.newPlot(graphId, data, layout, config);
-    recordGraphData(graphId, data, layout, config, graphHeight, graphWidth);
-    recordGraphSize(graphId, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
   } catch (err) {
     displayGraphError(graphId, err);
     return Promise.resolve("Error Displaying Views By Traffic Source");
@@ -719,10 +707,8 @@ function displayVideoDailyViews(response, dashboardId) {
     }
 
     try {
-      Plotly.newPlot(graphId, data, layout, config);
-      recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      createGraph(graphId, data, layout, config, graphHeight, graphWidth,
         automargin);
-      recordGraphSize(graphId, graphHeight, graphWidth, automargin);
     } catch (err) {
       displayGraphError(graphId);
       throw err;
@@ -811,10 +797,8 @@ function displayVideoSearchTerms(response, dashboardId) {
     }
 
     try {
-      Plotly.newPlot(graphId, data, layout, config);
-      recordGraphData(graphId, data, layout, config, graphHeight, graphWidth,
+      createGraph(graphId, data, layout, config, graphHeight, graphWidth,
         automargin);
-      recordGraphSize(graphId, graphHeight, graphWidth, automargin);
     } catch (err) {
       displayGraphError(graphId);
       throw err;
