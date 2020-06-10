@@ -56,6 +56,7 @@ function loadDashboardsSignedIn() {
     requests.push(loadCategoryCharts());
   }
   requests.push(loadTopVideoDashboards());
+  requests.push(loadVideographerDashboards());
 
   console.log("Starting Load Dashboards Requests");
   return Promise.all(requests)
@@ -1153,39 +1154,6 @@ function displayTopCategoriesGraphThree(categoryStats) {
   } catch (err) {
     displayGraphError(graphId, err);
   }
-}
-
-function calcVideographerStats() {
-  let allVideoStats = lsGet("allVideoStats");
-  let statsByVideoId = lsGet("statsByVideoId");
-  let videographerStats = {};
-  allVideoStats.forEach(videoStats => {
-    const videoId = videoStats.videoId;
-    const comments = videoStats.comments;
-    const dislikes = videoStats.dislikes;
-    const duration = videoStats.duration;
-    const likes = videoStats.likes;
-    const views = videoStats.views;
-    let videoInfo = statsByVideoId[videoId];
-    let createdBy = videoInfo.createdBy;
-    if (!videographerStats[createdBy]) {
-      videographerStats[createdBy] = {
-        "comments": 0,
-        "dislikes": 0,
-        "likes": 0,
-        "numVideos": 0,
-        "totalDuration": 0,
-        "views": 0
-      };
-    }
-    videographerStats[createdBy]["comments"] += comments;
-    videographerStats[createdBy]["dislikes"] += dislikes;
-    videographerStats[createdBy]["likes"] += likes;
-    videographerStats[createdBy]["numVideos"] += 1;
-    videographerStats[createdBy]["totalDuration"] += duration;
-    videographerStats[createdBy]["views"] += views;
-  });
-  return videographerStats;
 }
 
 function displayTopVideoTitles(dashboardIds) {

@@ -36,32 +36,6 @@ function decimalToPercent(decimal) {
 }
 
 /**
- * Get month data for the most recent month with data in the YouTube API which
- * is usually the current month
- *
- * @returns {Array} First and last day of the month (YYYY-MM-DD) and the month
- *    (YYYY-MM)
- */
-function getCurrMonth() {
-  const now = new Date();
-  let firstDayOfMonth = undefined;
-  let lastDayOfMonth = undefined;
-  if (now.getDate() >= 5) {
-    // Update for current month
-    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-  } else {
-    // Update for previous month
-    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
-  }
-  const startDate = getYouTubeDateFormat(firstDayOfMonth);
-  const endDate = getYouTubeDateFormat(lastDayOfMonth);
-  const month = startDate.substr(0, 7);
-  return [startDate, endDate, month];
-}
-
-/**
  * Detects the user browser. Taken from
  * [StackOverflow](https://stackoverflow.com/a/9851769)
  *
@@ -136,6 +110,32 @@ function getCurrentDashboardTheme(dashboardId) {
 }
 
 /**
+ * Get month data for the most recent month with data in the YouTube API which
+ * is usually the current month
+ *
+ * @returns {Array} First and last day of the month (YYYY-MM-DD) and the month
+ *    (YYYY-MM)
+ */
+function getCurrMonth() {
+  const now = new Date();
+  let firstDayOfMonth = undefined;
+  let lastDayOfMonth = undefined;
+  if (now.getDate() >= 5) {
+    // Update for current month
+    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  } else {
+    // Update for previous month
+    firstDayOfMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    lastDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+  }
+  const startDate = getYouTubeDateFormat(firstDayOfMonth);
+  const endDate = getYouTubeDateFormat(lastDayOfMonth);
+  const month = startDate.substr(0, 7);
+  return [startDate, endDate, month];
+}
+
+/**
  * Get date from `numDaysAgo` from today in the form YYYY-MM-DD
  *
  * @param {Number} numDaysAgo An integer
@@ -146,6 +146,26 @@ function getDateFromDaysAgo(numDaysAgo) {
   var priorDate = new Date().setDate(today.getDate() - numDaysAgo);
   priorDate = new Date(priorDate);
   return getYouTubeDateFormat(priorDate);
+}
+
+/**
+ * Gets a list of all months as "YYYY-MM" between the provided month and the
+ * current month inclusive
+ *
+ * @param {Number} year The starting year
+ * @param {Number} month The ending month (1-12)
+ * @returns {Array<String>} List of months
+ */
+function getMonthsSince(year, month) {
+  let monthIter = new Date(year, month - 1);
+  monthIter.setDate(1);
+  const endDate = new Date();
+  let months = [];
+  while (endDate - monthIter >= 0) {
+    months.push(getYouTubeDateFormat(monthIter).substr(0,7));
+    monthIter = new Date(monthIter.getFullYear(), monthIter.getMonth() + 1);
+  }
+  return months;
 }
 
 /**

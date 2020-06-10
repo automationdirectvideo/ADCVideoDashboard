@@ -562,6 +562,75 @@ function requestCardPerformance(startDate, endDate, month) {
 }
 
 
+/* Videographer Stats Calls */
+
+function getVideographerPerformanceForMonth(videographers, startDate) {
+  const firstDay = new Date(startDate);
+  const endDate = getYouTubeDateFormat(new Date(firstDay.getFullYear(),
+    firstDay.getMonth() + 2, 0));
+  const month = startDate.substr(0, 7);
+  let requests = [];
+  let names = [];
+  for (const name in videographers) {
+    if (videographers.hasOwnProperty(name)) {
+      names.push(name);
+      const data = videographers[name];
+      const videos = data.videos;
+      const request = requestMonthlyViews(videos, startDate, endDate);
+      requests.push(request);
+    }
+  }
+  return Promise.all(requests)
+    .then(viewsList => {
+      for (let index = 0; index < names.length; index++) {
+        const name = names[index];
+        const views = viewsList[index];
+        if (!videographers[name]["monthlyViews"]) {
+          videographers[name]["monthlyViews"] = {};
+        }
+        videographers[name]["monthlyViews"][month] = views;
+      }
+      return videographers;
+    });
+
+  function requestMonthlyViews(videos, startDate, endDate) {
+    let requests = [];
+    for (let i = 0; i < videos.length; i += 50) {
+      const fiftyVideos = videos.slice(i, i + 50);
+      const fiftyVideosStr = fiftyVideos.join(",");
+      const filters = "video==" + fiftyVideosStr;
+      const gapiRequest = {
+        "endDate": endDate,
+        "filters": filters,
+        "ids": "channel==UCR5c2ZGLZY2FFbxZuSxzzJg",
+        "metrics": "views",
+        "startDate": startDate
+      };
+      const request = gapi.client.youtubeAnalytics.reports.query(gapiRequest)
+        .then(response => {
+          const views = response.result.rows[0][0];
+          return views;
+        })
+        .catch(err => {
+          const errorMsg = `Error in fetching monthly views for video group` +
+            ` ${i} - ${i + 49}: `;
+          console.error(errorMsg, err);
+          recordError(err, errorMsg);
+          return errorMsg;
+        });
+      requests.push(request);
+    }
+
+    return Promise.all(requests)
+      .then(response => {
+        const totalViews = response.reduce((sum, value) => {
+          return sum + value;
+        }, 0);
+        return totalViews;
+      });
+  }
+}
+
 /* Google Sheets Calls */
 
 function clearSpreadsheet(sheetName, range) {
@@ -724,6 +793,29 @@ function getTopTenVideosByMonthSince(startDate) {
     })
     .catch(err => {
       const errorMsg = "Error occurred getting Top Ten Videos By Month: ";
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
+    });
+}
+
+function getVideographerPerformanceByMonthSince(videographers, startDate) {
+  startDate = startDate || new Date("2010-07-1");
+  console.log(startDate);
+  let requests = [];
+  const endDate = new Date();
+  while (endDate - startDate > 0) {
+    const firstDay = getYouTubeDateFormat(startDate);
+    requests.push(getVideographerPerformanceForMonth(videographers, firstDay));
+    startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
+  }
+  return Promise.all(requests)
+    .then(response => {
+      console.log("videographers");
+      console.log(videographers);
+      return videographers;
+    })
+    .catch(err => {
+      const errorMsg = "Error occurred getting Card Performance By Month: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
     });
