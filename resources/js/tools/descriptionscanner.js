@@ -187,7 +187,7 @@ function saveDescriptionsErrors(formatErrors) {
 function checkFormat(video) {
   const videoId = video["videoId"];
   const description = video["description"];
-  const videoLink = `https://youtu.be/${videoId}`;
+  const videoLink = `https://studio.youtube.com/video/${videoId}/edit`;
   let errors = [videoId, videoLink];
   errors.push(checkVID(description));
   errors.push(checkSocialLinks(description));
