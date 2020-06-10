@@ -660,6 +660,13 @@ function clearSpreadsheet(sheetName, range) {
   }
 }
 
+/**
+ * Gets spreadsheet cells from Google Sheets
+ *
+ * @param {String} sheetName The common name of the Google Sheet
+ * @param {String} range The tab/sheet of the desired sheet
+ * @returns {Promise} Spreadsheet data
+ */
 function requestSpreadsheetData(sheetName, range) {
   const spreadsheetId = sheetNameToId(sheetName);
   if (spreadsheetId != "") {
@@ -683,6 +690,7 @@ function requestSpreadsheetData(sheetName, range) {
     console.error(errorMsg);
     const sheetError = new Error(errorMsg);
     recordError(sheetError);
+    return Promise.reject(errorMsg);
   }
 }
 
