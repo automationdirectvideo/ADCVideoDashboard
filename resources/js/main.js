@@ -1529,13 +1529,19 @@ function swapProductCategoriesGraphs() {
     graphOne = document.getElementById(graphIds.graphOne);
     graphTwo = document.getElementById(graphIds.graphTwo);
     graphThree = document.getElementById(graphIds.graphThree);
-  } else if (activeDashboard == "videographer-monthly-videos") {
-    const graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+  } else if (activeDashboard == "videographer-avg-views") {
+    const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
     graphOne = document.getElementById(graphIds.all);
     graphTwo = document.getElementById(graphIds.organic);
     graphThree = document.getElementById(graphIds.notOrganic);
-  } else if (activeDashboard == "videographer-avg-views") {
-    const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
+  } else if (activeDashboard == "videographer-cumulative-videos") {
+    const graphIds =
+      getDashboardGraphIds("videographerGraphs").cumulativeVideos;
+    graphOne = document.getElementById(graphIds.all);
+    graphTwo = document.getElementById(graphIds.organic);
+    graphThree = document.getElementById(graphIds.notOrganic);
+  } else if (activeDashboard == "videographer-monthly-videos") {
+    const graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
     graphOne = document.getElementById(graphIds.all);
     graphTwo = document.getElementById(graphIds.organic);
     graphThree = document.getElementById(graphIds.notOrganic);

@@ -1211,6 +1211,7 @@ function loadVideographerDashboards() {
             displayGraphError(graphId);
           }
         }
+        recordError(err, "Unable to display videographer average views graphs");
       });
   } catch (err) {
     const graphIds = [
@@ -1225,6 +1226,7 @@ function loadVideographerDashboards() {
         }
       }
     });
+    recordError(err, "Unable to load videographer dashboards");
   }
 }
 
@@ -1547,33 +1549,58 @@ function calcVideographerVideosByMonth(videographers) {
 }
 
 /**
- * Creates the Monthly Views By Videographer stacked line graph
+ * Creates the Monthly Views and Cumulative Views By Videographer stacked line
+ * graphs
  *
  * @param {Object} videographers Videographer statistics
  */
 function displayVideographerMonthlyVideos(videographers) {
   videographers = videographers || lsGet("videographers");
   const people = ["Shane C", "Rick F", "Tim W"];
-  const graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+  const graphIds = [
+    getDashboardGraphIds("videographerGraphs").cumulativeVideos,
+    getDashboardGraphIds("videographerGraphs").monthlyVideos
+  ];
   const categories = {
     "all": {
-      "graphId": graphIds.all,
-      "title": "Monthly Videos By Videographer (All Videos)",
+      "cumulative": {
+        "graphId": graphIds[0].all,
+        "title": "Cumulative Videos By Videographer (All Videos)"
+      },
+      "monthly": {
+        "graphId": graphIds[1].all,
+        "title": "Monthly Videos By Videographer (All Videos)"
+      }
     },
     "organic": {
-      "graphId": graphIds.organic,
-      "title": "Monthly Videos By Videographer (Organic Videos)",
+      "cumulative": {
+        "graphId": graphIds[0].organic,
+        "title": "Cumulative Videos By Videographer (Organic Videos)"
+      },
+      "monthly": {
+        "graphId": graphIds[1].organic,
+        "title": "Monthly Videos By Videographer (Organic Videos)"
+      }
     },
     "notOrganic": {
-      "graphId": graphIds.notOrganic,
-      "title": "Monthly Videos By Videographer (Not Organic Videos)",
-    },
+      "cumulative": {
+        "graphId": graphIds[0].notOrganic,
+        "title": "Cumulative Videos By Videographer (Not Organic Videos)"
+      },
+      "monthly": {
+        "graphId": graphIds[1].notOrganic,
+        "title": "Monthly Videos By Videographer (Not Organic Videos)"
+      }
+    }
   };
   for (const category in categories) {
     if (categories.hasOwnProperty(category)) {
-      const graphTitle = categories[category].title;
-      const graphId = categories[category].graphId;
-      let data = [];
+      const cumulativeGraphTitle = categories[category].cumulative.title;
+      const cumulativeGraphId = categories[category].cumulative.graphId;
+      const monthlyGraphTitle = categories[category].monthly.title;
+      const monthlyGraphId = categories[category].monthly.graphId;
+      let cumulativeData = [];
+      let monthlyData = [];
 
       people.forEach(name => {
         const stats = videographers[name][category];
@@ -1594,28 +1621,52 @@ function displayVideographerMonthlyVideos(videographers) {
             -1;
         });
         let months = [];
-        let videos = [];
-        let videoText = []
+        let cumulativeNumVideos = [];
+        let monthlyNumVideos = [];
+        let videoTotal = 0;
+        let cumulativeCustomData = [];
+        let monthlyCustomData = [];
         sortList.forEach(elem => {
+          videoTotal += elem.numVideos;
           months.push(elem.month);
-          videos.push(elem.numVideos);
+          cumulativeNumVideos.push(videoTotal);
+          monthlyNumVideos.push(elem.numVideos);
+          let cumulativeText = [];
           if (elem.numVideos == 1) {
-            videoText.push("1 video");
+            cumulativeText.push("1 new video");
+            monthlyCustomData.push("1 video");
           } else {
-            videoText.push(`${elem.numVideos} videos`)
+            cumulativeText.push(`${elem.numVideos} new videos`);
+            monthlyCustomData.push(`${elem.numVideos} videos`);
           }
+          if (videoTotal == 1) {
+            cumulativeText.push("1 video total");
+          } else {
+            cumulativeText.push(`${videoTotal} videos total`);
+          }
+          cumulativeCustomData.push(cumulativeText);
         });
-        let trace = {
+        let cumulativeTrace = {
           x: months,
-          y: videos,
+          y: cumulativeNumVideos,
           name: name,
-          customdata: videoText,
+          customdata: cumulativeCustomData,
+          stackgroup: "one",
+          hovertemplate: "%{customdata[0]} in %{x}" +
+            "<br>%{customdata[1]}<extra>" + name + "</extra>",
+        };
+        let monthlyTrace = {
+          x: months,
+          y: monthlyNumVideos,
+          name: name,
+          customdata: monthlyCustomData,
           stackgroup: "one",
           groupnorm: "percent",
           hovertemplate: "%{y:.0f}% of total videos<br>%{customdata}<extra>" +
             name +"</extra>",
         };
-        data.push(trace);
+        cumulativeData.push(cumulativeTrace);
+        monthlyData.push(monthlyTrace);
       });
 
       const graphHeight = 0.8583;
@@ -1634,7 +1685,7 @@ function displayVideographerMonthlyVideos(videographers) {
       const bottomMargin =
         Math.floor(0.0104 * document.documentElement.clientWidth);
 
-      const layout = {
+      const cumulativeLayout = {
         height: height,
         width: width,
         hoverlabel: {
@@ -1660,7 +1711,7 @@ function displayVideographerMonthlyVideos(videographers) {
           font: {
             size: titleFontSize
           },
-          text: graphTitle
+          text: cumulativeGraphTitle
         },
         xaxis: {
           automargin: true,
@@ -1681,15 +1732,18 @@ function displayVideographerMonthlyVideos(videographers) {
           tickfont: {
             size: tickSize
           },
-          ticksuffix: "%",
           title: {
             font: {
               size: axisTitleSize
             },
-            text: "Percentage of Videos Created"
+            text: "Cumulative Videos Created"
           }
         }
       };
+      let monthlyLayout = JSON.parse(JSON.stringify(cumulativeLayout));
+      monthlyLayout.title.text = monthlyGraphTitle;
+      monthlyLayout.yaxis.ticksuffix = "%";
+      monthlyLayout.yaxis.title.text = "Percentage of Videos Created";
 
       const config = {
         scrollZoom: false,
@@ -1697,9 +1751,16 @@ function displayVideographerMonthlyVideos(videographers) {
       }
 
       try {
-        createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+        createGraph(cumulativeGraphId, cumulativeData, cumulativeLayout, config,
+          graphHeight, graphWidth);
       } catch (err) {
-        displayGraphError(graphId, err);
+        displayGraphError(cumulativeGraphId, err);
+      }
+      try {
+        createGraph(monthlyGraphId, monthlyData, monthlyLayout, config,
+          graphHeight, graphWidth);
+      } catch (err) {
+        displayGraphError(monthlyGraphId, err);
       }
     }
   }

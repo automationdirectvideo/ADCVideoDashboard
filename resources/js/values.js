@@ -154,13 +154,18 @@ const defaultSettings =
       "organic": "videographer-avg-views-graph-organic",
       "notOrganic": "videographer-avg-views-graph-not-organic",
     },
+    "cumulativeVideos": {
+      "all": "videographer-cumulative-videos-graph-all",
+      "organic": "videographer-cumulative-videos-graph-organic",
+      "notOrganic": "videographer-cumulative-videos-graph-not-organic",
+    },
     "monthlyVideos": {
       "all": "videographer-monthly-videos-graph-all",
       "organic": "videographer-monthly-videos-graph-organic",
       "notOrganic": "videographer-monthly-videos-graph-not-organic",
     }
   },
-  "version": 3,
+  "version": 4,
 };
 
 const categoryColors = {
