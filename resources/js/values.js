@@ -149,10 +149,18 @@ const defaultSettings =
     "searchTerms": "top-video-#-search-terms"
   },
   "videographerGraphs": {
-    "avgViews": "videographer-avg-views-graph",
-    "monthlyVideos": "videographer-monthly-videos-graph"
+    "avgViews": {
+      "all": "videographer-avg-views-graph-all",
+      "organic": "videographer-avg-views-graph-organic",
+      "notOrganic": "videographer-avg-views-graph-not-organic",
+    },
+    "monthlyVideos": {
+      "all": "videographer-monthly-videos-graph-all",
+      "organic": "videographer-monthly-videos-graph-organic",
+      "notOrganic": "videographer-monthly-videos-graph-not-organic",
+    }
   },
-  "version": 2,
+  "version": 3,
 };
 
 const categoryColors = {

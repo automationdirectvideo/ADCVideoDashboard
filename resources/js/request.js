@@ -630,19 +630,28 @@ function getVideographerAvgViews(videographers, startDate, endDate) {
   let names = [];
   for (const name in videographers) {
     if (videographers.hasOwnProperty(name)) {
-      const stats = videographers[name];
-      const videos = stats.videos;
-      names.push(name)
-      requests.push(requestVideoViews(videos, startDate, endDate));
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const stats = categories[category];
+          const videos = stats.videos;
+          names.push({
+            "category": category,
+            "name": name
+          });
+          requests.push(requestVideoViews(videos, startDate, endDate));
+        }
+      }
     }
   }
   return Promise.all(requests)
     .then(responses => {
       for (let index = 0; index < responses.length; index++) {
         const avgViews = responses[index];
-        const name = names[index];
-        const numVideos = videographers[name].videos.length;
-        videographers[name].lastXDaysAvgViews = avgViews / numVideos;
+        const name = names[index].name;
+        const category = names[index].category;
+        const numVideos = videographers[name][category].videos.length;
+        videographers[name][category].lastXDaysAvgViews = avgViews / numVideos;
       }
       lsSet("videographers", videographers);
       return videographers;

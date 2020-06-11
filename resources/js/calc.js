@@ -1195,8 +1195,6 @@ function reloadVideoStrengthDashboard() {
  * dashboards
  */
 function loadVideographerDashboards() {
-  const graphIds = getDashboardGraphIds("videographerGraphs");
-  const monthlyVideosChart = graphIds.monthlyVideos;
   try {
     let videographers = calcVideographerStats();
     displayVideographerMonthlyVideos(videographers);
@@ -1204,9 +1202,29 @@ function loadVideographerDashboards() {
       getDateFromDaysAgo(4))
       .then(videographers => {
         displayVideographerAvgViews(videographers);
+      })
+      .catch(err => {
+        const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
+        for (const key in graphIds) {
+          if (graphIds.hasOwnProperty(key)) {
+            const graphId = graphIds[key];
+            displayGraphError(graphId);
+          }
+        }
       });
   } catch (err) {
-    displayGraphError(monthlyVideosChart);
+    const graphIds = [
+      getDashboardGraphIds("videographerGraphs").avgViews,
+      getDashboardGraphIds("videographerGraphs").monthlyVideos
+    ];
+    graphIds.forEach(dashboard => {
+      for (const key in dashboard) {
+        if (dashboard.hasOwnProperty(key)) {
+          const graphId = dashboard[key];
+          displayGraphError(graphId);
+        }
+      }
+    });
   }
 }
 
@@ -1397,46 +1415,92 @@ function calcVideographerStats() {
     const videoStats = allVideoStats[index];
     const videoId = videoStats.videoId;
     const createdBy = statsByVideoId[videoId].createdBy;
+    const organic = statsByVideoId[videoId].organic;
     if (!videographers[createdBy]) {
       videographers[createdBy] = {
-        "totalComments": 0,
-        "totalDislikes": 0,
-        "totalDuration": 0,
-        "totalLikeRatio": 0.0,
-        "totalLikes": 0,
-        "totalSubsGained": 0,
-        "totalViews": 0,
-        "videos": []
+        "all": {
+          "totalComments": 0,
+          "totalDislikes": 0,
+          "totalDuration": 0,
+          "totalLikeRatio": 0.0,
+          "totalLikes": 0,
+          "totalSubsGained": 0,
+          "totalViews": 0,
+          "videos": []
+        },
+        "organic": {
+          "totalComments": 0,
+          "totalDislikes": 0,
+          "totalDuration": 0,
+          "totalLikeRatio": 0.0,
+          "totalLikes": 0,
+          "totalSubsGained": 0,
+          "totalViews": 0,
+          "videos": []
+        },
+        "notOrganic": {
+          "totalComments": 0,
+          "totalDislikes": 0,
+          "totalDuration": 0,
+          "totalLikeRatio": 0.0,
+          "totalLikes": 0,
+          "totalSubsGained": 0,
+          "totalViews": 0,
+          "videos": []
+        }
       };
     }
-    videographers[createdBy].totalComments += videoStats.comments;
-    videographers[createdBy].totalDislikes += videoStats.dislikes;
-    videographers[createdBy].totalDuration += videoStats.duration;
-    let likeRatio = videoStats.likes / (videoStats.likes + videoStats.dislikes);
-    if (!isNaN(likeRatio)) {
-      videographers[createdBy].totalLikeRatio += likeRatio;
+    let categories = [videographers[createdBy].all];
+    if (organic) {
+      categories.push(videographers[createdBy].organic);
+    } else {
+      categories.push(videographers[createdBy].notOrganic);
     }
-    videographers[createdBy].totalLikes += videoStats.likes;
-    videographers[createdBy].totalSubsGained += videoStats.subscribersGained;
-    videographers[createdBy].totalViews += videoStats.views;
-    videographers[createdBy].videos.push(videoId);
+    const comments = videoStats.comments;
+    const dislikes = videoStats.dislikes;
+    const duration = videoStats.duration;
+    const likeRatio = videoStats.likes /
+      (videoStats.likes + videoStats.dislikes);
+    const likes = videoStats.likes;
+    const subsGained = videoStats.subscribersGained;
+    const views = videoStats.views;
+    categories.forEach(category => {
+      category.totalComments += comments;
+      category.totalDislikes += dislikes;
+      category.totalDuration += duration;
+      if (!isNaN(likeRatio)) {
+        category.totalLikeRatio += likeRatio;
+      }
+      category.totalLikes += likes;
+      category.totalSubsGained += subsGained;
+      category.totalViews += views;
+      category.videos.push(videoId);
+    });
   }
   for (const name in videographers) {
     if (videographers.hasOwnProperty(name)) {
-      const data = videographers[name];
-      const numVideos = data.videos.length;
-      data.avgComments = data.totalComments / numVideos;
-      data.avgDislikes = data.totalDislikes / numVideos;
-      data.avgDuration = data.totalDuration / numVideos;
-      data.avgLikeRatio = data.totalLikeRatio / numVideos;
-      data.avgLikes = data.totalLikes / numVideos;
-      data.avgSubsGained = data.totalSubsGained / numVideos;
-      data.avgViews = data.totalViews / numVideos;
-      let likeRatio = data.avgLikes / (data.avgLikes + data.avgDislikes);
-      if (isNaN(likeRatio)) {
-        likeRatio = undefined;
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const data = categories[category];
+          let numVideos = data.videos.length;
+          if (numVideos == 0) {
+            numVideos = 1;
+          }
+          data.avgComments = data.totalComments / numVideos;
+          data.avgDislikes = data.totalDislikes / numVideos;
+          data.avgDuration = data.totalDuration / numVideos;
+          data.avgLikeRatio = data.totalLikeRatio / numVideos;
+          data.avgLikes = data.totalLikes / numVideos;
+          data.avgSubsGained = data.totalSubsGained / numVideos;
+          data.avgViews = data.totalViews / numVideos;
+          let likeRatio = data.avgLikes / (data.avgLikes + data.avgDislikes);
+          if (isNaN(likeRatio)) {
+            likeRatio = undefined;
+          }
+          data.cumLikeRatio = likeRatio;
+        }
       }
-      data.cumLikeRatio = likeRatio;
     }
   }
   videographers = calcVideographerVideosByMonth(videographers);
@@ -1454,24 +1518,29 @@ function calcVideographerVideosByMonth(videographers) {
   const statsByVideoId = lsGet("statsByVideoId");
   for (const name in videographers) {
     if (videographers.hasOwnProperty(name)) {
-      const data = videographers[name];
-      let monthlyVideos = {};
-      const videos = data.videos;
-      videos.forEach(videoId => {
-        const publishDate = statsByVideoId[videoId].publishDate;
-        const month = publishDate.substr(0, 7);
-        if (monthlyVideos[month] == undefined) {
-          monthlyVideos[month] = 0;
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const data = categories[category];
+          let monthlyVideos = {};
+          const videos = data.videos;
+          videos.forEach(videoId => {
+            const publishDate = statsByVideoId[videoId].publishDate;
+            const month = publishDate.substr(0, 7);
+            if (monthlyVideos[month] == undefined) {
+              monthlyVideos[month] = 0;
+            }
+            monthlyVideos[month] += 1;
+          });
+          const allMonths = getMonthsSince(2010, 7);
+          allMonths.forEach(month => {
+            if (monthlyVideos[month] == undefined) {
+              monthlyVideos[month] = 0;
+            }
+          });
+          data.monthlyVideos = monthlyVideos;
         }
-        monthlyVideos[month] += 1;
-      });
-      const allMonths = getMonthsSince(2010, 7);
-      allMonths.forEach(month => {
-        if (monthlyVideos[month] == undefined) {
-          monthlyVideos[month] = 0;
-        }
-      });
-      videographers[name].monthlyVideos = monthlyVideos;
+      }
     }
   }
   return videographers;
@@ -1484,134 +1553,155 @@ function calcVideographerVideosByMonth(videographers) {
  */
 function displayVideographerMonthlyVideos(videographers) {
   videographers = videographers || lsGet("videographers");
-  let data = [];
   const people = ["Shane C", "Rick F", "Tim W"];
-  people.forEach(name => {
-    const stats = videographers[name];
-    const monthlyVideos = stats.monthlyVideos;
-    let sortList = [];
-    for (const month in monthlyVideos) {
-      if (monthlyVideos.hasOwnProperty(month)) {
-        const numVideos = monthlyVideos[month];
-        sortList.push({
-          month: month,
-          numVideos: numVideos
-        });
-      }
-    }
-    sortList.sort(function (a, b) {
-      return a.month > b.month ? 1 :
-        a.month == b.month ? 0 :
-        -1;
-    });
-    let months = [];
-    let videos = [];
-    let videoText = []
-    sortList.forEach(elem => {
-      months.push(elem.month);
-      videos.push(elem.numVideos);
-      if (elem.numVideos == 1) {
-        videoText.push("1 video");
-      } else {
-        videoText.push(`${elem.numVideos} videos`)
-      }
-    });
-    let trace = {
-      x: months,
-      y: videos,
-      name: name,
-      customdata: videoText,
-      stackgroup: "one",
-      groupnorm: "percent",
-      hovertemplate: "%{y:.0f}% of total videos<br>%{customdata}<extra>" +
-        name +"</extra>",
-    };
-    data.push(trace);
-  });
-
-  const graphHeight = 0.8583;
-  const graphWidth = 0.9528;
-  const height = graphHeight * document.documentElement.clientHeight;
-  const width = graphWidth * document.documentElement.clientWidth;
-  const titleFontSize =
-    Math.floor(0.0208 * document.documentElement.clientWidth);
-  const legendFontSize =
-    Math.floor(0.0100 * document.documentElement.clientWidth);
-  const axisTitleSize =
-    Math.floor(0.0156 * document.documentElement.clientWidth);
-  const tickSize = Math.floor(0.0104 * document.documentElement.clientWidth);
-  const topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
-  const bottomMargin = Math.floor(0.0104 * document.documentElement.clientWidth);
-
-  const layout = {
-    height: height,
-    width: width,
-    hoverlabel: {
-      font: {
-        size: tickSize
-      },
-      namelength: -1
+  const graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+  const categories = {
+    "all": {
+      "graphId": graphIds.all,
+      "title": "Monthly Videos By Videographer (All Videos)",
     },
-    legend: {
-      bgcolor: "#eeeeee",
-      font: {
-        size: legendFontSize
-      },
-      y: 0.5
+    "organic": {
+      "graphId": graphIds.organic,
+      "title": "Monthly Videos By Videographer (Organic Videos)",
     },
-    margin: {
-      b: bottomMargin,
-      t: topMargin
+    "notOrganic": {
+      "graphId": graphIds.notOrganic,
+      "title": "Monthly Videos By Videographer (Not Organic Videos)",
     },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
-    title: {
-      font: {
-        size: titleFontSize
-      },
-      text: "Monthly Videos By Videographer"
-    },
-    xaxis: {
-      automargin: true,
-      fixedrange: true,
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Month"
-      }
-    },
-    yaxis: {
-      automargin: true,
-      fixedrange: true,
-      tickfont: {
-        size: tickSize
-      },
-      ticksuffix: "%",
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Percentage of Videos Created"
-      }
-    }
   };
+  for (const category in categories) {
+    if (categories.hasOwnProperty(category)) {
+      const graphTitle = categories[category].title;
+      const graphId = categories[category].graphId;
+      let data = [];
 
-  const config = {
-    scrollZoom: false,
-    displayModeBar: false,
-  }
+      people.forEach(name => {
+        const stats = videographers[name][category];
+        const monthlyVideos = stats.monthlyVideos;
+        let sortList = [];
+        for (const month in monthlyVideos) {
+          if (monthlyVideos.hasOwnProperty(month)) {
+            const numVideos = monthlyVideos[month];
+            sortList.push({
+              month: month,
+              numVideos: numVideos
+            });
+          }
+        }
+        sortList.sort(function (a, b) {
+          return a.month > b.month ? 1 :
+            a.month == b.month ? 0 :
+            -1;
+        });
+        let months = [];
+        let videos = [];
+        let videoText = []
+        sortList.forEach(elem => {
+          months.push(elem.month);
+          videos.push(elem.numVideos);
+          if (elem.numVideos == 1) {
+            videoText.push("1 video");
+          } else {
+            videoText.push(`${elem.numVideos} videos`)
+          }
+        });
+        let trace = {
+          x: months,
+          y: videos,
+          name: name,
+          customdata: videoText,
+          stackgroup: "one",
+          groupnorm: "percent",
+          hovertemplate: "%{y:.0f}% of total videos<br>%{customdata}<extra>" +
+            name +"</extra>",
+        };
+        data.push(trace);
+      });
 
-  const graphIds = getDashboardGraphIds("videographerGraphs");
-  const graphId = graphIds.monthlyVideos;
+      const graphHeight = 0.8583;
+      const graphWidth = 0.9528;
+      const height = graphHeight * document.documentElement.clientHeight;
+      const width = graphWidth * document.documentElement.clientWidth;
+      const titleFontSize =
+        Math.floor(0.0208 * document.documentElement.clientWidth);
+      const legendFontSize =
+        Math.floor(0.0100 * document.documentElement.clientWidth);
+      const axisTitleSize =
+        Math.floor(0.0156 * document.documentElement.clientWidth);
+      const tickSize =
+        Math.floor(0.0104 * document.documentElement.clientWidth);
+      const topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
+      const bottomMargin =
+        Math.floor(0.0104 * document.documentElement.clientWidth);
 
-  try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
-  } catch (err) {
-    displayGraphError(graphId, err);
+      const layout = {
+        height: height,
+        width: width,
+        hoverlabel: {
+          font: {
+            size: tickSize
+          },
+          namelength: -1
+        },
+        legend: {
+          bgcolor: "#eeeeee",
+          font: {
+            size: legendFontSize
+          },
+          y: 0.5
+        },
+        margin: {
+          b: bottomMargin,
+          t: topMargin
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        title: {
+          font: {
+            size: titleFontSize
+          },
+          text: graphTitle
+        },
+        xaxis: {
+          automargin: true,
+          fixedrange: true,
+          tickfont: {
+            size: tickSize
+          },
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Month"
+          }
+        },
+        yaxis: {
+          automargin: true,
+          fixedrange: true,
+          tickfont: {
+            size: tickSize
+          },
+          ticksuffix: "%",
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Percentage of Videos Created"
+          }
+        }
+      };
+
+      const config = {
+        scrollZoom: false,
+        displayModeBar: false,
+      }
+
+      try {
+        createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+      } catch (err) {
+        displayGraphError(graphId, err);
+      }
+    }
   }
 }
 
@@ -1622,137 +1712,156 @@ function displayVideographerMonthlyVideos(videographers) {
  */
 function displayVideographerAvgViews(videographers) {
   videographers = videographers || lsGet("videographers");
-
-  const graphHeight = 0.8583;
-  const graphWidth = 0.9528;
-  const height = graphHeight * document.documentElement.clientHeight;
-  const width = graphWidth * document.documentElement.clientWidth;
-  const titleFontSize =
-    Math.floor(0.0208 * document.documentElement.clientWidth);
-  const legendFontSize =
-    Math.floor(0.0128 * document.documentElement.clientWidth);
-  const axisTitleSize =
-    Math.floor(0.0156 * document.documentElement.clientWidth);
-  const textSize = Math.floor(0.0156 * document.documentElement.clientWidth);
-  const tickSize = Math.floor(0.0128 * document.documentElement.clientWidth);
-  const topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
-  const bottomMargin =
-    Math.floor(0.0104 * document.documentElement.clientWidth);
-
-  let allTime = [];
-  let lastXDays = [];
-  const people = ["Shane C", "Rick F", "Tim W"];
-  people.forEach(name => {
-    const stats = videographers[name];
-    const avgViews = Math.round(stats.avgViews);
-    const lastXDaysAvgViews = Math.round(stats.lastXDaysAvgViews);
-    allTime.push(avgViews);
-    lastXDays.push(lastXDaysAvgViews);
-  });
-  const trace1 = {
-    x: people,
-    y: allTime,
-    name: "All Time",
-    offsetgroup: 1,
-    textfont: {
-      size: textSize
+  const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
+  const categories = {
+    "all": {
+      "graphId": graphIds.all,
+      "title": "Average Views Per Video By Videographer (All Videos)",
     },
-    textposition: "auto",
-    texttemplate: "~%{y:,}<br>views",
-    type: "bar",
-    yaxis: "y"
+    "organic": {
+      "graphId": graphIds.organic,
+      "title": "Average Views Per Video By Videographer (Organic Videos)",
+    },
+    "notOrganic": {
+      "graphId": graphIds.notOrganic,
+      "title": "Average Views Per Video By Videographer (Not Organic Videos)",
+    },
   };
-  let trace2 = JSON.parse(JSON.stringify(trace1));
-  trace2.y = lastXDays;
-  trace2.name = "Last 30 Days";
-  trace2.offsetgroup = 2;
-  trace2.yaxis = "y2";
-  let data = [trace1, trace2];
+  for (const category in categories) {
+    if (categories.hasOwnProperty(category)) {
+      const graphTitle = categories[category].title;
+      const graphId = categories[category].graphId;
+      const graphHeight = 0.8583;
+      const graphWidth = 0.9528;
+      const height = graphHeight * document.documentElement.clientHeight;
+      const width = graphWidth * document.documentElement.clientWidth;
+      const titleFontSize =
+        Math.floor(0.0208 * document.documentElement.clientWidth);
+      const legendFontSize =
+        Math.floor(0.0128 * document.documentElement.clientWidth);
+      const axisTitleSize =
+        Math.floor(0.0156 * document.documentElement.clientWidth);
+      const textSize =
+        Math.floor(0.0156 * document.documentElement.clientWidth);
+      const tickSize =
+        Math.floor(0.0128 * document.documentElement.clientWidth);
+      const topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
+      const bottomMargin =
+        Math.floor(0.0104 * document.documentElement.clientWidth);
 
-  const layout = {
-    height: height,
-    width: width,
-    barmode: "group",
-    hovermode: false,
-    legend: {
-      bgcolor: "#eeeeee",
-      font: {
-        size: legendFontSize
-      },
-      x: 1.1,
-      xanchor: 'left',
-      y: 0.5
-    },
-    margin: {
-      b: bottomMargin,
-      t: topMargin
-    },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
-    title: {
-      font: {
-        size: titleFontSize
-      },
-      text: "Average Views Per Video By Videographer"
-    },
-    xaxis: {
-      automargin: true,
-      fixedrange: true,
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
+      let allTime = [];
+      let lastXDays = [];
+      const people = ["Shane C", "Rick F", "Tim W"];
+      people.forEach(name => {
+        const stats = videographers[name][category];
+        const avgViews = Math.round(stats.avgViews);
+        const lastXDaysAvgViews = Math.round(stats.lastXDaysAvgViews);
+        allTime.push(avgViews);
+        lastXDays.push(lastXDaysAvgViews);
+      });
+      const trace1 = {
+        x: people,
+        y: allTime,
+        name: "All Time",
+        offsetgroup: 1,
+        textfont: {
+          size: textSize
         },
-        text: "Videographers"
+        textposition: "auto",
+        texttemplate: "~%{y:,}<br>views",
+        type: "bar",
+        yaxis: "y"
+      };
+      let trace2 = JSON.parse(JSON.stringify(trace1));
+      trace2.y = lastXDays;
+      trace2.name = "Last 30 Days";
+      trace2.offsetgroup = 2;
+      trace2.yaxis = "y2";
+      let data = [trace1, trace2];
+
+      const layout = {
+        height: height,
+        width: width,
+        barmode: "group",
+        hovermode: false,
+        legend: {
+          bgcolor: "#eeeeee",
+          font: {
+            size: legendFontSize
+          },
+          x: 1.1,
+          xanchor: 'left',
+          y: 0.5
+        },
+        margin: {
+          b: bottomMargin,
+          t: topMargin
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        title: {
+          font: {
+            size: titleFontSize
+          },
+          text: graphTitle
+        },
+        xaxis: {
+          automargin: true,
+          fixedrange: true,
+          tickfont: {
+            size: tickSize
+          },
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Videographers"
+          }
+        },
+        yaxis: {
+          automargin: true,
+          fixedrange: true,
+          tickfont: {
+            size: tickSize
+          },
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Average Views Per Video (All Time)"
+          }
+        },
+        yaxis2: {
+          automargin: true,
+          fixedrange: true,
+          showgrid: false,
+          overlaying: "y",
+          side: "right",
+          zeroline: false,
+          tickfont: {
+            size: tickSize
+          },
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Average Views Per Video (Last 30 Days)"
+          }
+        }
+      };
+
+      const config = {
+        scrollZoom: false,
+        displayModeBar: false,
+        staticPlot: true,
+        responsive: true
       }
-    },
-    yaxis: {
-      automargin: true,
-      fixedrange: true,
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Average Views Per Video (All Time)"
-      }
-    },
-    yaxis2: {
-      automargin: true,
-      fixedrange: true,
-      showgrid: false,
-      overlaying: "y",
-      side: "right",
-      zeroline: false,
-      tickfont: {
-        size: tickSize
-      },
-      title: {
-        font: {
-          size: axisTitleSize
-        },
-        text: "Average Views Per Video (Last 30 Days)"
+
+      try {
+        createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+      } catch (err) {
+        displayGraphError(graphId, err);
       }
     }
-  };
-
-  const config = {
-    scrollZoom: false,
-    displayModeBar: false,
-    staticPlot: true,
-    responsive: true
-  }
-
-  const graphIds = getDashboardGraphIds("videographerGraphs");
-  const graphId = graphIds.avgViews;
-
-  try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
-  } catch (err) {
-    displayGraphError(graphId, err);
   }
 }

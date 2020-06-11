@@ -1518,28 +1518,42 @@ function swapNormalCharts() {
 }
 
 function swapProductCategoriesGraphs() {
-  var activeDashboard =
+  const activeDashboard =
     $(".carousel-container.active >>> .carousel-item.active")[0].id;
-    if (activeDashboard == "product-categories") {
-      var chartId = activeDashboard + "-chart-";
-      var chartOne = document.getElementById(chartId + "1");
-      var chartTwo = document.getElementById(chartId + "2");
-      var chartThree = document.getElementById(chartId + "3");
-      if (chartOne && chartTwo && chartThree) {
-        if (chartOne.style.display == "") {
-          chartOne.style.display = "none";
-          chartTwo.style.display = "";
-          chartThree.style.display = "none";
-        } else if (chartTwo.style.display == "") {
-          chartOne.style.display = "none";
-          chartTwo.style.display = "none";
-          chartThree.style.display = "";
-        } else if (chartThree.style.display == "") {
-          chartOne.style.display = "";
-          chartTwo.style.display = "none";
-          chartThree.style.display = "none";
-        }
-      }
+  let graphOne;
+  let graphTwo;
+  let graphThree;
+
+  if (activeDashboard == "product-categories") {
+    const graphIds = getDashboardGraphIds(activeDashboard);
+    graphOne = document.getElementById(graphIds.graphOne);
+    graphTwo = document.getElementById(graphIds.graphTwo);
+    graphThree = document.getElementById(graphIds.graphThree);
+  } else if (activeDashboard == "videographer-monthly-videos") {
+    const graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+    graphOne = document.getElementById(graphIds.all);
+    graphTwo = document.getElementById(graphIds.organic);
+    graphThree = document.getElementById(graphIds.notOrganic);
+  } else if (activeDashboard == "videographer-avg-views") {
+    const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
+    graphOne = document.getElementById(graphIds.all);
+    graphTwo = document.getElementById(graphIds.organic);
+    graphThree = document.getElementById(graphIds.notOrganic);
+  }
+  if (graphOne && graphTwo && graphThree) {
+    if (graphOne.style.display == "") {
+      graphOne.style.display = "none";
+      graphTwo.style.display = "";
+      graphThree.style.display = "none";
+    } else if (graphTwo.style.display == "") {
+      graphOne.style.display = "none";
+      graphTwo.style.display = "none";
+      graphThree.style.display = "";
+    } else if (graphThree.style.display == "") {
+      graphOne.style.display = "";
+      graphTwo.style.display = "none";
+      graphThree.style.display = "none";
+    }
   }
 }
 
