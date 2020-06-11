@@ -1517,7 +1517,7 @@ function swapNormalCharts() {
   }
 }
 
-function swapProductCategoriesGraphs() {
+function swapDashboardGraphs() {
   const activeDashboard =
     $(".carousel-container.active >>> .carousel-item.active")[0].id;
   let graphOne;
@@ -1559,6 +1559,11 @@ function swapProductCategoriesGraphs() {
       graphOne.style.display = "";
       graphTwo.style.display = "none";
       graphThree.style.display = "none";
+    }
+  } else {
+    const activeCarouselContainer = $(".carousel-container.active")[0].id;
+    if (activeCarouselContainer == "category-stats-content") {
+      swapNormalCharts();
     }
   }
 }
@@ -1849,7 +1854,7 @@ document.addEventListener("keyup", function (e) {
   } else if (e.key.toUpperCase() == "R") {
     reloadVideoStrengthDashboard();
   } else if (e.key.toUpperCase() == "V") {
-    swapProductCategoriesGraphs();
+    swapDashboardGraphs();
   } else if (!isNaN(e.key) && e.which != 32) {
     if (e.ctrlKey || e.altKey) {
       goToCarouselItem(parseInt(e.key) + 9);
