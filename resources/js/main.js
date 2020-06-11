@@ -235,28 +235,6 @@ function displayRealTimeStats(stats) {
   }
 }
 
-function loadIntroAnimation() {
-  let introImage = document.getElementById("intro-img");
-  let introVideo = document.getElementById("intro-video");
-  if (introVideo.readyState != 4) {
-    introVideo.load();
-  }
-  if (introVideo.paused) {
-    var promise = introVideo.play();
-    if (promise !== undefined) {
-      promise.then(_ => {
-        // Autoplay started!
-        introImage.style.display = "none";
-        introVideo.style.display = "initial";
-      }).catch(error => {
-        document.getElementsByTagName("VIDEO")[0].play();
-        introImage.style.display = "none";
-        introVideo.style.display = "initial";
-      });
-    }
-  }
-}
-
 function calcAvgVideoDuration() {
   let statsByVideoId = lsGet("statsByVideoId");
   if (statsByVideoId) {

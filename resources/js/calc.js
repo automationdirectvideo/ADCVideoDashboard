@@ -352,6 +352,47 @@ function getVideoStrengthWeights() {
 }
 
 /**
+ * Plays the intro animation
+ */
+function loadIntroAnimation() {
+  const introImage = document.getElementById("intro-img");
+  const introVideo = document.getElementById("intro-video");
+  if (introVideo.readyState != 4) {
+    introVideo.load();
+  }
+  if (introVideo.paused) {
+    const promise = introVideo.play();
+    if (promise !== undefined) {
+      promise
+        .then(_ => {
+        // Autoplay started!
+        introImage.style.display = "none";
+        introVideo.style.display = "initial";
+        })
+        .catch(error => {
+          document.getElementsByTagName("VIDEO")[0].play();
+          introImage.style.display = "none";
+          introVideo.style.display = "initial";
+        });
+    }
+  }
+}
+
+/**
+ * Removes and reloads the intro animation. The animation sometimes turns black
+ * after many hours on the dashboard. This function prevents this problem.
+ */
+function reloadIntroAnimation() {
+  const introImage = document.getElementById("intro-img");
+  const introVideo = document.getElementById("intro-video");
+  const container = document.getElementById("animation-container");
+  introImage.style.display = "";
+  introVideo.remove();
+  prependElement(container, introVideo);
+  loadIntroAnimation();
+}
+
+/**
  * Gets channel platform and demographics statistics from the YouTube API and
  * displays graphs on the platform dashboard
  *
