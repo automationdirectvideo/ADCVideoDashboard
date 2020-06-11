@@ -20,6 +20,7 @@ function updateDashboards() {
     requests.push(getCardPerformanceForCurrMonth());
     requests.push(realTimeStatsCalls());
     requests.push(updateVideoAndCategoryStats());
+    reloadIntroAnimation();
     return Promise.all(requests)
       .then(response => {
         console.log("Update Dashboards Complete", response);
