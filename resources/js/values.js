@@ -83,42 +83,42 @@ const defaultSettings =
       "icon": "fas fa-play-circle",
       "index": 7,
       "theme": "light",
-      "title": "Programmable Controllers - Most Watched Video"
+      "title": "Programmable Controllers - Most Watched Organic Video"
     },
     {
       "name": "top-video-2",
       "icon": "fas fa-play-circle",
       "index": 8,
       "theme": "light",
-      "title": "Drives - Most Watched Video"
+      "title": "Drives - Most Watched Organic Video"
     },
     {
       "name": "top-video-3",
       "icon": "fas fa-play-circle",
       "index": 9,
       "theme": "light",
-      "title": "HMI - Most Watched Video"
+      "title": "HMI - Most Watched Organic Video"
     },
     {
       "name": "top-video-4",
       "icon": "fas fa-play-circle",
       "index": 10,
       "theme": "light",
-      "title": "Motion Control - Most Watched Video"
+      "title": "Motion Control - Most Watched Organic Video"
     },
     {
       "name": "top-video-5",
       "icon": "fas fa-play-circle",
       "index": 11,
       "theme": "light",
-      "title": "Sensors/Encoders - Most Watched Video"
+      "title": "Sensors/Encoders - Most Watched Organic Video"
     },
     {
       "name": "top-video-6",
       "icon": "fas fa-play-circle",
       "index": 12,
       "theme": "light",
-      "title": "Motors - Most Watched Video"
+      "title": "Motors - Most Watched Organic Video"
     },
     {
       "name": "card-performance",
@@ -175,7 +175,7 @@ const defaultSettings =
       "notOrganic": "videographer-monthly-views-graph-not-organic",
     }
   },
-  "version": 5,
+  "version": 6,
 };
 
 const categoryColors = {
