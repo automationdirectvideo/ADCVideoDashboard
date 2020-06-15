@@ -1168,7 +1168,7 @@ function loadVideoStrengthDashboard() {
           <hr style="border-top:0.25rem solid rgba(0,0,0,.3);">
         </div>
       `;
-      if (numFound != numVideos - 1) {
+      if (numFound != numVideos) {
         output += spacer;
       }
     }
