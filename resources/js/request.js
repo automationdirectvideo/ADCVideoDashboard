@@ -595,7 +595,7 @@ function requestCardPerformance(startDate, endDate, month) {
 
 /* Videographer Stats Calls */
 
-function getVideographerPerformanceForMonth(videographers, startDate) {
+function requestVideographerViewsForMonth(videographers, startDate) {
   const firstDay = new Date(startDate);
   const endDate = getYouTubeDateFormat(new Date(firstDay.getFullYear(),
     firstDay.getMonth() + 2, 0));
@@ -604,28 +604,44 @@ function getVideographerPerformanceForMonth(videographers, startDate) {
   let names = [];
   for (const name in videographers) {
     if (videographers.hasOwnProperty(name)) {
-      names.push(name);
-      const data = videographers[name];
-      const videos = data.videos;
-      const request = requestVideoViews(videos, startDate, endDate);
-      requests.push(request);
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const data = categories[category];
+          const videos = data.videos;
+          names.push({
+            "category": category,
+            "name": name
+          });
+          requests.push(requestVideoViews(videos, startDate, endDate));
+        }
+      }
     }
   }
   return Promise.all(requests)
     .then(viewsList => {
+      let updatedVideographers = lsGet("videographers");
       for (let index = 0; index < names.length; index++) {
-        const name = names[index];
+        const name = names[index].name;
+        const category = names[index].category;
         const views = viewsList[index];
-        if (!videographers[name]["monthlyViews"]) {
-          videographers[name]["monthlyViews"] = {};
+        if (!updatedVideographers[name][category]["monthlyViews"]) {
+          updatedVideographers[name][category]["monthlyViews"] = {};
         }
-        videographers[name]["monthlyViews"][month] = views;
+        updatedVideographers[name][category]["monthlyViews"][month] = views;
       }
-      return videographers;
+      lsSet("videographers", updatedVideographers);
+      return updatedVideographers;
+    })
+    .catch(err => {
+      const errorMsg = `Unable to get videographer views for month: ` +
+        `${month} - `;
+      console.error(errorMsg, err);
+      recordError(err, errorMsg);
     });
 }
 
-function getVideographerAvgViews(videographers, startDate, endDate) {
+function requestVideographerAvgViews(videographers, startDate, endDate) {
   let requests = [];
   let names = [];
   for (const name in videographers) {
@@ -646,15 +662,17 @@ function getVideographerAvgViews(videographers, startDate, endDate) {
   }
   return Promise.all(requests)
     .then(responses => {
+      let updatedVideographers = lsGet("videographers");
       for (let index = 0; index < responses.length; index++) {
-        const avgViews = responses[index];
+        const views = responses[index];
         const name = names[index].name;
         const category = names[index].category;
-        const numVideos = videographers[name][category].videos.length;
-        videographers[name][category].lastXDaysAvgViews = avgViews / numVideos;
+        const numVideos = updatedVideographers[name][category].videos.length;
+        updatedVideographers[name][category].lastXDaysAvgViews =
+          views / numVideos;
       }
-      lsSet("videographers", videographers);
-      return videographers;
+      lsSet("videographers", updatedVideographers);
+      return updatedVideographers;
     })
     .catch(err => {
       const errorMsg = `Unable to get videographer average views - `;
@@ -876,21 +894,20 @@ function getTopTenVideosByMonthSince(startDate) {
     });
 }
 
-function getVideographerPerformanceByMonthSince(videographers, startDate) {
+function getVideographerViewsByMonthSince(videographers, startDate) {
   startDate = startDate || new Date("2010-07-1");
   console.log(startDate);
   let requests = [];
   const endDate = new Date();
   while (endDate - startDate > 0) {
     const firstDay = getYouTubeDateFormat(startDate);
-    requests.push(getVideographerPerformanceForMonth(videographers, firstDay));
+    requests.push(requestVideographerViewsForMonth(videographers, firstDay));
     startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
   }
   return Promise.all(requests)
     .then(response => {
-      console.log("videographers");
-      console.log(videographers);
-      return videographers;
+      let updatedVideographers = lsGet("videographers");
+      return updatedVideographers;
     })
     .catch(err => {
       const errorMsg = "Error occurred getting Card Performance By Month: ";

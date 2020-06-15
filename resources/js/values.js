@@ -159,13 +159,23 @@ const defaultSettings =
       "organic": "videographer-cumulative-videos-graph-organic",
       "notOrganic": "videographer-cumulative-videos-graph-not-organic",
     },
+    "cumulativeViews": {
+      "all": "videographer-cumulative-views-graph-all",
+      "organic": "videographer-cumulative-views-graph-organic",
+      "notOrganic": "videographer-cumulative-views-graph-not-organic",
+    },
     "monthlyVideos": {
       "all": "videographer-monthly-videos-graph-all",
       "organic": "videographer-monthly-videos-graph-organic",
       "notOrganic": "videographer-monthly-videos-graph-not-organic",
+    },
+    "monthlyViews": {
+      "all": "videographer-monthly-views-graph-all",
+      "organic": "videographer-monthly-views-graph-organic",
+      "notOrganic": "videographer-monthly-views-graph-not-organic",
     }
   },
-  "version": 4,
+  "version": 5,
 };
 
 const categoryColors = {

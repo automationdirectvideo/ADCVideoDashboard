@@ -1529,19 +1529,19 @@ function swapDashboardGraphs() {
     graphOne = document.getElementById(graphIds.graphOne);
     graphTwo = document.getElementById(graphIds.graphTwo);
     graphThree = document.getElementById(graphIds.graphThree);
-  } else if (activeDashboard == "videographer-avg-views") {
-    const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
-    graphOne = document.getElementById(graphIds.all);
-    graphTwo = document.getElementById(graphIds.organic);
-    graphThree = document.getElementById(graphIds.notOrganic);
-  } else if (activeDashboard == "videographer-cumulative-videos") {
-    const graphIds =
-      getDashboardGraphIds("videographerGraphs").cumulativeVideos;
-    graphOne = document.getElementById(graphIds.all);
-    graphTwo = document.getElementById(graphIds.organic);
-    graphThree = document.getElementById(graphIds.notOrganic);
-  } else if (activeDashboard == "videographer-monthly-videos") {
-    const graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+  } else if (activeDashboard.indexOf("videographer") == 0) {
+    let graphIds;
+    if (activeDashboard == "videographer-avg-views") {
+      graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
+    } else if (activeDashboard == "videographer-cumulative-videos") {
+      graphIds = getDashboardGraphIds("videographerGraphs").cumulativeVideos;
+    } else if (activeDashboard == "videographer-monthly-videos") {
+      graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+    } else if (activeDashboard == "videographer-cumulative-views") {
+      graphIds = getDashboardGraphIds("videographerGraphs").cumulativeViews;
+    } else if (activeDashboard == "videographer-monthly-views") {
+      graphIds = getDashboardGraphIds("videographerGraphs").monthlyViews;
+    }
     graphOne = document.getElementById(graphIds.all);
     graphTwo = document.getElementById(graphIds.organic);
     graphThree = document.getElementById(graphIds.notOrganic);

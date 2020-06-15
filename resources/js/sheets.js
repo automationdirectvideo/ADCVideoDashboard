@@ -287,6 +287,52 @@ function saveRealTimeStatsToSheets(realTimeStats) {
   return updatePromise;
 }
 
+function saveVideographerViewsToSheets(videographers) {
+  let headers = [];
+  let monthData = {};
+  for (const name in videographers) {
+    if (videographers.hasOwnProperty(name)) {
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const data = categories[category].monthlyViews;
+          const categoryName = name + "-" + category;
+          headers.push(categoryName);
+          for (const month in data) {
+            if (data.hasOwnProperty(month)) {
+              const views = data[month];
+              if (!monthData[month]) {
+                monthData[month] = {};
+              }
+              monthData[month][categoryName] = views;
+            }
+          }
+        }
+      }
+    }
+  }
+  let values = [];
+  for (const month in monthData) {
+    if (monthData.hasOwnProperty(month)) {
+      const data = monthData[month];
+      let dataList = [month];
+      headers.forEach(categoryName => {
+        const views = data[categoryName];
+        dataList.push(views);
+      });
+      values.push(dataList);
+    }
+  }
+  headers.unshift("Month");
+  values.unshift(headers);
+  const body = {
+    "values": values
+  };
+  const updatePromise = updateSheetData("Stats", "Videographer Monthly Views",
+    body);
+  return updatePromise;
+}
+
 function getCardPerformanceForCurrMonth() {
   const [startDate, endDate, month] = getCurrMonth();
   const request = requestCardPerformance(startDate, endDate, month);
@@ -315,4 +361,13 @@ function getTopTenVideosForCurrMonth() {
         return "Updated Top Ten Video Sheet";
       });
   });
+}
+
+function getVideographerViewsForCurrMonth() {
+  const [startDate, endDate, month] = getCurrMonth();
+  const videographers = lsGet("videographers");
+  return requestVideographerViewsForMonth(videographers, startDate)
+    .then(updatedVideographers => {
+      return saveVideographerViewsToSheets(updatedVideographers);
+    });
 }

@@ -18,6 +18,7 @@ function updateDashboards() {
       requests.push(getYearlyCategoryViews(lastYear));
     }
     requests.push(getCardPerformanceForCurrMonth());
+    requests.push(getVideographerViewsForCurrMonth());
     requests.push(realTimeStatsCalls());
     requests.push(updateVideoAndCategoryStats());
     reloadIntroAnimation();
@@ -310,6 +311,47 @@ function getVideoStats() {
       lsSet("allVideoStats", allVideoStats);
       lsSet("statsByVideoId", statsByVideoId);
       lsSet("uploads", uploads);
+    });
+}
+
+/**
+ * Gets monthly views by videographer from the stats Google Sheet and adds the
+ * data to the videographer stats
+ *
+ * @returns Updated videographer statistics
+ */
+function getVideographerMonthlyViews() {
+  return requestSpreadsheetData("Stats", "Videographer Monthly Views")
+    .then(sheetData => {
+      const column = getColumnHeaders(sheetData);
+      let categoryData = {};
+      sheetData[0].forEach(categoryName => {
+        if (categoryName != "Month") {
+          categoryData[categoryName] = {};
+        }
+      });
+      for (let index = 1; index < sheetData.length; index++) {
+        const monthData = sheetData[index];
+        const month = monthData[column["Month"]];
+        sheetData[0].forEach(categoryName => {
+          if (categoryName != "Month") {
+            categoryData[categoryName][month] =
+              parseInt(monthData[column[categoryName]]);
+          }
+        });
+      }
+      let videographers = lsGet("videographers");
+      for (const categoryName in categoryData) {
+        if (categoryData.hasOwnProperty(categoryName)) {
+          const monthlyViews = categoryData[categoryName];
+          const split = categoryName.indexOf("-");
+          const videographerName = categoryName.substring(0, split);
+          const category = categoryName.substring(split + 1);
+          videographers[videographerName][category].monthlyViews = monthlyViews;
+        }
+      }
+      lsSet("videographers", videographers);
+      return videographers;
     });
 }
 
@@ -1198,12 +1240,14 @@ function loadVideographerDashboards() {
   try {
     let videographers = calcVideographerStats();
     displayVideographerMonthlyVideos(videographers);
-    getVideographerAvgViews(videographers, getDateFromDaysAgo(34),
+
+    requestVideographerAvgViews(videographers, getDateFromDaysAgo(34),
       getDateFromDaysAgo(4))
       .then(videographers => {
         displayVideographerAvgViews(videographers);
       })
       .catch(err => {
+        // Displays graph errors for average views graphs
         const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
         for (const key in graphIds) {
           if (graphIds.hasOwnProperty(key)) {
@@ -1211,12 +1255,39 @@ function loadVideographerDashboards() {
             displayGraphError(graphId);
           }
         }
-        recordError(err, "Unable to display videographer average views graphs");
+        recordError(err,
+          "Unable to display videographer average views graphs - ");
+      });
+
+    getVideographerMonthlyViews(videographers)
+      .then(updatedVideographers => {
+        displayVideographerMonthlyViews(updatedVideographers);
+      })
+      .catch(err => {
+        // Displays graph errors for monthly views graphs
+        const graphIds = [
+          getDashboardGraphIds("videographerGraphs").cumulativeViews,
+          getDashboardGraphIds("videographerGraphs").monthlyViews
+        ];
+        graphIds.forEach(dashboard => {
+          for (const key in dashboard) {
+            if (dashboard.hasOwnProperty(key)) {
+              const graphId = dashboard[key];
+              displayGraphError(graphId);
+            }
+          }
+        });
+        recordError(err,
+          "Unable to display videographer monthly views graphs - ");
       });
   } catch (err) {
+    // Displays graph errors for all graphs in the videographer dashboards
     const graphIds = [
       getDashboardGraphIds("videographerGraphs").avgViews,
-      getDashboardGraphIds("videographerGraphs").monthlyVideos
+      getDashboardGraphIds("videographerGraphs").cumulativeVideos,
+      getDashboardGraphIds("videographerGraphs").cumulativeViews,
+      getDashboardGraphIds("videographerGraphs").monthlyVideos,
+      getDashboardGraphIds("videographerGraphs").monthlyViews
     ];
     graphIds.forEach(dashboard => {
       for (const key in dashboard) {
@@ -1549,7 +1620,7 @@ function calcVideographerVideosByMonth(videographers) {
 }
 
 /**
- * Creates the Monthly Views and Cumulative Views By Videographer stacked line
+ * Creates the Monthly Videos and Cumulative Videos By Videographer stacked line
  * graphs
  *
  * @param {Object} videographers Videographer statistics
@@ -1744,6 +1815,224 @@ function displayVideographerMonthlyVideos(videographers) {
       monthlyLayout.title.text = monthlyGraphTitle;
       monthlyLayout.yaxis.ticksuffix = "%";
       monthlyLayout.yaxis.title.text = "Percentage of Videos Created";
+
+      const config = {
+        scrollZoom: false,
+        displayModeBar: false,
+      }
+
+      try {
+        createGraph(cumulativeGraphId, cumulativeData, cumulativeLayout, config,
+          graphHeight, graphWidth);
+      } catch (err) {
+        displayGraphError(cumulativeGraphId, err);
+      }
+      try {
+        createGraph(monthlyGraphId, monthlyData, monthlyLayout, config,
+          graphHeight, graphWidth);
+      } catch (err) {
+        displayGraphError(monthlyGraphId, err);
+      }
+    }
+  }
+}
+
+/**
+ * Creates the Monthly Views and Cumulative Views By Videographer stacked line
+ * graphs
+ *
+ * @param {Object} videographers Videographer statistics
+ */
+function displayVideographerMonthlyViews(videographers) {
+  videographers = videographers || lsGet("videographers");
+  const people = ["Shane C", "Rick F", "Tim W"];
+  const graphIds = [
+    getDashboardGraphIds("videographerGraphs").cumulativeViews,
+    getDashboardGraphIds("videographerGraphs").monthlyViews
+  ];
+  const categories = {
+    "all": {
+      "cumulative": {
+        "graphId": graphIds[0].all,
+        "title": "Cumulative Views By Videographer (All Videos)"
+      },
+      "monthly": {
+        "graphId": graphIds[1].all,
+        "title": "Monthly Views By Videographer (All Videos)"
+      }
+    },
+    "organic": {
+      "cumulative": {
+        "graphId": graphIds[0].organic,
+        "title": "Cumulative Views By Videographer (Organic Videos)"
+      },
+      "monthly": {
+        "graphId": graphIds[1].organic,
+        "title": "Monthly Views By Videographer (Organic Videos)"
+      }
+    },
+    "notOrganic": {
+      "cumulative": {
+        "graphId": graphIds[0].notOrganic,
+        "title": "Cumulative Views By Videographer (Not Organic Videos)"
+      },
+      "monthly": {
+        "graphId": graphIds[1].notOrganic,
+        "title": "Monthly Views By Videographer (Not Organic Videos)"
+      }
+    }
+  };
+  for (const category in categories) {
+    if (categories.hasOwnProperty(category)) {
+      const cumulativeGraphTitle = categories[category].cumulative.title;
+      const cumulativeGraphId = categories[category].cumulative.graphId;
+      const monthlyGraphTitle = categories[category].monthly.title;
+      const monthlyGraphId = categories[category].monthly.graphId;
+      let cumulativeData = [];
+      let monthlyData = [];
+
+      people.forEach(name => {
+        const stats = videographers[name][category];
+        const monthlyViews = stats.monthlyViews;
+        let sortList = [];
+        for (const month in monthlyViews) {
+          if (monthlyViews.hasOwnProperty(month)) {
+            const numViews = monthlyViews[month];
+            sortList.push({
+              month: month,
+              numViews: numViews
+            });
+          }
+        }
+        sortList.sort(function (a, b) {
+          return a.month > b.month ? 1 :
+            a.month == b.month ? 0 :
+            -1;
+        });
+        let months = [];
+        let cumulativeNumViews = [];
+        let monthlyNumViews = [];
+        let viewTotal = 0;
+        let cumulativeCustomData = [];
+        let monthlyCustomData = [];
+        sortList.forEach(elem => {
+          viewTotal += elem.numViews;
+          months.push(elem.month);
+          cumulativeNumViews.push(viewTotal);
+          monthlyNumViews.push(elem.numViews);
+          let cumulativeText = [];
+          if (elem.numViews == 1) {
+            cumulativeText.push("1 new view");
+            monthlyCustomData.push("1 view");
+          } else {
+            cumulativeText.push(`${numberWithCommas(elem.numViews)} new views`);
+            monthlyCustomData.push(`${numberWithCommas(elem.numViews)} views`);
+          }
+          if (viewTotal == 1) {
+            cumulativeText.push("1 view total");
+          } else {
+            cumulativeText.push(`${numberWithCommas(viewTotal)} views total`);
+          }
+          cumulativeCustomData.push(cumulativeText);
+        });
+        let cumulativeTrace = {
+          x: months,
+          y: cumulativeNumViews,
+          name: name,
+          customdata: cumulativeCustomData,
+          stackgroup: "one",
+          hovertemplate: "%{customdata[0]} in %{x}" +
+            "<br>%{customdata[1]}<extra>" + name + "</extra>",
+        };
+        let monthlyTrace = {
+          x: months,
+          y: monthlyNumViews,
+          name: name,
+          customdata: monthlyCustomData,
+          stackgroup: "one",
+          groupnorm: "percent",
+          hovertemplate: "%{y:.0f}% of total videos<br>%{customdata}<extra>" +
+            name +"</extra>",
+        };
+        cumulativeData.push(cumulativeTrace);
+        monthlyData.push(monthlyTrace);
+      });
+
+      const graphHeight = 0.8583;
+      const graphWidth = 0.9528;
+      const height = graphHeight * document.documentElement.clientHeight;
+      const width = graphWidth * document.documentElement.clientWidth;
+      const titleFontSize =
+        Math.floor(0.0208 * document.documentElement.clientWidth);
+      const legendFontSize =
+        Math.floor(0.0100 * document.documentElement.clientWidth);
+      const axisTitleSize =
+        Math.floor(0.0156 * document.documentElement.clientWidth);
+      const tickSize =
+        Math.floor(0.0104 * document.documentElement.clientWidth);
+      const topMargin = Math.floor(0.03 * document.documentElement.clientWidth);
+      const bottomMargin =
+        Math.floor(0.0104 * document.documentElement.clientWidth);
+
+      const cumulativeLayout = {
+        height: height,
+        width: width,
+        hoverlabel: {
+          font: {
+            size: tickSize
+          },
+          namelength: -1
+        },
+        legend: {
+          bgcolor: "#eeeeee",
+          font: {
+            size: legendFontSize
+          },
+          y: 0.5
+        },
+        margin: {
+          b: bottomMargin,
+          t: topMargin
+        },
+        paper_bgcolor: "rgba(0,0,0,0)",
+        plot_bgcolor: "rgba(0,0,0,0)",
+        title: {
+          font: {
+            size: titleFontSize
+          },
+          text: cumulativeGraphTitle
+        },
+        xaxis: {
+          automargin: true,
+          fixedrange: true,
+          tickfont: {
+            size: tickSize
+          },
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Month"
+          }
+        },
+        yaxis: {
+          automargin: true,
+          fixedrange: true,
+          tickfont: {
+            size: tickSize
+          },
+          title: {
+            font: {
+              size: axisTitleSize
+            },
+            text: "Cumulative Views"
+          }
+        }
+      };
+      let monthlyLayout = JSON.parse(JSON.stringify(cumulativeLayout));
+      monthlyLayout.title.text = monthlyGraphTitle;
+      monthlyLayout.yaxis.ticksuffix = "%";
+      monthlyLayout.yaxis.title.text = "Percentage of Views";
 
       const config = {
         scrollZoom: false,
