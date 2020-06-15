@@ -898,18 +898,28 @@ function getVideographerViewsByMonthSince(videographers, startDate) {
   startDate = startDate || new Date("2010-07-1");
   console.log(startDate);
   let requests = [];
+  isUpdating = true;
+  let timeout = 3000;
+  let waitTime = timeout;
   const endDate = new Date();
   while (endDate - startDate > 0) {
     const firstDay = getYouTubeDateFormat(startDate);
-    requests.push(requestVideographerViewsForMonth(videographers, firstDay));
+    waitTime += timeout;
+    // Space out requests to prevent reaching the YouTube Analytics API quota
+    // for number of requests in 100 seconds
+    setTimeout(() => {
+      requests.push(requestVideographerViewsForMonth(videographers, firstDay));
+    }, waitTime);
     startDate = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 1);
   }
   return Promise.all(requests)
     .then(response => {
+      isUpdating = false;
       let updatedVideographers = lsGet("videographers");
       return updatedVideographers;
     })
     .catch(err => {
+      isUpdating = false;
       const errorMsg = "Error occurred getting Card Performance By Month: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
