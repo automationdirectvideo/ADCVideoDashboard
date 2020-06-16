@@ -305,6 +305,19 @@ function prependElement(parentElem, newChildElem) {
 }
 
 /**
+ * Behaves like `Float.toFixed(numDigits)` but removes trailing zeros after the
+ * decimal
+ *
+ * @param {Number} float The number to round
+ * @param {Number} numDigits The number of digits after the decimal to round to
+ * @returns {Number} `float` rounded to the desired number of digits without
+ *    trailing zeros
+ */
+function roundTo(float, numDigits) {
+  return +float.toFixed(numDigits);
+}
+
+/**
  * Converts seconds to duration in the form M:SS
  *
  * @param {Number} seconds An integer
@@ -317,6 +330,41 @@ function secondsToDuration(seconds) {
 }
 
 /**
+ * Converts seconds to duration in the form "H hrs M min"
+ *
+ * @param {Number} seconds An integer
+ * @returns {String} The number of seconds written as "H hrs M min"
+ */
+function secondsToDurationHrsMin(seconds) {
+  let minutes = Math.floor(seconds / 60) % 60;
+  let hours = Math.floor(seconds / 3600);
+  if (minutes == 0) {
+    return `${hours} hrs`;
+  } else {
+    return `${hours} hrs ${minutes} min`;
+  }
+}
+
+/**
+ * Converts seconds to duration in one of the following forms:
+ * - "H hrs M min"
+ * - "M min S sec"
+ * - "S sec"
+ *
+ * @param {*} seconds An integer
+ * @returns The number of seconds written with labels
+ */
+function secondsToDurationLabeled(seconds) {
+  if (seconds >= 3600) {
+    return secondsToDurationHrsMin(seconds);
+  } else if (seconds >= 60) {
+    return secondsToDurationMinSec(seconds);
+  } else {
+    return seconds + " sec";
+  }
+}
+
+/**
  * Converts seconds to duration in the form "M min S sec"
  *
  * @param {Number} seconds An integer
@@ -325,7 +373,11 @@ function secondsToDuration(seconds) {
 function secondsToDurationMinSec(seconds) {
   let minutes = Math.floor(seconds / 60);
   let durationSeconds = ("00" + seconds % 60).substr(-2);
-  return minutes + " min " + durationSeconds + " sec";
+  if (durationSeconds == 0) {
+    return `${minutes} min`;
+  } else {
+    return `${minutes} min ${durationSeconds} sec`;
+  }
 }
 
 /**
