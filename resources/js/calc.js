@@ -356,6 +356,38 @@ function getVideographerMonthlyViews() {
 }
 
 /**
+ * Gets videographer average and total stats from the stats Google Sheet
+ *
+ * @returns {Promise} The videographer stats
+ */
+function getVideographerStats() {
+  return requestSpreadsheetData("Stats", "Videographer Stats")
+    .then(sheetValues => {
+      let videographers = {};
+      let column = getColumnHeaders(sheetValues);
+      let properties = sheetValues[0];
+      console.log(properties);
+      for (let index = 1; index < sheetValues.length; index++) {
+        const row = sheetValues[index];
+        const label = row[column["Label"]];
+        const split = label.indexOf("-");
+        const name = label.substring(0, split);
+        const category = label.substring(split + 1);
+        if (videographers[name] == undefined) {
+          videographers[name] = {};
+        }
+        videographers[name][category] = {};
+        for (let j = 1; j < properties.length; j++) {
+          const property = properties[j];
+          videographers[name][category][property] = parseFloat(row[j]);
+        }
+      }
+      console.log(videographers);
+      return Promise.resolve(videographers);
+    });
+}
+
+/**
  * Gets category, video, and real time statistics from the stats spreadsheet and
  * weights from the video strength formula from the input data spreadsheet
  *
@@ -1280,6 +1312,8 @@ function loadVideographerDashboards() {
         recordError(err,
           "Unable to display videographer monthly views graphs - ");
       });
+    displayVideographerStats();
+    saveVideographerStatsToSheets();
   } catch (err) {
     // Displays graph errors for all graphs in the videographer dashboards
     const graphIds = [
@@ -1299,6 +1333,68 @@ function loadVideographerDashboards() {
     });
     recordError(err, "Unable to load videographer dashboards");
   }
+}
+
+/**
+ * Gets videographer stats from Google Sheets and displays them on the
+ * videographer stats dashboards. For when the user is not signed in to Google.
+ * Other dashboards in the videographer carousel are loaded through the graph
+ * data Google Sheet
+ *
+ * @returns {Promise} Status message
+ */
+function loadVideographerDashboardsSignedOut() {
+  return getVideographerStats()
+    .then(videographers => {
+      displayVideographerStats(videographers);
+    });
+}
+
+/**
+ * Adds the videographer stats (vstats) dashboards to the videographer carousel
+ */
+function createVideographerStatsDashboards() {
+  const carouselInner = document.getElementById("videographer-carousel-inner");
+  const indicatorList = document.getElementById("videographer-indicator-list");
+  const people = ["Shane C", "Rick F", "Tim W"];
+  const categories = ["all", "organic", "notOrganic"];
+  let index = carouselInner.childElementCount;
+  people.forEach(name => {
+    const dashboardId = "vstats-" + name.replace(" ", "*");
+    const dashboardTitle = "Videographer Statistics: " + name;
+
+    let dashboardItem = document.getElementById("vstats-#").cloneNode(true);
+    let dashboardText = dashboardItem.outerHTML;
+    let grids = "";
+    categories.forEach(category => {
+      // Create multiple grids. One for each category
+      let gridItem = document.getElementById("vstats-#-@-grid").cloneNode(true);
+      if (category != "all") {
+        gridItem.style.display = "none";
+      }
+      let gridText = gridItem.outerHTML;
+      grids += gridText.replace(/@/g, category);
+    });
+    dashboardText =
+      dashboardText.replace(/<div>GRID PLACEHOLDER<\/div>/, grids);
+    dashboardText = dashboardText.replace(/vstats-#/g, dashboardId);
+    dashboardText =
+      dashboardText.replace(/TITLE PLACEHOLDER/, dashboardTitle);
+    let template = document.createElement("template");
+    template.innerHTML = dashboardText;
+    dashboardItem = template.content.firstChild;
+
+    document.createElement("div", dashboardItem.outerText)
+    dashboardItem.setAttribute("theme", "light");
+    const indicator = document.getElementById("indicator").cloneNode();
+    indicator.id = "videographer-indicator-" + index;
+    indicator.setAttribute("onclick", `goToCarouselItem(${index})`);
+    indicator.setAttribute("data-target", "#videographer-carousel");
+    indicator.className = "fas fa-play-circle indicator";
+    carouselInner.appendChild(dashboardItem);
+    indicatorList.appendChild(indicator);
+    index++;
+  });
 }
 
 /* Statistics Functions */

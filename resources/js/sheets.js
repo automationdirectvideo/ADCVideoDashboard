@@ -287,6 +287,50 @@ function saveRealTimeStatsToSheets(realTimeStats) {
   return updatePromise;
 }
 
+function saveVideographerStatsToSheets(videographers = lsGet("videographers")) {
+  let headers = [
+    "Label",
+    "avgComments",
+    "avgDislikes",
+    "avgDuration",
+    "avgLikeRatio",
+    "avgLikes",
+    "avgSubsGained",
+    "avgViews",
+    "cumLikeRatio",
+    "totalComments",
+    "totalDislikes",
+    "totalDuration",
+    "totalLikeRatio",
+    "totalLikes",
+    "totalSubsGained",
+    "totalViews",
+  ];
+  let values = [headers];
+  for (const name in videographers) {
+    if (videographers.hasOwnProperty(name)) {
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const stats = categories[category];
+          const categoryName = name + "-" + category;
+          let row = [categoryName];
+          for (let index = 1; index < headers.length; index++) {
+            const property = headers[index];
+            row.push(stats[property]);
+          }
+          values.push(row);
+        }
+      }
+    }
+  }
+  const body = {
+    "values": values
+  };
+  const updatePromise = updateSheetData("Stats", "Videographer Stats", body);
+  return updatePromise;
+}
+
 function saveVideographerViewsToSheets(videographers) {
   let headers = [];
   let monthData = {};

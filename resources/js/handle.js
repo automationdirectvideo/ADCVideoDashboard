@@ -848,3 +848,62 @@ function parseCardPerformance(response, month) {
     }
   }
 }
+
+/* Videographer Dashboard Calls */
+
+function displayVideographerStats(videographers = lsGet("videographers")) {
+  const people = ["Shane C", "Rick F", "Tim W"];
+  people.forEach(name => {
+    const updatedName = name.replace(" ", "*");
+    for (const category in videographers[name]) {
+      if (videographers[name].hasOwnProperty(category)) {
+        const vStats = videographers[name][category];
+        const dashboardId = `vstats-${updatedName}-${category}-`;
+        const viewsTotal = document.getElementById(`${dashboardId}views-total`);
+        const viewsAvg = document.getElementById(`${dashboardId}views-avg`);
+        const subsTotal = document.getElementById(`${dashboardId}subs-total`);
+        const subsAvg = document.getElementById(`${dashboardId}subs-avg`);
+        const commentsTotal =
+          document.getElementById(`${dashboardId}comments-total`);
+        const commentsAvg =
+          document.getElementById(`${dashboardId}comments-avg`);
+        const likesTotal = document.getElementById(`${dashboardId}likes-total`);
+        const likesAvg = document.getElementById(`${dashboardId}likes-avg`);
+        const dislikesTotal =
+          document.getElementById(`${dashboardId}dislikes-total`);
+        const dislikesAvg =
+          document.getElementById(`${dashboardId}dislikes-avg`);
+        const likeRatioTotal =
+          document.getElementById(`${dashboardId}like-ratio-total`);
+        const likeRatioAvg = 
+          document.getElementById(`${dashboardId}like-ratio-avg`);
+        const durationTotal =
+          document.getElementById(`${dashboardId}duration-total`);
+        const durationAvg =
+          document.getElementById(`${dashboardId}duration-avg`);
+        viewsTotal.innerHTML = numberWithCommas(vStats.totalViews);
+        viewsAvg.innerHTML = numberWithCommas(roundTo(vStats.avgViews, 0));
+        subsTotal.innerHTML = numberWithCommas(vStats.totalSubsGained);
+        subsAvg.innerHTML = roundTo(vStats.avgSubsGained, 2);
+        commentsTotal.innerHTML = numberWithCommas(vStats.totalComments);
+        commentsAvg.innerHTML = roundTo(vStats.avgComments, 1);
+        likesTotal.innerHTML = numberWithCommas(vStats.totalLikes);
+        likesAvg.innerHTML = roundTo(vStats.avgLikes, 2);
+        dislikesTotal.innerHTML = numberWithCommas(vStats.totalDislikes);
+        dislikesAvg.innerHTML = roundTo(vStats.avgDislikes, 2);
+        likeRatioTotal.innerHTML = decimalToPercent(vStats.cumLikeRatio) + "%";
+        likeRatioAvg.innerHTML = decimalToPercent(vStats.avgLikeRatio) + "%";
+        durationTotal.innerHTML =
+          secondsToDurationLabeled(vStats.totalDuration.toFixed(0));
+        durationAvg.innerHTML =
+          secondsToDurationLabeled(vStats.avgDuration.toFixed(0));
+      }
+    }
+    const scrollId = `vstats-${updatedName}-container`;
+    if (!autoScrollDivs.includes(scrollId)) {
+      let speed = 40;
+      new AutoDivScroll(scrollId, speed, 1, 1);
+      autoScrollDivs.push(scrollId);
+    }
+  });
+}

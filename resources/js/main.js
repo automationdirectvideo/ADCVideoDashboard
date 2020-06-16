@@ -105,6 +105,7 @@ function loadDashboardsSignedOut() {
       }
       requests.push(loadGraphsFromSheets());
       requests.push(loadTopVideoStats());
+      requests.push(loadVideographerDashboardsSignedOut());
     
       console.log("Starting Load Dashboards Requests");
       return Promise.all(requests)
@@ -1545,6 +1546,18 @@ function swapDashboardGraphs() {
     graphOne = document.getElementById(graphIds.all);
     graphTwo = document.getElementById(graphIds.organic);
     graphThree = document.getElementById(graphIds.notOrganic);
+  } else if (activeDashboard.indexOf("vstat") == 0) {
+    graphOne = document.getElementById(activeDashboard + "-all-grid");
+    graphTwo = document.getElementById(activeDashboard + "-organic-grid");
+    graphThree = document.getElementById(activeDashboard + "-notOrganic-grid");
+    const titleText = document.getElementById(activeDashboard + "-category");
+    if (graphOne.style.display == "") {
+      titleText.innerText = "Organic";
+    } else if (graphTwo.style.display == "") {
+      titleText.innerText = "Not Organic";
+    } else if (graphThree.style.display == "") {
+      titleText.innerText = "All";
+    }
   }
   if (graphOne && graphTwo && graphThree) {
     if (graphOne.style.display == "") {
@@ -1822,6 +1835,8 @@ for (var i = 0; i < enabledOrder.length; i++) {
   }
 }
 document.getElementById("top-video-#").remove();
+
+createVideographerStatsDashboards();
 
 // Handle carousel scrolling and keyboard shortcuts
 document.addEventListener("keyup", function (e) {
