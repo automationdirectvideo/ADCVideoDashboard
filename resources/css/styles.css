@@ -479,24 +479,8 @@ body {
   background-color: #2eb356;
 }
 
-.vstats-title {
-  background: #ddd;
-  border: 1px solid black;
-  border-radius: 0.5rem;
-  left: 50%;
-  position: fixed;
-  top: 4.5rem;
-  transform: translateX(-50%);
-  width: 50%;
-  z-index: 1;
-}
-
 .vstats-category {
   font-size: 2.5vw;
-}
-
-.vstats-duration {
-  font-size: 4.75vw;
 }
 
 .vstats-name {
@@ -504,8 +488,13 @@ body {
   margin: 0;
 }
 
+.vstats-btn-group {
+  justify-content: space-between;
+  margin: 0;
+}
+
 .vstats-eye, .vstats-people, .vstats-retention, .vstats-clock,
-.vstats-comment, .vstats-like, .vstats-extra-icon {
+.vstats-comment, .vstats-like {
   color: red;
 }
 
@@ -530,10 +519,6 @@ body {
 
 .vstats-clock {
   font-size: 5.25vw;
-}
-
-.vstats-extra-icon {
-  font-size: 5vw;
 }
 
 .vstats-stat, .vstats-stat-views, .vstats-stat-comments, .vstats-stat-likes,
