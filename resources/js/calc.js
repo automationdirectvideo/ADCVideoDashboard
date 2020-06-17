@@ -1357,7 +1357,11 @@ function createVideographerStatsDashboards() {
   const carouselInner = document.getElementById("videographer-carousel-inner");
   const indicatorList = document.getElementById("videographer-indicator-list");
   const people = ["Shane C", "Rick F", "Tim W"];
-  const categories = ["all", "organic", "notOrganic"];
+  const categories = {
+    "all": "All Videos",
+    "organic": "Organic Videos",
+    "notOrganic": "Not Organic Videos"
+  };
   let index = carouselInner.childElementCount;
   people.forEach(name => {
     const dashboardId = "vstats-" + name.replace(" ", "*");
@@ -1366,20 +1370,25 @@ function createVideographerStatsDashboards() {
     let dashboardItem = document.getElementById("vstats-#").cloneNode(true);
     let dashboardText = dashboardItem.outerHTML;
     let grids = "";
-    categories.forEach(category => {
-      // Create multiple grids. One for each category
-      let gridItem = document.getElementById("vstats-#-@-grid").cloneNode(true);
-      if (category != "all") {
-        gridItem.style.display = "none";
+    for (const category in categories) {
+      if (categories.hasOwnProperty(category)) {
+        const categoryName = categories[category];
+        // Create multiple grids. One for each category
+        let gridItem =
+          document.getElementById("vstats-#-@-grid").cloneNode(true);
+        if (category != "all") {
+          gridItem.style.display = "none";
+        }
+        let gridText = gridItem.outerHTML;
+        gridText = gridText.replace(/@/g, category);
+        gridText = gridText.replace(/\*Name\*/g, name);
+        gridText = gridText.replace(/\*Category\*/g, categoryName);
+        grids += gridText;
       }
-      let gridText = gridItem.outerHTML;
-      grids += gridText.replace(/@/g, category);
-    });
+    }
     dashboardText =
       dashboardText.replace(/<div>GRID PLACEHOLDER<\/div>/, grids);
     dashboardText = dashboardText.replace(/vstats-#/g, dashboardId);
-    dashboardText =
-      dashboardText.replace(/TITLE PLACEHOLDER/, dashboardTitle);
     let template = document.createElement("template");
     template.innerHTML = dashboardText;
     dashboardItem = template.content.firstChild;

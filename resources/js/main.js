@@ -1550,14 +1550,6 @@ function swapDashboardGraphs() {
     graphOne = document.getElementById(activeDashboard + "-all-grid");
     graphTwo = document.getElementById(activeDashboard + "-organic-grid");
     graphThree = document.getElementById(activeDashboard + "-notOrganic-grid");
-    const titleText = document.getElementById(activeDashboard + "-category");
-    if (graphOne.style.display == "") {
-      titleText.innerText = "Organic";
-    } else if (graphTwo.style.display == "") {
-      titleText.innerText = "Not Organic";
-    } else if (graphThree.style.display == "") {
-      titleText.innerText = "All";
-    }
   }
   if (graphOne && graphTwo && graphThree) {
     if (graphOne.style.display == "") {

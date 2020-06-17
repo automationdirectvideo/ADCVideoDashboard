@@ -510,169 +510,116 @@
                   </div>
                 </div>
                 <div class="carousel-item" id="vstats-#">
-                  <h1 class="dashboard-title">TITLE PLACEHOLDER</h1>
-                  <div class="outer-shell container vstats-container mb-1" id="vstats-#-container">
-                    <div class="vstats-title">
-                      <h1 class="vstats-category"><span id="vstats-#-category">All</span> Videos</h1>
-                    </div>
-                    <br>
-                    <br>
-                    <br>
+                  <h1 class="dashboard-title">Videographer Statistics</h1>
+                  <div class="outer-shell container mb-1" id="vstats-#-container">
                     <div>GRID PLACEHOLDER</div>
                   </div>
                 </div>
-                <div class="grid-container vstats-grid" id="vstats-#-@-grid">
-                  <div class="grid-item" style="grid-area: 1/1/4/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="fas fa-eye stats-icon"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title">Views</h1>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-views-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-views-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
+                <div class="grid-container" id="vstats-#-@-grid">
+                  <div class="grid-item" style="grid-area:1/1/3/4;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <h1 class="vstats-name" id="vstats-#-@-name">*Name*</h1>
                       </div>
                     </div>
                   </div>
-                  <div class="grid-item" style="grid-area: 4/1/7/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="fas fa-users stats-icon-subscribers"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title pl-3">Subscribers Gained</h1>
-                          </div>
-                        </div>
+                  <div class="grid-item" style="grid-area:1/4/4/10;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-2">
+                        <i class="fas fa-users vstats-people" title="Subscribers Gained"></i>
                       </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-subs-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
+                      <div class="col-5">
+                        <h2 class="vstats-stat" id="vstats-#-@-subs-total">#</h2>
+                        <h2 class="text-muted vstats-caption">Total Subscribers Gained</h2>
                       </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-subs-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
+                      <div class="col-5">
+                        <h2 class="vstats-stat" id="vstats-#-@-subs-avg">#</h2>
+                        <h2 class="text-muted vstats-caption">Average Subscribers Gained</h2>
                       </div>
                     </div>
                   </div>
-                  <div class="grid-item" style="grid-area: 7/1/10/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="fas fa-comment-alt stats-icon"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title">Comments</h1>
-                          </div>
+                  <div class="grid-item" style="grid-area:1/10/3/13;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <h1 class="vstats-category" id="vstats-#-@-category">*Category*</h1>
+                        <div class="row justify-content-around">
+                          <button class="btn btn-primary btn-lg d-inline" id="vstats-#-@-btn-all">All Videos</button>
+                          <button class="btn btn-primary btn-lg d-inline" id="vstats-#-@-btn-organic">Organic</button>
+                          <button class="btn btn-primary btn-lg d-inline" id="vstats-#-@-btn-notOrganic">Not Organic</button>
                         </div>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-comments-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-comments-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
                       </div>
                     </div>
                   </div>
-                  <div class="grid-item" style="grid-area: 10/1/13/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="fas fa-thumbs-up stats-icon"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title">Likes</h1>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-likes-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-likes-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
+                  <div class="grid-item" style="grid-area:3/1/10/4;">
+                    <i class="fas fa-thumbs-up vstats-like" title="Likes"></i>
+                    <h1 class="vstats-stat-like-ratio" id="vstats-#-@-like-ratio-total">%</h1>
+                    <h3 class="text-muted">Total Likes (vs. Dislikes)</h3>
+                    <div class="progress like-progress w-75 mx-auto">
+                      <div class="progress-bar bg-yt-red" id="vstats-#-@-like-bar-total" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <hr class="vstats-hr-likes">
+                    <h2 class="vstats-stat-likes" id="vstats-#-@-likes-total">#</h2>
+                    <h3 class="text-muted vstats-caption">Total Likes</h3>
+                    <hr class="vstats-hr-likes">
+                    <h2 class="vstats-stat-likes" id="vstats-#-@-dislikes-total">#</h2>
+                    <h3 class="text-muted vstats-caption">Total Dislikes</h3>
+                  </div>
+                  <div class="grid-item" style="grid-area:4/4/10/7;">
+                    <i class="fas fa-eye vstats-eye" title="Views"></i>
+                    <h2 class="vstats-stat-views" id="vstats-#-@-views-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Total Views</h2>
+                    <hr>
+                    <h2 class="vstats-stat-views" id="vstats-#-@-views-avg">#</h2>
+                    <h2 class="text-muted vstats-caption">Average Views</h2>
+                  </div>
+                  <div class="grid-item" style="grid-area:4/7/10/10;">
+                    <i class="fas fa-comment-alt vstats-comment" title="Comments"></i>
+                    <h2 class="vstats-stat-comments" id="vstats-#-@-comments-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Total Comments</h2>
+                    <hr>
+                    <h2 class="vstats-stat-comments" id="vstats-#-@-comments-avg">#</h2>
+                    <h2 class="text-muted vstats-caption">Average Comments</h2>
+                  </div>
+                  <div class="grid-item" style="grid-area:3/10/10/13;">
+                    <i class="fas fa-thumbs-up vstats-like" title="Likes"></i>
+                    <h1 class="vstats-stat-like-ratio" id="vstats-#-@-like-ratio-avg">%</h1>
+                    <h3 class="text-muted">Average Likes (vs. Dislikes)</h3>
+                    <div class="progress like-progress w-75 mx-auto">
+                      <div class="progress-bar bg-yt-red" id="vstats-#-@-like-bar-avg" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <hr class="vstats-hr-likes">
+                    <h2 class="vstats-stat-likes" id="vstats-#-@-likes-avg">#</h2>
+                    <h3 class="text-muted vstats-caption">Average Likes</h3>
+                    <hr class="vstats-hr-likes">
+                    <h2 class="vstats-stat-likes" id="vstats-#-@-dislikes-avg">#</h2>
+                    <h3 class="text-muted vstats-caption">Average Dislikes</h3>
+                  </div>
+                  <div class="grid-item" style="grid-area:10/1/13/3;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <button class="btn btn-primary btn-xl" style="white-space:pre;">Check Out&#13;&#10;Top Videos</button>
                       </div>
                     </div>
                   </div>
-                  <div class="grid-item" style="grid-area: 13/1/16/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="fas fa-thumbs-down stats-icon"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title">Dislikes</h1>
-                          </div>
-                        </div>
+                  <div class="grid-item" style="grid-area:10/3/13/11;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-2">
+                        <i class="fas fa-clock vstats-clock" title="Video Duration"></i>
                       </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-dislikes-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
+                      <div class="col-5">
+                        <h2 class="vstats-stat" id="vstats-#-@-duration-total">#</h2>
+                        <h2 class="text-muted vstats-caption">Total Video Duration</h2>
                       </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-dislikes-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
+                      <div class="col-5">
+                        <h2 class="vstats-stat" id="vstats-#-@-duration-avg">#</h2>
+                        <h2 class="text-muted vstats-caption">Average Video Duration</h2>
                       </div>
                     </div>
                   </div>
-                  <div class="grid-item" style="grid-area: 16/1/19/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="fas fa-percentage stats-icon"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title">Like Ratio</h1>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-like-ratio-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display" id="vstats-#-@-like-ratio-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="grid-item" style="grid-area: 19/1/22/13;">
-                    <div class="row align-items-center justify-content-around h-100">
-                      <div class="col-4">
-                        <div class="row align-items-center justify-content-around">
-                          <div class="col-4">
-                            <span class="far fa-clock stats-icon"></span>
-                          </div>
-                          <div class="col-8">
-                            <h1 class="stat-title">Video Duration</h1>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display vstats-duration" id="vstats-#-@-duration-total">#</h1>
-                        <h3 class="text-muted stat-caption">(Total)</h3>
-                      </div>
-                      <div class="col-4">
-                        <h1 class="stat-display vstats-duration" id="vstats-#-@-duration-avg">#</h1>
-                        <h3 class="text-muted stat-caption">(Average)</h3>
+                  <div class="grid-item" style="grid-area:10/11/13/13;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <button class="btn btn-primary btn-xl" style="white-space:pre;">Check Out More&#13;&#10;Statistics</button>
                       </div>
                     </div>
                   </div>

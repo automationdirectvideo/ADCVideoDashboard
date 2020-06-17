@@ -156,6 +156,13 @@ body {
   width: 50%;
 }
 
+.btn-xl {
+  border-radius: 0.5rem;
+  font-size: 1.75rem;
+  line-height: 1.5;
+  padding: 0.5rem 1rem;
+}
+
 /*----- Intro Animation -----*/
 
 .video-container {
@@ -472,18 +479,6 @@ body {
   background-color: #2eb356;
 }
 
-.grid-container.vstats-grid {
-  grid-template-rows: repeat(21, calc((90vh - 17.5rem) / 12));
-}
-
-.vstats-container {
-  overflow-y: hidden;
-}
-
-.vstats-container:hover {
-  overflow-y: overlay;
-}
-
 .vstats-title {
   background: #ddd;
   border: 1px solid black;
@@ -497,13 +492,70 @@ body {
 }
 
 .vstats-category {
-  margin: 0;
-  padding-bottom: 1rem;
-  padding-top: 1rem;
+  font-size: 2.5vw;
 }
 
 .vstats-duration {
   font-size: 4.75vw;
+}
+
+.vstats-name {
+  font-size: 3.5vw;
+  margin: 0;
+}
+
+.vstats-eye, .vstats-people, .vstats-retention, .vstats-clock,
+.vstats-comment, .vstats-like, .vstats-extra-icon {
+  color: red;
+}
+
+.vstats-eye {
+  font-size: 5vw;
+}
+
+.vstats-comment {
+  font-size: 5vw;
+  padding-top: 0.3333rem;
+}
+
+.vstats-like {
+  font-size: 4.5vw;
+  padding-top: 0.6667rem;
+}
+
+.vstats-people {
+  font-size: 4.5vw;
+  padding-left: 0.3333rem;
+}
+
+.vstats-clock {
+  font-size: 5.25vw;
+}
+
+.vstats-extra-icon {
+  font-size: 5vw;
+}
+
+.vstats-stat, .vstats-stat-views, .vstats-stat-comments, .vstats-stat-likes,
+.vstats-stat-like-ratio {
+  font-size: 4vw;
+  margin: 0;
+}
+
+.vstats-stat-views, .vstats-stat-comments, .vstats-stat-like-ratio {
+  font-size: 4.5vw;
+}
+
+.vstats-stat-likes {
+  font-size: 3.5vw;
+}
+
+.vstats-caption {
+  margin: 0;
+}
+
+.vstats-hr-likes {
+  margin-bottom: 0.5rem;
 }
 
 /*----- Control Panel -----*/

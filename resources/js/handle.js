@@ -877,6 +877,10 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           document.getElementById(`${dashboardId}like-ratio-total`);
         const likeRatioAvg = 
           document.getElementById(`${dashboardId}like-ratio-avg`);
+        const likeBarTotal =
+          document.getElementById(`${dashboardId}like-bar-total`);
+        const likeBarAvg =
+          document.getElementById(`${dashboardId}like-bar-avg`);
         const durationTotal =
           document.getElementById(`${dashboardId}duration-total`);
         const durationAvg =
@@ -891,19 +895,36 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
         likesAvg.innerHTML = roundTo(vStats.avgLikes, 2);
         dislikesTotal.innerHTML = numberWithCommas(vStats.totalDislikes);
         dislikesAvg.innerHTML = roundTo(vStats.avgDislikes, 2);
-        likeRatioTotal.innerHTML = decimalToPercent(vStats.cumLikeRatio) + "%";
-        likeRatioAvg.innerHTML = decimalToPercent(vStats.avgLikeRatio) + "%";
+        const totalLikeRatio = decimalToPercent(vStats.cumLikeRatio);
+        const avgLikeRatio = decimalToPercent(vStats.avgLikeRatio);
+        likeRatioTotal.innerHTML = totalLikeRatio + "%";
+        likeRatioAvg.innerHTML = avgLikeRatio + "%";
+        likeBarTotal.style.width = totalLikeRatio + "%";
+        likeBarAvg.style.width = avgLikeRatio + "%";
         durationTotal.innerHTML =
           secondsToDurationLabeled(vStats.totalDuration.toFixed(0));
         durationAvg.innerHTML =
           secondsToDurationLabeled(vStats.avgDuration.toFixed(0));
+
+        // Add onclick functions to category buttons
+        for (const category2 in videographers[name]) {
+          if (videographers[name].hasOwnProperty(category2)) {
+            const gridBtn = 
+              document.getElementById(`${dashboardId}btn-${category2}`);
+            if (category == category2) {
+              gridBtn.disabled = "disabled";
+            } else {
+              const currGrid = document.getElementById(`${dashboardId}grid`);
+              const targetGrid = document.getElementById(
+                `vstats-${updatedName}-${category2}-grid`);
+              gridBtn.onclick = function() {
+                currGrid.style.display = "none";
+                targetGrid.style.display = "";
+              }
+            }
+          }
+        }
       }
-    }
-    const scrollId = `vstats-${updatedName}-container`;
-    if (!autoScrollDivs.includes(scrollId)) {
-      let speed = 40;
-      new AutoDivScroll(scrollId, speed, 1, 1);
-      autoScrollDivs.push(scrollId);
     }
   });
 }
