@@ -858,7 +858,10 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
     for (const category in videographers[name]) {
       if (videographers[name].hasOwnProperty(category)) {
         const vStats = videographers[name][category];
-        const dashboardId = `vstats-${updatedName}-${category}-`;
+        const preCatId = `vstats-${updatedName}-`;
+        const preCatOverallId = `vstats-overall-${updatedName}-`;
+        const dashboardId = `${preCatId}${category}-`;
+        const dashboardOverallId = `${preCatOverallId}${category}-`;
         const viewsTotal = document.getElementById(`${dashboardId}views-total`);
         const viewsAvg = document.getElementById(`${dashboardId}views-avg`);
         const subsTotal = document.getElementById(`${dashboardId}subs-total`);
@@ -885,6 +888,10 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           document.getElementById(`${dashboardId}duration-total`);
         const durationAvg =
           document.getElementById(`${dashboardId}duration-avg`);
+        const videosTotal =
+          document.getElementById(`${dashboardOverallId}videos-total`);
+        const videosLast =
+          document.getElementById(`${dashboardOverallId}videos-last`);
         viewsTotal.innerHTML = numberWithCommas(vStats.totalViews);
         viewsAvg.innerHTML = numberWithCommas(roundTo(vStats.avgViews, 0));
         subsTotal.innerHTML = numberWithCommas(vStats.totalSubsGained);
@@ -905,25 +912,63 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           secondsToDurationLabeled(vStats.totalDuration.toFixed(0));
         durationAvg.innerHTML =
           secondsToDurationLabeled(vStats.avgDuration.toFixed(0));
+        // videosTotal.innerHTML = vStats.videos.length;
 
-        // Add onclick functions to category buttons
-        for (const category2 in videographers[name]) {
-          if (videographers[name].hasOwnProperty(category2)) {
-            const gridBtn = 
-              document.getElementById(`${dashboardId}btn-${category2}`);
-            if (category == category2) {
-              gridBtn.disabled = "disabled";
-            } else {
-              const currGrid = document.getElementById(`${dashboardId}grid`);
-              const targetGrid = document.getElementById(
-                `vstats-${updatedName}-${category2}-grid`);
-              gridBtn.onclick = function() {
-                currGrid.style.display = "none";
-                targetGrid.style.display = "";
+        let ids = [
+          {
+            "dashboardId": dashboardId,
+            "preCatId": preCatId,
+            "leftBtn": {
+              "id": null,
+              "target": null
+            },
+            "rightBtn": {
+              "id": `${dashboardId}more`,
+              "target": `${dashboardOverallId}grid`
+            }
+          }, 
+          {
+            "dashboardId": dashboardOverallId,
+            "preCatId": preCatOverallId,
+            "leftBtn": {
+              "id": null,
+              "target": null
+            },
+            "rightBtn": {
+              "id": `${dashboardOverallId}more`,
+              "target": `${dashboardId}grid`
+            }
+          }
+        ];
+        ids.forEach(dashboard => {
+          for (const category2 in videographers[name]) {
+            if (videographers[name].hasOwnProperty(category2)) {
+              // Add onclick functions to category buttons
+              const currGrid =
+                document.getElementById(`${dashboard.dashboardId}grid`);
+              const gridBtn = document
+                .getElementById(`${dashboard.dashboardId}btn-${category2}`);
+              if (category == category2) {
+                gridBtn.disabled = "disabled";
+              } else {
+                const targetGrid = document.getElementById(
+                  `${dashboard.preCatId}${category2}-grid`);
+                gridBtn.onclick = function() {
+                  currGrid.classList.remove("active-grid");
+                  targetGrid.classList.add("active-grid");
+                }
+              }
+              // Add onclick functions to more stats and top videos buttons
+              const rightBtn = document.getElementById(dashboard.rightBtn.id);
+              const targetGrid =
+                document.getElementById(dashboard.rightBtn.target);
+              rightBtn.onclick = function () {
+                currGrid.classList.remove("active-grid");
+                targetGrid.classList.add("active-grid");
               }
             }
           }
-        }
+        });
       }
     }
   });

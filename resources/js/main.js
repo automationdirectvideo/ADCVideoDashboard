@@ -1546,10 +1546,6 @@ function swapDashboardGraphs() {
     graphOne = document.getElementById(graphIds.all);
     graphTwo = document.getElementById(graphIds.organic);
     graphThree = document.getElementById(graphIds.notOrganic);
-  } else if (activeDashboard.indexOf("vstat") == 0) {
-    graphOne = document.getElementById(activeDashboard + "-all-grid");
-    graphTwo = document.getElementById(activeDashboard + "-organic-grid");
-    graphThree = document.getElementById(activeDashboard + "-notOrganic-grid");
   }
   if (graphOne && graphTwo && graphThree) {
     if (graphOne.style.display == "") {
@@ -1569,6 +1565,18 @@ function swapDashboardGraphs() {
     const activeCarouselContainer = $(".carousel-container.active")[0].id;
     if (activeCarouselContainer == "category-stats-content") {
       swapNormalCharts();
+    } else if (activeDashboard.indexOf("vstat") == 0) {
+      // Handles switching grids for vstats dashboards
+      const activeDashboardElem = document.getElementById(activeDashboard);
+      const activeGrid = activeDashboardElem
+        .querySelector(".vstats-grid-container.active-grid");
+      let nextGrid = activeGrid.nextElementSibling;
+      if (nextGrid == null) {
+        const gridGroupContainer = activeGrid.parentElement;
+        nextGrid = gridGroupContainer.firstElementChild;
+      }
+      activeGrid.classList.remove("active-grid");
+      nextGrid.classList.add("active-grid");
     }
   }
 }

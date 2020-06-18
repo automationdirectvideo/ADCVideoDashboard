@@ -1365,30 +1365,44 @@ function createVideographerStatsDashboards() {
   let index = carouselInner.childElementCount;
   people.forEach(name => {
     const dashboardId = "vstats-" + name.replace(" ", "*");
-    const dashboardTitle = "Videographer Statistics: " + name;
+    const dashboardOverallId = "vstats-overall-" + name.replace(" ", "*");
 
     let dashboardItem = document.getElementById("vstats-#").cloneNode(true);
     let dashboardText = dashboardItem.outerHTML;
-    let grids = "";
+    let mainGrids = "";
+    let overallGrids = "";
     for (const category in categories) {
       if (categories.hasOwnProperty(category)) {
         const categoryName = categories[category];
         // Create multiple grids. One for each category
-        let gridItem =
+        const gridItem =
           document.getElementById("vstats-#-@-grid").cloneNode(true);
-        if (category != "all") {
-          gridItem.style.display = "none";
+        if (category == "all") {
+          gridItem.classList.add("active-grid");
         }
         let gridText = gridItem.outerHTML;
         gridText = gridText.replace(/@/g, category);
         gridText = gridText.replace(/\*Name\*/g, name);
         gridText = gridText.replace(/\*Category\*/g, categoryName);
-        grids += gridText;
+        mainGrids += gridText;
+
+        const gridOverallItem =
+          document.getElementById("vstats-overall-#-@-grid").cloneNode(true);
+        let gridOverallText = gridOverallItem.outerHTML;
+        gridOverallText = gridOverallText.replace(/@/g, category);
+        gridOverallText = gridOverallText.replace(/\*Name\*/g, name);
+        gridOverallText =
+          gridOverallText.replace(/\*Category\*/g, categoryName);
+        overallGrids += gridOverallText;
       }
     }
     dashboardText =
-      dashboardText.replace(/<div>GRID PLACEHOLDER<\/div>/, grids);
+      dashboardText.replace(/<div>MAIN GRID PLACEHOLDER<\/div>/, mainGrids);
+    dashboardText = dashboardText
+      .replace(/<div>OVERALL GRID PLACEHOLDER<\/div>/, overallGrids);
     dashboardText = dashboardText.replace(/vstats-#/g, dashboardId);
+    dashboardText =
+      dashboardText.replace(/vstats-overall-#/g, dashboardOverallId);
     let template = document.createElement("template");
     template.innerHTML = dashboardText;
     dashboardItem = template.content.firstChild;

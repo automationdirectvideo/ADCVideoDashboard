@@ -512,10 +512,15 @@
                 <div class="carousel-item" id="vstats-#">
                   <h1 class="dashboard-title">Videographer Statistics</h1>
                   <div class="outer-shell container mb-1" id="vstats-#-container">
-                    <div>GRID PLACEHOLDER</div>
+                    <div id="main-grids">
+                      <div>MAIN GRID PLACEHOLDER</div>
+                    </div>
+                    <div id="overall-grids">
+                      <div>OVERALL GRID PLACEHOLDER</div>
+                    </div>
                   </div>
                 </div>
-                <div class="grid-container" id="vstats-#-@-grid">
+                <div class="vstats-grid-container" id="vstats-#-@-grid">
                   <div class="grid-item" style="grid-area:1/1/3/4;">
                     <div class="row align-items-center h-100">
                       <div class="col-12">
@@ -597,14 +602,14 @@
                   <div class="grid-item" style="grid-area:10/1/13/3;">
                     <div class="row align-items-center h-100">
                       <div class="col-12">
-                        <button class="btn btn-primary btn-xl" style="white-space:pre;">Check Out&#13;&#10;Top Videos</button>
+                        <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-#-@-top">Check Out<br>Top Videos</button>
                       </div>
                     </div>
                   </div>
                   <div class="grid-item" style="grid-area:10/3/13/11;">
                     <div class="row align-items-center h-100">
                       <div class="col-2">
-                        <i class="fas fa-clock vstats-clock" title="Video Duration"></i>
+                        <i class="far fa-clock vstats-clock" title="Video Duration"></i>
                       </div>
                       <div class="col-5">
                         <h2 class="vstats-stat" id="vstats-#-@-duration-total">#</h2>
@@ -619,7 +624,88 @@
                   <div class="grid-item" style="grid-area:10/11/13/13;">
                     <div class="row align-items-center h-100">
                       <div class="col-12">
-                        <button class="btn btn-primary btn-xl" style="white-space:pre;">Check Out More&#13;&#10;Statistics</button>
+                        <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-#-@-more">Check Out More<br>Statistics</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="vstats-grid-container" id="vstats-overall-#-@-grid">
+                  <div class="grid-item" style="grid-area:1/1/3/4;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <h1 class="vstats-name" id="vstats-overall-#-@-name">*Name*</h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-item" style="grid-area:1/10/3/13;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <h1 class="vstats-category" id="vstats-overall-#-@-category">*Category*</h1>
+                        <div class="row vstats-btn-group">
+                          <button class="btn btn-primary btn-lg d-inline" id="vstats-overall-#-@-btn-all">All Videos</button>
+                          <button class="btn btn-primary btn-lg d-inline" id="vstats-overall-#-@-btn-organic">Organic</button>
+                          <button class="btn btn-primary btn-lg d-inline" id="vstats-overall-#-@-btn-notOrganic">Not Organic</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-item" style="grid-area:3/1/10/4;">
+                    <i class="fas fa-video vstats-video" title="Videos"></i>
+                    <h2 class="vstats-stat" id="vstats-overall-#-@-videos-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Videos Created</h2>
+                    <h2 class="text-muted vstats-caption">(Overall)</h2>
+                    <hr>
+                    <h2 class="vstats-stat" id="vstats-overall-#-@-videos-last">#</h2>
+                    <h2 class="text-muted vstats-caption">Videos Created</h2>
+                    <h2 class="text-muted vstats-caption">(Last 30 Days)</h2>
+                  </div>
+                  <div class="grid-item" style="grid-area:1/4/10/10;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <h1>Top Categories</h1>
+                        <h1>OR</h1>
+                        <h1>Graph</h1>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-item" style="grid-area:3/10/10/13;">
+                    <i class="fas fa-percentage vstats-percentage" title="Average View Percentage"></i>
+                    <h2 class="vstats-stat" id="vstats-overall-#-@-videos-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Average View Percentage</h2>
+                    <h2 class="text-muted vstats-caption">(Overall)</h2>
+                    <hr>
+                    <h2 class="vstats-stat" id="vstats-overall-#-@-videos-last">#</h2>
+                    <h2 class="text-muted vstats-caption">Average View Percentage</h2>
+                    <h2 class="text-muted vstats-caption">(Last 30 Days)</h2>
+                  </div>
+                  <div class="grid-item" style="grid-area:10/1/13/3;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-overall-#-@-top">Check Out<br>Top Videos</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-item" style="grid-area:10/3/13/11;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-2">
+                        <i class="far fa-clock vstats-clock" title="Minutes Watched"></i>
+                      </div>
+                      <div class="col-5">
+                        <h2 class="vstats-stat" id="vstats-overall-#-@-watched-total">#</h2>
+                        <h2 class="text-muted vstats-caption">Estimated Minutes Watched</h2>
+                        <h2 class="text-muted vstats-caption">(Overall)</h2>
+                      </div>
+                      <div class="col-5">
+                        <h2 class="vstats-stat" id="vstats-overall-#-@-watched-last">#</h2>
+                        <h2 class="text-muted vstats-caption">Estimated Minutes Watched</h2>
+                        <h2 class="text-muted vstats-caption">(Last 30 Days)</h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="grid-item" style="grid-area:10/11/13/13;">
+                    <div class="row align-items-center h-100">
+                      <div class="col-12">
+                        <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-overall-#-@-more">Check Out More<br>Statistics</button>
                       </div>
                     </div>
                   </div>
