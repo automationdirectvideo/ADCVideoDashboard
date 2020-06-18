@@ -305,7 +305,7 @@ function displayWatchTimeBySubscribedStatus(response) {
       yaxis: yaxis
     };
   }
-  
+
   const graphIds = getDashboardGraphIds("platform");
   const graphId = graphIds.watchTime;
 
@@ -878,7 +878,7 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           document.getElementById(`${dashboardId}dislikes-avg`);
         const likeRatioTotal =
           document.getElementById(`${dashboardId}like-ratio-total`);
-        const likeRatioAvg = 
+        const likeRatioAvg =
           document.getElementById(`${dashboardId}like-ratio-avg`);
         const likeBarTotal =
           document.getElementById(`${dashboardId}like-bar-total`);
@@ -914,8 +914,7 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           secondsToDurationLabeled(vStats.avgDuration.toFixed(0));
         // videosTotal.innerHTML = vStats.videos.length;
 
-        let ids = [
-          {
+        let ids = [{
             "dashboardId": dashboardId,
             "preCatId": preCatId,
             "leftBtn": {
@@ -926,7 +925,7 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
               "id": `${dashboardId}more`,
               "target": `${dashboardOverallId}grid`
             }
-          }, 
+          },
           {
             "dashboardId": dashboardOverallId,
             "preCatId": preCatOverallId,
@@ -953,7 +952,7 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
               } else {
                 const targetGrid = document.getElementById(
                   `${dashboard.preCatId}${category2}-grid`);
-                gridBtn.onclick = function() {
+                gridBtn.onclick = function () {
                   currGrid.classList.remove("active-grid");
                   targetGrid.classList.add("active-grid");
                 }
