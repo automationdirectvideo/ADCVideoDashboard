@@ -77,10 +77,12 @@ body {
 .arrow-red {
   color: #ff0000;
 }
+
 .yt-black, .arrow-text-black {
   color: #282828;
 }
-.bg-yt-red {
+
+.like-bar {
   background-color: #2eb356;
 }
 
