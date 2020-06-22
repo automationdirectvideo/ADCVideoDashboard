@@ -858,10 +858,9 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
     for (const category in videographers[name]) {
       if (videographers[name].hasOwnProperty(category)) {
         const vStats = videographers[name][category];
+        // Main vstats dashboard
         const preCatId = `vstats-${updatedName}-`;
-        const preCatOverallId = `vstats-overall-${updatedName}-`;
         const dashboardId = `${preCatId}${category}-`;
-        const dashboardOverallId = `${preCatOverallId}${category}-`;
         const viewsTotal = document.getElementById(`${dashboardId}views-total`);
         const viewsAvg = document.getElementById(`${dashboardId}views-avg`);
         const subsTotal = document.getElementById(`${dashboardId}subs-total`);
@@ -888,10 +887,6 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           document.getElementById(`${dashboardId}duration-total`);
         const durationAvg =
           document.getElementById(`${dashboardId}duration-avg`);
-        const videosTotal =
-          document.getElementById(`${dashboardOverallId}videos-total`);
-        const videosLast =
-          document.getElementById(`${dashboardOverallId}videos-last`);
         viewsTotal.innerHTML = numberWithCommas(vStats.totalViews);
         viewsAvg.innerHTML = numberWithCommas(roundTo(vStats.avgViews, 0));
         subsTotal.innerHTML = numberWithCommas(vStats.totalSubsGained);
@@ -912,7 +907,28 @@ function displayVideographerStats(videographers = lsGet("videographers")) {
           secondsToDurationLabeled(vStats.totalDuration.toFixed(0));
         durationAvg.innerHTML =
           secondsToDurationLabeled(vStats.avgDuration.toFixed(0));
-        // videosTotal.innerHTML = vStats.videos.length;
+
+        // Overall vstats dashboard
+        const preCatOverallId = `vstats-overall-${updatedName}-`;
+        const dashboardOverallId = `${preCatOverallId}${category}-`;
+        const videosTotal =
+          document.getElementById(`${dashboardOverallId}videos-total`);
+        const videosLast =
+          document.getElementById(`${dashboardOverallId}videos-last`);
+        const avpTotal =
+          document.getElementById(`${dashboardOverallId}avp-total`);
+        const avpLast =
+          document.getElementById(`${dashboardOverallId}avp-last`);
+        const minWatchedTotal =
+          document.getElementById(`${dashboardOverallId}watched-total`);
+        const minWatchedLast =
+          document.getElementById(`${dashboardOverallId}watched-last`);
+        videosTotal.innerHTML = vStats.numVideos;
+        videosLast.innerHTML = numberWithCommas(vStats.numVideosLastXDays);
+        avpTotal.innerHTML = roundTo(vStats.avgViewPercentage, 1) + "%";
+        avpLast.innerHTML = roundTo(vStats.avgViewPercentageLastXDays, 1) + "%";
+        minWatchedTotal.innerHTML = numberWithCommas(vStats.minWatched);
+        minWatchedLast.innerHTML = numberWithCommas(vStats.minWatchedLastXDays);
 
         let ids = [{
             "dashboardId": dashboardId,

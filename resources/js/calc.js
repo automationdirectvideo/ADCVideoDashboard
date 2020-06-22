@@ -1273,8 +1273,8 @@ function loadVideographerDashboards() {
     let videographers = calcVideographerStats();
     displayVideographerMonthlyVideos(videographers);
 
-    requestVideographerAvgViews(videographers, getDateFromDaysAgo(34),
-      getDateFromDaysAgo(4))
+    const request1 = requestVideographerAvgViews(videographers,
+      getDateFromDaysAgo(34), getDateFromDaysAgo(4))
       .then(videographers => {
         displayVideographerAvgViews(videographers);
       })
@@ -1291,7 +1291,7 @@ function loadVideographerDashboards() {
           "Unable to display videographer average views graphs - ");
       });
 
-    getVideographerMonthlyViews(videographers)
+    const request2 = getVideographerMonthlyViews(videographers)
       .then(updatedVideographers => {
         displayVideographerMonthlyViews(updatedVideographers);
       })
@@ -1312,8 +1312,15 @@ function loadVideographerDashboards() {
         recordError(err,
           "Unable to display videographer monthly views graphs - ");
       });
-    displayVideographerStats();
-    saveVideographerStatsToSheets();
+    const request3 = requestVideographerEngagementStats(videographers,
+      getDateFromDaysAgo(34), getDateFromDaysAgo(4));
+    const request4 = requestVideographerEngagementStats(videographers);
+    
+    Promise.all([request1, request2, request3, request4])
+      .then(response => {
+        displayVideographerStats();
+        saveVideographerStatsToSheets();
+      }) 
   } catch (err) {
     // Displays graph errors for all graphs in the videographer dashboards
     const graphIds = [
@@ -1676,6 +1683,7 @@ function calcVideographerStats() {
         if (categories.hasOwnProperty(category)) {
           const data = categories[category];
           let numVideos = data.videos.length;
+          data.numVideos = numVideos;
           if (numVideos == 0) {
             numVideos = 1;
           }
@@ -1708,6 +1716,9 @@ function calcVideographerStats() {
  */
 function calcVideographerVideosByMonth(videographers) {
   const statsByVideoId = lsGet("statsByVideoId");
+  const today = new Date();
+  // The number of days in `lastXDays`
+  const X = 30;
   for (const name in videographers) {
     if (videographers.hasOwnProperty(name)) {
       const categories = videographers[name];
@@ -1715,6 +1726,7 @@ function calcVideographerVideosByMonth(videographers) {
         if (categories.hasOwnProperty(category)) {
           const data = categories[category];
           let monthlyVideos = {};
+          let numVideosLastXDays = 0;
           const videos = data.videos;
           videos.forEach(videoId => {
             const publishDate = statsByVideoId[videoId].publishDate;
@@ -1723,6 +1735,9 @@ function calcVideographerVideosByMonth(videographers) {
               monthlyVideos[month] = 0;
             }
             monthlyVideos[month] += 1;
+            if (today - new Date(publishDate) <= X * 86400000) {
+              numVideosLastXDays++;
+            }
           });
           const allMonths = getMonthsSince(2010, 7);
           allMonths.forEach(month => {
@@ -1731,6 +1746,7 @@ function calcVideographerVideosByMonth(videographers) {
             }
           });
           data.monthlyVideos = monthlyVideos;
+          data.numVideosLastXDays = numVideosLastXDays;
         }
       }
     }
