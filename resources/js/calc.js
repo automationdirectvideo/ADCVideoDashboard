@@ -1596,6 +1596,9 @@ function calcVideoStrength(allVideoStats, weights) {
     let normalizedStrength = (((strength - min) / range) * 100);
     allVideoStats[index].strength = normalizedStrength;
   }
+  allVideoStats.sort(function (a,b) {
+    return new Date(b.publishDate) - new Date(a.publishDate);
+  });
   return allVideoStats;
 }
 
