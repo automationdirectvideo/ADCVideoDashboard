@@ -257,9 +257,8 @@ function requestChannelDemographics(startDate, endDate) {
       const errorMsg = "Error getting Channel Demographics: ";
       console.error(errorMsg, err);
       recordError(err, errorMsg);
-      const graphIds = getDashboardGraphIds("platform");
-      const graphId = graphIds.demographics;
-      displayGraphError(graphId);
+      // We do not use displayGraphError() for this graph because of the graph's
+      // small size
     });
 }
 

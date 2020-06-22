@@ -511,11 +511,8 @@ function loadChannelDemographics() {
         }
       };
       return displayChannelDemographics(newResponse);
-    })
-    .catch(err => {
-      const graphIds = getDashboardGraphIds("platform");
-      const graphId = graphIds.demographics;
-      displayGraphError(graphId, err);
+      // We do not use displayGraphError() for this graph because of the graph's
+      // small size
     });
 }
 
