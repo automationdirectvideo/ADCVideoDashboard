@@ -82,6 +82,10 @@ body {
   color: #282828;
 }
 
+.progress {
+  background-color: #bbb;
+}
+
 .like-bar {
   background-color: #2eb356;
 }
