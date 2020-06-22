@@ -1674,6 +1674,8 @@ function pauseDashboard() {
   let pauseText = document.getElementById("pause-text");
   let playText = document.getElementById("play-text");
   $("#dashboard-carousel").carousel('pause');
+  $("#category-stats-carousel").carousel('pause');
+  $("#videographer-carousel").carousel('pause');
   pauseText.style.display = "initial";
   playText.style.display = "none";
   isPaused = true;
@@ -1683,6 +1685,8 @@ function playDashboard() {
   let pauseText = document.getElementById("pause-text");
   let playText = document.getElementById("play-text");
   $("#dashboard-carousel").carousel('cycle');
+  $("#category-stats-carousel").carousel('cycle');
+  $("#videographer-carousel").carousel('cycle');
   pauseText.style.display = "none";
   playText.style.display = "initial";
   setTimeout(function () {
@@ -1750,8 +1754,12 @@ function setLoadingStatus(bool) {
   isLoading = bool;
   if (bool) {
     $("#dashboard-carousel").carousel('pause');
+    $("#category-stats-carousel").carousel('pause');
+    $("#videographer-carousel").carousel('pause');
   } else if (!isPaused) {
     $("#dashboard-carousel").carousel('cycle');
+    $("#category-stats-carousel").carousel('cycle');
+    $("#videographer-carousel").carousel('cycle');
   }
 }
 
@@ -1759,8 +1767,12 @@ function setUpdatingStatus(bool) {
   isUpdating = bool;
   if (bool) {
     $("#dashboard-carousel").carousel('pause');
+    $("#category-stats-carousel").carousel('pause');
+    $("#videographer-carousel").carousel('pause');
   } else if (!isPaused) {
     $("#dashboard-carousel").carousel('cycle');
+    $("#category-stats-carousel").carousel('cycle');
+    $("#videographer-carousel").carousel('cycle');
   }
 }
 
@@ -1786,12 +1798,13 @@ var carousel = document.getElementById("dashboard-carousel");
 carousel.setAttribute("data-interval", cycleSpeed);
 carousel.setAttribute("data-pause", "false");
 
-const categoryStatsCarousel = document.getElementById("category-stats-carousel");
-categoryStatsCarousel.setAttribute("data-interval", 0);
+const categoryStatsCarousel =
+  document.getElementById("category-stats-carousel");
+categoryStatsCarousel.setAttribute("data-interval", cycleSpeed);
 categoryStatsCarousel.setAttribute("data-pause", "false");
 
 const videographerCarousel = document.getElementById("videographer-carousel");
-videographerCarousel.setAttribute("data-interval", 0);
+videographerCarousel.setAttribute("data-interval", cycleSpeed);
 videographerCarousel.setAttribute("data-pause", "false");
 
 // Set order of dashboards
