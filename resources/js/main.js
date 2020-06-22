@@ -1705,6 +1705,18 @@ function toggleDashboardPause() {
   }
 }
 
+function temporarilyToggleDashboardPause(bool) {
+  if (bool) {
+    $("#dashboard-carousel").carousel('pause');
+    $("#category-stats-carousel").carousel('pause');
+    $("#videographer-carousel").carousel('pause');
+  } else if (!isPaused) {
+    $("#dashboard-carousel").carousel('cycle');
+    $("#category-stats-carousel").carousel('cycle');
+    $("#videographer-carousel").carousel('cycle');
+  }
+}
+
 function goToCarouselItem(index) {
   $(".carousel-container.active > .carousel").carousel(index);
 }
@@ -1752,28 +1764,12 @@ function showUpdatingText() {
 
 function setLoadingStatus(bool) {
   isLoading = bool;
-  if (bool) {
-    $("#dashboard-carousel").carousel('pause');
-    $("#category-stats-carousel").carousel('pause');
-    $("#videographer-carousel").carousel('pause');
-  } else if (!isPaused) {
-    $("#dashboard-carousel").carousel('cycle');
-    $("#category-stats-carousel").carousel('cycle');
-    $("#videographer-carousel").carousel('cycle');
-  }
+  temporarilyToggleDashboardPause();
 }
 
 function setUpdatingStatus(bool) {
   isUpdating = bool;
-  if (bool) {
-    $("#dashboard-carousel").carousel('pause');
-    $("#category-stats-carousel").carousel('pause');
-    $("#videographer-carousel").carousel('pause');
-  } else if (!isPaused) {
-    $("#dashboard-carousel").carousel('cycle');
-    $("#category-stats-carousel").carousel('cycle');
-    $("#videographer-carousel").carousel('cycle');
-  }
+  temporarilyToggleDashboardPause();
 }
 
 // Get current settings
