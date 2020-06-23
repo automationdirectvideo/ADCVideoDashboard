@@ -1224,7 +1224,8 @@ function displayUploadThumbnails() {
 }
 
 function displayVideoStrengthBars(videoStats, graphId) {
-  const weights = lsGet("weights");
+  const strengthCalc = lsGet("strengthCalc");
+  const weights = strengthCalc.weights;
   let labels = [];
   let values = [];
   for (const name in weights) {

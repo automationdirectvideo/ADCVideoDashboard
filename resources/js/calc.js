@@ -294,6 +294,7 @@ function getVideoStats() {
           "subscribersGained": subscribersGained,
           "likesPerView": likesPerView,
           "dislikesPerView": dislikesPerView,
+          "organic": organic
         };
         allVideoStats.push(row);
         if (!statsByVideoId[videoId]) {
@@ -414,15 +415,29 @@ function getVideoStrengthWeights() {
   return requestSpreadsheetData("Input Data", "Video Strength Calculation")
     .then(sheetValues => {
       let weights = {};
+      let calc = {};
       let column = getColumnHeaders(sheetValues);
-      for (let index = 1; index < sheetValues.length; index++) {
-        const metric = sheetValues[index];
+      let index = 1;
+      let metric = sheetValues[index];
+      while (index < sheetValues.length && metric.length != 0) {
         let name = metric[column["Short Name"]];
         let weight = parseFloat(metric[column["Weight"]]);
         weights[name] = weight;
+
+        index++;
+        metric = sheetValues[index];
       }
-      lsSet("weights", weights);
-      return Promise.resolve(weights);
+      index++;
+      while (index < sheetValues.length) {
+        metric = sheetValues[index];
+        let name = metric[column["Short Name"]];
+        let value = parseFloat(metric[column["Weight"]]);
+        calc[name] = value;
+        index++;
+      }
+      calc.weights = weights;
+      lsSet("strengthCalc", calc);
+      return Promise.resolve(calc);
     });
 }
 
@@ -1141,13 +1156,7 @@ function loadTopVideoDashboards() {
 function loadVideoStrengthDashboard() {
   const statsByVideoId = lsGet("statsByVideoId");
   const allVideoStats = lsGet("allVideoStats");
-  allVideoStats.sort(function (a, b) {
-    if (a.strength == b.strength) {
-      return b.totalStrength - a.totalStrength;
-    } else {
-      return b.strength - a.strength;
-    }
-  });
+  allVideoStats.sort(sortVideosByStrength);
   let numVideos = 20;
   let output = ``;
   let graphData = [];
@@ -1246,10 +1255,11 @@ function loadVideoStrengthDashboard() {
  */
 function reloadVideoStrengthDashboard() {
   return getVideoStrengthWeights()
-    .then(weights => {
+    .then(strengthCalc => {
       try {
         const allVideoStats = lsGet("allVideoStats");
-        let updatedAllVideoStats = calcVideoStrength(allVideoStats, weights);
+        let updatedAllVideoStats = calcVideoStrength(allVideoStats,
+          strengthCalc);
         lsSet("allVideoStats", updatedAllVideoStats);
         loadVideoStrengthDashboard();
       } catch (err) {
@@ -1504,11 +1514,22 @@ function zScoreForList(data) {
 function zScoreByPropertyName(stats, propertyName) {
   let data = stats.map((value) => {return value[propertyName]});
   let zScores = zScoreForList(data);
+  let strengthCalc = lsGet("strengthCalc");
+  let minZ = -4; // Default value
+  let maxZ = 4; // Default value
+  if (strengthCalc) {
+    if (strengthCalc.minZ) {
+      minZ = strengthCalc.minZ;
+    }
+    if (strengthCalc.maxZ) {
+      maxZ = strengthCalc.maxZ;
+    }
+  }
   let zScoresUpdated = zScores.map((value) => {
-    if (value > 4) {
-      return 4;
-    } else if (value < -4) {
-      return -4;
+    if (value > maxZ) {
+      return maxZ;
+    } else if (value < minZ) {
+      return minZ;
     } else {
       return value;
     }
@@ -1525,22 +1546,39 @@ function zScoreByPropertyName(stats, propertyName) {
  * @returns {Array<Object>} The input `allVideoStats` with the "strength"
  *    property for each video
  */
-function calcVideoStrength(allVideoStats, weights) {
+function calcVideoStrength(allVideoStats, strengthCalc) {
+  const statsByVideoId = lsGet("statsByVideoId");
+  const weights = strengthCalc.weights;
+  const numYears = strengthCalc.numYears;
+  const numYearsInMilliSec = numYears * 1000 * 60 * 60 * 24 * 365;
+  const now = new Date();
+  // Only include videos if they are organic and were made in the last numYears
+  let includedVideos = allVideoStats.filter((video) => {
+    if (statsByVideoId[video.videoId].organic) {
+      const publishDate = new Date(statsByVideoId[video.videoId].publishDate);
+      const milliSecSincePublished = now - publishDate;
+      return numYearsInMilliSec - milliSecSincePublished > 0;
+    }
+    return false;
+  });
   // Normalizes each metric individually across all videos
   let zScoreData = {
-    videoIds: allVideoStats.map((video) => {return video["videoId"]}),
-    views: zScoreByPropertyName(allVideoStats, "views"),
-    avgViewsPerDay: zScoreByPropertyName(allVideoStats, "avgViewsPerDay"),
-    duration: zScoreByPropertyName(allVideoStats, "duration"),
-    comments: zScoreByPropertyName(allVideoStats, "comments"),
-    likesPerView: zScoreByPropertyName(allVideoStats, "likesPerView"),
-    dislikesPerView: zScoreByPropertyName(allVideoStats, "dislikesPerView"),
-    subscribersGained: zScoreByPropertyName(allVideoStats, "subscribersGained"),
-    avgViewDuration: zScoreByPropertyName(allVideoStats, "avgViewDuration"),
-    avgViewPercentage: zScoreByPropertyName(allVideoStats, "avgViewPercentage"),
-    daysSincePublished: zScoreByPropertyName(allVideoStats,
+    videoIds: includedVideos.map((video) => {return video["videoId"]}),
+    views: zScoreByPropertyName(includedVideos, "views"),
+    avgViewsPerDay: zScoreByPropertyName(includedVideos, "avgViewsPerDay"),
+    duration: zScoreByPropertyName(includedVideos, "duration"),
+    comments: zScoreByPropertyName(includedVideos, "comments"),
+    likesPerView: zScoreByPropertyName(includedVideos, "likesPerView"),
+    dislikesPerView: zScoreByPropertyName(includedVideos, "dislikesPerView"),
+    subscribersGained: zScoreByPropertyName(includedVideos,
+      "subscribersGained"),
+    avgViewDuration: zScoreByPropertyName(includedVideos, "avgViewDuration"),
+    avgViewPercentage: zScoreByPropertyName(includedVideos,
+      "avgViewPercentage"),
+    daysSincePublished: zScoreByPropertyName(includedVideos,
       "daysSincePublished")
   };
+  let strengthArray = [];
   for (let index = 0; index < zScoreData.videoIds.length; index++) {
     const videoId = zScoreData.videoIds[index];
     const views = zScoreData.views[index];
@@ -1560,24 +1598,28 @@ function calcVideoStrength(allVideoStats, weights) {
         strength += (weight * zScoreData[name][index]);
       }
     }
-    allVideoStats[index].totalStrength = strength;
-    allVideoStats[index].z = {
-      views: views,
-      avgViewsPerDay: avgViewsPerDay,
-      duration: duration,
-      comments: comments,
-      likesPerView: likesPerView,
-      dislikesPerView: dislikesPerView,
-      subscribersGained: subscribersGained,
-      avgViewDuration: avgViewDuration,
-      avgViewPercentage: avgViewPercentage,
-      daysSincePublished: daysSincePublished
-    };
+    strengthArray.push({
+      totalStrength: strength,
+      videoId: videoId,
+      z: {
+        views: views,
+        avgViewsPerDay: avgViewsPerDay,
+        duration: duration,
+        comments: comments,
+        likesPerView: likesPerView,
+        dislikesPerView: dislikesPerView,
+        subscribersGained: subscribersGained,
+        avgViewDuration: avgViewDuration,
+        avgViewPercentage: avgViewPercentage,
+        daysSincePublished: daysSincePublished
+      }
+    });
   }
-  allVideoStats.sort(function (a,b) {
+  strengthArray.sort(function (a, b) {
     return a.totalStrength - b.totalStrength;
   });
-  let zScoreStrengths = zScoreByPropertyName(allVideoStats, "totalStrength");
+  
+  let zScoreStrengths = zScoreByPropertyName(strengthArray, "totalStrength");
   let length = zScoreStrengths.length;
   let lowPercentile = Math.floor(length * 0);
   let highPercentile = Math.floor(length - 1);
@@ -1588,15 +1630,59 @@ function calcVideoStrength(allVideoStats, weights) {
     range = 1;
   }
   // Normalize all strength values to between 0-100
-  for (let index = 0; index < allVideoStats.length; index++) {
+  for (let index = 0; index < strengthArray.length; index++) {
     let strength = zScoreStrengths[index];
     let normalizedStrength = (((strength - min) / range) * 100);
-    allVideoStats[index].strength = normalizedStrength;
+    strengthArray[index].strength = normalizedStrength;
   }
-  allVideoStats.sort(function (a,b) {
+  allVideoStats.forEach(video => {
+    const videoId = video.videoId;
+    const organic = video.organic;
+    if (organic) {
+      // Find video in strengthArray
+      const index = strengthArray.findIndex((element) => {
+        return videoId == element.videoId;
+      });
+      if (index >= 0) {
+        video.strength = strengthArray[index].strength;
+        video.totalStrength = strengthArray[index].totalStrength;
+        video.z = strengthArray[index].z;
+      }
+    } else {
+      // Video was not included in strengthArray
+      video.strength = undefined;
+      video.totalStrength = undefined;
+      video.z = undefined;
+    }
+  });
+  allVideoStats.sort(function (a, b) {
     return new Date(b.publishDate) - new Date(a.publishDate);
   });
   return allVideoStats;
+}
+
+/**
+ * Sort videos in `allVideoStats` from highest strength to lowest strength.
+ * Some videos' strength is set to `undefined`. Those videos are sorted to the
+ * end of the array
+ *
+ * @param {*} a An element in `allVideoStats`
+ * @param {*} b An element in `allVideoStats`
+ * @returns The element with higher strength or higher `totalStrength` if the
+ *  two strengths are equal
+ */
+function sortVideosByStrength(a, b) {
+  if (a.strength == undefined) {
+    return 1;
+  }
+  if (b.strength == undefined) {
+    return -1;
+  }
+  if (a.strength == b.strength) {
+    return b.totalStrength - a.totalStrength;
+  } else {
+    return b.strength - a.strength;
+  }
 }
 
 /**

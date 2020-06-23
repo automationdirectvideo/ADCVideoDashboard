@@ -4,6 +4,7 @@
 /* Get All Video Stats Calls */
 
 function getAllVideoStats(videos) {
+  const statsByVideoId = lsGet("statsByVideoId");
   let requests = [];
   for (let i = 0; i < videos.length; i += 50) {
     const fiftyVideos = videos.slice(i, i + 50);
@@ -39,6 +40,7 @@ function getAllVideoStats(videos) {
           if (daysSincePublished != 0) {
             avgViewsPerDay = viewCount / daysSincePublished;
           }
+          const organic = statsByVideoId[videoId].organic;
           stats.push({
             "videoId": videoId,
             "views": viewCount,
@@ -50,7 +52,8 @@ function getAllVideoStats(videos) {
             "duration": duration,
             "daysSincePublished": daysSincePublished,
             "avgViewsPerDay": avgViewsPerDay,
-            "publishDate": publishDate
+            "publishDate": publishDate,
+            "organic": organic
           });
         }
         // Return for post-processing of the data elsewhere
@@ -71,13 +74,14 @@ function getAllVideoStats(videos) {
       console.log(response);
       let allVideoStats = [].concat.apply([], response);
       let videoRequest = getAnalyticsVideoStats(allVideoStats, videos);
+      console.log("getAllVideoStats()");
       let weightsRequest = getVideoStrengthWeights();
       return Promise.all([videoRequest, weightsRequest]);
     })
     .then(response => {
       allVideoStats = response[0];
-      const weights = response[1];
-      allVideoStats = calcVideoStrength(allVideoStats, weights);
+      const strengthCalc = response[1];
+      allVideoStats = calcVideoStrength(allVideoStats, strengthCalc);
       lsSet("allVideoStats", allVideoStats);
       let categoryTotals = updateCategoryTotals(allVideoStats);
       let categoryStats = calcCategoryStats(categoryTotals);
