@@ -57,6 +57,7 @@ function loadDashboardsSignedIn() {
   }
   requests.push(loadTopVideoDashboards());
   requests.push(loadVideographerDashboards());
+  requests.push(loadContestDashboards());
 
   console.log("Starting Load Dashboards Requests");
   return Promise.all(requests)
@@ -1637,6 +1638,9 @@ function getDashboardGraphIds(dashboardId) {
   }
   if (dashboardId == "videographerGraphs") {
     return currentSettings.videographerGraphs;
+  }
+  if (dashboardId == "contestGraphs") {
+    return currentSettings.contestGraphs;
   }
   if (dashboardId.substr(0,10) == "top-video-") {
     // Gets the number at the end of the dashboardId

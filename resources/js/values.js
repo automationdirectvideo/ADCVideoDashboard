@@ -12,6 +12,9 @@ const defaultSettings =
     "categories-cum-avg-views-chart",
     "categories-normal-cum-avg-views-chart"
   ],
+  "contestGraphs": {
+    "comparison": "contest-comparison-graph"
+  },
   "cycleSpeed": 15,
   "dashboards": [
     {
@@ -175,7 +178,7 @@ const defaultSettings =
       "notOrganic": "videographer-monthly-views-graph-not-organic",
     }
   },
-  "version": 6,
+  "version": 7,
 };
 
 const categoryColors = {

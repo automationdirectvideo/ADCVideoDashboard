@@ -389,6 +389,32 @@ function getVideographerStats() {
 }
 
 /**
+ * Gets contest video information from the input Google Sheet
+ *
+ * @returns {Promise} The contest videos
+ */
+function getContestVideos() {
+  return requestSpreadsheetData("Input Data", "Contest Videos")
+    .then(sheetValues => {
+      let contestVideos = {};
+      let column = getColumnHeaders(sheetValues);
+      for (let index = 1; index < sheetValues.length; index++) {
+        const row = sheetValues[index];
+        let videoId = row[column["Video ID"]];
+        let startDate = row[column["Contest Start Date"]];
+        let endDate = row[column["Contest End Date"]];
+        let shortTitle = row[column["Short Video Title"]];
+        contestVideos[videoId] = {
+          endDate: endDate,
+          shortTitle: shortTitle,
+          startDate: startDate
+        }
+      }
+      return Promise.resolve(contestVideos);
+    });
+}
+
+/**
  * Gets category, video, and real time statistics from the stats spreadsheet and
  * weights from the video strength formula from the input data spreadsheet
  *
@@ -1434,6 +1460,19 @@ function createVideographerStatsDashboards() {
   });
 }
 
+/**
+ * Gets the contest videos and displays contest/giveaway statistics on the
+ * contest dashboards
+ *
+ * @returns {Promise} Status message
+ */
+function loadContestDashboards() {
+  return getContestVideos()
+    .then(contestVideos => {
+      displayContestComparisonGraph(contestVideos);
+    });
+}
+
 /* Statistics Functions */
 
 /**
@@ -1536,6 +1575,9 @@ function zScoreByPropertyName(stats, propertyName) {
   });
   return zScoresUpdated;
 }
+
+
+/* Video Strength Functions */
 
 /**
  * Calculates the "strength" of each video
@@ -1684,6 +1726,9 @@ function sortVideosByStrength(a, b) {
     return b.strength - a.strength;
   }
 }
+
+
+/* Videographer Statistics Functions */
 
 /**
  * Calculates the basic stats of each videographer from the videos that they
