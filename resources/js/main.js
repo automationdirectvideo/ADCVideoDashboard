@@ -107,6 +107,7 @@ function loadDashboardsSignedOut() {
       requests.push(loadGraphsFromSheets());
       requests.push(loadTopVideoStats());
       requests.push(loadVideographerDashboardsSignedOut());
+      document.getElementById("contest-content").remove();
     
       console.log("Starting Load Dashboards Requests");
       return Promise.all(requests)
@@ -1141,10 +1142,7 @@ function displayTopVideoTitles(dashboardIds) {
 
       let publishDateText = document.getElementById(dashboardId + "-publish-date");
       let publishDate = statsByVideoId[videoId]["publishDate"];
-      const year = publishDate.slice(0, 4);
-      const month = publishDate.slice(5, 7);
-      const day = publishDate.slice(8, 10);
-      publishDate = month + "/" + day + "/" + year;
+      publishDate = dateToMMDDYYYY(publishDate);
       publishDateText.innerHTML = "Published: " + publishDate;
 
       let thumbnail = document.getElementById(dashboardId + "-thumbnail");
@@ -1642,6 +1640,19 @@ function getDashboardGraphIds(dashboardId) {
   if (dashboardId == "contestGraphs") {
     return currentSettings.contestGraphs;
   }
+  if (dashboardId.substr(0,14) == "contest-video-") {
+    // Gets the number at the end of the dashboardId
+    let dashboardNumber = /[^-]*$/.exec(dashboardId)[0];
+    let graphIds = currentSettings.contestGraphs;
+    let newGraphIds = {};
+    for (const name in graphIds) {
+      if (graphIds.hasOwnProperty(name)) {
+        const graphId = graphIds[name];
+        newGraphIds[name] = graphId.replace("#", dashboardNumber);
+      }
+    }
+    return newGraphIds;
+  }
   if (dashboardId.substr(0,10) == "top-video-") {
     // Gets the number at the end of the dashboardId
     let dashboardNumber = /[^-]*$/.exec(dashboardId)[0];
@@ -1681,6 +1692,7 @@ function pauseDashboard() {
   $("#dashboard-carousel").carousel('pause');
   $("#category-stats-carousel").carousel('pause');
   $("#videographer-carousel").carousel('pause');
+  $("#contest-carousel").carousel('pause');
   pauseText.style.display = "initial";
   playText.style.display = "none";
   isPaused = true;
@@ -1692,6 +1704,7 @@ function playDashboard() {
   $("#dashboard-carousel").carousel('cycle');
   $("#category-stats-carousel").carousel('cycle');
   $("#videographer-carousel").carousel('cycle');
+  $("#contest-carousel").carousel('cycle');
   pauseText.style.display = "none";
   playText.style.display = "initial";
   setTimeout(function () {
@@ -1715,10 +1728,12 @@ function temporarilyToggleDashboardPause(bool) {
     $("#dashboard-carousel").carousel('pause');
     $("#category-stats-carousel").carousel('pause');
     $("#videographer-carousel").carousel('pause');
+    $("#contest-carousel").carousel('pause');
   } else if (!isPaused) {
     $("#dashboard-carousel").carousel('cycle');
     $("#category-stats-carousel").carousel('cycle');
     $("#videographer-carousel").carousel('cycle');
+    $("#contest-carousel").carousel('cycle');
   }
 }
 
@@ -1807,6 +1822,10 @@ categoryStatsCarousel.setAttribute("data-pause", "false");
 const videographerCarousel = document.getElementById("videographer-carousel");
 videographerCarousel.setAttribute("data-interval", cycleSpeed);
 videographerCarousel.setAttribute("data-pause", "false");
+
+const contestCarousel = document.getElementById("contest-carousel");
+contestCarousel.setAttribute("data-interval", cycleSpeed);
+contestCarousel.setAttribute("data-pause", "false");
 
 // Set order of dashboards
 var enabledOrder = new Array(currentSettings.numEnabled);

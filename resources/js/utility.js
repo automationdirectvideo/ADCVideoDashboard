@@ -26,6 +26,20 @@ function createElement(innerHTML, type) {
 }
 
 /**
+ * Get a date in the form MM/DD/YYYY
+ *
+ * @param {String|Date} date A `Date`
+ * @returns {String} The `date` written as MM/DD/YYYY
+ */
+function dateToMMDDYYYY(date) {
+  const day = new Date(date);
+  const dd = String(day.getUTCDate()).padStart(2, "0");
+  const mm = String(day.getUTCMonth() + 1).padStart(2, "0");
+  const yyyy = day.getUTCFullYear();
+  return mm + "/" + dd + "/" + yyyy;
+}
+
+/**
  * Converts a decimal to a percent with 1 decimal place
  *
  * @param {Number} decimal A float number to turn into a percent
