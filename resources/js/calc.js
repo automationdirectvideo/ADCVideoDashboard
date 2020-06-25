@@ -112,6 +112,7 @@ function getCategoryList() {
           "likes": 0,
           "duration": 0,
           "videos": [],
+          "videosWithStrength": [],
           "strength": 0
         };
       }

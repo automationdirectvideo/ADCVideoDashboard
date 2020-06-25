@@ -1052,6 +1052,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
       });
     }
   }
+  console.log(data);
 
   var layout = {
     height: height,
@@ -1361,19 +1362,23 @@ function updateCategoryTotals(allVideoStats) {
       let categoryId = categories[i];
       if (categoryTotals[categoryId] == undefined) {
         categoryTotals[categoryId] = {};
+        categoryTotals[categoryId]["strength"] = 0;
         categoryTotals[categoryId]["videos"] = [];
+        categoryTotals[categoryId]["videosWithStrength"] = [];
       }
-      let categoryViews = parseInt(categoryTotals[categoryId]["views"]);
-      let categoryLikes = parseInt(categoryTotals[categoryId]["likes"]);
-      let categoryDuration = parseInt(categoryTotals[categoryId]["duration"]);
-      let categoryStrength = parseFloat(categoryTotals[categoryId]["strength"]);
-      let categoryVideos = categoryTotals[categoryId]["videos"];
-      categoryVideos.push(videoId);
-      categoryTotals[categoryId]["views"] = categoryViews + viewCount;
-      categoryTotals[categoryId]["likes"] = categoryLikes + likeCount;
-      categoryTotals[categoryId]["duration"] = categoryDuration + duration;
-      categoryTotals[categoryId]["strength"] = categoryStrength + strength;
-      categoryTotals[categoryId]["videos"] = categoryVideos;
+      let category = categoryTotals[categoryId];
+      let categoryViews = parseInt(category["views"]);
+      let categoryLikes = parseInt(category["likes"]);
+      let categoryDuration = parseInt(category["duration"]);
+      let categoryStrength = parseFloat(category["strength"]);
+      category["videos"].push(videoId);
+      category["views"] = categoryViews + viewCount;
+      category["likes"] = categoryLikes + likeCount;
+      category["duration"] = categoryDuration + duration;
+      if (strength != undefined) {
+        category["strength"] = categoryStrength + strength;
+        category["videosWithStrength"].push(videoId);
+      }
     }
   });
   lsSet("categoryTotals", categoryTotals);
@@ -1396,12 +1401,14 @@ function calcCategoryStats(categoryTotals) {
       let likes = parseInt(totals["likes"]);
       let duration = parseInt(totals["duration"]);
       let totalStrength = parseFloat(totals["strength"]);
+      let videosWithStrength = totals["videos"];
+      let numVideosWithStrength = videosWithStrength.length;
       let videos = totals["videos"];
       let numVideos = videos.length;
       let avgViews = views / numVideos;
       let avgLikes = likes / numVideos;
       let avgDuration = duration / numVideos;
-      let avgStrength = totalStrength / numVideos;
+      let avgStrength = totalStrength / numVideosWithStrength;
       categoryStats.push({
         "avgDuration": avgDuration,
         "avgLikes": avgLikes,
