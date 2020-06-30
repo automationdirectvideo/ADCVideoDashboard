@@ -1026,33 +1026,34 @@ function displayTopCategoriesGraphThree(categoryStats) {
       let strength = Math.round(category["avgStrength"] * 100);
       let numVideos = category["videos"].length;
       let label = category.shortName;
-      let color = labelConversion[category.shortName].color
-      viewsList.push(views);
-      avgViewsList.push(avgViews);
-      numVideosList.push(numVideos);
-      labelList.push(label);
-      colors.push(color);
-      data.push({
-        x: [views],
-        y: [numVideos],
-        mode: "markers",
-        type: 'scatter',
-        marker: {
-          color: [color],
-          size: [strength],
-          sizemode: "area"
-        },
-        customdata: [Math.round(category["avgStrength"])],
-        name: label,
-        text: [label],
-        hoverlabel: {
-          namelength: "-1"
-        },
-        hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>Category Strength: %{customdata:,}<extra></extra>"
-      });
+      let color = labelConversion[category.shortName].color;
+      if (strength != 0) {
+        viewsList.push(views);
+        avgViewsList.push(avgViews);
+        numVideosList.push(numVideos);
+        labelList.push(label);
+        colors.push(color);
+        data.push({
+          x: [views],
+          y: [numVideos],
+          mode: "markers",
+          type: 'scatter',
+          marker: {
+            color: [color],
+            size: [strength],
+            sizemode: "area"
+          },
+          customdata: [Math.round(category["avgStrength"])],
+          name: label,
+          text: [label],
+          hoverlabel: {
+            namelength: "-1"
+          },
+          hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>Category Strength: %{customdata:,}<extra></extra>"
+        });
+      }
     }
   }
-  console.log(data);
 
   var layout = {
     height: height,

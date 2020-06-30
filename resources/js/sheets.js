@@ -373,13 +373,20 @@ function saveVideographerViewsToSheets(videographers) {
       values.push(dataList);
     }
   }
+  // Sorts month data by month from earliest to latest
+  values.sort(function (a, b) {
+    return new Date(a[0]) - new Date(b[0]);
+  });
   headers.unshift("Month");
   values.unshift(headers);
   const body = {
     "values": values
   };
-  const updatePromise = updateSheetData("Stats", "Videographer Monthly Views",
-    body);
+  console.log(body);
+  const updatePromise = clearSpreadsheet("Stats", "Category Stats")
+    .then(response => {
+      return updateSheetData("Stats", "Videographer Monthly Views", body);
+    });
   return updatePromise;
 }
 

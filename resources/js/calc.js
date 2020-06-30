@@ -145,7 +145,7 @@ function getVideoList() {
         const publishDate = video[columns["Publish Date"]];
         const duration = video[columns["Duration"]];
         let categoryString = video[columns["Categories"]];
-        const createdBy = video[columns["Created By"]];
+        const createdBy = video[columns["Created By"]] || "Unknown";
         const privacy = video[columns["Privacy"]].toLowerCase();
         // Removes whitespace
         categoryString = categoryString.replace(/\s/g, '');
