@@ -678,10 +678,11 @@ function displayVideoDailyViews(response, dashboardId) {
       x: xValues,
       y: yValues,
       fill: 'tozeroy',
-      type: 'scatter',
       marker: {
         color: 'rgb(255,0,0)'
-      }
+      },
+      mode: 'lines',
+      type: 'scatter'
     }];
 
     var layout = {
