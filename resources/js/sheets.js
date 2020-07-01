@@ -340,27 +340,27 @@ function saveVideographerStatsToSheets(videographers = lsGet("videographers")) {
 function saveVideographerViewsToSheets(videographers) {
   let headers = [];
   let monthData = {};
-  for (const name in videographers) {
-    if (videographers.hasOwnProperty(name)) {
-      const categories = videographers[name];
-      for (const category in categories) {
-        if (categories.hasOwnProperty(category)) {
-          const data = categories[category].monthlyViews;
-          const categoryName = name + "-" + category;
-          headers.push(categoryName);
-          for (const month in data) {
-            if (data.hasOwnProperty(month)) {
-              const views = data[month];
-              if (!monthData[month]) {
-                monthData[month] = {};
-              }
-              monthData[month][categoryName] = views;
+  let names = Object.keys(videographers);
+  names.sort();
+  names.forEach(name => {
+    const categories = videographers[name];
+    for (const category in categories) {
+      if (categories.hasOwnProperty(category)) {
+        const data = categories[category].monthlyViews;
+        const categoryName = name + "-" + category;
+        headers.push(categoryName);
+        for (const month in data) {
+          if (data.hasOwnProperty(month)) {
+            const views = data[month];
+            if (!monthData[month]) {
+              monthData[month] = {};
             }
+            monthData[month][categoryName] = views;
           }
         }
       }
     }
-  }
+  });
   let values = [];
   for (const month in monthData) {
     if (monthData.hasOwnProperty(month)) {
@@ -382,7 +382,6 @@ function saveVideographerViewsToSheets(videographers) {
   const body = {
     "values": values
   };
-  console.log(body);
   const updatePromise = clearSpreadsheet("Stats", "Category Stats")
     .then(response => {
       return updateSheetData("Stats", "Videographer Monthly Views", body);
@@ -427,4 +426,42 @@ function getVideographerViewsForCurrMonth() {
     .then(updatedVideographers => {
       return saveVideographerViewsToSheets(updatedVideographers);
     });
+}
+
+async function getVideographerViewsForAllMonths() {
+  isUpdating = true;
+  let startDate = "2010-07-01";
+  const now = new Date();
+  let months = [];
+  while (now - new Date(startDate) >= 4 * 86400000) {
+    months.push(startDate);
+    let prevDate = new Date(startDate);
+    startDate = getYouTubeDateFormat(new Date(prevDate.getUTCFullYear(),
+      prevDate.getUTCMonth() + 1, prevDate.getUTCDate()));
+  }
+  try {
+    let videographers = lsGet("videographers");
+    let index = 0;
+    for (const month of months) {
+      console.log(month);
+      // Each request consists of many calls to the YouTube Analytics API
+      // Making the request for each month all at once would exceed the quota
+      // There is an artificial delay between each call to prevent this
+      videographers =
+        await requestVideographerViewsForMonth(videographers, month);
+      // Wait a few seconds before starting the next request
+      index++;
+      if (index % 10 == 0) {
+        saveVideographerViewsToSheets(videographers);
+      }
+      await delay(8000);
+    }
+    saveVideographerViewsToSheets(videographers);
+  } catch (err) {
+    const errorMsg =
+      "Unable to get videographer monthly views for all months: ";
+    recordError(err, errorMsg);
+  } finally {
+    isUpdating = false;
+  }
 }

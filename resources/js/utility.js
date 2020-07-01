@@ -50,6 +50,19 @@ function decimalToPercent(decimal) {
 }
 
 /**
+ * Delays script execution by `milliseconds`
+ *
+ * @param {Number} milliseconds The number of milliseconds to delay
+ * @returns {Promise} A default promise that resolves after the provided number
+ *  number of milliseconds
+ */
+function delay(milliseconds) {
+  return new Promise((resolve, reject) => {
+    setTimeout(resolve, milliseconds);
+  });
+}
+
+/**
  * Detects the user browser. Taken from
  * [StackOverflow](https://stackoverflow.com/a/9851769)
  *
