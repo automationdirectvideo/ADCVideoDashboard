@@ -289,6 +289,16 @@
                   <button class="btn btn-primary swap-carousel-btn" onclick="swapCarousels(1)">
                     <i class="fas fa-info-circle button-icon"></i>More Details
                   </button>
+                  <div class="alert popup-graph-container" id="category-graph-container" style="display:none;">
+                    <button type="button" class="close" aria-label="Close" style="z-index:2;" onclick="hideCategoryStrengthGraph()">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 id="popup-graph-title">Category Name</h4>
+                    <div class="popup-graph click-through" id="category-strength-popup-graph"></div>
+                    <div id="popup-graph-loading">
+                      <h3><i class="fas fa-spinner fa-pulse mr-3" style="font-size:1em;"></i>Loading...</h3>
+                    </div>
+                  </div>
                   <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                   <div class="outer-shell click-through container mb-1">
                     <div class="grid-container">

@@ -498,6 +498,39 @@ body {
   pointer-events: none;
 }
 
+.popup-graph-container {
+  background-color: snow;
+  border: 1px solid black;
+  border-radius: 1vh;
+  -moz-box-shadow: 0 4px 8px 0 rgba(0,0,0,.2),0 6px 20px 0 rgba(0,0,0,.19);
+  -webkit-box-shadow: 0 4px 8px 0 rgba(0,0,0,.2), 0 6px 20px 0 rgba(0,0,0,.19);
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,.2), 0 6px 20px 0 rgba(0,0,0,.19);
+  height: 38%;
+  left: 5vh;
+  position: absolute;
+  right: 0;
+  top: 9.5vh;
+  width: 30%;
+  z-index: 1;
+}
+
+.popup-graph {
+  height: 100%;
+  width: 100%;
+  display: none;
+}
+
+#popup-graph-loading {
+  margin-top: 28%;
+  width: 100%;
+}
+
+#popup-graph-title {
+  border-bottom: 2px solid black;
+  margin-bottom: .5rem;
+  padding-bottom: .5rem;
+}
+
 /*----- Videographer Dashboards -----*/
 
 #videographer-carousel .outer-shell {

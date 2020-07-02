@@ -1006,6 +1006,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
   let numVideosList = [];
   let labelList = [];
   let colors = [];
+  let indices = [];
   let data = [];
 
   let labelConversion = categoryColors;
@@ -1033,6 +1034,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
         numVideosList.push(numVideos);
         labelList.push(label);
         colors.push(color);
+        indices.push(i);
         data.push({
           x: [views],
           y: [numVideos],
@@ -1043,13 +1045,18 @@ function displayTopCategoriesGraphThree(categoryStats) {
             size: [strength],
             sizemode: "area"
           },
-          customdata: [Math.round(category["avgStrength"])],
+          customdata: [
+            [
+              Math.round(category["avgStrength"]),
+              i
+            ]
+          ],
           name: label,
           text: [label],
           hoverlabel: {
             namelength: "-1"
           },
-          hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>Category Strength: %{customdata:,}<extra></extra>"
+          hovertemplate: "<b>%{text}</b><br>%{x:,} views<br>%{y} videos<br>Category Strength: %{customdata[0]:,}<extra></extra>"
         });
       }
     }
@@ -1122,6 +1129,14 @@ function displayTopCategoriesGraphThree(categoryStats) {
 
   try {
     createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+    const plot = document.getElementById(graphId);
+    plot.on('plotly_click', (data) => {
+      const categoryName = data.points[0].text;
+      const categoryColor = data.points[0]["marker.color"];
+      const categoryIndex = data.points[0].customdata[1];
+      const stats = categoryStats[categoryIndex];
+      displayCategoryStrengthBars(stats, categoryName, categoryColor);
+    });
   } catch (err) {
     displayGraphError(graphId, err);
   }
@@ -1345,6 +1360,171 @@ function displayVideoStrengthBars(videoStats, graphId) {
   }
 }
 
+function hideCategoryStrengthGraph() {
+  document.getElementById("category-graph-container").style.display = "none";
+}
+
+function showCategoryStrengthGraph() {
+  document.getElementById("category-graph-container").style.display = "";
+  document.getElementById("popup-graph-loading").style.display = "";
+  document.getElementById("category-strength-popup-graph").style.display =
+    "none";
+}
+
+function displayCategoryStrengthBars(categoryStats, categoryName,
+  categoryColor) {
+  const allVideoStats = lsGet("allVideoStats");
+  const popupGraphTitle = document.getElementById("popup-graph-title");
+  popupGraphTitle.innerHTML = categoryName;
+  showCategoryStrengthGraph();
+
+  let bins = [];
+  let binCount = 0;
+  let interval = 5;
+  let maxValue = 100;
+
+  // Setup Bins
+  for (let i = 0; i < maxValue; i += interval){
+    bins.push({
+      binNum: binCount,
+      minNum: i,
+      maxNum: i + interval,
+      count: 0
+    });
+    binCount++;
+  }
+
+  // Loop through data and add to bin's count
+  const videosWithStrength = categoryStats.videosWithStrength;
+  videosWithStrength.forEach(videoId => {
+    const avsIndex = allVideoStats.findIndex((element) => {
+      return videoId == element.videoId;
+    });
+    const videoStrength = allVideoStats[avsIndex].strength;
+    for (let j = 0; j < bins.length; j++){
+      let bin = bins[j];
+      if (videoStrength > bin.minNum && videoStrength <= bin.maxNum){
+        bin.count++;
+      }
+    }
+  });
+
+  let labels = [];
+  let frequencies = [];
+  let customdata = [];
+  let labelsToShow = [];
+  for (let index = 0; index < bins.length; index++) {
+    const bin = bins[index];
+    labels.push(bin.minNum);
+    frequencies.push(bin.count / videosWithStrength.length);
+    let numVideosText = `${bin.count} videos`;
+    if (bin.count == 1) {
+      numVideosText = `${bin.count} video`;
+    }
+    customdata.push([
+      numVideosText,
+      `${bin.minNum} - ${bin.maxNum}`
+    ]);
+    if (index % 2 == 0) {
+      labelsToShow.push(String(bin.minNum));
+    } else {
+      labelsToShow.push("");
+    }
+  }
+
+  const data = [{
+    x: labels,
+    y: frequencies,
+    customdata: customdata,
+    hovermode: "none",
+    hovertemplate: "%{customdata[1]}<br>%{customdata[0]}<extra></extra>",
+    offset: 0.5,
+    marker: {
+      color: categoryColor
+    },
+    type: "bar"
+  }];
+
+  var graphHeight = 0.2938;
+  var graphWidth = 0.2713;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var legendFontSize =
+    Math.floor(0.017 * document.documentElement.clientHeight);
+  var tickSize = Math.floor(0.0104 * document.documentElement.clientWidth);
+  var axisTitleSize = Math.floor(0.0156 * document.documentElement.clientWidth);
+  var titleSize = Math.floor(0.0208 * document.documentElement.clientWidth);
+  var topMargin = Math.floor(0.02 * document.documentElement.clientWidth);
+  var rightMargin = Math.floor(0.02 * document.documentElement.clientWidth);
+  var bottomMargin = Math.floor(0.0104 * document.documentElement.clientWidth);
+
+  const layout = {
+    height: height,
+    width: width,
+    bargap: 0,
+    hovermode: "closest",
+    margin: {
+      b: 0,
+      l: 0,
+      r: rightMargin,
+      t: topMargin
+    },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    title: {
+      // font: {
+      //   size: titleSize
+      // },
+      text: "Distribution of Video Strength"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      // tickfont: {
+      //   size: tickSize
+      // },
+      tickmode: "array",
+      ticktext: labelsToShow,
+      tickvals: labels,
+      title: {
+        // font: {
+        //   size: axisTitleSize
+        // },
+        text: "Video Strength"
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      gridcolor: "#888888",
+      // tickfont: {
+      //   size: tickSize
+      // },
+      tickprefix: "   ",
+      title: {
+        // font: {
+        //   size: axisTitleSize
+        // },
+        text: "Relative Frequency"
+      },
+      zerolinewidth: 2
+    }
+  };
+  const config = {
+    scrollZoom: false,
+    displayModeBar: false,
+    responsive: true
+  };
+  const graphId = "category-strength-popup-graph";
+  try {
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+    document.getElementById(graphId).style.display = "initial";
+    document.getElementById("popup-graph-loading").style.display = "none";
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
+}
+
 // Updates total views, likes, etc. for each category given all video stats
 function updateCategoryTotals(allVideoStats) {
   let statsByVideoId = lsGet("statsByVideoId");
@@ -1402,7 +1582,7 @@ function calcCategoryStats(categoryTotals) {
       let likes = parseInt(totals["likes"]);
       let duration = parseInt(totals["duration"]);
       let totalStrength = parseFloat(totals["strength"]);
-      let videosWithStrength = totals["videos"];
+      let videosWithStrength = totals["videosWithStrength"];
       let numVideosWithStrength = videosWithStrength.length;
       let videos = totals["videos"];
       let numVideos = videos.length;
@@ -1410,6 +1590,32 @@ function calcCategoryStats(categoryTotals) {
       let avgLikes = likes / numVideos;
       let avgDuration = duration / numVideos;
       let avgStrength = totalStrength / numVideosWithStrength;
+
+      // Calculate the average z-score for the videos with strength
+      let zTotal = {};
+      let zAvg = {};
+      videosWithStrength.forEach(videoId => {
+        const avsIndex = allVideoStats.findIndex((element) => {
+          return videoId == element.videoId;
+        });
+        const videoStats = allVideoStats[avsIndex];
+        const zStats = videoStats.z;
+        for (const metric in zStats) {
+          if (zStats.hasOwnProperty(metric)) {
+            if (zTotal[metric] == undefined) {
+              zTotal[metric] = 0;
+            }
+            zTotal[metric] += zStats[metric];
+          }
+        }
+      });
+      for (const metric in zTotal) {
+        if (zTotal.hasOwnProperty(metric)) {
+          const total = zTotal[metric];
+          zAvg[metric] = total / videosWithStrength.length;
+        }
+      }
+
       categoryStats.push({
         "avgDuration": avgDuration,
         "avgLikes": avgLikes,
@@ -1424,7 +1630,9 @@ function calcCategoryStats(categoryTotals) {
         "totalStrength": totalStrength,
         "avgStrength": avgStrength,
         "videos": videos,
-        "views": views
+        "videosWithStrength": videosWithStrength,
+        "views": views,
+        "z": zAvg
       });
     }
   }

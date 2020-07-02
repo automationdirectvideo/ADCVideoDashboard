@@ -69,7 +69,7 @@ function saveCategoryStatsToSheets(categoryStats) {
   var values = [
     ["Category ID", "Name", "Short Name", "Views", "Likes", "Duration (sec)",
       "Strength", "Average Video Views", "Average Video Likes",
-      "Average Video Duration", "Videos", "Root", "Leaf"
+      "Average Video Duration", "Videos", "Videos With Strength", "Root", "Leaf"
     ]
   ];
   for (var i = 0; i < categoryStats.length; i++) {
@@ -85,6 +85,7 @@ function saveCategoryStatsToSheets(categoryStats) {
     row.push(categoryStats[i]["avgLikes"]);
     row.push(categoryStats[i]["avgDuration"]);
     row.push(categoryStats[i]["videos"].join(","));
+    row.push(categoryStats[i]["videosWithStrength"].join(","));
     row.push(categoryStats[i]["root"]);
     row.push(categoryStats[i]["leaf"]);
     values.push(row);

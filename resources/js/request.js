@@ -84,7 +84,7 @@ function getAllVideoStats(videos) {
       allVideoStats = calcVideoStrength(allVideoStats, strengthCalc);
       lsSet("allVideoStats", allVideoStats);
       let categoryTotals = updateCategoryTotals(allVideoStats);
-      let categoryStats = calcCategoryStats(categoryTotals);
+      let categoryStats = calcCategoryStats(categoryTotals, allVideoStats);
 
       const catRequest = saveCategoryStatsToSheets(categoryStats);
       const videoRequest = saveVideoStatsToSheets(allVideoStats);

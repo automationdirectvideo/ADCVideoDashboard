@@ -218,6 +218,9 @@ function getCategoryStats() {
         const strength = parseFloat(category[columns["Strength"]]);
         const videosString = category[columns["Videos"]];
         const videos = videosString.split(",");
+        const videosWithStrengthString =
+          category[columns["Videos With Strength"]];
+        const videosWithStrength = videosWithStrengthString.split(",");
         const root = ("TRUE" === category[columns["Root"]]);
         const leaf = ("TRUE" === category[columns["Leaf"]]);
         categoryStats.push({
@@ -232,6 +235,7 @@ function getCategoryStats() {
           "avgDuration": avgDuration,
           "avgStrength": strength,
           "videos": videos,
+          "videosWithStrength": videosWithStrength,
           "root": root,
           "leaf": leaf,
         });
