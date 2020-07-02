@@ -266,6 +266,20 @@ function isUserADC() {
 }
 
 /**
+ * Removes all video dashboard variables from local storage
+ *
+ */
+function lsClear() {
+  const lsKeys = Object.keys(localStorage);
+  const prefix = lsPrefix();
+  lsKeys.forEach(key => {
+    if (key.indexOf(prefix) == 0) {
+      localStorage.removeItem(key);
+    }
+  });
+}
+
+/**
  * Gets an item from local storage
  *
  * @param {String} name Variable name
@@ -275,11 +289,31 @@ function isUserADC() {
  */
 function lsGet(name, parse) {
   parse = parse || true;
+  name = lsPrefix() + name;
   if (parse) {
     return JSON.parse(localStorage.getItem(name));
   } else {
     return localStorage.getItem(name);
   }
+}
+
+/**
+ * Returns the prefix for variable names when storing in local storage
+ *
+ * @returns {String} The prefix for variable names in local storage
+ */
+function lsPrefix() {
+  return "vd-";
+}
+
+/**
+ * Removes an item from local storage
+ *
+ * @param {String} name Variable name
+ */
+function lsRemove(name) {
+  name = lsPrefix() + name;
+  localStorage.removeItem(name);
 }
 
 /**
@@ -292,6 +326,7 @@ function lsGet(name, parse) {
  */
 function lsSet(name, value, stringify) {
   stringify = stringify || true;
+  name = lsPrefix() + name;
   if (stringify) {
     localStorage.setItem(name, JSON.stringify(value));
   } else {

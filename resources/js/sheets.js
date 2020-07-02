@@ -224,7 +224,7 @@ function saveGraphDataToSheets(graphData, sheetName) {
       return updateSheetData("Stats", sheetName, body);
     });
   if (removeItem) {
-    localStorage.removeItem("graphData");
+    lsRemove("graphData");
   }
 }
 
