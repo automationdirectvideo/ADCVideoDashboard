@@ -710,6 +710,43 @@ table.dataTable#playlist-table tbody td {
   vertical-align: middle;
 }
 
+.hr-lg {
+  border-top: 2px solid black;
+}
+
+.dashboard-btn {
+  border: 1px solid black;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+#category-stats-btn {
+  background-color: powderblue;
+}
+
+#category-stats-btn:hover {
+  background-color: #77c9d4;
+  border-color: #77c9d4;
+}
+
+#videographer-btn {
+  background-color: #b7e4b7;
+}
+
+#videographer-btn:hover {
+  background-color: #7ece7e;
+  border-color: #7ece7e;
+}
+
+#contest-stats-btn {
+  background-color: palegoldenrod;
+}
+
+#contest-stats-btn:hover {
+  background-color: #e2d86a;
+  border-color: #e2d86a;
+}
+
 /*----- Settings page -----*/
 
 .cursor-grab {
