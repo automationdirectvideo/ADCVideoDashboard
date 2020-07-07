@@ -93,6 +93,39 @@ function initializeCarousels() {
 }
 
 /**
+ * Updates the data used in the dashboards then reloads the dashboards.
+ * Data is taken from the input sheet and the YouTube APIs
+ *
+ * @returns {Promise} Status message
+ */
+function updateDashboards() {
+  // Prevent multiple simultaneous load/update dashboard calls
+  if (!isLoading && !isUpdating) {
+    setUpdatingStatus(true);
+    showUpdatingText();
+    return updateVideoAndCategoryStats()
+      .then(response => {
+        console.log("Update Dashboards Complete", response);
+        recordUpdate("Dashboards Updated");
+        hideUpdatingText();
+        setUpdatingStatus(false);
+        // Reload the dashboards with the new data
+        return loadDashboards();
+      })
+      .catch(err => {
+        recordUpdate("Update Failed");
+        const errorMsg = "Error occurred updating dashboards: ";
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+      })
+      .finally(response => {
+        hideUpdatingText();
+        setUpdatingStatus(false);
+      });
+  }
+}
+
+/**
  * Gets contest video information from the input Google Sheet
  *
  * @returns {Promise} The contest videos

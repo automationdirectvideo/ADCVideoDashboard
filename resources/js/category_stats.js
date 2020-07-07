@@ -97,6 +97,48 @@ function initializeCarousels() {
   categoryStatsCarousel.setAttribute("data-pause", "false");
 }
 
+/**
+ * Updates the data used in the dashboards then reloads the dashboards.
+ * Data is taken from the input sheet and the YouTube APIs
+ *
+ * @returns {Promise} Status message
+ */
+function updateDashboards() {
+  // Prevent multiple simultaneous load/update dashboard calls
+  if (!isLoading && !isUpdating) {
+    setUpdatingStatus(true);
+    showUpdatingText();
+    const now = new Date();
+    let requests = [];
+    // checks that today is between Jan 10-20 ish
+    if (now.getMonth() == 0 && now.getDate() >= 10 &&
+      now.getDate <= 20) {
+      const lastYear = now.getFullYear() - 1;
+      requests.push(getYearlyCategoryViews(lastYear));
+    }
+    requests.push(updateVideoAndCategoryStats());
+    return Promise.all(requests)
+      .then(response => {
+        console.log("Update Dashboards Complete", response);
+        recordUpdate("Dashboards Updated");
+        hideUpdatingText();
+        setUpdatingStatus(false);
+        // Reload the dashboards with the new data
+        return loadDashboards();
+      })
+      .catch(err => {
+        recordUpdate("Update Failed");
+        const errorMsg = "Error occurred updating dashboards: ";
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+      })
+      .finally(response => {
+        hideUpdatingText();
+        setUpdatingStatus(false);
+      });
+  }
+}
+
 function displayCategoryViewsAreaCharts(categoryTraces) {
   let years = categoryTraces["years"];
   let numYears = years.length;
