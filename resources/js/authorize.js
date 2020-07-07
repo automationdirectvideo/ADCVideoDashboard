@@ -1,6 +1,5 @@
 /**
- * @fileoverview Variables and function for connecting to Google APIs. Designed
- * for the dashboard pages.
+ * @fileoverview Variables and function for connecting to Google APIs.
  */
 
 const API_KEY = "AIzaSyAd5qRbldWGyKfLnI27Pga5yUM-TFatp58";
@@ -79,11 +78,13 @@ function loadSigninStatus(isSignedIn) {
       handleInvalidAccount();
     } else {
       console.log("Signed In");
+      // Calls the page's local loadSignedIn function
       loadSignedIn();
     }
   } else {
     // Show a sign in modal. Prevent using the page until signed in
     console.log("Signed Out");
+    // Calls the page's local loadSignedOut function
     loadSignedOut();
   }
 }
