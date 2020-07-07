@@ -146,6 +146,10 @@ body {
   border-color: #212529;
 }
 
+.btn-light.btn-outline:hover {
+  border-color: #e2e6ea;
+}
+
 .graph-error {
   font-weight: bold;
   left: 50%;
@@ -736,6 +740,10 @@ table.dataTable#playlist-table tbody td {
   border-color: #77c9d4;
 }
 
+#category-stats-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(176, 224, 230, .5);
+}
+
 #videographer-btn {
   background-color: #b7e4b7;
 }
@@ -745,6 +753,10 @@ table.dataTable#playlist-table tbody td {
   border-color: #7ece7e;
 }
 
+#videographer-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(183, 228, 183, .5);
+}
+
 #contest-stats-btn {
   background-color: palegoldenrod;
 }
@@ -752,6 +764,10 @@ table.dataTable#playlist-table tbody td {
 #contest-stats-btn:hover {
   background-color: #e2d86a;
   border-color: #e2d86a;
+}
+
+#contest-stats-btn:focus {
+  box-shadow: 0 0 0 0.2rem rgba(238, 232, 170, .5);
 }
 
 /*----- Settings page -----*/
