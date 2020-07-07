@@ -210,7 +210,7 @@ function displayChannelSearchTerms(response) {
   const graphId = graphIds.searchTerms;
 
   try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth,
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, true,
       automargin);
   } catch (err) {
     displayGraphError(graphId, err);
@@ -310,7 +310,7 @@ function displayWatchTimeBySubscribedStatus(response) {
   const graphId = graphIds.watchTime;
 
   try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth,
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, true,
       automargin);
   } catch (err) {
     displayGraphError(graphId, err);
@@ -950,7 +950,7 @@ function displayVideoDailyViews(response, dashboardId) {
     const graphId = graphIds.dailyViews;
 
     try {
-      createGraph(graphId, data, layout, config, graphHeight, graphWidth,
+      createGraph(graphId, data, layout, config, graphHeight, graphWidth, true,
         automargin);
     } catch (err) {
       displayGraphError(graphId);
@@ -1042,7 +1042,7 @@ function displayVideoSearchTerms(response, dashboardId) {
     const graphId = graphIds.searchTerms;
 
     try {
-      createGraph(graphId, data, layout, config, graphHeight, graphWidth,
+      createGraph(graphId, data, layout, config, graphHeight, graphWidth, true,
         automargin);
     } catch (err) {
       displayGraphError(graphId);
@@ -1233,7 +1233,8 @@ function displayVideographerAvgViews(videographers) {
       }
 
       try {
-        createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+        createGraph(graphId, data, layout, config, graphHeight, graphWidth,
+          false);
       } catch (err) {
         displayGraphError(graphId, err);
       }
@@ -1445,13 +1446,13 @@ function displayVideographerMonthlyVideos(videographers) {
 
       try {
         createGraph(cumulativeGraphId, cumulativeData, cumulativeLayout, config,
-          graphHeight, graphWidth);
+          graphHeight, graphWidth, false);
       } catch (err) {
         displayGraphError(cumulativeGraphId, err);
       }
       try {
         createGraph(monthlyGraphId, monthlyData, monthlyLayout, config,
-          graphHeight, graphWidth);
+          graphHeight, graphWidth, false);
       } catch (err) {
         displayGraphError(monthlyGraphId, err);
       }
@@ -1663,13 +1664,13 @@ function displayVideographerMonthlyViews(videographers) {
 
       try {
         createGraph(cumulativeGraphId, cumulativeData, cumulativeLayout, config,
-          graphHeight, graphWidth);
+          graphHeight, graphWidth, false);
       } catch (err) {
         displayGraphError(cumulativeGraphId, err);
       }
       try {
         createGraph(monthlyGraphId, monthlyData, monthlyLayout, config,
-          graphHeight, graphWidth);
+          graphHeight, graphWidth, false);
       } catch (err) {
         displayGraphError(monthlyGraphId, err);
       }
@@ -1957,7 +1958,7 @@ function displayContestComparisonGraph(contestVideos) {
   const graphId = graphIds.comparison;
 
   try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, false);
   } catch (err) {
     displayGraphError(graphId, err);
   }

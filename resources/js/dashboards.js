@@ -1,5 +1,5 @@
 function createGraph(graphId, data, layout, config, graphHeight, graphWidth,
-  automargin, saveToSheets) {
+  saveToSheets, automargin) {
   try {
     Plotly.newPlot(graphId, data, layout, config);
     if (saveToSheets == undefined || saveToSheets == true) {

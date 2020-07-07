@@ -389,7 +389,8 @@ function displayCategoryViewsAreaCharts(categoryTraces) {
   for (var i = 0; i < plotInfo.length; i++) {
     let [graphId, trace, layout] = plotInfo[i];
     try {
-      createGraph(graphId, trace, layout, config, graphHeight, graphWidth);
+      createGraph(graphId, trace, layout, config, graphHeight, graphWidth,
+        false);
     } catch (err) {
       displayGraphError(graphId, err)
       numErrors++;
@@ -588,7 +589,7 @@ function displayTopCategoriesGraphTwo(categoryStats) {
   }
 
   try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, false);
   } catch (err) {
     displayGraphError(graphId, err);
   }
@@ -745,7 +746,7 @@ function displayTopCategoriesGraphThree(categoryStats) {
   }
 
   try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, false);
     const plot = document.getElementById(graphId);
     plot.on('plotly_click', (data) => {
       const categoryName = data.points[0].text;
@@ -895,7 +896,7 @@ function displayCategoryStrengthBars(categoryStats, categoryName,
   };
   const graphId = "category-strength-popup-graph";
   try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, false);
     document.getElementById(graphId).style.display = "initial";
     document.getElementById("popup-graph-loading").style.display = "none";
   } catch (err) {
