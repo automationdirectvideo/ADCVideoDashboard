@@ -321,107 +321,6 @@ function getVideoStats() {
 }
 
 /**
- * Gets monthly views by videographer from the stats Google Sheet and adds the
- * data to the videographer stats
- *
- * @returns Updated videographer statistics
- */
-function getVideographerMonthlyViews() {
-  return requestSpreadsheetData("Stats", "Videographer Monthly Views")
-    .then(sheetData => {
-      const column = getColumnHeaders(sheetData);
-      let categoryData = {};
-      sheetData[0].forEach(categoryName => {
-        if (categoryName != "Month") {
-          categoryData[categoryName] = {};
-        }
-      });
-      for (let index = 1; index < sheetData.length; index++) {
-        const monthData = sheetData[index];
-        const month = monthData[column["Month"]];
-        sheetData[0].forEach(categoryName => {
-          if (categoryName != "Month") {
-            categoryData[categoryName][month] =
-              parseInt(monthData[column[categoryName]]);
-          }
-        });
-      }
-      let videographers = lsGet("videographers");
-      for (const categoryName in categoryData) {
-        if (categoryData.hasOwnProperty(categoryName)) {
-          const monthlyViews = categoryData[categoryName];
-          const split = categoryName.indexOf("-");
-          const videographerName = categoryName.substring(0, split);
-          const category = categoryName.substring(split + 1);
-          videographers[videographerName][category].monthlyViews = monthlyViews;
-        }
-      }
-      lsSet("videographers", videographers);
-      return videographers;
-    });
-}
-
-/**
- * Gets videographer average and total stats from the stats Google Sheet
- *
- * @returns {Promise} The videographer stats
- */
-function getVideographerStats() {
-  return requestSpreadsheetData("Stats", "Videographer Stats")
-    .then(sheetValues => {
-      let videographers = {};
-      let column = getColumnHeaders(sheetValues);
-      let properties = sheetValues[0];
-      console.log(properties);
-      for (let index = 1; index < sheetValues.length; index++) {
-        const row = sheetValues[index];
-        const label = row[column["Label"]];
-        const split = label.indexOf("-");
-        const name = label.substring(0, split);
-        const category = label.substring(split + 1);
-        if (videographers[name] == undefined) {
-          videographers[name] = {};
-        }
-        videographers[name][category] = {};
-        for (let j = 1; j < properties.length; j++) {
-          const property = properties[j];
-          videographers[name][category][property] = parseFloat(row[j]);
-        }
-      }
-      console.log(videographers);
-      return Promise.resolve(videographers);
-    });
-}
-
-/**
- * Gets contest video information from the input Google Sheet
- *
- * @returns {Promise} The contest videos
- */
-function getContestVideos() {
-  return requestSpreadsheetData("Input Data", "Contest Videos")
-    .then(sheetValues => {
-      let contestVideos = {};
-      let column = getColumnHeaders(sheetValues);
-      for (let index = 1; index < sheetValues.length; index++) {
-        const row = sheetValues[index];
-        const videoId = row[column["Video ID"]];
-        const exampleComment = row[column["Example Comment"]];
-        const endDate = row[column["Contest End Date"]];
-        const shortTitle = row[column["Short Video Title"]];
-        const startDate = row[column["Contest Start Date"]];
-        contestVideos[videoId] = {
-          exampleComment: exampleComment,
-          endDate: endDate,
-          shortTitle: shortTitle,
-          startDate: startDate
-        }
-      }
-      return Promise.resolve(contestVideos);
-    });
-}
-
-/**
  * Gets category, video, and real time statistics from the stats spreadsheet and
  * weights from the video strength formula from the input data spreadsheet
  *
@@ -1306,253 +1205,121 @@ function reloadVideoStrengthDashboard() {
     });
 }
 
-/**
- * Calculates videographer statistics and displays graphs on the videographer
- * dashboards
- */
-function loadVideographerDashboards() {
-  try {
-    let videographers = calcVideographerStats();
-    displayVideographerMonthlyVideos(videographers);
 
-    const request1 = requestVideographerAvgViews(videographers,
-      getDateFromDaysAgo(34), getDateFromDaysAgo(4))
-      .then(videographers => {
-        displayVideographerAvgViews(videographers);
-      })
-      .catch(err => {
-        // Displays graph errors for average views graphs
-        const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
-        for (const key in graphIds) {
-          if (graphIds.hasOwnProperty(key)) {
-            const graphId = graphIds[key];
-            displayGraphError(graphId);
-          }
-        }
-        recordError(err,
-          "Unable to display videographer average views graphs - ");
-      });
+// Updates total views, likes, etc. for each category given all video stats
+function updateCategoryTotals(allVideoStats) {
+  let statsByVideoId = lsGet("statsByVideoId");
+  let categoryTotals = lsGet("categoryTotals");
 
-    const request2 = getVideographerMonthlyViews(videographers)
-      .then(updatedVideographers => {
-        displayVideographerMonthlyViews(updatedVideographers);
-      })
-      .catch(err => {
-        // Displays graph errors for monthly views graphs
-        const graphIds = [
-          getDashboardGraphIds("videographerGraphs").cumulativeViews,
-          getDashboardGraphIds("videographerGraphs").monthlyViews
-        ];
-        graphIds.forEach(dashboard => {
-          for (const key in dashboard) {
-            if (dashboard.hasOwnProperty(key)) {
-              const graphId = dashboard[key];
-              displayGraphError(graphId);
-            }
-          }
-        });
-        recordError(err,
-          "Unable to display videographer monthly views graphs - ");
-      });
-    const request3 = requestVideographerEngagementStats(videographers,
-      getDateFromDaysAgo(34), getDateFromDaysAgo(4));
-    const request4 = requestVideographerEngagementStats(videographers);
-    
-    Promise.all([request1, request2, request3, request4])
-      .then(response => {
-        displayVideographerStats();
-        saveVideographerStatsToSheets();
-      }) 
-  } catch (err) {
-    // Displays graph errors for all graphs in the videographer dashboards
-    const graphIds = [
-      getDashboardGraphIds("videographerGraphs").avgViews,
-      getDashboardGraphIds("videographerGraphs").cumulativeVideos,
-      getDashboardGraphIds("videographerGraphs").cumulativeViews,
-      getDashboardGraphIds("videographerGraphs").monthlyVideos,
-      getDashboardGraphIds("videographerGraphs").monthlyViews
-    ];
-    graphIds.forEach(dashboard => {
-      for (const key in dashboard) {
-        if (dashboard.hasOwnProperty(key)) {
-          const graphId = dashboard[key];
-          displayGraphError(graphId);
-        }
+  allVideoStats.forEach(videoInfo => {
+    let videoId = videoInfo.videoId;
+    let duration = videoInfo.duration;
+    let viewCount = videoInfo.views;
+    let likeCount = videoInfo.likes;
+    let strength = videoInfo.strength;
+
+    statsByVideoId[videoId]["duration"] = duration;
+    let categories = statsByVideoId[videoId]["categories"];
+    for (let i = 0; i < categories.length; i++) {
+      let categoryId = categories[i];
+      if (categoryTotals[categoryId] == undefined) {
+        categoryTotals[categoryId] = {};
+        categoryTotals[categoryId]["strength"] = 0;
+        categoryTotals[categoryId]["videos"] = [];
+        categoryTotals[categoryId]["videosWithStrength"] = [];
       }
-    });
-    recordError(err, "Unable to load videographer dashboards");
-  }
-}
-
-/**
- * Gets videographer stats from Google Sheets and displays them on the
- * videographer stats dashboards. For when the user is not signed in to Google.
- * Other dashboards in the videographer carousel are loaded through the graph
- * data Google Sheet
- *
- * @returns {Promise} Status message
- */
-function loadVideographerDashboardsSignedOut() {
-  return getVideographerStats()
-    .then(videographers => {
-      displayVideographerStats(videographers);
-    });
-}
-
-/**
- * Adds the videographer stats (vstats) dashboards to the videographer carousel
- */
-function createVideographerStatsDashboards() {
-  const carouselInner = document.getElementById("videographer-carousel-inner");
-  const indicatorList = document.getElementById("videographer-indicator-list");
-  const people = ["Shane C", "Rick F", "Tim W"];
-  const categories = {
-    "all": "All Videos",
-    "organic": "Organic Videos",
-    "notOrganic": "Not Organic Videos"
-  };
-  let index = carouselInner.childElementCount;
-  people.forEach(name => {
-    const dashboardId = "vstats-" + name.replace(" ", "*");
-    const dashboardOverallId = "vstats-overall-" + name.replace(" ", "*");
-
-    let dashboardItem = document.getElementById("vstats-#").cloneNode(true);
-    let dashboardText = dashboardItem.outerHTML;
-    let mainGrids = "";
-    let overallGrids = "";
-    for (const category in categories) {
-      if (categories.hasOwnProperty(category)) {
-        const categoryName = categories[category];
-        // Create multiple grids. One for each category
-        const gridItem =
-          document.getElementById("vstats-#-@-grid").cloneNode(true);
-        if (category == "all") {
-          gridItem.classList.add("active-grid");
-        }
-        let gridText = gridItem.outerHTML;
-        gridText = gridText.replace(/@/g, category);
-        gridText = gridText.replace(/\*Name\*/g, name);
-        gridText = gridText.replace(/\*Category\*/g, categoryName);
-        mainGrids += gridText;
-
-        const gridOverallItem =
-          document.getElementById("vstats-overall-#-@-grid").cloneNode(true);
-        let gridOverallText = gridOverallItem.outerHTML;
-        gridOverallText = gridOverallText.replace(/@/g, category);
-        gridOverallText = gridOverallText.replace(/\*Name\*/g, name);
-        gridOverallText =
-          gridOverallText.replace(/\*Category\*/g, categoryName);
-        overallGrids += gridOverallText;
+      let category = categoryTotals[categoryId];
+      let categoryViews = parseInt(category["views"]);
+      let categoryLikes = parseInt(category["likes"]);
+      let categoryDuration = parseInt(category["duration"]);
+      let categoryStrength = parseFloat(category["strength"]);
+      category["videos"].push(videoId);
+      category["views"] = categoryViews + viewCount;
+      category["likes"] = categoryLikes + likeCount;
+      category["duration"] = categoryDuration + duration;
+      if (strength != undefined) {
+        category["strength"] = categoryStrength + strength;
+        category["videosWithStrength"].push(videoId);
       }
     }
-    dashboardText =
-      dashboardText.replace(/<div>MAIN GRID PLACEHOLDER<\/div>/, mainGrids);
-    dashboardText = dashboardText
-      .replace(/<div>OVERALL GRID PLACEHOLDER<\/div>/, overallGrids);
-    dashboardText = dashboardText.replace(/vstats-#/g, dashboardId);
-    dashboardText =
-      dashboardText.replace(/vstats-overall-#/g, dashboardOverallId);
-    let template = document.createElement("template");
-    template.innerHTML = dashboardText;
-    dashboardItem = template.content.firstChild;
-
-    document.createElement("div", dashboardItem.outerText)
-    dashboardItem.setAttribute("theme", "light");
-    const indicator = document.getElementById("indicator").cloneNode();
-    indicator.id = "videographer-indicator-" + index;
-    indicator.setAttribute("onclick", `goToCarouselItem(${index})`);
-    indicator.setAttribute("data-target", "#videographer-carousel");
-    indicator.className = "fas fa-play-circle indicator";
-    carouselInner.appendChild(dashboardItem);
-    indicatorList.appendChild(indicator);
-    index++;
   });
+  lsSet("categoryTotals", categoryTotals);
+  lsSet("statsByVideoId", statsByVideoId);
+
+  return categoryTotals;
 }
 
-/**
- * Gets the contest videos and displays contest/giveaway statistics on the
- * contest dashboards
- *
- * @returns {Promise} Status message
- */
-function loadContestDashboards() {
-  return getContestVideos()
-    .then(contestVideos => {
-      createContestVideoDashboards(Object.keys(contestVideos).length);
-      try {
-        displayContestComparisonGraph(contestVideos);
-      } catch (err) {
-        const graphId = getDashboardGraphIds("contest-video-#").comparison;
-        displayGraphError(graphId);
-        recordError(err, "Unable to load contest comparison graph - ");
-      }
-      try {
-        displayContestVideoStats(contestVideos);
-      } catch (err) {
-        // Displays graph errors for daily views graphs
-        const graphId = getDashboardGraphIds("contest-video-#").dailyViews;
-        const numVideos = Object.keys(contestVideos).length;
-        for (let index = 0; index < numVideos; index++) {
-          const newGraphId = graphId.replace("#", index);
-          displayGraphError(newGraphId);
+// Calculate stats for each category given totals for each category
+function calcCategoryStats(categoryTotals) {
+  let categoryStats = [];
+  for (let categoryId in categoryTotals) {
+    if (categoryTotals.hasOwnProperty(categoryId)) {
+      let totals = categoryTotals[categoryId];
+      let shortName = totals["shortName"];
+      let name = totals["name"];
+      let root = totals["root"];
+      let leaf = totals["leaf"];
+      let views = parseInt(totals["views"]);
+      let likes = parseInt(totals["likes"]);
+      let duration = parseInt(totals["duration"]);
+      let totalStrength = parseFloat(totals["strength"]);
+      let videosWithStrength = totals["videosWithStrength"];
+      let numVideosWithStrength = videosWithStrength.length;
+      let videos = totals["videos"];
+      let numVideos = videos.length;
+      let avgViews = views / numVideos;
+      let avgLikes = likes / numVideos;
+      let avgDuration = duration / numVideos;
+      let avgStrength = totalStrength / numVideosWithStrength;
+
+      // Calculate the average z-score for the videos with strength
+      let zTotal = {};
+      let zAvg = {};
+      videosWithStrength.forEach(videoId => {
+        const avsIndex = allVideoStats.findIndex((element) => {
+          return videoId == element.videoId;
+        });
+        const videoStats = allVideoStats[avsIndex];
+        const zStats = videoStats.z;
+        for (const metric in zStats) {
+          if (zStats.hasOwnProperty(metric)) {
+            if (zTotal[metric] == undefined) {
+              zTotal[metric] = 0;
+            }
+            zTotal[metric] += zStats[metric];
+          }
         }
-        recordError(err, "Unable to load contest video stats dashboards - ");
-      }
-    })
-    .catch(err => {
-      // Displays graph errors for daily views graphs
-      let graphIds = [];
-      const comparisonId = getDashboardGraphIds("contest-video-#").comparison;
-      graphIds.push(comparisonId);
-      const viewsGraphId = getDashboardGraphIds("contest-video-#").dailyViews;
-      if (typeof cotnestVideos != "undefined") {
-        const numVideos = Object.keys(contestVideos).length;
-        for (let index = 0; index < numVideos; index++) {
-          const newGraphId = viewsGraphId.replace("#", index);
-          graphIds.push(newGraphId);
-        }
-      }
-      graphIds.forEach(graphId => {
-        displayGraphError(graphId);
       });
-      recordError(err, "Unable to load contest dashboards - ");
-    });
-}
+      for (const metric in zTotal) {
+        if (zTotal.hasOwnProperty(metric)) {
+          const total = zTotal[metric];
+          zAvg[metric] = total / videosWithStrength.length;
+        }
+      }
 
-/**
- * Adds the contest video dashboards to the contest carousel
- *
- * @param {Number} numDashboards The number of dashboards to create
- */
-function createContestVideoDashboards(numDashboards) {
-  if (document.getElementById("contest-video-#") != null) {
-    const carouselInner = document.getElementById("contest-carousel-inner");
-    const indicatorList = document.getElementById("contest-indicator-list");
-    let carouselIndex = carouselInner.childElementCount;
-    for (let contestIndex = 0; contestIndex < numDashboards; contestIndex++) {
-      const dashboardId = `contest-video-${contestIndex}`;
-  
-      let dashboardItem =
-        document.getElementById("contest-video-#").cloneNode(true);
-      let dashboardText = dashboardItem.outerHTML;
-      dashboardText = dashboardText.replace(/contest-video-#/g, dashboardId);
-      let template = document.createElement("template");
-      template.innerHTML = dashboardText;
-      dashboardItem = template.content.firstChild;
-  
-      document.createElement("div", dashboardItem.outerText)
-      dashboardItem.setAttribute("theme", "light");
-      const indicator = document.getElementById("indicator").cloneNode(true);
-      indicator.id = "contest-indicator-" + carouselIndex;
-      indicator.setAttribute("onclick", `goToCarouselItem(${carouselIndex})`);
-      indicator.setAttribute("data-target", "#contest-carousel");
-      indicator.className = "fas fa-gift indicator";
-      carouselInner.appendChild(dashboardItem);
-      indicatorList.appendChild(indicator);
-      carouselIndex++;
+      categoryStats.push({
+        "avgDuration": avgDuration,
+        "avgLikes": avgLikes,
+        "avgViews": avgViews,
+        "categoryId": categoryId,
+        "duration": duration,
+        "leaf": leaf,
+        "likes": likes,
+        "name": name,
+        "root": root,
+        "shortName": shortName,
+        "totalStrength": totalStrength,
+        "avgStrength": avgStrength,
+        "videos": videos,
+        "videosWithStrength": videosWithStrength,
+        "views": views,
+        "z": zAvg
+      });
     }
-    document.getElementById("contest-video-#").remove();
   }
+  lsSet("categoryStats", categoryStats);
+
+  return categoryStats;
 }
 
 /* Statistics Functions */
@@ -1807,162 +1574,4 @@ function sortVideosByStrength(a, b) {
   } else {
     return b.strength - a.strength;
   }
-}
-
-
-/* Videographer Statistics Functions */
-
-/**
- * Calculates the basic stats of each videographer from the videos that they
- * created
- *
- * @returns {Object} The videographer statistics
- */
-function calcVideographerStats() {
-  const allVideoStats = lsGet("allVideoStats");
-  const statsByVideoId = lsGet("statsByVideoId");
-  let videographers = {};
-
-  for (let index = 0; index < allVideoStats.length; index++) {
-    const videoStats = allVideoStats[index];
-    const videoId = videoStats.videoId;
-    const createdBy = statsByVideoId[videoId].createdBy;
-    const organic = statsByVideoId[videoId].organic;
-    if (!videographers[createdBy]) {
-      videographers[createdBy] = {
-        "all": {
-          "totalComments": 0,
-          "totalDislikes": 0,
-          "totalDuration": 0,
-          "totalLikeRatio": 0.0,
-          "totalLikes": 0,
-          "totalSubsGained": 0,
-          "totalViews": 0,
-          "videos": []
-        },
-        "organic": {
-          "totalComments": 0,
-          "totalDislikes": 0,
-          "totalDuration": 0,
-          "totalLikeRatio": 0.0,
-          "totalLikes": 0,
-          "totalSubsGained": 0,
-          "totalViews": 0,
-          "videos": []
-        },
-        "notOrganic": {
-          "totalComments": 0,
-          "totalDislikes": 0,
-          "totalDuration": 0,
-          "totalLikeRatio": 0.0,
-          "totalLikes": 0,
-          "totalSubsGained": 0,
-          "totalViews": 0,
-          "videos": []
-        }
-      };
-    }
-    let categories = [videographers[createdBy].all];
-    if (organic) {
-      categories.push(videographers[createdBy].organic);
-    } else {
-      categories.push(videographers[createdBy].notOrganic);
-    }
-    const comments = videoStats.comments;
-    const dislikes = videoStats.dislikes;
-    const duration = videoStats.duration;
-    const likeRatio = videoStats.likes /
-      (videoStats.likes + videoStats.dislikes);
-    const likes = videoStats.likes;
-    const subsGained = videoStats.subscribersGained;
-    const views = videoStats.views;
-    categories.forEach(category => {
-      category.totalComments += comments;
-      category.totalDislikes += dislikes;
-      category.totalDuration += duration;
-      if (!isNaN(likeRatio)) {
-        category.totalLikeRatio += likeRatio;
-      }
-      category.totalLikes += likes;
-      category.totalSubsGained += subsGained;
-      category.totalViews += views;
-      category.videos.push(videoId);
-    });
-  }
-  for (const name in videographers) {
-    if (videographers.hasOwnProperty(name)) {
-      const categories = videographers[name];
-      for (const category in categories) {
-        if (categories.hasOwnProperty(category)) {
-          const data = categories[category];
-          let numVideos = data.videos.length;
-          data.numVideos = numVideos;
-          if (numVideos == 0) {
-            numVideos = 1;
-          }
-          data.avgComments = data.totalComments / numVideos;
-          data.avgDislikes = data.totalDislikes / numVideos;
-          data.avgDuration = data.totalDuration / numVideos;
-          data.avgLikeRatio = data.totalLikeRatio / numVideos;
-          data.avgLikes = data.totalLikes / numVideos;
-          data.avgSubsGained = data.totalSubsGained / numVideos;
-          data.avgViews = data.totalViews / numVideos;
-          let likeRatio = data.avgLikes / (data.avgLikes + data.avgDislikes);
-          if (isNaN(likeRatio)) {
-            likeRatio = undefined;
-          }
-          data.cumLikeRatio = likeRatio;
-        }
-      }
-    }
-  }
-  videographers = calcVideographerVideosByMonth(videographers);
-  lsSet("videographers", videographers);
-  return videographers;
-}
-
-/**
- * Gets the number of videos produced by each videographer for each month
- *
- * @param {Object} videographers The videographer statistics
- * @returns {Object} `videographers` updated with the monthly videos statistics
- */
-function calcVideographerVideosByMonth(videographers) {
-  const statsByVideoId = lsGet("statsByVideoId");
-  const today = new Date();
-  // The number of days in `lastXDays`
-  const X = 30;
-  for (const name in videographers) {
-    if (videographers.hasOwnProperty(name)) {
-      const categories = videographers[name];
-      for (const category in categories) {
-        if (categories.hasOwnProperty(category)) {
-          const data = categories[category];
-          let monthlyVideos = {};
-          let numVideosLastXDays = 0;
-          const videos = data.videos;
-          videos.forEach(videoId => {
-            const publishDate = statsByVideoId[videoId].publishDate;
-            const month = publishDate.substr(0, 7);
-            if (monthlyVideos[month] == undefined) {
-              monthlyVideos[month] = 0;
-            }
-            monthlyVideos[month] += 1;
-            if (today - new Date(publishDate) <= X * 86400000) {
-              numVideosLastXDays++;
-            }
-          });
-          const allMonths = getMonthsSince(2010, 7);
-          allMonths.forEach(month => {
-            if (monthlyVideos[month] == undefined) {
-              monthlyVideos[month] = 0;
-            }
-          });
-          data.monthlyVideos = monthlyVideos;
-          data.numVideosLastXDays = numVideosLastXDays;
-        }
-      }
-    }
-  }
-  return videographers;
 }

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF0000">
+    <meta name="google-site-verification" content="uVU8M86_QREmObzy4xSyLpdMohNbGKKF4wNyKc8KWXk">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>ADC Video Dashboard</title>
+    <script type="text/javascript" src="vendors/jQuery-3.4.0/jquery-3.4.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap"/>
+    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="resources/css/styles.min.css"/>
+    <link rel="stylesheet" href="resources/css/styles-dark.min.css"/>
+    <link rel="stylesheet" href="vendors/open-iconic/font/css/open-iconic-bootstrap.min.css"/>
+    <link rel="stylesheet" href="vendors/odometer/css/odometer-theme-default.css"/>
+    <script type="text/javascript" src="vendors/fontawesome/js/solid.min.js"></script>
+    <script type="text/javascript" src="vendors/fontawesome/js/regular.min.js"></script>
+    <script type="text/javascript" src="vendors/fontawesome/js/fontawesome.min.js"></script>
+    <script type="text/javascript" src="vendors/odometer//js/odometer.min.js"></script>
+    <script type="text/javascript" src="vendors/Plotly/plotly-1.51.3.js"></script>
+    <script type="text/javascript" src="vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendors/autodivscroll/autodivscroll.js"></script>
+    <script type="text/javascript" src="resources/js/utility.min.js"></script>
+    <script type="text/javascript" src="resources/js/values.min.js"></script>
+  </head>
+  <body style="overflow-y: hidden;">
+    <div class="main-wrapper">
+      <div class="main" id="main-container">
+        <div class="container my-1 position-relative">
+          <ul class="icon-bar">
+            <li>
+              <i class="fas fa-cog" id="control-panel-button" style="display:none;" onclick="window.location='control-panel.html';" title="Control Panel"></i>
+            </li>
+            <li>
+              <i class="fas fa-home" id="home-button" style="display:none;" onclick="window.location='index.html';" title="Home"></i>
+            </li>
+          </ul>
+          <div class="loading-area">
+            <h6 id="loading-text"><i class="fas fa-spinner fa-pulse mr-1" style="font-size:1em;"></i>Loading</h6>
+          </div>
+          <div class="updating-area">
+            <h6 id="updating-text" style="display:none;"><i class="fas fa-spinner fa-pulse mr-1" style="font-size:1em;"></i>Updating...</h6>
+          </div>
+          <div class="cycle-status">
+            <h6 id="pause-text" onclick="toggleDashboardPause()"><i class="fas fa-pause mr-1" style="font-size:1em;"></i>Paused</h6>
+            <h6 id="play-text" onclick="toggleDashboardPause()"><i class="fas fa-play mr-1" style="font-size:1em;"></i>Play</h6>
+          </div>
+          <a class="btn btn-primary return-to-main-btn" href="index.html">
+            <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+          </a>
+          <div id="carousel-list">
+            <div class="text-center carousel-container active" id="videographer-content" carousel="0">
+              <div class="carousel slide" id="videographer-carousel" data-ride="carousel" name="videographer">
+                <div class="carousel-inner" id="videographer-carousel-inner">
+                  <div class="carousel-item active" id="videographer-monthly-videos">
+                    <h1 class="dashboard-title">How Many Videos Do We Create Each Month?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-monthly-videos-graph-all"></div>
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-monthly-videos-graph-organic"></div>
+                              <div class="videographer-chart graph-container" id="videographer-monthly-videos-graph-not-organic"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="videographer-cumulative-videos">
+                    <h1 class="dashboard-title">How Many Videos Do We Create Each Month?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-cumulative-videos-graph-all"></div>
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-cumulative-videos-graph-organic"></div>
+                              <div class="videographer-chart graph-container" id="videographer-cumulative-videos-graph-not-organic"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="videographer-avg-views">
+                    <h1 class="dashboard-title">How Much Do Our Customers Watch Our Videos?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-avg-views-graph-all"></div>
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-avg-views-graph-organic"></div>
+                              <div class="videographer-chart graph-container" id="videographer-avg-views-graph-not-organic"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="videographer-monthly-views">
+                    <h1 class="dashboard-title">How Much Do Our Customers Watch Our Videos Each Month?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-monthly-views-graph-all"></div>
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-monthly-views-graph-organic"></div>
+                              <div class="videographer-chart graph-container" id="videographer-monthly-views-graph-not-organic"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="videographer-cumulative-views">
+                    <h1 class="dashboard-title">How Much Do Our Customers Watch Our Videos Each Month?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-cumulative-views-graph-all"></div>
+                              <div class="videographer-chart mb-2 graph-container" id="videographer-cumulative-views-graph-organic"></div>
+                              <div class="videographer-chart graph-container" id="videographer-cumulative-views-graph-not-organic"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-8">
+                  <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
+                  <div class="indicator-list" id="videographer-indicator-list">
+                    <i class="fas fa-video indicator active" data-target="#videographer-carousel" id="videographer-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                    <i class="fas fa-video indicator" data-target="#videographer-carousel" id="videographer-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                    <i class="fas fa-chart-bar indicator" data-target="#videographer-carousel" id="videographer-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#videographer-carousel" id="videographer-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#videographer-carousel" id="videographer-indicator-4" aria-hidden="true" onclick="goToCarouselItem(4)"></i>
+                  </div>
+                  <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-none" id="dashboard-holder">
+            <div class="carousel-item" id="vstats-#">
+              <h1 class="dashboard-title">Videographer Statistics</h1>
+              <div class="outer-shell container mb-1" id="vstats-#-container">
+                <div id="main-grids">
+                  <div>MAIN GRID PLACEHOLDER</div>
+                </div>
+                <div id="overall-grids">
+                  <div>OVERALL GRID PLACEHOLDER</div>
+                </div>
+              </div>
+            </div>
+            <div class="vstats-grid-container" id="vstats-#-@-grid">
+              <div class="grid-item" style="grid-area:1/1/3/4;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <h1 class="vstats-name" id="vstats-#-@-name">*Name*</h1>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:1/4/4/10;">
+                <div class="row align-items-center h-100">
+                  <div class="col-2">
+                    <i class="fas fa-users vstats-people" title="Subscribers Gained"></i>
+                  </div>
+                  <div class="col-5">
+                    <h2 class="vstats-stat" id="vstats-#-@-subs-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Total Subscribers Gained</h2>
+                  </div>
+                  <div class="col-5">
+                    <h2 class="vstats-stat" id="vstats-#-@-subs-avg">#</h2>
+                    <h2 class="text-muted vstats-caption">Average Subscribers Gained Per Video</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:1/10/3/13;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <h1 class="vstats-category" id="vstats-#-@-category">*Category*</h1>
+                    <div class="row vstats-btn-group">
+                      <button class="btn btn-primary btn-lg d-inline" id="vstats-#-@-btn-all">All Videos</button>
+                      <button class="btn btn-primary btn-lg d-inline" id="vstats-#-@-btn-organic">Organic</button>
+                      <button class="btn btn-primary btn-lg d-inline" id="vstats-#-@-btn-notOrganic">Not Organic</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:3/1/10/4;">
+                <i class="fas fa-thumbs-up vstats-like" title="Likes"></i>
+                <h1 class="vstats-stat-like-ratio" id="vstats-#-@-like-ratio-total">%</h1>
+                <h3 class="text-muted">Total Likes (vs. Dislikes)</h3>
+                <div class="progress like-progress w-75 mx-auto">
+                  <div class="progress-bar bg-success" id="vstats-#-@-like-bar-total" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <hr class="vstats-hr-likes">
+                <h2 class="vstats-stat-likes" id="vstats-#-@-likes-total">#</h2>
+                <h3 class="text-muted vstats-caption">Total Likes</h3>
+                <hr class="vstats-hr-likes">
+                <h2 class="vstats-stat-likes" id="vstats-#-@-dislikes-total">#</h2>
+                <h3 class="text-muted vstats-caption">Total Dislikes</h3>
+              </div>
+              <div class="grid-item" style="grid-area:4/4/10/7;">
+                <i class="fas fa-eye vstats-eye" title="Views"></i>
+                <h2 class="vstats-stat-views" id="vstats-#-@-views-total">#</h2>
+                <h2 class="text-muted vstats-caption">Total Views</h2>
+                <hr>
+                <h2 class="vstats-stat-views" id="vstats-#-@-views-avg">#</h2>
+                <h2 class="text-muted vstats-caption" style="white-space:pre;">Average Views<br>Per Video</h2>
+              </div>
+              <div class="grid-item" style="grid-area:4/7/10/10;">
+                <i class="fas fa-comment-alt vstats-comment" title="Comments"></i>
+                <h2 class="vstats-stat-comments" id="vstats-#-@-comments-total">#</h2>
+                <h2 class="text-muted vstats-caption">Total Comments</h2>
+                <hr>
+                <h2 class="vstats-stat-comments" id="vstats-#-@-comments-avg">#</h2>
+                <h2 class="text-muted vstats-caption" style="white-space:pre;">Average Comments<br>Per Video</h2>
+              </div>
+              <div class="grid-item" style="grid-area:3/10/10/13;">
+                <i class="fas fa-thumbs-up vstats-like" title="Likes"></i>
+                <h1 class="vstats-stat-like-ratio" id="vstats-#-@-like-ratio-avg">%</h1>
+                <h3 class="text-muted">Average Likes (vs. Dislikes)</h3>
+                <div class="progress like-progress w-75 mx-auto">
+                  <div class="progress-bar bg-success" id="vstats-#-@-like-bar-avg" role="progressbar" style="width:50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <hr class="vstats-hr-likes">
+                <h2 class="vstats-stat-likes" id="vstats-#-@-likes-avg">#</h2>
+                <h3 class="text-muted vstats-caption">Average Likes Per Video</h3>
+                <hr class="vstats-hr-likes">
+                <h2 class="vstats-stat-likes" id="vstats-#-@-dislikes-avg">#</h2>
+                <h3 class="text-muted vstats-caption">Average Dislikes Per Video</h3>
+              </div>
+              <div class="grid-item" style="grid-area:10/1/13/3;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-#-@-top">Check Out<br>Top Videos</button>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:10/3/13/11;">
+                <div class="row align-items-center h-100">
+                  <div class="col-2">
+                    <i class="far fa-clock vstats-clock" title="Video Duration"></i>
+                  </div>
+                  <div class="col-5">
+                    <h2 class="vstats-stat" id="vstats-#-@-duration-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Total Video Duration</h2>
+                  </div>
+                  <div class="col-5">
+                    <h2 class="vstats-stat" id="vstats-#-@-duration-avg">#</h2>
+                    <h2 class="text-muted vstats-caption">Average Video Duration</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:10/11/13/13;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-#-@-more">Check Out More<br>Statistics</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="vstats-grid-container" id="vstats-overall-#-@-grid">
+              <div class="grid-item" style="grid-area:1/1/3/4;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <h1 class="vstats-name" id="vstats-overall-#-@-name">*Name*</h1>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:1/10/3/13;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <h1 class="vstats-category" id="vstats-overall-#-@-category">*Category*</h1>
+                    <div class="row vstats-btn-group">
+                      <button class="btn btn-primary btn-lg d-inline" id="vstats-overall-#-@-btn-all">All Videos</button>
+                      <button class="btn btn-primary btn-lg d-inline" id="vstats-overall-#-@-btn-organic">Organic</button>
+                      <button class="btn btn-primary btn-lg d-inline" id="vstats-overall-#-@-btn-notOrganic">Not Organic</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:3/1/10/4;">
+                <i class="fas fa-video vstats-video" title="Videos"></i>
+                <h2 class="vstats-stat" id="vstats-overall-#-@-videos-total">#</h2>
+                <h2 class="text-muted vstats-caption">Videos Created</h2>
+                <h2 class="text-muted vstats-caption">(Overall)</h2>
+                <hr>
+                <h2 class="vstats-stat" id="vstats-overall-#-@-videos-last">#</h2>
+                <h2 class="text-muted vstats-caption">Videos Created</h2>
+                <h2 class="text-muted vstats-caption">(Last 30 Days)</h2>
+              </div>
+              <div class="grid-item" style="grid-area:1/4/10/10;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12 h-100">
+                    <div class="alert alert-warning construction h1" role="alert" style="margin-top:33%;">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      Under Construction
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:3/10/10/13;">
+                <i class="fas fa-percentage vstats-percentage" title="Average View Percentage"></i>
+                <h2 class="vstats-stat" id="vstats-overall-#-@-avp-total">#</h2>
+                <h2 class="text-muted vstats-caption">Average View Percentage</h2>
+                <h2 class="text-muted vstats-caption">(Overall)</h2>
+                <hr>
+                <h2 class="vstats-stat" id="vstats-overall-#-@-avp-last">#</h2>
+                <h2 class="text-muted vstats-caption">Average View Percentage</h2>
+                <h2 class="text-muted vstats-caption">(Last 30 Days)</h2>
+              </div>
+              <div class="grid-item" style="grid-area:10/1/13/3;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-overall-#-@-top">Check Out<br>Top Videos</button>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:10/3/13/11;">
+                <div class="row align-items-center h-100">
+                  <div class="col-2">
+                    <i class="far fa-clock vstats-clock" title="Minutes Watched"></i>
+                  </div>
+                  <div class="col-5">
+                    <h2 class="vstats-stat" id="vstats-overall-#-@-watched-total">#</h2>
+                    <h2 class="text-muted vstats-caption">Estimated Minutes Watched</h2>
+                    <h2 class="text-muted vstats-caption">(Overall)</h2>
+                  </div>
+                  <div class="col-5">
+                    <h2 class="vstats-stat" id="vstats-overall-#-@-watched-last">#</h2>
+                    <h2 class="text-muted vstats-caption">Estimated Minutes Watched</h2>
+                    <h2 class="text-muted vstats-caption">(Last 30 Days)</h2>
+                  </div>
+                </div>
+              </div>
+              <div class="grid-item" style="grid-area:10/11/13/13;">
+                <div class="row align-items-center h-100">
+                  <div class="col-12">
+                    <button class="btn btn-primary btn-xl vstats-more-btn" id="vstats-overall-#-@-more">Check Out More<br>Statistics</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <i class="indicator" data-target="#dashboard-carousel" id="indicator"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="resources/js/authorize.min.js"></script>
+    <script type="text/javascript" src="resources/js/calc.min.js"></script>
+    <script type="text/javascript" src="resources/js/handle.min.js"></script>
+    <script type="text/javascript" src="resources/js/request.min.js"></script>
+    <script type="text/javascript" src="resources/js/sheets.min.js"></script>
+    <script type="text/javascript" src="resources/js/videographerstats.min.js"></script>
+    <script type="text/javascript" src="resources/js/dashboards.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>

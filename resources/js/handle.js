@@ -574,6 +574,233 @@ function displayViewsByTrafficSource(response) {
 }
 
 
+/* Product Category Calls */
+
+function displayTopCategoriesGraphOne(categoryStats) {
+  categoryStats = categoryStats || lsGet("categoryStats");
+  var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
+
+  var total = 0;
+  let otherTotal = 0;
+  var graphHeight = 0.8583;
+  var graphWidth = 0.9528;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
+  var labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
+  var legendFontSize =
+    Math.floor(0.0125 * document.documentElement.clientWidth);
+  var values = [];
+  var labels = [];
+  var colors = [];
+  var type = "views";
+  var cutoff = 0.025;
+
+  var labelConversion = categoryColors;
+
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      total += Math.round(category[type]);
+    }
+  }
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      let value = Math.round(category[type]);
+      if (value / total <= cutoff) {
+        otherTotal += value;
+      } else {
+        values.push(value);
+        labels.push(labelConversion[category.shortName].name);
+        colors.push(labelConversion[category.shortName].color);
+      }
+    }
+  }
+  if (cutoff != undefined && cutoff > 0) {
+    values.push(otherTotal);
+    labels.push("Other");
+    colors.push("#5fe0ed");
+  }
+
+  var data1 = {
+    values: values,
+    labels: labels,
+    marker: {
+      colors: colors
+    },
+    domain: {
+      row: 0,
+      column: 0
+    },
+    name: "Total Views<br>By Category",
+    title: {
+      text: "Total Views<br>By Category",
+      font: {
+        size: titleFontSize
+      }
+    },
+    textinfo: "label",
+    textposition: "inside",
+    hoverlabel: {
+      namelength: "-1"
+    },
+    hovertemplate: "%{label}<br>%{value} views<br>%{percent}",
+    sort: false,
+    type: 'pie',
+    rotation: 90
+  };
+
+  // Avg Views Graph
+
+  total = 0;
+  otherTotal = 0;
+  values = [];
+  labels = [];
+  colors = [];
+  type = "avgViews";
+  cutoff = 0.025;
+
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      total += Math.round(category[type]);
+    }
+  }
+  for (var i = 0; i < categoryStats.length; i++) {
+    let category = categoryStats[i];
+    let include = category.root;
+    if (include) {
+      for (var j = 0; j < excludeKeys.length; j++) {
+        if (category.name.includes(excludeKeys[j])) {
+          include = false;
+        }
+      }
+    }
+    if (include) {
+      let value = Math.round(category[type]);
+      if (value / total <= cutoff) {
+        otherTotal += value;
+      } else {
+        values.push(value);
+        labels.push(labelConversion[category.shortName].name);
+        colors.push(labelConversion[category.shortName].color);
+      }
+    }
+  }
+  if (cutoff != undefined && cutoff > 0) {
+    values.push(otherTotal);
+    labels.push("Other");
+    colors.push("#5fe0ed");
+  }
+
+  var data2 = {
+    values: values,
+    labels: labels,
+    marker: {
+      colors: colors
+    },
+    domain: {
+      row: 0,
+      column: 1
+    },
+    name: "Average Views Per Video<br>By Category",
+    title: {
+      text: "Average Views Per Video<br>By Category",
+      font: {
+        size: titleFontSize
+      }
+    },
+    textinfo: "label",
+    textposition: "inside",
+    hoverlabel: {
+      namelength: "-1"
+    },
+    hovertemplate: "%{label}<br>~%{value} views per video<br>%{percent}",
+    sort: false,
+    type: 'pie',
+    rotation: 140
+  };
+
+  var data = [data2, data1];
+
+  var layout = {
+    height: height,
+    width: width,
+    font: {
+      size: labelFontSize
+    },
+    automargin: true,
+    autosize: true,
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    legend: {
+      bgcolor: "#eeeeee",
+      font: {
+        size: legendFontSize
+      },
+      y: 0.5
+    },
+    grid: {
+      rows: 1,
+      columns: 2
+    },
+    margin: {
+      b: 5,
+      l: 5,
+      r: 5,
+      t: 5
+    }
+  };
+
+  var config = {
+    staticPlot: true,
+    responsive: true
+  };
+
+  const graphIds = getDashboardGraphIds("product-categories");
+  const graphId = graphIds.graphOne;
+
+  const theme = getCurrentDashboardTheme("product-categories");
+  if (theme == "dark") {
+    layout["plot_bgcolor"] = "#222";
+    layout["paper_bgcolor"] = "#222";
+    layout["font"]["color"] = "#fff";
+    layout["legend"]["bgcolor"] = "#444";
+    layout["legend"]["font"]["color"] = "#fff";
+  }
+
+  try {
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth);
+  } catch (err) {
+    displayGraphError(graphId, err);
+  }
+}
+
 /* Top Video Calls */
 
 // Displays video views, likes, comments, etc. in top video dashboard

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#FF0000">
+    <meta name="google-site-verification" content="uVU8M86_QREmObzy4xSyLpdMohNbGKKF4wNyKc8KWXk">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <title>ADC Video Dashboard</title>
+    <script type="text/javascript" src="vendors/jQuery-3.4.0/jquery-3.4.0.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans|Roboto&display=swap"/>
+    <link rel="stylesheet" href="vendors/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="resources/css/styles.min.css"/>
+    <link rel="stylesheet" href="resources/css/styles-dark.min.css"/>
+    <link rel="stylesheet" href="vendors/open-iconic/font/css/open-iconic-bootstrap.min.css"/>
+    <link rel="stylesheet" href="vendors/odometer/css/odometer-theme-default.css"/>
+    <script type="text/javascript" src="vendors/fontawesome/js/solid.min.js"></script>
+    <script type="text/javascript" src="vendors/fontawesome/js/regular.min.js"></script>
+    <script type="text/javascript" src="vendors/fontawesome/js/fontawesome.min.js"></script>
+    <script type="text/javascript" src="vendors/odometer//js/odometer.min.js"></script>
+    <script type="text/javascript" src="vendors/Plotly/plotly-1.51.3.js"></script>
+    <script type="text/javascript" src="vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="vendors/autodivscroll/autodivscroll.js"></script>
+    <script type="text/javascript" src="resources/js/utility.min.js"></script>
+    <script type="text/javascript" src="resources/js/values.min.js"></script>
+  </head>
+  <body style="overflow-y: hidden;">
+    <div class="main-wrapper">
+      <div class="main" id="main-container">
+        <div class="container my-1 position-relative">
+          <ul class="icon-bar">
+            <li>
+              <i class="fas fa-cog" id="control-panel-button" style="display:none;" onclick="window.location='control-panel.html';" title="Control Panel"></i>
+            </li>
+            <li>
+              <i class="fas fa-home" id="home-button" style="display:none;" onclick="window.location='index.html';" title="Home"></i>
+            </li>
+          </ul>
+          <div class="loading-area">
+            <h6 id="loading-text"><i class="fas fa-spinner fa-pulse mr-1" style="font-size:1em;"></i>Loading</h6>
+          </div>
+          <div class="updating-area">
+            <h6 id="updating-text" style="display:none;"><i class="fas fa-spinner fa-pulse mr-1" style="font-size:1em;"></i>Updating...</h6>
+          </div>
+          <div class="cycle-status">
+            <h6 id="pause-text" onclick="toggleDashboardPause()"><i class="fas fa-pause mr-1" style="font-size:1em;"></i>Paused</h6>
+            <h6 id="play-text" onclick="toggleDashboardPause()"><i class="fas fa-play mr-1" style="font-size:1em;"></i>Play</h6>
+          </div>
+          <div id="carousel-list">
+            <div class="text-center carousel-container active" id="category-stats-content" carousel="0">
+              <div class="carousel slide" id="category-stats-carousel" data-ride="carousel" name="cat-stats">
+                <div class="carousel-inner" id="category-stats-carousel-inner">
+                  <div class="carousel-item active" id="product-categories">
+                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </a>
+                    <div class="alert popup-graph-container" id="category-graph-container" style="display:none;">
+                      <button type="button" class="close" aria-label="Close" style="z-index:2;" onclick="hideCategoryStrengthGraph()">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      <h4 id="popup-graph-title">Category Name</h4>
+                      <div class="popup-graph click-through" id="category-strength-popup-graph"></div>
+                      <div id="popup-graph-loading">
+                        <h3><i class="fas fa-spinner fa-pulse mr-3" style="font-size:1em;"></i>Loading...</h3>
+                      </div>
+                    </div>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-1"></div>
+                              <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-2"></div>
+                              <div class="category-stats-chart graph-container" id="product-categories-chart-3"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-views">
+                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </a>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-cum-views">
+                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </a>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-cum-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-cum-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-avg-views">
+                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </a>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-avg-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-avg-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item" id="categories-cum-avg-views">
+                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
+                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
+                    </a>
+                    <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+                    <div class="outer-shell click-through container mb-1">
+                      <div class="grid-container">
+                        <div class="grid-item" style="grid-area: 1/1/13/13;">
+                          <div class="row align-content-around h-100">
+                            <div class="col-12 h-100">
+                              <div class="category-stats-chart mb-2 graph-container" id="categories-cum-avg-views-chart"></div>
+                              <div class="category-stats-chart graph-container" id="categories-normal-cum-avg-views-chart"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-8">
+                  <i class="fas fa-chevron-left carousel-arrow mr-5" onclick="carouselPrev()"></i>
+                  <div class="indicator-list" id="category-stats-indicator-list">
+                    <i class="fas fa-chart-pie indicator active" data-target="#category-stats-carousel" id="cat-stats-indicator-0" aria-hidden="true" onclick="goToCarouselItem(0)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-1" aria-hidden="true" onclick="goToCarouselItem(1)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-2" aria-hidden="true" onclick="goToCarouselItem(2)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-3" aria-hidden="true" onclick="goToCarouselItem(3)"></i>
+                    <i class="fas fa-chart-area indicator" data-target="#category-stats-carousel" id="cat-stats-indicator-4" aria-hidden="true" onclick="goToCarouselItem(4)"></i>
+                  </div>
+                  <i class="fas fa-chevron-right carousel-arrow ml-5" onclick="carouselNext()"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-none" id="dashboard-holder">
+            <div class="carousel-item" id="product-categories">
+              <button class="btn btn-primary return-to-main-btn-inside">
+                <i class="fas fa-info-circle button-icon"></i>More Details
+              </button>
+              <div class="alert popup-graph-container" id="category-graph-container" style="display:none;">
+                <button type="button" class="close" aria-label="Close" style="z-index:2;" onclick="hideCategoryStrengthGraph()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="popup-graph-title">Category Name</h4>
+                <div class="popup-graph click-through" id="category-strength-popup-graph"></div>
+                <div id="popup-graph-loading">
+                  <h3><i class="fas fa-spinner fa-pulse mr-3" style="font-size:1em;"></i>Loading...</h3>
+                </div>
+              </div>
+              <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
+              <div class="outer-shell click-through container mb-1">
+                <div class="grid-container">
+                  <div class="grid-item" style="grid-area: 1/1/13/13;">
+                    <div class="row align-content-around h-100">
+                      <div class="col-12 h-100">
+                        <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-1"></div>
+                        <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-2"></div>
+                        <div class="category-stats-chart graph-container" id="product-categories-chart-3"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <i class="indicator" data-target="#dashboard-carousel" id="indicator"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="resources/js/authorize.min.js"></script>
+    <script type="text/javascript" src="resources/js/calc.min.js"></script>
+    <script type="text/javascript" src="resources/js/handle.min.js"></script>
+    <script type="text/javascript" src="resources/js/request.min.js"></script>
+    <script type="text/javascript" src="resources/js/sheets.min.js"></script>
+    <script type="text/javascript" src="resources/js/categorystats.min.js"></script>
+    <script type="text/javascript" src="resources/js/dashboards.min.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+        onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
+  </body>
+</html>

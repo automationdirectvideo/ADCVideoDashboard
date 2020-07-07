@@ -59,3 +59,16 @@ function loadSignedIn() {
   loadingCog.style.display = "";
   loadErrorLog();
 }
+
+/**
+ * Loads the page when the user is not signed into Google
+ */
+function loadSignedOut() {
+  createSignInModal();
+  const authorizeButton = document.getElementById("authorize-button");
+  authorizeButton.onclick = handleAuthClick;
+  $('#signinModal').modal({
+    backdrop: 'static',
+    keyboard: false
+  });
+}

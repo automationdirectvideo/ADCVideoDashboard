@@ -484,10 +484,17 @@ body {
   width: 100%;
 }
 
-.swap-carousel-btn {
+.more-details-btn, .return-to-main-btn-inside {
   position: absolute;
   top: 9.5vh;
   right: 2.5vw;
+}
+
+.return-to-main-btn {
+  position: absolute;
+  left: 1vw;
+  top: 1vh;
+  z-index: 2;
 }
 
 .button-icon {
