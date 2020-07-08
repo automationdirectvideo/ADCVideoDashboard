@@ -264,23 +264,15 @@ function carouselPrev() {
 function pauseDashboard() {
   let pauseText = document.getElementById("pause-text");
   let playText = document.getElementById("play-text");
-  $("#dashboard-carousel").carousel('pause');
-  $("#category-stats-carousel").carousel('pause');
-  $("#videographer-carousel").carousel('pause');
-  $("#contest-carousel").carousel('pause');
+  $(".dashboard-carousel").carousel('pause');
   pauseText.style.display = "initial";
   playText.style.display = "none";
   isPaused = true;
 }
 
 function playDashboard() {
-  let pauseText = document.getElementById("pause-text");
   let playText = document.getElementById("play-text");
-  $("#dashboard-carousel").carousel('cycle');
-  $("#category-stats-carousel").carousel('cycle');
-  $("#videographer-carousel").carousel('cycle');
-  $("#contest-carousel").carousel('cycle');
-  pauseText.style.display = "none";
+  $(".dashboard-carousel").carousel('cycle');
   playText.style.display = "initial";
   setTimeout(function () {
     if (playText.offsetHeight != 0) {
@@ -300,15 +292,9 @@ function toggleDashboardPause() {
 
 function temporarilyToggleDashboardPause(bool) {
   if (bool) {
-    $("#dashboard-carousel").carousel('pause');
-    $("#category-stats-carousel").carousel('pause');
-    $("#videographer-carousel").carousel('pause');
-    $("#contest-carousel").carousel('pause');
+    $(".dashboard-carousel").carousel('pause');
   } else if (!isPaused) {
-    $("#dashboard-carousel").carousel('cycle');
-    $("#category-stats-carousel").carousel('cycle');
-    $("#videographer-carousel").carousel('cycle');
-    $("#contest-carousel").carousel('cycle');
+    $(".dashboard-carousel").carousel('cycle');
   }
 }
 
@@ -353,74 +339,81 @@ function setUpdatingStatus(bool) {
   temporarilyToggleDashboardPause();
 }
 
-// Get current settings
-if (!lsGet("settings")) {
-  lsSet("settings", defaultSettings);
+function getCurrentSettings() {
+  if (!lsGet("settings")) {
+    lsSet("settings", defaultSettings);
+  }
+  window.currentSettings = lsGet("settings");
+  const settingsVersion = currentSettings.version;
+  const defaultVersion = defaultSettings.version;
+  if (settingsVersion == undefined || defaultVersion > settingsVersion) {
+    lsSet("settings", defaultSettings);
+    window.currentSettings = defaultSettings;
+  }
+  window.cycleSpeed = currentSettings.cycleSpeed * 1000;
 }
-let currentSettings = lsGet("settings");
-const settingsVersion = currentSettings.version;
-const defaultVersion = defaultSettings.version;
-if (settingsVersion == undefined || defaultVersion > settingsVersion) {
-  lsSet("settings", defaultSettings);
-  currentSettings = defaultSettings;
+
+function createEventListeners() {
+  // Handle carousel scrolling and keyboard shortcuts
+  document.addEventListener("keyup", function (e) {
+    if (e.key == "ArrowLeft") {
+      carouselPrev();
+    } else if (e.key == "ArrowRight") {
+      carouselNext();
+    } else if (e.which == 32) {
+      toggleDashboardPause();
+    } else if (e.key == "F2") {
+      signIn();
+    } else if (e.key.toUpperCase() == "A") {
+      goToCarouselItem(9);
+    } else if (e.key.toUpperCase() == "B") {
+      goToCarouselItem(10);
+    } else if (e.key.toUpperCase() == "C") {
+      goToCarouselItem(11);
+    } else if (e.key.toUpperCase() == "D") {
+      goToCarouselItem(12);
+    } else if (e.key.toUpperCase() == "E") {
+      goToCarouselItem(13);
+    } else if (e.key.toUpperCase() == "F") {
+      goToCarouselItem(14);
+    } else if (e.key.toUpperCase() == "N") {
+      swapNormalCharts();
+    } else if (e.key.toUpperCase() == "R") {
+      reloadVideoStrengthDashboard();
+    } else if (e.key.toUpperCase() == "V") {
+      swapDashboardGraphs();
+    } else if (!isNaN(e.key) && e.which != 32) {
+      if (e.ctrlKey || e.altKey) {
+        goToCarouselItem(parseInt(e.key) + 9);
+      } else {
+        goToCarouselItem(parseInt(e.key) - 1);
+      }
+    } else if (e.key.toUpperCase() == "U" && e.altKey &&
+      gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      updateDashboards();
+    } else if (e.key.toUpperCase() == "L" && e.altKey) {
+      loadDashboards();
+    }
+  });
+  $(".carousel").on("slide.bs.carousel", function (e) {
+    let carouselName = e.target.getAttribute("name");
+    let indicatorName = carouselName + "-indicator-";
+    let startIndicator = document.getElementById(indicatorName + e.from);
+    let endIndicator = document.getElementById(indicatorName + e.to);
+    startIndicator.classList.remove("active");
+    endIndicator.classList.add("active");
+  });
+  
+  window.addEventListener('resize', function () {
+    retry(resizeGraphs, 5, 5000);
+  }, true);
 }
-const cycleSpeed = currentSettings.cycleSpeed * 1000;
+
+getCurrentSettings();
 
 initializeCarousels();
 
-// Handle carousel scrolling and keyboard shortcuts
-document.addEventListener("keyup", function (e) {
-  if (e.key == "ArrowLeft") {
-    carouselPrev();
-  } else if (e.key == "ArrowRight") {
-    carouselNext();
-  } else if (e.which == 32) {
-    toggleDashboardPause();
-  } else if (e.key == "F2") {
-    signIn();
-  } else if (e.key.toUpperCase() == "A") {
-    goToCarouselItem(9);
-  } else if (e.key.toUpperCase() == "B") {
-    goToCarouselItem(10);
-  } else if (e.key.toUpperCase() == "C") {
-    goToCarouselItem(11);
-  } else if (e.key.toUpperCase() == "D") {
-    goToCarouselItem(12);
-  } else if (e.key.toUpperCase() == "E") {
-    goToCarouselItem(13);
-  } else if (e.key.toUpperCase() == "F") {
-    goToCarouselItem(14);
-  } else if (e.key.toUpperCase() == "N") {
-    swapNormalCharts();
-  } else if (e.key.toUpperCase() == "R") {
-    reloadVideoStrengthDashboard();
-  } else if (e.key.toUpperCase() == "V") {
-    swapDashboardGraphs();
-  } else if (!isNaN(e.key) && e.which != 32) {
-    if (e.ctrlKey || e.altKey) {
-      goToCarouselItem(parseInt(e.key) + 9);
-    } else {
-      goToCarouselItem(parseInt(e.key) - 1);
-    }
-  } else if (e.key.toUpperCase() == "U" && e.altKey &&
-    gapi.auth2.getAuthInstance().isSignedIn.get()) {
-    updateDashboards();
-  } else if (e.key.toUpperCase() == "L" && e.altKey) {
-    loadDashboards();
-  }
-});
-$(".carousel").on("slide.bs.carousel", function (e) {
-  let carouselName = e.target.getAttribute("name");
-  let indicatorName = carouselName + "-indicator-";
-  let startIndicator = document.getElementById(indicatorName + e.from);
-  let endIndicator = document.getElementById(indicatorName + e.to);
-  startIndicator.classList.remove("active");
-  endIndicator.classList.add("active");
-});
-
-window.addEventListener('resize', function () {
-  retry(resizeGraphs, 5, 5000);
-}, true);
+createEventListeners();
 
 let isLoading = false;
 let isPaused = false;

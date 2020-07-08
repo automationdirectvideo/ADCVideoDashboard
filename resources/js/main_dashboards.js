@@ -182,6 +182,7 @@ function initializeCarousels() {
   var carouselInner = document.getElementById("main-carousel-inner");
   var indicatorList = document.getElementById("main-indicator-list");
   var carousel = document.getElementById("dashboard-carousel");
+  carousel.setAttribute("data-ride", "carousel");
   carousel.setAttribute("data-interval", cycleSpeed);
   carousel.setAttribute("data-pause", "false");
 

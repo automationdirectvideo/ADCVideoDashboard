@@ -39,9 +39,6 @@ function loadDashboards() {
       } else {
         loadDashboardsSignedIn();
       }
-    } else {
-      // TODO: update this logic
-      loadDashboardsSignedOut();
     }
   }
 }
@@ -88,6 +85,7 @@ function initializeUpdater() {
 
 function initializeCarousels() {
   const contestCarousel = document.getElementById("contest-carousel");
+  contestCarousel.setAttribute("data-ride", "carousel");
   contestCarousel.setAttribute("data-interval", cycleSpeed);
   contestCarousel.setAttribute("data-pause", "false");
 }

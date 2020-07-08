@@ -39,9 +39,6 @@ function loadDashboards() {
       } else {
         loadDashboardsSignedIn();
       }
-    } else {
-      // TODO: update this logic
-      loadDashboardsSignedOut();
     }
   }
 }
@@ -93,6 +90,7 @@ function initializeUpdater() {
 function initializeCarousels() {
   const categoryStatsCarousel =
     document.getElementById("category-stats-carousel");
+  categoryStatsCarousel.setAttribute("data-ride", "carousel");
   categoryStatsCarousel.setAttribute("data-interval", cycleSpeed);
   categoryStatsCarousel.setAttribute("data-pause", "false");
 }
