@@ -100,12 +100,7 @@ function swapDashboardGraphs() {
   let graphTwo;
   let graphThree;
 
-  if (activeDashboard == "product-categories") {
-    const graphIds = getDashboardGraphIds(activeDashboard);
-    graphOne = document.getElementById(graphIds.graphOne);
-    graphTwo = document.getElementById(graphIds.graphTwo);
-    graphThree = document.getElementById(graphIds.graphThree);
-  } else if (activeDashboard.indexOf("videographer") == 0) {
+  if (activeDashboard.indexOf("videographer") == 0) {
     let graphIds;
     if (activeDashboard == "videographer-avg-views") {
       graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
