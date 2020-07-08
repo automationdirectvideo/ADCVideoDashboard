@@ -7,6 +7,7 @@ function loadSignedIn() {
   initializeUpdater();
   loadDashboards();
   updateTheme(0);
+  createSwapGraphListeners();
 }
 
 /**
@@ -134,6 +135,28 @@ function updateDashboards() {
         hideUpdatingText();
         setUpdatingStatus(false);
       });
+  }
+}
+
+function createSwapGraphListeners() {
+  document.addEventListener("keyup", function (e) {
+    if (e.key.toUpperCase() == "N" || e.key.toUpperCase() == "V") {
+      swapNormalCharts();
+    }
+  });
+}
+
+function swapNormalCharts() {
+  var activeDashboard =
+    $(".carousel-container.active >>> .carousel-item.active")[0].id;
+  var standardChartId = activeDashboard + "-chart";
+  var standardChart = document.getElementById(standardChartId);
+  if (standardChart) {
+    if (standardChart.style.display == "none") {
+      standardChart.style.display = "";
+    } else {
+      standardChart.style.display = "none";
+    }
   }
 }
 

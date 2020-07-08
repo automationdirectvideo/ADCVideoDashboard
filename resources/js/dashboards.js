@@ -79,78 +79,6 @@ function resizeGraphs() {
   }
 }
 
-function swapNormalCharts() {
-  var activeDashboard =
-    $(".carousel-container.active >>> .carousel-item.active")[0].id;
-  var standardChartId = activeDashboard + "-chart";
-  var standardChart = document.getElementById(standardChartId);
-  if (standardChart) {
-    if (standardChart.style.display == "none") {
-      standardChart.style.display = "";
-    } else {
-      standardChart.style.display = "none";
-    }
-  }
-}
-
-function swapDashboardGraphs() {
-  const activeDashboard =
-    $(".carousel-container.active >>> .carousel-item.active")[0].id;
-  let graphOne;
-  let graphTwo;
-  let graphThree;
-
-  if (activeDashboard.indexOf("videographer") == 0) {
-    let graphIds;
-    if (activeDashboard == "videographer-avg-views") {
-      graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
-    } else if (activeDashboard == "videographer-cumulative-videos") {
-      graphIds = getDashboardGraphIds("videographerGraphs").cumulativeVideos;
-    } else if (activeDashboard == "videographer-monthly-videos") {
-      graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
-    } else if (activeDashboard == "videographer-cumulative-views") {
-      graphIds = getDashboardGraphIds("videographerGraphs").cumulativeViews;
-    } else if (activeDashboard == "videographer-monthly-views") {
-      graphIds = getDashboardGraphIds("videographerGraphs").monthlyViews;
-    }
-    graphOne = document.getElementById(graphIds.all);
-    graphTwo = document.getElementById(graphIds.organic);
-    graphThree = document.getElementById(graphIds.notOrganic);
-  }
-  if (graphOne && graphTwo && graphThree) {
-    if (graphOne.style.display == "") {
-      graphOne.style.display = "none";
-      graphTwo.style.display = "";
-      graphThree.style.display = "none";
-    } else if (graphTwo.style.display == "") {
-      graphOne.style.display = "none";
-      graphTwo.style.display = "none";
-      graphThree.style.display = "";
-    } else if (graphThree.style.display == "") {
-      graphOne.style.display = "";
-      graphTwo.style.display = "none";
-      graphThree.style.display = "none";
-    }
-  } else {
-    const activeCarouselContainer = $(".carousel-container.active")[0].id;
-    if (activeCarouselContainer == "category-stats-content") {
-      swapNormalCharts();
-    } else if (activeDashboard.indexOf("vstat") == 0) {
-      // Handles switching grids for vstats dashboards
-      const activeDashboardElem = document.getElementById(activeDashboard);
-      const activeGrid = activeDashboardElem
-        .querySelector(".vstats-grid-container.active-grid");
-      let nextGrid = activeGrid.nextElementSibling;
-      if (nextGrid == null) {
-        const gridGroupContainer = activeGrid.parentElement;
-        nextGrid = gridGroupContainer.firstElementChild;
-      }
-      activeGrid.classList.remove("active-grid");
-      nextGrid.classList.add("active-grid");
-    }
-  }
-}
-
 function displayGraphError(graphId, err) {
   if (err) {
     recordError(err, `Unable to display graph "${graphId}" - `);
@@ -350,12 +278,15 @@ function getCurrentSettings() {
 
 function createEventListeners() {
   // Handle carousel scrolling and keyboard shortcuts
+  // NOTE: other keyboard shortcuts are implemented in the individual dashboard
+  // files. These shortcuts apply to all dashboard pages
   document.addEventListener("keyup", function (e) {
     if (e.key == "ArrowLeft") {
       carouselPrev();
     } else if (e.key == "ArrowRight") {
       carouselNext();
     } else if (e.which == 32) {
+      // Space Bar
       toggleDashboardPause();
     } else if (e.key == "F2") {
       signIn();
@@ -371,12 +302,6 @@ function createEventListeners() {
       goToCarouselItem(13);
     } else if (e.key.toUpperCase() == "F") {
       goToCarouselItem(14);
-    } else if (e.key.toUpperCase() == "N") {
-      swapNormalCharts();
-    } else if (e.key.toUpperCase() == "R") {
-      reloadVideoStrengthDashboard();
-    } else if (e.key.toUpperCase() == "V") {
-      swapDashboardGraphs();
     } else if (!isNaN(e.key) && e.which != 32) {
       if (e.ctrlKey || e.altKey) {
         goToCarouselItem(parseInt(e.key) + 9);
@@ -405,9 +330,7 @@ function createEventListeners() {
 }
 
 getCurrentSettings();
-
 initializeCarousels();
-
 createEventListeners();
 
 let isLoading = false;

@@ -7,6 +7,7 @@ function loadSignedIn() {
   initializeUpdater();
   loadDashboards();
   updateTheme(0);
+  createSwapGraphListeners();
 }
 
 /**
@@ -123,6 +124,69 @@ function updateDashboards() {
         hideUpdatingText();
         setUpdatingStatus(false);
       });
+  }
+}
+
+function createSwapGraphListeners() {
+  document.addEventListener("keyup", function (e) {
+    if (e.key.toUpperCase() == "V") {
+      swapDashboardGraphs();
+    }
+  });
+}
+
+function swapDashboardGraphs() {
+  const activeDashboard =
+    $(".carousel-container.active >>> .carousel-item.active")[0].id;
+  let graphOne;
+  let graphTwo;
+  let graphThree;
+
+  if (activeDashboard.indexOf("videographer") == 0) {
+    let graphIds;
+    if (activeDashboard == "videographer-avg-views") {
+      graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
+    } else if (activeDashboard == "videographer-cumulative-videos") {
+      graphIds = getDashboardGraphIds("videographerGraphs").cumulativeVideos;
+    } else if (activeDashboard == "videographer-monthly-videos") {
+      graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+    } else if (activeDashboard == "videographer-cumulative-views") {
+      graphIds = getDashboardGraphIds("videographerGraphs").cumulativeViews;
+    } else if (activeDashboard == "videographer-monthly-views") {
+      graphIds = getDashboardGraphIds("videographerGraphs").monthlyViews;
+    }
+    graphOne = document.getElementById(graphIds.all);
+    graphTwo = document.getElementById(graphIds.organic);
+    graphThree = document.getElementById(graphIds.notOrganic);
+  }
+  if (graphOne && graphTwo && graphThree) {
+    if (graphOne.style.display == "") {
+      graphOne.style.display = "none";
+      graphTwo.style.display = "";
+      graphThree.style.display = "none";
+    } else if (graphTwo.style.display == "") {
+      graphOne.style.display = "none";
+      graphTwo.style.display = "none";
+      graphThree.style.display = "";
+    } else if (graphThree.style.display == "") {
+      graphOne.style.display = "";
+      graphTwo.style.display = "none";
+      graphThree.style.display = "none";
+    }
+  } else {
+    if (activeDashboard.indexOf("vstat") == 0) {
+      // Handles switching grids for vstats dashboards
+      const activeDashboardElem = document.getElementById(activeDashboard);
+      const activeGrid = activeDashboardElem
+        .querySelector(".vstats-grid-container.active-grid");
+      let nextGrid = activeGrid.nextElementSibling;
+      if (nextGrid == null) {
+        const gridGroupContainer = activeGrid.parentElement;
+        nextGrid = gridGroupContainer.firstElementChild;
+      }
+      activeGrid.classList.remove("active-grid");
+      nextGrid.classList.add("active-grid");
+    }
   }
 }
 
