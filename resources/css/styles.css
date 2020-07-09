@@ -196,22 +196,22 @@ body {
   transform: rotate(-180deg) scale(.5);
 }
 
-body.menu-open #menu-button {
+body[menu="open"] #menu-button {
   opacity: 0;
   transform: rotate(180deg) scale(.5);
 }
 
-body.menu-open #menu-button-x {
+body[menu="open"] #menu-button-x {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
 
-body.menu-open #menu-button,
-body.menu-open #menu-button-x {
+body[menu="open"] #menu-button,
+body[menu="open"] #menu-button-x {
   transition: opacity .3s, transform .3s;
 }
 
-body.menu-open .icon-bar {
+body[menu="open"] .icon-bar {
   color: white;
 }
 
@@ -231,7 +231,7 @@ body.menu-open .icon-bar {
   visibility: hidden;
 }
 
-body.menu-open .overlay {
+body[menu="open"] .overlay {
   opacity: 1;
   transition: opacity 150ms linear;
   visibility: visible;

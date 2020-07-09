@@ -228,12 +228,12 @@ function goToCarouselItem(index) {
 }
 
 function hideMenu() {
-  document.body.classList.remove("menu-open")
+  document.body.setAttribute("menu", "open");
   isMenuOpen = false;
 }
 
 function showMenu() {
-  document.body.classList.add("menu-open");
+  document.body.removeAttribute("menu");
   isMenuOpen = true;
 }
 
