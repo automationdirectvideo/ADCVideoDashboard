@@ -242,11 +242,14 @@ body {
 
 .menu-circle {
   background-color: #777;
+  border-radius: 50%;
+  -webkit-box-shadow: 3px 3px 9px 4px #555;
+  -moz-box-shadow:    3px 3px 9px 4px #555;
+  box-shadow:         3px 3px 9px 4px #555;
   float: left;
   height: 80vh;
+  transform: translateX(-70%);
   width: 80vh;
-  shape-outside: circle(55% at -20%);
-  clip-path: circle(50% at -20%);
 }
 
 .menu-item {
