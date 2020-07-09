@@ -260,7 +260,7 @@ body {
 
 .menu-item::before {
   color: black;
-  content: '➤  ';
+  content: '\27A4  ';
   opacity: 0;
   transition: visibility 0s 150ms, opacity 150ms linear;
   visibility: hidden;
