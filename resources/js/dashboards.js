@@ -228,14 +228,12 @@ function goToCarouselItem(index) {
 }
 
 function hideMenu() {
-  document.getElementById("menu-overlay").classList.remove("open");
-  document.getElementById("menu-button-container").classList.remove("open");
+  document.body.classList.remove("menu-open")
   isMenuOpen = false;
 }
 
 function showMenu() {
-  document.getElementById("menu-overlay").classList.add("open");
-  document.getElementById("menu-button-container").classList.add("open");
+  document.body.classList.add("menu-open");
   isMenuOpen = true;
 }
 

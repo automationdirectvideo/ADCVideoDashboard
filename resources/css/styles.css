@@ -194,19 +194,23 @@ body {
   transform: rotate(-180deg) scale(.5);
 }
 
-#menu-button-container.open #menu-button {
+body.menu-open #menu-button {
   opacity: 0;
   transform: rotate(180deg) scale(.5);
 }
 
-#menu-button-container.open #menu-button-x {
+body.menu-open #menu-button-x {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
 
-#menu-button-container.open #menu-button,
-#menu-button-container.open #menu-button-x {
+body.menu-open #menu-button,
+body.menu-open #menu-button-x {
   transition: opacity .3s, transform .3s;
+}
+
+body.menu-open .icon-bar {
+  color: white;
 }
 
 .overlay {
@@ -225,7 +229,7 @@ body {
   visibility: hidden;
 }
 
-.overlay.open {
+body.menu-open .overlay {
   opacity: 1;
   transition: opacity 150ms linear;
   visibility: visible;
@@ -243,9 +247,7 @@ body {
 .menu-circle {
   background-color: #777;
   border-radius: 50%;
-  -webkit-box-shadow: 3px 3px 9px 4px #555;
-  -moz-box-shadow:    3px 3px 9px 4px #555;
-  box-shadow:         3px 3px 9px 4px #555;
+  box-shadow: 3px 3px 9px 4px #333;
   float: left;
   height: 80vh;
   transform: translateX(-70%);
