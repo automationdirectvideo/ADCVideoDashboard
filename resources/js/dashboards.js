@@ -228,12 +228,12 @@ function goToCarouselItem(index) {
 }
 
 function hideMenu() {
-  document.body.setAttribute("menu", "open");
+  document.body.removeAttribute("menu");
   isMenuOpen = false;
 }
 
 function showMenu() {
-  document.body.removeAttribute("menu");
+  document.body.setAttribute("menu", "open");
   isMenuOpen = true;
 }
 
