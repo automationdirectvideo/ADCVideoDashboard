@@ -2,12 +2,14 @@ function loadSignedIn() {
   addDotsToLoadingText();
   const homeButton = document.getElementById("home-button");
   const controlPanelButton = document.getElementById("control-panel-button");
+  const menuButtonContainer = document.getElementById("menu-button-container");
   homeButton.style.display = "inline";
   controlPanelButton.style.display = "inline";
+  menuButtonContainer.style.display = "initial";
   initializeUpdater();
   loadDashboards();
   updateTheme(0);
-  createSwapGraphListeners();
+  createShortcutListeners();
 }
 
 /**
@@ -127,10 +129,13 @@ function updateDashboards() {
   }
 }
 
-function createSwapGraphListeners() {
+function createShortcutListeners() {
   document.addEventListener("keyup", function (e) {
     if (e.key.toUpperCase() == "V") {
       swapDashboardGraphs();
+    } else if (e.key.toUpperCase() == "H" && e.altKey &&
+      gapi.auth2.getAuthInstance().isSignedIn.get()) {
+      window.location = "index.html";
     }
   });
 }

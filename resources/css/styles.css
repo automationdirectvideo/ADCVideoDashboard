@@ -169,6 +169,165 @@ body {
   padding: 0.5rem 1rem;
 }
 
+/*----- Dashboard Section Menu -----*/
+
+#menu-button-container {
+  left: 1vw;
+  position: absolute;
+  top: 1vh;
+  z-index: 4;
+}
+
+#menu-button, #menu-button-x {
+  cursor: pointer;
+  font-size: 1.5rem;
+  left: 0;
+  position: absolute;
+  top: 0;
+  transition: opacity .3s, transform .3s;
+}
+
+#menu-button-x {
+  color: white;
+  font-size: 1.7rem;
+  opacity: 0;
+  transform: rotate(-180deg) scale(.5);
+}
+
+#menu-button-container.open #menu-button {
+  opacity: 0;
+  transform: rotate(180deg) scale(.5);
+}
+
+#menu-button-container.open #menu-button-x {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+
+#menu-button-container.open #menu-button,
+#menu-button-container.open #menu-button-x {
+  transition: opacity .3s, transform .3s;
+}
+
+.overlay {
+  background-color: rgba(0,0,0,0.9);
+  bottom: 0;
+  height: 100%; 
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: 3;
+
+  opacity: 0;
+  transition: visibility 0s 150ms, opacity 150ms linear;
+  visibility: hidden;
+}
+
+.overlay.open {
+  opacity: 1;
+  transition: opacity 150ms linear;
+  visibility: visible;
+}
+
+.menu-container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  width: 50%;
+  height: 80vh;
+}
+
+.menu-circle {
+  background-color: #777;
+  float: left;
+  height: 80vh;
+  width: 80vh;
+  shape-outside: circle(55% at -20%);
+  clip-path: circle(50% at -20%);
+}
+
+.menu-item {
+  color: white;
+  font-size: 3rem;
+  margin: 0;
+  position: absolute;
+  text-decoration: none;
+  transition: font-size 150ms linear;
+}
+
+.menu-item::before {
+  color: black;
+  content: '➤  ';
+  opacity: 0;
+  transition: visibility 0s 150ms, opacity 150ms linear;
+  visibility: hidden;
+}
+
+.menu-item:hover::before, .menu-item:focus::before {
+  opacity: 1;
+  transition: opacity 150ms linear;
+  visibility: visible;
+}
+
+.menu-item:hover, .menu-item:focus {
+  font-size: 3.2rem;
+  outline: none;
+  text-decoration: none;
+  transition: font-size 150ms linear;
+}
+
+.menu-item.item-1 {
+  color: #f8f9fa;
+  left: 8%;
+  top: 25%;
+}
+
+.menu-item.item-1:hover, .menu-item.item-1:focus {
+  color: #e2e6ea;
+  top: calc(25% - 0.1rem);
+}
+
+.menu-item.item-2 {
+  color: powderblue;
+  left: 12%;
+  top: 39%;
+}
+
+.menu-item.item-2:hover, .menu-item.item-2:focus {
+  color: #77c9d4;
+  top: calc(39% - 0.1rem);
+}
+
+.menu-item.item-3 {
+  bottom: 39%;
+  color: #b7e4b7;
+  left: 12%;
+}
+
+.menu-item.item-3:hover, .menu-item.item-3:focus {
+  bottom: calc(39% - 0.2rem);
+  color: #7ece7e;
+}
+
+.menu-item.item-4 {
+  bottom: 25%;
+  color: palegoldenrod;
+  left: 8%;
+}
+
+.menu-item.item-4:hover, .menu-item.item-4:focus {
+  bottom: calc(25% - 0.2rem);
+  color: #e2d86a;
+}
+
+.menu-item-icon {
+  margin-right: 3rem;
+}
+
+
 /*----- Grid -----*/
 
 .grid-container, .vstats-grid-container {

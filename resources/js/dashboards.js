@@ -194,8 +194,10 @@ function pauseDashboard() {
 }
 
 function playDashboard() {
+  let pauseText = document.getElementById("pause-text");
   let playText = document.getElementById("play-text");
   $(".dashboard-carousel").carousel('cycle');
+  pauseText.style.display = "none";
   playText.style.display = "initial";
   setTimeout(function () {
     if (playText.offsetHeight != 0) {
@@ -223,6 +225,62 @@ function temporarilyToggleDashboardPause(bool) {
 
 function goToCarouselItem(index) {
   $(".carousel-container.active > .carousel").carousel(index);
+}
+
+function hideMenu() {
+  document.getElementById("menu-overlay").classList.remove("open");
+  document.getElementById("menu-button-container").classList.remove("open");
+  isMenuOpen = false;
+}
+
+function showMenu() {
+  document.getElementById("menu-overlay").classList.add("open");
+  document.getElementById("menu-button-container").classList.add("open");
+  isMenuOpen = true;
+}
+
+function toggleMenuVisibility() {
+  if (isMenuOpen) {
+    hideMenu();
+  } else {
+    showMenu();
+  }
+}
+
+function nextMenuItem() {
+  switchMenuItem(1);
+}
+
+function prevMenuItem() {
+  switchMenuItem(-1);
+}
+
+function switchMenuItem(direction) {
+  let menuGroup = document.getElementById("menu-group");
+  let numMenuItems = menuGroup.children.length;
+  let activeMenuItem = document.activeElement;
+  let activeNumber = parseInt(activeMenuItem.getAttribute("menu-index"));
+  // When no menu item is focused, activeNumber is NaN
+  if (isNaN(activeNumber)) {
+    if (direction > 0) {
+      activeNumber = -1;
+    } else {
+      activeNumber = 0;
+    }
+  }
+  // Calculates the value of the next menu-item
+  let next = activeNumber + direction;
+  let nextActiveNumber = ((next % numMenuItems) + numMenuItems) % numMenuItems;
+  let nextMenuItem =
+    document.querySelector(`.menu-item[menu-index='${nextActiveNumber}']`);
+  nextMenuItem.focus();
+}
+
+function selectMenuItem(number) {
+  const menuItem = document.querySelector(`.menu-item.item-${number}`);
+  if (menuItem) {
+    menuItem.focus();
+  }
 }
 
 function addDotsToLoadingText() {
@@ -281,38 +339,54 @@ function createEventListeners() {
   // NOTE: other keyboard shortcuts are implemented in the individual dashboard
   // files. These shortcuts apply to all dashboard pages
   document.addEventListener("keyup", function (e) {
-    if (e.key == "ArrowLeft") {
-      carouselPrev();
-    } else if (e.key == "ArrowRight") {
-      carouselNext();
-    } else if (e.which == 32) {
-      // Space Bar
-      toggleDashboardPause();
-    } else if (e.key == "F2") {
-      signIn();
-    } else if (e.key.toUpperCase() == "A") {
-      goToCarouselItem(9);
-    } else if (e.key.toUpperCase() == "B") {
-      goToCarouselItem(10);
-    } else if (e.key.toUpperCase() == "C") {
-      goToCarouselItem(11);
-    } else if (e.key.toUpperCase() == "D") {
-      goToCarouselItem(12);
-    } else if (e.key.toUpperCase() == "E") {
-      goToCarouselItem(13);
-    } else if (e.key.toUpperCase() == "F") {
-      goToCarouselItem(14);
-    } else if (!isNaN(e.key) && e.which != 32) {
-      if (e.ctrlKey || e.altKey) {
-        goToCarouselItem(parseInt(e.key) + 9);
-      } else {
-        goToCarouselItem(parseInt(e.key) - 1);
-      }
-    } else if (e.key.toUpperCase() == "U" && e.altKey &&
+    if (e.key.toUpperCase() == "M" &&
       gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      updateDashboards();
-    } else if (e.key.toUpperCase() == "L" && e.altKey) {
-      loadDashboards();
+      toggleMenuVisibility();
+    }
+    if (isMenuOpen) {
+      // Keyboard shortcuts when the menu is open
+      if (!isNaN(e.key) && e.which != 32) {
+        selectMenuItem(e.key);
+      } else if (e.key == "ArrowDown") {
+        nextMenuItem();
+      } else if (e.key == "ArrowUp") {
+        prevMenuItem();
+      }
+    } else {
+      // Normal keyboard shortcuts
+      if (e.key == "ArrowLeft") {
+        carouselPrev();
+      } else if (e.key == "ArrowRight") {
+        carouselNext();
+      } else if (e.which == 32) {
+        // Space Bar
+        toggleDashboardPause();
+      } else if (e.key == "F2") {
+        signIn();
+      } else if (e.key.toUpperCase() == "A") {
+        goToCarouselItem(9);
+      } else if (e.key.toUpperCase() == "B") {
+        goToCarouselItem(10);
+      } else if (e.key.toUpperCase() == "C") {
+        goToCarouselItem(11);
+      } else if (e.key.toUpperCase() == "D") {
+        goToCarouselItem(12);
+      } else if (e.key.toUpperCase() == "E") {
+        goToCarouselItem(13);
+      } else if (e.key.toUpperCase() == "F") {
+        goToCarouselItem(14);
+      } else if (!isNaN(e.key) && e.which != 32) {
+        if (e.ctrlKey || e.altKey) {
+          goToCarouselItem(parseInt(e.key) + 9);
+        } else {
+          goToCarouselItem(parseInt(e.key) - 1);
+        }
+      } else if (e.key.toUpperCase() == "U" && e.altKey &&
+        gapi.auth2.getAuthInstance().isSignedIn.get()) {
+        updateDashboards();
+      } else if (e.key.toUpperCase() == "L" && e.altKey) {
+        loadDashboards();
+      }
     }
   });
   $(".carousel").on("slide.bs.carousel", function (e) {
@@ -323,6 +397,9 @@ function createEventListeners() {
     startIndicator.classList.remove("active");
     endIndicator.classList.add("active");
   });
+  $(".menu-item").on("mousemove", function () {
+    document.activeElement.blur();
+  })
   
   window.addEventListener('resize', function () {
     retry(resizeGraphs, 5, 5000);
@@ -334,5 +411,6 @@ initializeCarousels();
 createEventListeners();
 
 let isLoading = false;
+let isMenuOpen = false;
 let isPaused = false;
 let isUpdating = false;

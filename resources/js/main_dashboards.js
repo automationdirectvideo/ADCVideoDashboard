@@ -5,9 +5,11 @@ function loadSignedIn() {
   const signinModalButton = document.getElementById("signin-modal-button");
   const signoutModalButton = document.getElementById("signout-modal-button");
   const controlPanelButton = document.getElementById("control-panel-button");
+  const menuButtonContainer = document.getElementById("menu-button-container");
   signinModalButton.style.display = "none";
   signoutModalButton.style.display = "inline";
   controlPanelButton.style.display = "inline";
+  menuButtonContainer.style.display = "initial";
   initializeUpdater();
   loadDashboards();
   updateTheme(0);

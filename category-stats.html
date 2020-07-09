@@ -26,6 +26,29 @@
     <script type="text/javascript" src="resources/js/values.min.js"></script>
   </head>
   <body style="overflow-y: hidden;">
+    <div class="overlay" id="menu-overlay" onclick="hideMenu()">
+      <div class="menu-container">
+        <div class="menu-circle"></div>
+        <div id="menu-group">
+          <a class="menu-item item-1" menu-index="0" href="index.html">
+            <i class="fas fa-home menu-item-icon"></i>
+            <span class="menu-item-text">Main Dashboards</span>
+          </a>
+          <a class="menu-item item-2" menu-index="1" href="#" onclick="hideMenu()">
+            <i class="fas fa-chart-pie menu-item-icon"></i>
+            <span class="menu-item-text">Product Category Statistics</span>
+          </a>
+          <a class="menu-item item-3" menu-index="2" href="videographer-stats.html">
+            <i class="fas fa-video menu-item-icon"></i>
+            <span class="menu-item-text">Videographer Statistics</span>
+          </a>
+          <a class="menu-item item-4" menu-index="3" href="contest-stats.html">
+            <i class="fas fa-gift menu-item-icon"></i>
+            <span class="menu-item-text">Contest Performance</span>
+          </a>
+        </div>
+      </div>
+    </div>
     <div class="main-wrapper">
       <div class="main" id="main-container">
         <div class="container my-1 position-relative">
@@ -37,6 +60,10 @@
               <i class="fas fa-home" id="home-button" style="display:none;" onclick="window.location='index.html';" title="Home"></i>
             </li>
           </ul>
+          <div id="menu-button-container" style="display:none;">
+            <i class="fa fa-bars" id="menu-button" onclick="toggleMenuVisibility()"></i>
+            <i class="fa fa-times" id="menu-button-x" onclick="toggleMenuVisibility()"></i>
+          </div>
           <div class="loading-area">
             <h6 id="loading-text"><i class="fas fa-spinner fa-pulse mr-1" style="font-size:1em;"></i>Loading</h6>
           </div>
