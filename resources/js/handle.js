@@ -373,10 +373,10 @@ function displayViewsByDeviceType(response) {
       }
     },
     margin: {
+      b: 20,
       l: 0,
       r: 0,
       t: 0,
-      b: 20,
       pad: 4
     },
     showlegend: false
@@ -409,11 +409,77 @@ function displayViewsByDeviceType(response) {
 // Creates views by state cholorpleth map in platform dashboard
 function displayViewsByState(response) {
   const rows = response.result.rows;
-  var locations = [];
-  var z = []
-  var labels = [];
-  for (var i = 0; i < rows.length; i++) {
-    locations.push(rows[i][0].substr(3));
+
+  const stateAbbrToName = {
+    "AL": "Alabama",
+    "AK": "Alaska",
+    "AS": "American Samoa",
+    "AZ": "Arizona",
+    "AR": "Arkansas",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "DC": "District Of Columbia",
+    "FM": "Federated States Of Micronesia",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "GU": "Guam",
+    "HI": "Hawaii",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "IA": "Iowa",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "ME": "Maine",
+    "MH": "Marshall Islands",
+    "MD": "Maryland",
+    "MA": "Massachusetts",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MS": "Mississippi",
+    "MO": "Missouri",
+    "MT": "Montana",
+    "NE": "Nebraska",
+    "NV": "Nevada",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NY": "New York",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "MP": "Northern Mariana Islands",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PW": "Palau",
+    "PA": "Pennsylvania",
+    "PR": "Puerto Rico",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VT": "Vermont",
+    "VI": "Virgin Islands",
+    "VA": "Virginia",
+    "WA": "Washington",
+    "WV": "West Virginia",
+    "WI": "Wisconsin",
+    "WY": "Wyoming"
+  };
+
+  let locations = [];
+  let stateNames = [];
+  let z = []
+  let labels = [];
+  for (let i = 0; i < rows.length; i++) {
+    let location = rows[i][0].substr(3);
+    locations.push(location);
+    stateNames.push(stateAbbrToName[location]);
     z.push(rows[i][1]);
     labels.push(numberWithCommas(rows[i][1]) + " views")
   }
@@ -423,48 +489,55 @@ function displayViewsByState(response) {
   const height = graphHeight * document.documentElement.clientHeight;
   const width = graphWidth * document.documentElement.clientWidth;
   const fontSize = Math.floor(0.0093 * document.documentElement.clientWidth);
+  const hoverFontSize = Math.floor(0.01 * document.documentElement.clientWidth);
 
   let data = [{
-    type: 'choropleth',
-    locationmode: 'USA-states',
-    locations: locations,
-    z: z,
-    text: labels,
-    hovertemplate: "%{location}<br>%{text}",
-    name: "Views By State",
     autocolorscale: true,
     colorbar: {
       tickfont: {
         size: fontSize
       }
-    }
+    },
+    customdata: stateNames,
+    hovertemplate: "<b>%{customdata}</b><br>%{text}<extra></extra>",
+    locationmode: 'USA-states',
+    locations: locations,
+    name: "Views By State",
+    text: labels,
+    type: 'choropleth',
+    z: z
   }];
 
   let layout = {
     height: height,
     width: width,
     geo: {
-      scope: 'usa',
       countrycolor: 'rgb(255, 255, 255)',
-      showland: true,
-      landcolor: 'rgb(217, 217, 217)',
-      showlakes: true,
       lakecolor: 'rgb(255, 255, 255)',
+      landcolor: 'rgb(217, 217, 217)',
+      scope: 'usa',
+      showlakes: true,
+      showland: true,
       subunitcolor: 'rgb(255, 255, 255)'
     },
+    hoverlabel: {
+      font: {
+        size: hoverFontSize
+      }
+    },
     margin: {
+      b: 10,
       l: 0,
       r: 0,
       t: 0,
-      b: 10,
-      pad: 4
+      pad: 4,
     }
   };
 
   const config = {
-    scrollZoom: false,
     displayModeBar: false,
-    responsive: true
+    responsive: true,
+    scrollZoom: false
   };
 
   const theme = getCurrentDashboardTheme("platform");
@@ -556,10 +629,10 @@ function displayViewsByTrafficSource(response) {
       }
     },
     margin: {
+      b: 10,
       l: 0,
       r: 0,
       t: 0,
-      b: 10,
       pad: 4
     },
     showlegend: false
