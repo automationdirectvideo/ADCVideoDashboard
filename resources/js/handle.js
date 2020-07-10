@@ -321,7 +321,7 @@ function displayWatchTimeBySubscribedStatus(response) {
 
 // Creates views by device type graph in platform dashboard
 function displayViewsByDeviceType(response) {
-  var rows = response.result.rows;
+  let rows = response.result.rows;
   const temp = rows[1];
   rows[1] = rows[3];
   rows[3] = temp;
@@ -332,9 +332,9 @@ function displayViewsByDeviceType(response) {
     "TV": "TV",
     "GAME_CONSOLE": "Game<br>Console"
   };
-  var values = [];
-  var labels = [];
-  for (var i = 0; i < rows.length; i++) {
+  let values = [];
+  let labels = [];
+  for (let i = 0; i < rows.length; i++) {
     values.push(rows[i][1]);
     labels.push(labelConversion[rows[i][0]]);
   }
@@ -344,39 +344,47 @@ function displayViewsByDeviceType(response) {
   const height = graphHeight * document.documentElement.clientHeight;
   const width = graphWidth * document.documentElement.clientWidth;
   const fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
+  const hoverFontSize = Math.floor(0.01 * document.documentElement.clientWidth);
 
   const data = [{
     values: values,
     labels: labels,
-    type: 'pie',
+    direction: 'clockwise',
+    hovertemplate: "<b>%{label}</b><br>%{value} views<br>" + 
+      "%{percent} of total views<extra></extra>",
+    rotation: -120,
     sort: false,
     textinfo: 'label+percent',
     textposition: ["inside", "outside", "outside", "inside", "outside"],
-    rotation: -120,
-    direction: 'clockwise'
+    type: 'pie'
   }];
 
   let layout = {
     height: height,
     width: width,
+    automargin: true,
+    autosize: true,
     font: {
       size: fontSize
     },
-    automargin: true,
-    autosize: true,
-    showlegend: false,
+    hoverlabel: {
+      font: {
+        size: hoverFontSize
+      }
+    },
     margin: {
       l: 0,
       r: 0,
       t: 0,
       b: 20,
       pad: 4
-    }
+    },
+    showlegend: false
   };
 
   const config = {
-    staticPlot: true,
-    responsive: true
+    responsive: true,
+    staticPlot: true
   };
 
   const theme = getCurrentDashboardTheme("platform");
@@ -526,11 +534,12 @@ function displayViewsByTrafficSource(response) {
   const data = [{
     values: values,
     labels: labels,
-    hovertemplate: "<b>%{label}</b><br>%{value} views<br>%{percent} of total views<extra></extra>",
-    type: 'pie',
+    hovertemplate:  "<b>%{label}</b><br>%{value} views<br>" + 
+      "%{percent} of total views<extra></extra>",
+    rotation: 90,
     textinfo: 'label+percent',
     textposition: "inside",
-    rotation: 90
+    type: 'pie'
   }];
 
   let layout = {
@@ -557,8 +566,8 @@ function displayViewsByTrafficSource(response) {
   };
 
   const config = {
-    staticPlot: true,
-    responsive: true
+    responsive: true,
+    staticPlot: true
   };
 
   const theme = getCurrentDashboardTheme("platform");
