@@ -170,7 +170,7 @@ function getCurrMonth() {
  */
 function getDateFromDaysAgo(numDaysAgo) {
   const today = new Date();
-  var priorDate = new Date().setDate(today.getDate() - numDaysAgo);
+  let priorDate = new Date().setDate(today.getDate() - numDaysAgo);
   priorDate = new Date(priorDate);
   return getYouTubeDateFormat(priorDate);
 }

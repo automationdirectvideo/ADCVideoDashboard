@@ -296,4 +296,4 @@ const joinDate = "2008-04-11";
 
 // Array to keep track of which divs are auto-scrolling to prevent declaring
 // a new AutoDivScroll on a div multiple times
-var autoScrollDivs = [];
+let autoScrollDivs = [];
