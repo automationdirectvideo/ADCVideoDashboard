@@ -967,43 +967,54 @@ function displayVideoBasicStats(response, dashboardIds, videoData) {
 // Creates daily views graph for a video in top video dashboard
 function displayVideoDailyViews(response, dashboardId) {
   if (response) {
-    let rows = response.result.rows;
-    var xValues = [];
-    var yValues = [];
+    const rows = response.result.rows;
+    let xValues = [];
+    let yValues = [];
+    let labels = [];
 
-    for (var i = 0; i < rows.length; i++) {
+    for (let i = 0; i < rows.length; i++) {
       xValues.push(rows[i][0]);
-      yValues.push(rows[i][1]);
+      const y = rows[i][1];
+      yValues.push(y);
+      if (y == 1) {
+        labels.push(`${y} view`);
+      } else {
+        labels.push(`${y} views`);
+      }
     }
 
-    var graphHeight = 0.2280;
-    var graphWidth = 0.4681;
-    var height = graphHeight * document.documentElement.clientHeight;
-    var width = graphWidth * document.documentElement.clientWidth;
-    var fontSize = Math.floor(0.0104 * document.documentElement.clientWidth);
-    var xaxis = {
+    const graphHeight = 0.2280;
+    const graphWidth = 0.4681;
+    const height = graphHeight * document.documentElement.clientHeight;
+    const width = graphWidth * document.documentElement.clientWidth;
+    const fontSize = Math.floor(0.0104 * document.documentElement.clientWidth);
+    const hoverFontSize =
+      Math.floor(0.01 * document.documentElement.clientWidth);
+    let xaxis = {
       automargin: true,
       fixedrange: true,
       tickangle: -60,
       tickformat: '%-m/%d',
       type: 'date'
     };
-    var yaxis = {
+    let yaxis = {
       automargin: true,
       fixedrange: true,
       showline: true,
       showticklabels: true,
       title: 'Views'
     };
-    var automargin = {
+    let automargin = {
       xaxis: xaxis,
       yaxis: yaxis
     };
 
-    var data = [{
+    const data = [{
       x: xValues,
       y: yValues,
+      customdata: labels,
       fill: 'tozeroy',
+      hovertemplate: "%{customdata}<extra></extra>",
       marker: {
         color: 'rgb(255,0,0)'
       },
@@ -1011,21 +1022,27 @@ function displayVideoDailyViews(response, dashboardId) {
       type: 'scatter'
     }];
 
-    var layout = {
+    let layout = {
       height: height,
       width: width,
       font: {
         size: fontSize
       },
+      hoverlabel: {
+        font: {
+          size: hoverFontSize
+        }
+      },
       margin: {
         b: 0,
+        r: 0,
         t: 0
       },
       xaxis: xaxis,
       yaxis: yaxis
     };
 
-    var config = {
+    const config = {
       displayModeBar: false,
       responsive: true
     };
