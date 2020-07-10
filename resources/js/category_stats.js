@@ -633,27 +633,29 @@ function displayTopCategoriesGraphTwo(categoryStats) {
 
 function displayTopCategoriesGraphThree(categoryStats) {
   categoryStats = categoryStats || lsGet("categoryStats");
-  var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
+  const excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
   let minStrength = 1;
   categoryStats.forEach(category => {
     if (category.root) {
-      let strength = category.strength;
+      const strength = category.strength;
       if (strength < minStrength) {
         minStrength = strength;
       }
     }
   });
 
-  var graphHeight = 0.8583;
-  var graphWidth = 0.9528;
-  var height = graphHeight * document.documentElement.clientHeight;
-  var width = graphWidth * document.documentElement.clientWidth;
-  var titleFontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
-  var labelFontSize = Math.floor(0.0100 * document.documentElement.clientWidth);
-  var legendFontSize =
+  const graphHeight = 0.8583;
+  const graphWidth = 0.9528;
+  const height = graphHeight * document.documentElement.clientHeight;
+  const width = graphWidth * document.documentElement.clientWidth;
+  const titleFontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
+  const labelFontSize = Math.floor(0.0100 * document.documentElement.clientWidth);
+  const legendFontSize =
     Math.floor(0.0100 * document.documentElement.clientWidth);
-  var axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
+  const axisTitleSize = Math.floor(0.013 * document.documentElement.clientWidth);
+  const hoverFontSize =
+    Math.floor(0.01 * document.documentElement.clientWidth);
 
   let viewsList = [];
   let avgViewsList = [];
@@ -663,13 +665,13 @@ function displayTopCategoriesGraphThree(categoryStats) {
   let indices = [];
   let data = [];
 
-  let labelConversion = categoryColors;
+  const labelConversion = categoryColors;
 
-  for (var i = 0; i < categoryStats.length; i++) {
+  for (let i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
     if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
+      for (let j = 0; j < excludeKeys.length; j++) {
         if (category.name.includes(excludeKeys[j])) {
           include = false;
         }
@@ -716,15 +718,18 @@ function displayTopCategoriesGraphThree(categoryStats) {
     }
   }
 
-  var layout = {
+  let layout = {
     height: height,
     width: width,
     font: {
       size: labelFontSize
     },
+    hoverlabel: {
+      font: {
+        size: hoverFontSize
+      }
+    },
     hovermode: "closest",
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
     legend: {
       bgcolor: "#eeeeee",
       font: {
@@ -732,6 +737,8 @@ function displayTopCategoriesGraphThree(categoryStats) {
       },
       y: 0.5
     },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
     title: {
       font: {
         size: titleFontSize
@@ -764,9 +771,9 @@ function displayTopCategoriesGraphThree(categoryStats) {
     }
   };
 
-  let config = {
-    scrollZoom: false,
+  const config = {
     displayModeBar: false,
+    scrollZoom: false
   }
 
   const graphIds = getDashboardGraphIds("product-categories");
