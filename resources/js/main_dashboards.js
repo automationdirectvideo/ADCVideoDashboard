@@ -13,6 +13,7 @@ function loadSignedIn() {
   initializeUpdater();
   loadDashboards();
   updateTheme(0);
+  createShortcutListeners();
 }
 
 function loadSignedOut() {
@@ -276,6 +277,17 @@ function updateDashboards() {
         setUpdatingStatus(false);
       });
   }
+}
+
+function createShortcutListeners() {
+  document.addEventListener("keyup", function (e) {
+    if (!isMenuOpen) {
+      if (e.key.toUpperCase() == "R" && e.altKey) {
+        console.log("Reload Intro Animation");
+        reloadIntroAnimation();
+      }
+    }
+  });
 }
 
 // Update odometers in real time stats dashboard

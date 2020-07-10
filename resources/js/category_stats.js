@@ -142,11 +142,13 @@ function updateDashboards() {
 
 function createShortcutListeners() {
   document.addEventListener("keyup", function (e) {
-    if (e.key.toUpperCase() == "N" || e.key.toUpperCase() == "V") {
-      swapNormalCharts();
-    } else if (e.key.toUpperCase() == "H" && e.altKey &&
+    if (e.key.toUpperCase() == "H" && e.altKey &&
       gapi.auth2.getAuthInstance().isSignedIn.get()) {
       window.location = "index.html";
+    } else if (!isMenuOpen) {
+      if (e.key.toUpperCase() == "N" || e.key.toUpperCase() == "V") {
+        swapNormalCharts();
+      }
     }
   });
 }
