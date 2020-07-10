@@ -360,10 +360,13 @@ function loadIntroAnimation() {
 function reloadIntroAnimation() {
   const introImage = document.getElementById("intro-img");
   const introVideo = document.getElementById("intro-video");
+  introVideo.style.display = "none";
+  const newIntroVideo = document.createElement("div");
   const container = document.getElementById("animation-container");
   introImage.style.display = "";
   introVideo.remove();
-  prependElement(container, introVideo);
+  prependElement(container, newIntroVideo);
+  newIntroVideo.outerHTML = introVideo.outerHTML;
   loadIntroAnimation();
 }
 
