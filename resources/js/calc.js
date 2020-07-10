@@ -655,10 +655,17 @@ function loadCardPerformanceDashboard() {
         Math.floor(0.03 * document.documentElement.clientWidth);
       const bottomMargin =
         Math.floor(0.0104 * document.documentElement.clientWidth);
+      const hoverFontSize =
+        Math.floor(0.01 * document.documentElement.clientWidth);
 
       const cardLayout = {
         "height": height,
         "width": width,
+        "hoverlabel": {
+          "font": {
+            "size": hoverFontSize
+          }
+        },
         "legend": {
           "bgcolor": "#eeeeee",
           "font": {
@@ -726,8 +733,8 @@ function loadCardPerformanceDashboard() {
       };
 
       const config = {
-        "scrollZoom": false,
         "displayModeBar": false,
+        "scrollZoom": false
       }
 
       // Creates a copy of `cardLayout`
