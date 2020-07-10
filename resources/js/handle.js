@@ -667,31 +667,33 @@ function displayViewsByTrafficSource(response) {
 
 function displayTopCategoriesGraphOne(categoryStats) {
   categoryStats = categoryStats || lsGet("categoryStats");
-  var excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
+  let excludeKeys = ["SPECIAL CATEGORIES", "OTHER", "MISC"];
 
-  var total = 0;
+  let total = 0;
   let otherTotal = 0;
-  var graphHeight = 0.8583;
-  var graphWidth = 0.9528;
-  var height = graphHeight * document.documentElement.clientHeight;
-  var width = graphWidth * document.documentElement.clientWidth;
-  var titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
-  var labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
-  var legendFontSize =
+  const graphHeight = 0.8583;
+  const graphWidth = 0.9528;
+  const height = graphHeight * document.documentElement.clientHeight;
+  const width = graphWidth * document.documentElement.clientWidth;
+  const titleFontSize = Math.floor(0.0234 * document.documentElement.clientWidth);
+  const labelFontSize = Math.floor(0.0200 * document.documentElement.clientWidth);
+  const legendFontSize =
     Math.floor(0.0125 * document.documentElement.clientWidth);
-  var values = [];
-  var labels = [];
-  var colors = [];
-  var type = "views";
-  var cutoff = 0.025;
+    
+  const hoverFontSize = Math.floor(0.01 * document.documentElement.clientWidth);
+  let values = [];
+  let labels = [];
+  let colors = [];
+  let type = "views";
+  let cutoff = 0.025;
 
-  var labelConversion = categoryColors;
+  let labelConversion = categoryColors;
 
-  for (var i = 0; i < categoryStats.length; i++) {
+  for (let i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
     if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
+      for (let j = 0; j < excludeKeys.length; j++) {
         if (category.name.includes(excludeKeys[j])) {
           include = false;
         }
@@ -701,11 +703,11 @@ function displayTopCategoriesGraphOne(categoryStats) {
       total += Math.round(category[type]);
     }
   }
-  for (var i = 0; i < categoryStats.length; i++) {
+  for (let i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
     if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
+      for (let j = 0; j < excludeKeys.length; j++) {
         if (category.name.includes(excludeKeys[j])) {
           include = false;
         }
@@ -728,32 +730,36 @@ function displayTopCategoriesGraphOne(categoryStats) {
     colors.push("#5fe0ed");
   }
 
-  var data1 = {
+  const data1 = {
     values: values,
     labels: labels,
-    marker: {
-      colors: colors
-    },
     domain: {
       row: 0,
       column: 0
     },
-    name: "Total Views<br>By Category",
-    title: {
-      text: "Total Views<br>By Category",
+    hoverlabel: {
+      namelength: "-1",
       font: {
-        size: titleFontSize
+        size: hoverFontSize
       }
     },
+    hovertemplate:
+      "<b>%{label}</b><br>%{value} views<br>%{percent}<extra></extra>",
+    marker: {
+      colors: colors
+    },
+    name: "Total Views<br>By Category",
+    rotation: 90,
+    sort: false,
     textinfo: "label",
     textposition: "inside",
-    hoverlabel: {
-      namelength: "-1"
+    title: {
+      font: {
+        size: titleFontSize
+      },
+      text: "Total Views<br>By Category"
     },
-    hovertemplate: "%{label}<br>%{value} views<br>%{percent}",
-    sort: false,
-    type: 'pie',
-    rotation: 90
+    type: 'pie'
   };
 
   // Avg Views Graph
@@ -766,11 +772,11 @@ function displayTopCategoriesGraphOne(categoryStats) {
   type = "avgViews";
   cutoff = 0.025;
 
-  for (var i = 0; i < categoryStats.length; i++) {
+  for (let i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
     if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
+      for (let j = 0; j < excludeKeys.length; j++) {
         if (category.name.includes(excludeKeys[j])) {
           include = false;
         }
@@ -780,11 +786,11 @@ function displayTopCategoriesGraphOne(categoryStats) {
       total += Math.round(category[type]);
     }
   }
-  for (var i = 0; i < categoryStats.length; i++) {
+  for (let i = 0; i < categoryStats.length; i++) {
     let category = categoryStats[i];
     let include = category.root;
     if (include) {
-      for (var j = 0; j < excludeKeys.length; j++) {
+      for (let j = 0; j < excludeKeys.length; j++) {
         if (category.name.includes(excludeKeys[j])) {
           include = false;
         }
@@ -807,46 +813,52 @@ function displayTopCategoriesGraphOne(categoryStats) {
     colors.push("#5fe0ed");
   }
 
-  var data2 = {
+  const data2 = {
     values: values,
     labels: labels,
-    marker: {
-      colors: colors
-    },
     domain: {
       row: 0,
       column: 1
     },
-    name: "Average Views Per Video<br>By Category",
-    title: {
-      text: "Average Views Per Video<br>By Category",
+    hoverlabel: {
+      namelength: "-1",
       font: {
-        size: titleFontSize
+        size: hoverFontSize
       }
     },
+    hovertemplate:"<b>%{label}</b><br>~%{value} views per video<br>" +
+      "%{percent}<extra></extra>",
+    marker: {
+      colors: colors
+    },
+    name: "Average Views Per Video<br>By Category",
+    rotation: 140,
+    sort: false,
     textinfo: "label",
     textposition: "inside",
-    hoverlabel: {
-      namelength: "-1"
+    title: {
+      font: {
+        size: titleFontSize
+      },
+      text: "Average Views Per Video<br>By Category"
     },
-    hovertemplate: "%{label}<br>~%{value} views per video<br>%{percent}",
-    sort: false,
-    type: 'pie',
-    rotation: 140
+    type: 'pie'
   };
 
-  var data = [data2, data1];
+  const data = [data2, data1];
 
-  var layout = {
+  let layout = {
     height: height,
     width: width,
+    automargin: true,
+    autosize: true,
     font: {
       size: labelFontSize
     },
-    automargin: true,
-    autosize: true,
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
+    grid: {
+      columns: 2,
+      rows: 1
+    },
     legend: {
       bgcolor: "#eeeeee",
       font: {
@@ -854,21 +866,19 @@ function displayTopCategoriesGraphOne(categoryStats) {
       },
       y: 0.5
     },
-    grid: {
-      rows: 1,
-      columns: 2
-    },
     margin: {
       b: 5,
       l: 5,
       r: 5,
       t: 5
-    }
+    },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)"
   };
 
-  var config = {
-    staticPlot: true,
-    responsive: true
+  const config = {
+    responsive: true,
+    staticPlot: true
   };
 
   const graphIds = getDashboardGraphIds("product-categories");
