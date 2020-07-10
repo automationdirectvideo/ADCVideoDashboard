@@ -1,5 +1,6 @@
-/* Values needed across the site */
-
+/**
+ * @fileoverview Values needed across the site.
+ */
 const defaultSettings = 
 {
   "categoryGraphs": [
@@ -181,7 +182,12 @@ const defaultSettings =
   },
   "version": 8,
 };
+// Increment the settings version number above when the default settings are
+// updated. This will force users to revert to the default settings the next
+// time that they load the site.
 
+// Object for keeping track of a unique color and word-wrap friendly name for
+// each top-level product category
 const categoryColors = {
   "Programmable Controllers": {
     "name": "Programmable<br>Controllers",
@@ -288,4 +294,6 @@ const categoryColors = {
 // Must be in the form YYYY-MM-DD
 const joinDate = "2008-04-11";
 
+// Array to keep track of which divs are auto-scrolling to prevent declaring
+// a new AutoDivScroll on a div multiple times
 var autoScrollDivs = [];
