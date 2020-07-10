@@ -487,11 +487,11 @@ function displayViewsByState(response) {
 // Creates views by traffic source graph in platform dashboard
 function displayViewsByTrafficSource(response) {
   const rows = response.result.rows;
-  var advertisingViews = 0;
-  var externalViews = 0;
-  var youtubeSearchViews = 0;
-  var relatedViews = 0;
-  var otherViews = 0;
+  let advertisingViews = 0;
+  let externalViews = 0;
+  let youtubeSearchViews = 0;
+  let relatedViews = 0;
+  let otherViews = 0;
   const advertisingSources = ["ADVERTISING", "PROMOTED"];
   const externalSources = ["EXT_URL", "NO_LINK_EMBEDDED", "NO_LINK_OTHER"];
   const youtubeSearchSources = ["YT_SEARCH"];
@@ -521,10 +521,12 @@ function displayViewsByTrafficSource(response) {
   const height = graphHeight * document.documentElement.clientHeight;
   const width = graphWidth * document.documentElement.clientWidth;
   const fontSize = Math.floor(0.0125 * document.documentElement.clientWidth);
+  const hoverFontSize = Math.floor(0.01 * document.documentElement.clientWidth);
 
   const data = [{
     values: values,
     labels: labels,
+    hovertemplate: "<b>%{label}</b><br>%{value} views<br>%{percent} of total views<extra></extra>",
     type: 'pie',
     textinfo: 'label+percent',
     textposition: "inside",
@@ -534,19 +536,24 @@ function displayViewsByTrafficSource(response) {
   let layout = {
     height: height,
     width: width,
+    automargin: true,
+    autosize: true,
     font: {
       size: fontSize
     },
-    automargin: true,
-    autosize: true,
-    showlegend: false,
+    hoverlabel: {
+      font: {
+        size: hoverFontSize
+      }
+    },
     margin: {
       l: 0,
       r: 0,
       t: 0,
       b: 10,
       pad: 4
-    }
+    },
+    showlegend: false
   };
 
   const config = {
