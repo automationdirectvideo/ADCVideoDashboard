@@ -1,69 +1,5 @@
 /* Handles recording data from Google Sheets and saving data to Google Sheets */
 
-function recordYearlyCategoryViews(sheetValues) {
-  let categoryStats = lsGet("categoryStats");
-  let categoryTraces = {};
-  let years = [];
-  for (var row = 1; row < sheetValues.length; row += 2) {
-    let year = sheetValues[row][0].substr(0, 4);
-    years.push(year);
-  }
-  categoryTraces["years"] = years;
-  let yearlyTotals = new Array(years.length).fill(0);
-  for (var column = 1; column < sheetValues[0].length; column++) {
-    let categoryId = sheetValues[0][column];
-    let categoryInfo = false;
-    var index = 0;
-    while (categoryInfo == false && index < categoryStats.length) {
-      if (categoryStats[index]["categoryId"] == categoryId) {
-        categoryInfo = categoryStats[index];
-      }
-      index++;
-    }
-    let root = categoryInfo["root"];
-    if (root && categoryId != "A") {
-      let viewTrace = [];
-      let avgViewTrace = [];
-      let cumulativeViews = [];
-      let cumulativeAvgViewTrace = [];
-      for (var row = 1; row < sheetValues.length; row += 2) {
-        // Get views and numVideos for this year
-        let yearViews = parseInt(sheetValues[row][column]);
-        let numVideos = parseInt(sheetValues[row + 1][column]);
-        viewTrace.push(yearViews);
-        // Calculate cumulative views up to current year
-        let previousSumViews = 0;
-        if (row != 1) {
-          previousSumViews = parseInt(cumulativeViews[((row - 1) / 2) - 1]);
-        }
-        let currentSumViews = previousSumViews + yearViews;
-        cumulativeViews.push(currentSumViews);
-        // Calculate average views for current year & cumulative average view
-        // up to current year
-        let avgView = 0;
-        let cumulativeAvgView = 0;
-        if (numVideos != 0) {
-          avgView = (yearViews / numVideos).toFixed(0);
-          cumulativeAvgView = (currentSumViews / numVideos).toFixed(0);
-        }
-        avgViewTrace.push(avgView);
-        cumulativeAvgViewTrace.push(cumulativeAvgView);
-        // Calculate yearly totals
-        yearlyTotals[(row - 1) / 2] += parseInt(yearViews);
-      }
-      categoryTraces[categoryId] = {
-        "name": categoryInfo["shortName"],
-        "viewTrace": viewTrace,
-        "avgViewTrace": avgViewTrace,
-        "cumulativeViews": cumulativeViews,
-        "cumulativeAvgViewTrace": cumulativeAvgViewTrace
-      };
-    }
-  }
-  categoryTraces["totals"] = yearlyTotals;
-  return categoryTraces;
-}
-
 // Saves categoryStats to Google Sheets
 function saveCategoryStatsToSheets(categoryStats) {
   var values = [
@@ -390,79 +326,94 @@ function saveVideographerViewsToSheets(videographers) {
   return updatePromise;
 }
 
-function getCardPerformanceForCurrMonth() {
-  const [startDate, endDate, month] = getCurrMonth();
-  const request = requestCardPerformance(startDate, endDate, month);
-  return request.then(cardData => {
-    const body = {
-      "values": [cardData]
-    };
-    const row = 3 + monthDiff(new Date(2017, 9), new Date(month));
-    const sheet = "Card Performance!A" + row;
-    return updateSheetData("Stats", sheet, body);
-  });
-}
 
-// Saves top ten videos by views this month to Google Sheets
-function getTopTenVideosForCurrMonth() {
-  const [startDate, endDate, month] = getCurrMonth();
-  const request = requestMostWatchedVideos(startDate, endDate, 20, month);
-  return request.then(response => {
-    const body = {
-      "values": response
+/* Google Sheets API Calls */
+
+function clearSpreadsheet(sheetName, range) {
+  const spreadsheetId = sheetNameToId(sheetName);
+  if (spreadsheetId != "") {
+    const request = {
+      "spreadsheetId": spreadsheetId,
+      "range": range
     };
-    const row = 3 + monthDiff(new Date(2010, 6), new Date(month));
-    const sheet = "Top Ten Videos!A" + row;
-    return updateSheetData("Stats", sheet, body)
+    const sheetPromise = gapi.client.sheets.spreadsheets.values.clear(request)
       .then(response => {
-        return "Updated Top Ten Video Sheet";
+        const successMessage = `Spreadsheet Cleared: ${range}`
+        console.log(successMessage);
+        return Promise.resolve(successMessage);
+      })
+      .catch(err => {
+        const errorMsg = `Unable to get sheet: "${range}"`;
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
       });
-  });
-}
-
-function getVideographerViewsForCurrMonth() {
-  const [startDate, endDate, month] = getCurrMonth();
-  const videographers = lsGet("videographers");
-  return requestVideographerViewsForMonth(videographers, startDate)
-    .then(updatedVideographers => {
-      return saveVideographerViewsToSheets(updatedVideographers);
-    });
-}
-
-async function getVideographerViewsForAllMonths() {
-  isUpdating = true;
-  let startDate = "2010-07-01";
-  const now = new Date();
-  let months = [];
-  while (now - new Date(startDate) >= 4 * 86400000) {
-    months.push(startDate);
-    let prevDate = new Date(startDate);
-    startDate = getYouTubeDateFormat(new Date(prevDate.getUTCFullYear(),
-      prevDate.getUTCMonth() + 1, prevDate.getUTCDate()));
+    return sheetPromise;
+  } else {
+    const errorMsg = `No spreadsheet exists with sheetName: "${sheetName}"`;
+    console.error(errorMsg);
+    const sheetError = new Error(errorMsg);
+    recordError(sheetError);
   }
-  try {
-    let videographers = lsGet("videographers");
-    let index = 0;
-    for (const month of months) {
-      console.log(month);
-      // Each request consists of many calls to the YouTube Analytics API
-      // Making the request for each month all at once would exceed the quota
-      // There is an artificial delay between each call to prevent this
-      videographers =
-        await requestVideographerViewsForMonth(videographers, month);
-      // Wait a few seconds before starting the next request
-      index++;
-      if (index % 10 == 0) {
-        saveVideographerViewsToSheets(videographers);
-      }
-      await delay(8000);
-    }
-    saveVideographerViewsToSheets(videographers);
-  } catch (err) {
-    const errorMsg =
-      "Unable to get videographer monthly views for all months: ";
-    recordError(err, errorMsg);
-  } finally {
-    isUpdating = false;
+}
+
+/**
+ * Gets spreadsheet cells from Google Sheets
+ *
+ * @param {String} sheetName The common name of the Google Sheet
+ * @param {String} range The tab/sheet of the desired sheet
+ * @returns {Promise} Spreadsheet data
+ */
+function requestSpreadsheetData(sheetName, range) {
+  const spreadsheetId = sheetNameToId(sheetName);
+  if (spreadsheetId != "") {
+    const request = {
+      "spreadsheetId": spreadsheetId,
+      "range": range
+    };
+    const sheetPromise = gapi.client.sheets.spreadsheets.values.get(request)
+      .then(response => {
+        console.log(`SpreadsheetData: ${range}`);
+        return Promise.resolve(response.result.values);
+      })
+      .catch(err => {
+        const errorMsg = `Unable to get sheet: "${range}"`;
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+      });
+    return sheetPromise;
+  } else {
+    const errorMsg = `No spreadsheet exists with sheetName: "${sheetName}"`;
+    console.error(errorMsg);
+    const sheetError = new Error(errorMsg);
+    recordError(sheetError);
+    return Promise.reject(errorMsg);
+  }
+}
+
+function updateSheetData(sheetName, range, body) {
+  const spreadsheetId = sheetNameToId(sheetName);
+  if (spreadsheetId != "") {
+    const request = {
+      "spreadsheetId": spreadsheetId,
+      "range": range,
+      "valueInputOption": "RAW",
+      "resource": body
+    };
+    const updatePromise = gapi.client.sheets.spreadsheets.values.update(request)
+      .then(response => {
+        console.log(`UpdateSheetData: ${range}`);
+        return Promise.resolve(response);
+      })
+      .catch(err => {
+        const errorMsg = `Unable to update sheet: "${range}" - `;
+        console.error(errorMsg, err);
+        recordError(err, errorMsg);
+      });
+    return updatePromise;
+  } else {
+    const errorMsg = `No spreadsheet exists with sheetName: "${sheetName}"`;
+    console.error(errorMsg);
+    const sheetError = new Error(errorMsg);
+    recordError(sheetError);
   }
 }

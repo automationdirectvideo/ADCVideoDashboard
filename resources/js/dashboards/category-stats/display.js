@@ -1,169 +1,133 @@
-function loadSignedIn() {
-  addDotsToLoadingText();
-  const homeButton = document.getElementById("home-button");
-  const controlPanelButton = document.getElementById("control-panel-button");
-  const menuButtonContainer = document.getElementById("menu-button-container");
-  homeButton.style.display = "inline";
-  controlPanelButton.style.display = "inline";
-  menuButtonContainer.style.display = "initial";
-  initializeUpdater();
-  loadDashboards();
-  updateTheme(0);
-  createShortcutListeners();
-}
+function displayCategoryStrengthBars(categoryStats, categoryName,
+  categoryColor) {
+  const allVideoStats = lsGet("allVideoStats");
+  const popupGraphTitle = document.getElementById("popup-graph-title");
+  popupGraphTitle.innerHTML = categoryName;
+  showCategoryStrengthGraph();
 
-/**
- * Loads the page when the user is not signed into Google
- */
-function loadSignedOut() {
-  createSignInModal("dashboards");
-  const authorizeButton = document.getElementById("authorize-button");
-  authorizeButton.onclick = handleAuthClick;
-  $('#signinModal').modal({
-    backdrop: 'static',
-    keyboard: false
-  });
-}
+  let bins = [];
+  let binCount = 0;
+  let interval = 5;
+  let maxValue = 100;
 
-function loadDashboards() {
-  // Prevents multiple simultaneous load/update dashboards calls
-  if (!isLoading && !isUpdating) {
-    setLoadingStatus(true);
-    const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-    showLoadingText();
-    resetGraphData();
-    if (isSignedIn) {
-      let categoryStats = lsGet("categoryStats");
-      if (!categoryStats) {
-        getBasicDashboardStats()
-          .then(response => {
-            loadDashboardsSignedIn();
-          });
-      } else {
-        loadDashboardsSignedIn();
-      }
-    }
-  }
-}
-
-function loadDashboardsSignedIn() {
-  let requests = [];
-  requests.push(loadProductCategoriesDashboard());
-  requests.push(loadCategoryCharts());
-
-  console.log("Starting Load Dashboards Requests");
-  return Promise.all(requests)
-    .then(response => {
-      console.log("Load Dashboards Complete", response);
-    })
-    .catch(err => {
-      const errorMsg = "Error occurred loading dashboards: ";
-      console.error(errorMsg, err);
-      recordError(err, errorMsg);
-    })
-    .finally(response => {
-      setLoadingStatus(false);
-      hideLoadingText();
+  // Setup Bins
+  for (let i = 0; i < maxValue; i += interval){
+    bins.push({
+      binNum: binCount,
+      minNum: i,
+      maxNum: i + interval,
+      count: 0
     });
-}
-
-function initializeUpdater() {
-  let midnight = new Date();
-  midnight.setHours(0, 0, 0, 0);
-  const isSignedIn = gapi.auth2.getAuthInstance().isSignedIn.get();
-
-  var updateId = window.setInterval(() => {
-    const now = new Date();
-    // updateCount calculates the seconds since midnight
-    let updateCount = Math.floor((now - midnight) / 1000);
-    if (isSignedIn) {
-      if (updateCount == 3600) {
-        recordUpdate("Reload Dashboards")
-          .then(response => {
-            window.location.reload();
-          });
-      } else if (updateCount % 900 == 0) {
-        loadDashboards();
-      }
-    }
-  }, 1000);
-  return updateId;
-}
-
-function initializeCarousels() {
-  const categoryStatsCarousel =
-    document.getElementById("category-stats-carousel");
-  categoryStatsCarousel.setAttribute("data-ride", "carousel");
-  categoryStatsCarousel.setAttribute("data-interval", cycleSpeed);
-  categoryStatsCarousel.setAttribute("data-pause", "false");
-}
-
-/**
- * Updates the data used in the dashboards then reloads the dashboards.
- * Data is taken from the input sheet and the YouTube APIs
- *
- * @returns {Promise} Status message
- */
-function updateDashboards() {
-  // Prevent multiple simultaneous load/update dashboard calls
-  if (!isLoading && !isUpdating) {
-    setUpdatingStatus(true);
-    showUpdatingText();
-    const now = new Date();
-    let requests = [];
-    // checks that today is between Jan 10-20 ish
-    if (now.getMonth() == 0 && now.getDate() >= 10 &&
-      now.getDate <= 20) {
-      const lastYear = now.getFullYear() - 1;
-      requests.push(getYearlyCategoryViews(lastYear));
-    }
-    requests.push(updateVideoAndCategoryStats());
-    return Promise.all(requests)
-      .then(response => {
-        console.log("Update Dashboards Complete", response);
-        recordUpdate("Dashboards Updated");
-        hideUpdatingText();
-        setUpdatingStatus(false);
-        // Reload the dashboards with the new data
-        return loadDashboards();
-      })
-      .catch(err => {
-        recordUpdate("Update Failed");
-        const errorMsg = "Error occurred updating dashboards: ";
-        console.error(errorMsg, err);
-        recordError(err, errorMsg);
-      })
-      .finally(response => {
-        hideUpdatingText();
-        setUpdatingStatus(false);
-      });
+    binCount++;
   }
-}
 
-function createShortcutListeners() {
-  document.addEventListener("keyup", function (e) {
-    if (e.key.toUpperCase() == "H" && e.altKey &&
-      gapi.auth2.getAuthInstance().isSignedIn.get()) {
-      window.location = "index.html";
-    } else if (!isMenuOpen) {
-      if (e.key.toUpperCase() == "N" || e.key.toUpperCase() == "V") {
-        swapNormalCharts();
+  // Loop through data and add to bin's count
+  const videosWithStrength = categoryStats.videosWithStrength;
+  videosWithStrength.forEach(videoId => {
+    const avsIndex = allVideoStats.findIndex((element) => {
+      return videoId == element.videoId;
+    });
+    const videoStrength = allVideoStats[avsIndex].strength;
+    for (let j = 0; j < bins.length; j++){
+      let bin = bins[j];
+      if (videoStrength > bin.minNum && videoStrength <= bin.maxNum){
+        bin.count++;
       }
     }
   });
-}
 
-function swapNormalCharts() {
-  var activeDashboard =
-    $(".carousel-container.active >>> .carousel-item.active")[0].id;
-  var standardChartId = activeDashboard + "-chart";
-  var standardChart = document.getElementById(standardChartId);
-  if (standardChart) {
-    if (standardChart.style.display == "none") {
-      standardChart.style.display = "";
-    } else {
-      standardChart.style.display = "none";
+  let labels = [];
+  let frequencies = [];
+  let customdata = [];
+  let labelsToShow = [];
+  for (let index = 0; index < bins.length; index++) {
+    const bin = bins[index];
+    labels.push(bin.minNum);
+    frequencies.push(bin.count / videosWithStrength.length);
+    let numVideosText = `${bin.count} videos`;
+    if (bin.count == 1) {
+      numVideosText = `${bin.count} video`;
     }
+    customdata.push([
+      numVideosText,
+      `${bin.minNum} - ${bin.maxNum}`
+    ]);
+    if (index % 2 == 0) {
+      labelsToShow.push(String(bin.minNum));
+    } else {
+      labelsToShow.push("");
+    }
+  }
+
+  const data = [{
+    x: labels,
+    y: frequencies,
+    customdata: customdata,
+    hovermode: "none",
+    hovertemplate: "%{customdata[1]}<br>%{customdata[0]}<extra></extra>",
+    offset: 0.5,
+    marker: {
+      color: categoryColor
+    },
+    type: "bar"
+  }];
+
+  var graphHeight = 0.2938;
+  var graphWidth = 0.2713;
+  var height = graphHeight * document.documentElement.clientHeight;
+  var width = graphWidth * document.documentElement.clientWidth;
+  var topMargin = Math.floor(0.02 * document.documentElement.clientWidth);
+  var rightMargin = Math.floor(0.02 * document.documentElement.clientWidth);
+
+  const layout = {
+    height: height,
+    width: width,
+    bargap: 0,
+    hovermode: "closest",
+    margin: {
+      b: 0,
+      l: 0,
+      r: rightMargin,
+      t: topMargin
+    },
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    title: {
+      text: "Distribution of Video Strength"
+    },
+    xaxis: {
+      automargin: true,
+      fixedrange: true,
+      tickmode: "array",
+      ticktext: labelsToShow,
+      tickvals: labels,
+      title: {
+        text: "Video Strength"
+      }
+    },
+    yaxis: {
+      automargin: true,
+      fixedrange: true,
+      gridcolor: "#888888",
+      tickprefix: "   ",
+      title: {
+        text: "Relative Frequency"
+      },
+      zerolinewidth: 2
+    }
+  };
+  const config = {
+    scrollZoom: false,
+    displayModeBar: false,
+    responsive: true
+  };
+  const graphId = "category-strength-popup-graph";
+  try {
+    createGraph(graphId, data, layout, config, graphHeight, graphWidth, false);
+    document.getElementById(graphId).style.display = "initial";
+    document.getElementById("popup-graph-loading").style.display = "none";
+  } catch (err) {
+    displayGraphError(graphId, err);
   }
 }
 
@@ -800,150 +764,6 @@ function displayTopCategoriesGraphThree(categoryStats) {
       const stats = categoryStats[categoryIndex];
       displayCategoryStrengthBars(stats, categoryName, categoryColor);
     });
-  } catch (err) {
-    displayGraphError(graphId, err);
-  }
-}
-
-function hideCategoryStrengthGraph() {
-  document.getElementById("category-graph-container").style.display = "none";
-}
-
-function showCategoryStrengthGraph() {
-  document.getElementById("category-graph-container").style.display = "";
-  document.getElementById("popup-graph-loading").style.display = "";
-  document.getElementById("category-strength-popup-graph").style.display =
-    "none";
-}
-
-function displayCategoryStrengthBars(categoryStats, categoryName,
-  categoryColor) {
-  const allVideoStats = lsGet("allVideoStats");
-  const popupGraphTitle = document.getElementById("popup-graph-title");
-  popupGraphTitle.innerHTML = categoryName;
-  showCategoryStrengthGraph();
-
-  let bins = [];
-  let binCount = 0;
-  let interval = 5;
-  let maxValue = 100;
-
-  // Setup Bins
-  for (let i = 0; i < maxValue; i += interval){
-    bins.push({
-      binNum: binCount,
-      minNum: i,
-      maxNum: i + interval,
-      count: 0
-    });
-    binCount++;
-  }
-
-  // Loop through data and add to bin's count
-  const videosWithStrength = categoryStats.videosWithStrength;
-  videosWithStrength.forEach(videoId => {
-    const avsIndex = allVideoStats.findIndex((element) => {
-      return videoId == element.videoId;
-    });
-    const videoStrength = allVideoStats[avsIndex].strength;
-    for (let j = 0; j < bins.length; j++){
-      let bin = bins[j];
-      if (videoStrength > bin.minNum && videoStrength <= bin.maxNum){
-        bin.count++;
-      }
-    }
-  });
-
-  let labels = [];
-  let frequencies = [];
-  let customdata = [];
-  let labelsToShow = [];
-  for (let index = 0; index < bins.length; index++) {
-    const bin = bins[index];
-    labels.push(bin.minNum);
-    frequencies.push(bin.count / videosWithStrength.length);
-    let numVideosText = `${bin.count} videos`;
-    if (bin.count == 1) {
-      numVideosText = `${bin.count} video`;
-    }
-    customdata.push([
-      numVideosText,
-      `${bin.minNum} - ${bin.maxNum}`
-    ]);
-    if (index % 2 == 0) {
-      labelsToShow.push(String(bin.minNum));
-    } else {
-      labelsToShow.push("");
-    }
-  }
-
-  const data = [{
-    x: labels,
-    y: frequencies,
-    customdata: customdata,
-    hovermode: "none",
-    hovertemplate: "%{customdata[1]}<br>%{customdata[0]}<extra></extra>",
-    offset: 0.5,
-    marker: {
-      color: categoryColor
-    },
-    type: "bar"
-  }];
-
-  var graphHeight = 0.2938;
-  var graphWidth = 0.2713;
-  var height = graphHeight * document.documentElement.clientHeight;
-  var width = graphWidth * document.documentElement.clientWidth;
-  var topMargin = Math.floor(0.02 * document.documentElement.clientWidth);
-  var rightMargin = Math.floor(0.02 * document.documentElement.clientWidth);
-
-  const layout = {
-    height: height,
-    width: width,
-    bargap: 0,
-    hovermode: "closest",
-    margin: {
-      b: 0,
-      l: 0,
-      r: rightMargin,
-      t: topMargin
-    },
-    paper_bgcolor: "rgba(0,0,0,0)",
-    plot_bgcolor: "rgba(0,0,0,0)",
-    title: {
-      text: "Distribution of Video Strength"
-    },
-    xaxis: {
-      automargin: true,
-      fixedrange: true,
-      tickmode: "array",
-      ticktext: labelsToShow,
-      tickvals: labels,
-      title: {
-        text: "Video Strength"
-      }
-    },
-    yaxis: {
-      automargin: true,
-      fixedrange: true,
-      gridcolor: "#888888",
-      tickprefix: "   ",
-      title: {
-        text: "Relative Frequency"
-      },
-      zerolinewidth: 2
-    }
-  };
-  const config = {
-    scrollZoom: false,
-    displayModeBar: false,
-    responsive: true
-  };
-  const graphId = "category-strength-popup-graph";
-  try {
-    createGraph(graphId, data, layout, config, graphHeight, graphWidth, false);
-    document.getElementById(graphId).style.display = "initial";
-    document.getElementById("popup-graph-loading").style.display = "none";
   } catch (err) {
     displayGraphError(graphId, err);
   }
