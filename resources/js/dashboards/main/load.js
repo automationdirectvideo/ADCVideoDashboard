@@ -171,6 +171,10 @@ function initializeUpdater() {
       } else if (updateCount % 900 == 0) {
         loadDashboards();
       }
+    } else {
+      if (updateCount % 3600 == 0) {
+        reloadIntroAnimation();
+      }
     }
     const carouselInner = document.getElementsByClassName("carousel-inner")[0];
     if (carouselInner.children["real-time-stats"]) {
