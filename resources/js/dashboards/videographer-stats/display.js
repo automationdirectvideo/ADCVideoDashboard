@@ -362,6 +362,8 @@ function displayVideographerMonthlyVideos(videographers) {
         displayModeBar: false,
       }
 
+      document.querySelector(".graph-loading-container").style.display = "none";
+
       try {
         createGraph(cumulativeGraphId, cumulativeData, cumulativeLayout, config,
           graphHeight, graphWidth, false);
