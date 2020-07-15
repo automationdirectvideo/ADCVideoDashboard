@@ -666,17 +666,10 @@ body[menu="open"] .overlay {
   width: 100%;
 }
 
-.more-details-btn, .return-to-main-btn-inside {
+.more-details-btn, .normalize-btn {
   position: absolute;
   top: 9.5vh;
   right: 2.5vw;
-}
-
-.return-to-main-btn {
-  position: absolute;
-  left: 1vw;
-  top: 1vh;
-  z-index: 2;
 }
 
 .button-icon {

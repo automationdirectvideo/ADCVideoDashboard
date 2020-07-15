@@ -96,6 +96,11 @@ function initializeCarousels() {
   categoryStatsCarousel.setAttribute("data-ride", "carousel");
   categoryStatsCarousel.setAttribute("data-interval", cycleSpeed);
   categoryStatsCarousel.setAttribute("data-pause", "false");
+
+  const normalizeBtns = document.querySelectorAll(".normalize-btn");
+  normalizeBtns.forEach(button => {
+    button.addEventListener("click", swapNormalCharts);
+  });
 }
 
 /**
@@ -257,15 +262,19 @@ function showCategoryStrengthGraph() {
 }
 
 function swapNormalCharts() {
-  var activeDashboard =
+  const activeDashboard =
     $(".carousel-container.active >>> .carousel-item.active")[0].id;
-  var standardChartId = activeDashboard + "-chart";
-  var standardChart = document.getElementById(standardChartId);
+  const standardChart = document.getElementById(`${activeDashboard}-chart`);
+  const normalizeBtn = document.getElementById(`${activeDashboard}-normalize`);
   if (standardChart) {
     if (standardChart.style.display == "none") {
       standardChart.style.display = "";
+      normalizeBtn.innerHTML = 
+      `<i class="fas fa-expand-alt button-icon"></i>Normalize`;
     } else {
       standardChart.style.display = "none";
+      normalizeBtn.innerHTML = 
+      `<i class="fas fa-compress-alt button-icon"></i>Denormalize`;
     }
   }
 }

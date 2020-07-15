@@ -79,9 +79,6 @@
               <div class="carousel slide dashboard-carousel" id="category-stats-carousel" name="cat-stats">
                 <div class="carousel-inner" id="category-stats-carousel-inner">
                   <div class="carousel-item active" id="product-categories">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
                     <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                     <div class="outer-shell click-through container mb-1">
                       <div class="grid-container">
@@ -100,9 +97,6 @@
                     </div>
                   </div>
                   <div class="carousel-item" id="product-categories">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
                     <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                     <div class="outer-shell click-through container mb-1">
                       <div class="grid-container">
@@ -117,9 +111,6 @@
                     </div>
                   </div>
                   <div class="carousel-item" id="product-categories">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
                     <div class="alert popup-graph-container" id="category-graph-container" style="display:none;">
                       <button type="button" class="close" aria-label="Close" style="z-index:2;" onclick="hideCategoryStrengthGraph()">
                         <span aria-hidden="true">&times;</span>
@@ -144,9 +135,9 @@
                     </div>
                   </div>
                   <div class="carousel-item" id="categories-views">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
+                    <button class="btn btn-primary btn-lg normalize-btn" id="categories-views-normalize">
+                      <i class="fas fa-expand-alt button-icon"></i>Normalize
+                    </button>
                     <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                     <div class="outer-shell click-through container mb-1">
                       <div class="grid-container">
@@ -162,9 +153,9 @@
                     </div>
                   </div>
                   <div class="carousel-item" id="categories-cum-views">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
+                    <button class="btn btn-primary btn-lg normalize-btn" id="categories-cum-views-normalize">
+                      <i class="fas fa-expand-alt button-icon"></i>Normalize
+                    </button>
                     <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                     <div class="outer-shell click-through container mb-1">
                       <div class="grid-container">
@@ -180,9 +171,9 @@
                     </div>
                   </div>
                   <div class="carousel-item" id="categories-avg-views">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
+                    <button class="btn btn-primary btn-lg normalize-btn" id="categories-avg-views-normalize">
+                      <i class="fas fa-expand-alt button-icon"></i>Normalize
+                    </button>
                     <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                     <div class="outer-shell click-through container mb-1">
                       <div class="grid-container">
@@ -198,9 +189,9 @@
                     </div>
                   </div>
                   <div class="carousel-item" id="categories-cum-avg-views">
-                    <a class="btn btn-primary return-to-main-btn-inside" href="index.html">
-                      <i class="fas fa-reply button-icon"></i>Return to Main Dashboard
-                    </a>
+                    <button class="btn btn-primary btn-lg normalize-btn" id="categories-cum-avg-views-normalize">
+                      <i class="fas fa-expand-alt button-icon"></i>Normalize
+                    </button>
                     <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
                     <div class="outer-shell click-through container mb-1">
                       <div class="grid-container">
@@ -242,38 +233,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="d-none" id="dashboard-holder">
-            <div class="carousel-item" id="product-categories">
-              <button class="btn btn-primary return-to-main-btn-inside">
-                <i class="fas fa-info-circle button-icon"></i>More Details
-              </button>
-              <div class="alert popup-graph-container" id="category-graph-container" style="display:none;">
-                <button type="button" class="close" aria-label="Close" style="z-index:2;" onclick="hideCategoryStrengthGraph()">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 id="popup-graph-title">Category Name</h4>
-                <div class="popup-graph click-through" id="category-strength-popup-graph"></div>
-                <div id="popup-graph-loading">
-                  <h3><i class="fas fa-spinner fa-pulse mr-3" style="font-size:1em;"></i>Loading...</h3>
-                </div>
-              </div>
-              <h1 class="dashboard-title">Which Product Categories are our Customers Watching the Most?</h1>
-              <div class="outer-shell click-through container mb-1">
-                <div class="grid-container">
-                  <div class="grid-item" style="grid-area: 1/1/13/13;">
-                    <div class="row align-content-around h-100">
-                      <div class="col-12 h-100">
-                        <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-1"></div>
-                        <div class="category-stats-chart mb-2 graph-container" id="product-categories-chart-2"></div>
-                        <div class="category-stats-chart graph-container" id="product-categories-chart-3"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <i class="indicator" data-target="#dashboard-carousel" id="indicator"></i>
           </div>
         </div>
       </div>
