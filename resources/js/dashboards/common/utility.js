@@ -458,6 +458,8 @@ function createEventListeners() {
         nextMenuItem();
       } else if (e.key == "ArrowUp") {
         prevMenuItem();
+      } else if (e.key == "Escape") {
+        hideMenu();
       }
     } else {
       // Normal keyboard shortcuts
