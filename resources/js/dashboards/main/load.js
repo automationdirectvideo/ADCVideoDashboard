@@ -1077,9 +1077,10 @@ function updateDashboards() {
       requests.push(getYearlyCategoryViews(lastYear));
     }
     requests.push(getCardPerformanceForCurrMonth());
-    requests.push(getVideographerViewsForCurrMonth());
     requests.push(realTimeStatsCalls());
     requests.push(updateVideoAndCategoryStats());
+    const videographers = calcVideographerStats();
+    requests.push(getVideographerViewsForCurrMonth());
     reloadIntroAnimation();
     return Promise.all(requests)
       .then(response => {

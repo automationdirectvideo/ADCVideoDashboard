@@ -106,6 +106,115 @@ function fixGraphMargins() {
   }
 }
 
+/**
+ * Calculates the basic stats of each videographer from the videos that they
+ * created
+ *
+ * @returns {Object} The videographer statistics
+ */
+function calcVideographerStats() {
+  const allVideoStats = lsGet("allVideoStats");
+  const statsByVideoId = lsGet("statsByVideoId");
+  let videographers = {};
+
+  for (let index = 0; index < allVideoStats.length; index++) {
+    const videoStats = allVideoStats[index];
+    const videoId = videoStats.videoId;
+    const createdBy = statsByVideoId[videoId].createdBy;
+    const organic = statsByVideoId[videoId].organic;
+    if (!videographers[createdBy]) {
+      videographers[createdBy] = {
+        "all": {
+          "totalComments": 0,
+          "totalDislikes": 0,
+          "totalDuration": 0,
+          "totalLikeRatio": 0.0,
+          "totalLikes": 0,
+          "totalSubsGained": 0,
+          "totalViews": 0,
+          "videos": []
+        },
+        "organic": {
+          "totalComments": 0,
+          "totalDislikes": 0,
+          "totalDuration": 0,
+          "totalLikeRatio": 0.0,
+          "totalLikes": 0,
+          "totalSubsGained": 0,
+          "totalViews": 0,
+          "videos": []
+        },
+        "notOrganic": {
+          "totalComments": 0,
+          "totalDislikes": 0,
+          "totalDuration": 0,
+          "totalLikeRatio": 0.0,
+          "totalLikes": 0,
+          "totalSubsGained": 0,
+          "totalViews": 0,
+          "videos": []
+        }
+      };
+    }
+    let categories = [videographers[createdBy].all];
+    if (organic) {
+      categories.push(videographers[createdBy].organic);
+    } else {
+      categories.push(videographers[createdBy].notOrganic);
+    }
+    const comments = videoStats.comments;
+    const dislikes = videoStats.dislikes;
+    const duration = videoStats.duration;
+    const likeRatio = videoStats.likes /
+      (videoStats.likes + videoStats.dislikes);
+    const likes = videoStats.likes;
+    const subsGained = videoStats.subscribersGained;
+    const views = videoStats.views;
+    categories.forEach(category => {
+      category.totalComments += comments;
+      category.totalDislikes += dislikes;
+      category.totalDuration += duration;
+      if (!isNaN(likeRatio)) {
+        category.totalLikeRatio += likeRatio;
+      }
+      category.totalLikes += likes;
+      category.totalSubsGained += subsGained;
+      category.totalViews += views;
+      category.videos.push(videoId);
+    });
+  }
+  for (const name in videographers) {
+    if (videographers.hasOwnProperty(name)) {
+      const categories = videographers[name];
+      for (const category in categories) {
+        if (categories.hasOwnProperty(category)) {
+          const data = categories[category];
+          let numVideos = data.videos.length;
+          data.numVideos = numVideos;
+          if (numVideos == 0) {
+            numVideos = 1;
+          }
+          data.avgComments = data.totalComments / numVideos;
+          data.avgDislikes = data.totalDislikes / numVideos;
+          data.avgDuration = data.totalDuration / numVideos;
+          data.avgLikeRatio = data.totalLikeRatio / numVideos;
+          data.avgLikes = data.totalLikes / numVideos;
+          data.avgSubsGained = data.totalSubsGained / numVideos;
+          data.avgViews = data.totalViews / numVideos;
+          let likeRatio = data.avgLikes / (data.avgLikes + data.avgDislikes);
+          if (isNaN(likeRatio)) {
+            likeRatio = undefined;
+          }
+          data.cumLikeRatio = likeRatio;
+        }
+      }
+    }
+  }
+  videographers = calcVideographerVideosByMonth(videographers);
+  lsSet("videographers", videographers);
+  return videographers;
+}
+
 function updateTheme(dashboardIndex) {
   try {
     if (gapi.auth2.getAuthInstance().isSignedIn.get()) {

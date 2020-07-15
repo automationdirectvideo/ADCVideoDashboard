@@ -414,6 +414,7 @@ function getVideographerViewsForCurrMonth() {
   const videographers = lsGet("videographers");
   return requestVideographerViewsForMonth(videographers, startDate)
     .then(updatedVideographers => {
+      console.log(updatedVideographers);
       return saveVideographerViewsToSheets(updatedVideographers);
     });
 }
