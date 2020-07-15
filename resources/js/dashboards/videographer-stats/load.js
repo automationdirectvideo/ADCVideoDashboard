@@ -155,8 +155,8 @@ function swapDashboardGraphs() {
       graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
     } else if (activeDashboard == "videographer-cumulative-videos") {
       graphIds = getDashboardGraphIds("videographerGraphs").cumulativeVideos;
-    } else if (activeDashboard == "videographer-monthly-videos") {
-      graphIds = getDashboardGraphIds("videographerGraphs").monthlyVideos;
+    } else if (activeDashboard == "videographer-yearly-videos") {
+      graphIds = getDashboardGraphIds("videographerGraphs").yearlyVideos;
     } else if (activeDashboard == "videographer-cumulative-views") {
       graphIds = getDashboardGraphIds("videographerGraphs").cumulativeViews;
     } else if (activeDashboard == "videographer-monthly-views") {
@@ -260,7 +260,7 @@ function loadVideographerDashboards() {
       getDashboardGraphIds("videographerGraphs").avgViews,
       getDashboardGraphIds("videographerGraphs").cumulativeVideos,
       getDashboardGraphIds("videographerGraphs").cumulativeViews,
-      getDashboardGraphIds("videographerGraphs").monthlyVideos,
+      getDashboardGraphIds("videographerGraphs").yearlyVideos,
       getDashboardGraphIds("videographerGraphs").monthlyViews
     ];
     graphIds.forEach(dashboard => {
@@ -343,52 +343,6 @@ function createVideographerStatsDashboards() {
     indicatorList.appendChild(indicator);
     index++;
   });
-}
-
-/**
- * Gets the number of videos produced by each videographer for each month
- *
- * @param {Object} videographers The videographer statistics
- * @returns {Object} `videographers` updated with the monthly videos statistics
- */
-function calcVideographerVideosByMonth(videographers) {
-  const statsByVideoId = lsGet("statsByVideoId");
-  const today = new Date();
-  // The number of days in `lastXDays`
-  const X = 30;
-  for (const name in videographers) {
-    if (videographers.hasOwnProperty(name)) {
-      const categories = videographers[name];
-      for (const category in categories) {
-        if (categories.hasOwnProperty(category)) {
-          const data = categories[category];
-          let monthlyVideos = {};
-          let numVideosLastXDays = 0;
-          const videos = data.videos;
-          videos.forEach(videoId => {
-            const publishDate = statsByVideoId[videoId].publishDate;
-            const month = publishDate.substr(0, 7);
-            if (monthlyVideos[month] == undefined) {
-              monthlyVideos[month] = 0;
-            }
-            monthlyVideos[month] += 1;
-            if (today - new Date(publishDate) <= X * 86400000) {
-              numVideosLastXDays++;
-            }
-          });
-          const allMonths = getMonthsSince(2010, 7);
-          allMonths.forEach(month => {
-            if (monthlyVideos[month] == undefined) {
-              monthlyVideos[month] = 0;
-            }
-          });
-          data.monthlyVideos = monthlyVideos;
-          data.numVideosLastXDays = numVideosLastXDays;
-        }
-      }
-    }
-  }
-  return videographers;
 }
 
 /**

@@ -196,6 +196,25 @@ function getMonthsSince(year, month) {
 }
 
 /**
+ * Gets a list of all years as "YYYY" between the provided year and the
+ * current yeaar inclusive
+ *
+ * @param {Number} year The starting year
+ * @returns {Array<String>} List of years
+ */
+function getYearsSince(year) {
+  let yearIter = new Date(year, 1);
+  yearIter.setDate(1);
+  const endDate = new Date();
+  let years = [];
+  while (endDate - yearIter >= 0) {
+    years.push(getYouTubeDateFormat(yearIter).substr(0,4));
+    yearIter = new Date(yearIter.getFullYear() + 1, 1);
+  }
+  return years;
+}
+
+/**
  * Get the number of days from today to the `oldDate` in the form YYYY-MM-DD
  *
  * @param {String|Date} oldDate A date from the past

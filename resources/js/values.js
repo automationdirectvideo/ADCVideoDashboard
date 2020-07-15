@@ -169,10 +169,10 @@ const defaultSettings =
       "organic": "videographer-cumulative-views-graph-organic",
       "notOrganic": "videographer-cumulative-views-graph-not-organic",
     },
-    "monthlyVideos": {
-      "all": "videographer-monthly-videos-graph-all",
-      "organic": "videographer-monthly-videos-graph-organic",
-      "notOrganic": "videographer-monthly-videos-graph-not-organic",
+    "yearlyVideos": {
+      "all": "videographer-yearly-videos-graph-all",
+      "organic": "videographer-yearly-videos-graph-organic",
+      "notOrganic": "videographer-yearly-videos-graph-not-organic",
     },
     "monthlyViews": {
       "all": "videographer-monthly-views-graph-all",
@@ -180,7 +180,7 @@ const defaultSettings =
       "notOrganic": "videographer-monthly-views-graph-not-organic",
     }
   },
-  "version": 8,
+  "version": 9,
 };
 // Increment the settings version number above when the default settings are
 // updated. This will force users to revert to the default settings the next
