@@ -6,7 +6,7 @@
 	"recommendations": [
     "hookyqr.beautify",
     "msjsdiag.debugger-for-chrome",
-    "joelday.docthis",
+    "stevencl.adddoccomments",
     "dbaeumer.vscode-eslint",
     "vincaslt.highlight-matching-tag",
     "abusaidm.html-snippets",
