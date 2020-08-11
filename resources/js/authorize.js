@@ -193,7 +193,7 @@ function createGapiErrorModal(err) {
             <h5 class="modal-title" id="gapiErrorModalLabel">An Error Occurred</h5>
           </div>
           <div class="modal-body">
-            <div class="alert alert-danger fade show mb-2 text-center" role="alert" id="invalid-account-alert">
+            <div class="alert alert-danger fade show mb-2 text-center" role="alert">
               <strong><i class="fas fa-exclamation-triangle"></i> ${errTitle}:</strong> ${errDesc}
             </div>
           </div>
