@@ -45,6 +45,9 @@ function initClient() {
     if (signoutButton) {
       signoutButton.onclick = handleSignout;
     }
+  }).catch((err) => {
+    createGapiErrorModal(err);
+    recordError(err, "Unable to log into Google");
   });
 }
 
@@ -160,4 +163,62 @@ function createSignInModal(pageType) {
   `;
   const modal = createElement(innerHTML, "DIV");
   document.body.appendChild(modal);
+}
+
+/**
+ * Creates a modal that displays an error from initializing or logging into GAPI
+ * 
+ * @param {Object} err Error
+ */
+function createGapiErrorModal(err) {
+  let errTitle = "An Unknown Error Occurred";
+  let errDesc = "Something went wrong with loading the Google APIs. Try reloading page. If the problem persists, contact the developer.";
+  const errType = err.error;
+  const errMsg = err.details;
+  if (errType) {
+    errTitle = errType;
+  }
+  if (errMsg) {
+    errDesc = errMsg;
+  }
+  if (errType == "idpiframe_initialization_failed") {
+    errTitle = "Cookies Disabled";
+    errDesc = "Unable to load page because third-party cookies are disabled. Enable third-party cookies in your browser, then reload the page.";
+  }
+  const innerHTML = `
+    <div class="modal fade" id="gapiErrorModal" tabindex="-1" role="dialog" aria-labelledby="gapiErrorModal" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="gapiErrorModalLabel">An Error Occurred</h5>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger fade show mb-2 text-center" role="alert" id="invalid-account-alert">
+              <strong><i class="fas fa-exclamation-triangle"></i> ${errTitle}:</strong> ${errDesc}
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-lg" id="gapiErrorModal-close">Close</button>
+            <button class="btn btn-primary btn-lg" id="gapiErrorModal-reload">Reload Page</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  const modal = createElement(innerHTML, "DIV");
+  document.body.appendChild(modal);
+
+  const closeButton = document.getElementById("gapiErrorModal-close");
+  const reloadButton = document.getElementById("gapiErrorModal-reload");
+  closeButton.addEventListener("click", function () {
+    $("#gapiErrorModal").modal("hide");
+  });
+  reloadButton.addEventListener("click", function () {
+    window.location.reload();
+  });
+
+  $('#gapiErrorModal').modal({
+    backdrop: 'static',
+    keyboard: false
+  });
 }
