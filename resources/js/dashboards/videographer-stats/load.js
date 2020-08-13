@@ -142,12 +142,15 @@ function createShortcutListeners() {
   });
 }
 
-function swapDashboardGraphs() {
+function swapDashboardGraphs(switchTo) {
   const activeDashboard =
     $(".carousel-container.active >>> .carousel-item.active")[0].id;
   let graphOne;
   let graphTwo;
   let graphThree;
+  let btnOne;
+  let btnTwo;
+  let btnThree;
 
   if (activeDashboard.indexOf("videographer") == 0) {
     let graphIds;
@@ -165,20 +168,35 @@ function swapDashboardGraphs() {
     graphOne = document.getElementById(graphIds.all);
     graphTwo = document.getElementById(graphIds.organic);
     graphThree = document.getElementById(graphIds.notOrganic);
+    btnOne = document.getElementById(graphIds.all.replace("-graph-", "-btn-"));
+    btnTwo =
+      document.getElementById(graphIds.organic.replace("-graph-", "-btn-"));
+    btnThree =
+      document.getElementById(graphIds.notOrganic.replace("-graph-", "-btn-"));
   }
   if (graphOne && graphTwo && graphThree) {
-    if (graphOne.style.display == "") {
+    if (switchTo == 2 || (graphOne.style.display == ""  && !switchTo)) {
       graphOne.style.display = "none";
       graphTwo.style.display = "";
       graphThree.style.display = "none";
-    } else if (graphTwo.style.display == "") {
+      btnOne.disabled = "";
+      btnTwo.disabled = "disabled";
+      btnThree.disabled = "";
+    } else if (switchTo == 3 || (graphTwo.style.display == ""  && !switchTo)) {
       graphOne.style.display = "none";
       graphTwo.style.display = "none";
       graphThree.style.display = "";
-    } else if (graphThree.style.display == "") {
+      btnOne.disabled = "";
+      btnTwo.disabled = "";
+      btnThree.disabled = "disabled";
+    } else if (switchTo == 1 ||
+        (graphThree.style.display == ""  && !switchTo)) {
       graphOne.style.display = "";
       graphTwo.style.display = "none";
       graphThree.style.display = "none";
+      btnOne.disabled = "disabled";
+      btnTwo.disabled = "";
+      btnThree.disabled = "";
     }
   } else {
     if (activeDashboard.indexOf("vstat") == 0) {

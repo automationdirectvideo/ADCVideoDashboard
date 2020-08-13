@@ -719,6 +719,18 @@ body[menu="open"] .overlay {
   background-color: #b7e4b7;
 }
 
+.organic-button-group {
+  position: absolute;
+  top: 8.5vh;
+  right: 2.5vw;
+}
+
+.stacked-btn-group > button {
+  display: block;
+  margin-bottom: 0.5rem;
+  float: right;
+}
+
 .vstats-grid-container {
   display: none;
 }
