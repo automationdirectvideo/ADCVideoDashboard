@@ -89,8 +89,6 @@ function initializeCarousels() {
   videographerCarousel.setAttribute("data-ride", "carousel");
   videographerCarousel.setAttribute("data-interval", cycleSpeed);
   videographerCarousel.setAttribute("data-pause", "false");
-
-  createVideographerStatsDashboards();
 }
 
 /**
@@ -140,6 +138,26 @@ function createShortcutListeners() {
       }
     }
   });
+}
+
+/**
+ * Gets videographer list from the input Google Sheet
+ *
+ * @returns {Promise} The videographers
+ */
+function getVideographerNames() {
+  return requestSpreadsheetData("Input Data", "Videographers")
+    .then(sheetValues => {
+      let names = [];
+      let column = getColumnHeaders(sheetValues);
+      for (let index = 1; index < sheetValues.length; index++) {
+        const row = sheetValues[index];
+        const name = row[column["Videographer Name"]];
+        names.push(name);
+      }
+      lsSet("videographerNames", names);
+      return Promise.resolve(names);
+    });
 }
 
 function swapDashboardGraphs(switchTo) {
@@ -220,36 +238,69 @@ function swapDashboardGraphs(switchTo) {
  * dashboards
  */
 function loadVideographerDashboards() {
-  try {
-    let videographers = calcVideographerStats();
-    displayVideographerMonthlyVideos(videographers);
-
-    const request1 = requestVideographerAvgViews(videographers,
-      getDateFromDaysAgo(34), getDateFromDaysAgo(4))
-      .then(videographers => {
-        displayVideographerAvgViews(videographers);
-      })
-      .catch(err => {
-        // Displays graph errors for average views graphs
-        const graphIds = getDashboardGraphIds("videographerGraphs").avgViews;
-        for (const key in graphIds) {
-          if (graphIds.hasOwnProperty(key)) {
-            const graphId = graphIds[key];
-            displayGraphError(graphId);
-          }
-        }
-        recordError(err,
-          "Unable to display videographer average views graphs - ");
-      });
-
-    const request2 = getVideographerMonthlyViews(videographers)
-      .then(updatedVideographers => {
-        displayVideographerMonthlyViews(updatedVideographers);
-      })
-      .catch(err => {
-        // Displays graph errors for monthly views graphs
+  return getVideographerNames()
+    .then(videographerNames => {
+      try {
+        createVideographerStatsDashboards();
+        let videographers = calcVideographerStats();
+        displayVideographerMonthlyVideos(videographers);
+    
+        const request1 = requestVideographerAvgViews(videographers,
+          getDateFromDaysAgo(34), getDateFromDaysAgo(4))
+          .then(videographers => {
+            displayVideographerAvgViews(videographers);
+          })
+          .catch(err => {
+            // Displays graph errors for average views graphs
+            const graphIds =
+              getDashboardGraphIds("videographerGraphs").avgViews;
+            for (const key in graphIds) {
+              if (graphIds.hasOwnProperty(key)) {
+                const graphId = graphIds[key];
+                displayGraphError(graphId);
+              }
+            }
+            recordError(err,
+              "Unable to display videographer average views graphs - ");
+          });
+    
+        const request2 = getVideographerMonthlyViews(videographers)
+          .then(updatedVideographers => {
+            displayVideographerMonthlyViews(updatedVideographers);
+          })
+          .catch(err => {
+            // Displays graph errors for monthly views graphs
+            const graphIds = [
+              getDashboardGraphIds("videographerGraphs").cumulativeViews,
+              getDashboardGraphIds("videographerGraphs").monthlyViews
+            ];
+            graphIds.forEach(dashboard => {
+              for (const key in dashboard) {
+                if (dashboard.hasOwnProperty(key)) {
+                  const graphId = dashboard[key];
+                  displayGraphError(graphId);
+                }
+              }
+            });
+            recordError(err,
+              "Unable to display videographer monthly views graphs - ");
+          });
+        const request3 = requestVideographerEngagementStats(videographers,
+          getDateFromDaysAgo(34), getDateFromDaysAgo(4));
+        const request4 = requestVideographerEngagementStats(videographers);
+        
+        Promise.all([request1, request2, request3, request4])
+          .then(response => {
+            displayVideographerStats();
+            saveVideographerStatsToSheets();
+          }) 
+      } catch (err) {
+        // Displays graph errors for all graphs in the videographer dashboards
         const graphIds = [
+          getDashboardGraphIds("videographerGraphs").avgViews,
+          getDashboardGraphIds("videographerGraphs").cumulativeVideos,
           getDashboardGraphIds("videographerGraphs").cumulativeViews,
+          getDashboardGraphIds("videographerGraphs").yearlyVideos,
           getDashboardGraphIds("videographerGraphs").monthlyViews
         ];
         graphIds.forEach(dashboard => {
@@ -260,37 +311,9 @@ function loadVideographerDashboards() {
             }
           }
         });
-        recordError(err,
-          "Unable to display videographer monthly views graphs - ");
-      });
-    const request3 = requestVideographerEngagementStats(videographers,
-      getDateFromDaysAgo(34), getDateFromDaysAgo(4));
-    const request4 = requestVideographerEngagementStats(videographers);
-    
-    Promise.all([request1, request2, request3, request4])
-      .then(response => {
-        displayVideographerStats();
-        saveVideographerStatsToSheets();
-      }) 
-  } catch (err) {
-    // Displays graph errors for all graphs in the videographer dashboards
-    const graphIds = [
-      getDashboardGraphIds("videographerGraphs").avgViews,
-      getDashboardGraphIds("videographerGraphs").cumulativeVideos,
-      getDashboardGraphIds("videographerGraphs").cumulativeViews,
-      getDashboardGraphIds("videographerGraphs").yearlyVideos,
-      getDashboardGraphIds("videographerGraphs").monthlyViews
-    ];
-    graphIds.forEach(dashboard => {
-      for (const key in dashboard) {
-        if (dashboard.hasOwnProperty(key)) {
-          const graphId = dashboard[key];
-          displayGraphError(graphId);
-        }
+        recordError(err, "Unable to load videographer dashboards");
       }
     });
-    recordError(err, "Unable to load videographer dashboards");
-  }
 }
 
 /**
@@ -299,7 +322,7 @@ function loadVideographerDashboards() {
 function createVideographerStatsDashboards() {
   const carouselInner = document.getElementById("videographer-carousel-inner");
   const indicatorList = document.getElementById("videographer-indicator-list");
-  const people = ["Shane C", "Rick F", "Tim W"];
+  const people = lsGet("videographerNames");
   const categories = {
     "all": "All Videos",
     "organic": "Organic Videos",

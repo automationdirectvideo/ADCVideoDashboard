@@ -44,7 +44,7 @@ function displayVideographerAvgViews(videographers) {
 
       let allTime = [];
       let lastXDays = [];
-      const people = ["Shane C", "Rick F", "Tim W"];
+      const people = lsGet("videographerNames");
       people.forEach(name => {
         const stats = videographers[name][category];
         const avgViews = Math.round(stats.avgViews);
@@ -168,7 +168,7 @@ function displayVideographerAvgViews(videographers) {
  */
 function displayVideographerMonthlyVideos(videographers) {
   videographers = videographers || lsGet("videographers");
-  const people = ["Shane C", "Rick F", "Tim W"];
+  const people = lsGet("videographerNames");
   const graphIds = [
     getDashboardGraphIds("videographerGraphs").cumulativeVideos,
     getDashboardGraphIds("videographerGraphs").yearlyVideos
@@ -413,7 +413,7 @@ function displayVideographerMonthlyVideos(videographers) {
  */
 function displayVideographerMonthlyViews(videographers) {
   videographers = videographers || lsGet("videographers");
-  const people = ["Shane C", "Rick F", "Tim W"];
+  const people = lsGet("videographerNames");
   const graphIds = [
     getDashboardGraphIds("videographerGraphs").cumulativeViews,
     getDashboardGraphIds("videographerGraphs").monthlyViews
@@ -624,7 +624,7 @@ function displayVideographerMonthlyViews(videographers) {
 }
 
 function displayVideographerStats(videographers = lsGet("videographers")) {
-  const people = ["Shane C", "Rick F", "Tim W"];
+  const people = lsGet("videographerNames");
   people.forEach(name => {
     const updatedName = name.replace(" ", "*");
     for (const category in videographers[name]) {
